@@ -18,4 +18,5 @@ public class UserControllerUnitTest {
 	@MockBean // Ioc환경에 bean 등록됨
 	private UserService userService;
 	
+
 }

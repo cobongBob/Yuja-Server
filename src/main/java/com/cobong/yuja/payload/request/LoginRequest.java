@@ -2,6 +2,7 @@ package com.cobong.yuja.payload.request;
 
 import lombok.Data;
 
+
 @Data
 public class LoginRequest {
 	private String username;
