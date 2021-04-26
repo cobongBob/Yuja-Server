@@ -80,13 +80,14 @@ sourceSets {
 	}
 }
 
-compileQuerydsl {
-	options.annotationProcessorPath = configurations.querydsl
-}
-
 configurations {
 	querydsl.extendsFrom compileClasspath
 }
+
+compileQuerydsl {
+	options.annotationProcessorPath = configurations.querydsl
+}
+	
 
 tasks.withType(JavaCompile) { 
 	options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir) 
