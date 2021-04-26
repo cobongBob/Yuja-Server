@@ -45,7 +45,6 @@ dependencies {
 	// QueryDSL
 	implementation 'com.querydsl:querydsl-jpa'
 	implementation 'com.querydsl:querydsl-apt'
-
 	
 	runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 	

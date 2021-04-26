@@ -44,6 +44,7 @@ public class User {
 	@CreationTimestamp
 	@Column(nullable = false)
 	private Timestamp createdDate;
+	
 	@Column(nullable = true)
 	private String providedId;
 	
