@@ -1,36 +1,28 @@
 package com.cobong.yuja.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-
-import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 @Data
-@NoArgsConstructor
+@EqualsAndHashCode(callSuper = false)
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 @Entity
-public class BoardType {
+public class Message {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long boardCode;
+	private Long messageId;
 	
-	@Column(nullable = false)
-	private String boardName;
 	
-	@OneToMany(mappedBy = "boardType")	
-	@JsonBackReference
-	private List<Board> boards = new ArrayList<Board>();
 }
