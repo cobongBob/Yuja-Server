@@ -73,13 +73,14 @@ querydsl {
 }
 
 
-//sourceSets {
-// main {
-// 	java {
-// 		srcDirs = ['src/main/java', querydslDir]
-// 		}
-//	}
-//}
+sourceSets {
+ main {
+ 	java {
+ 		srcDirs = ['src/main/java', querydslDir]
+ 		}
+	}
+}
+
 
 
 configurations {

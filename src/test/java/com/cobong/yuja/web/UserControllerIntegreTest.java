@@ -42,9 +42,4 @@ public class UserControllerIntegreTest {
 	public void init() {
 		entityManager.createNativeQuery("ALTER TABLE user AUTO_INCREMENT=1").executeUpdate();
 	}
-	
-	@Test
-	public void testtest() {
-		
-	}
 }
