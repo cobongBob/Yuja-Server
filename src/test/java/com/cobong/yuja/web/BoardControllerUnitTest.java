@@ -1,14 +1,15 @@
 package com.cobong.yuja.web;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Date;
-import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -109,18 +110,29 @@ public class BoardControllerUnitTest {
 		boardUpdateRequestDto.setContent("수정된 내용");
 		boardUpdateRequestDto.setThumbnail("수정된 썸네일");
 		
-		boardService.modify(2L, boardUpdateRequestDto);
+		boardService.modify(1L, boardUpdateRequestDto);
+		
+		
+		
+		this.mockMvc.perform(put("/{bno}", 1L)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andDo(MockMvcResultHandlers.print());
+}
 
-       }
 	@Test
-	public void delete_test() {
+	public void delete_test() throws Exception {
+		
 		when(boardService.delete(1L)).thenReturn("success");
 		
 		Long id = 1L;
-		this.mockMvc.perform(delete("{bno}",id)
+		ResultActions resultAction = this.mockMvc.perform(delete("/{bno}",id)
 				.accept(MediaType.TEXT_PLAIN));
 		
-		MvcResult requestMvcResult = resultA
+		MvcResult requestMvcResult = resultAction.andReturn();
+		String result = requestMvcResult.getResponse().getContentAsString();
+		assertEquals("success", result);
 	}
 	
 }
