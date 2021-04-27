@@ -72,5 +72,21 @@ public class BoardControllerUnitTest {
 				.andDo(MockMvcResultHandlers.print());
 	}
 	
+	@Test
+    public void modify_test() throws Exception {
+
+		BoardUpdateRequestDto boardUpdateRequestDto = new BoardUpdateRequestDto();
+		boardUpdateRequestDto.setTitle("수정된 제목");
+		boardUpdateRequestDto.setContent("수정된 내용");
+		boardUpdateRequestDto.setThumbnail("수정된 썸네일");
+		
+		boardService.modify(2L, boardUpdateRequestDto);
+		
+		this.mockMvc.perform(put("api"))
+		
+		
+
+       }
+	
 	
 }

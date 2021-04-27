@@ -29,6 +29,12 @@ public class BoardService {
 		Board board = boardRepository.findById(bno).orElseThrow(() -> new IllegalAccessError("해당글 없음" + bno));
 		return board;
 	}
+	
+	@Transactional
+	public Board findAll(Long bno) {
+		Board board = boardRepository.findById(bno).orElseThrow(() -> new IllegalAccessError("해당글 없음" + bno));
+		return board;
+	}
 
 	// delete
 	@Transactional
