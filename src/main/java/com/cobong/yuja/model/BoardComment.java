@@ -2,6 +2,7 @@ package com.cobong.yuja.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,15 +26,19 @@ import lombok.NoArgsConstructor;
 public class BoardComment extends DateAudit{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //increment
-	private Long boardCommentId;
+	private Long commentId;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "boardId")	
 	private Board board;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "userId")	
 	private User user;
+	
+	@ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parentId")
+    private BoardComment parent;
 	
 	//댓글 길이는 설정을 해야함. 
 	@Column(nullable = false, length = 2000)
@@ -41,4 +46,15 @@ public class BoardComment extends DateAudit{
 	
 	@Column(nullable = false)
 	private boolean deleted;
+	
+	public BoardComment createComment(String content, Board board, User user, BoardComment parent) {
+		BoardComment comment = new BoardComment();
+    	comment.content = content;
+    	comment.board = board;
+    	comment.user = user;
+    	comment.parent = parent;
+    	comment.deleted = false;
+    	return comment;
+    }
+	
 }
