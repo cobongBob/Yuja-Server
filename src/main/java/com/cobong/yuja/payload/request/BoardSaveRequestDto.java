@@ -1,15 +1,10 @@
 package com.cobong.yuja.payload.request;
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.cobong.yuja.model.Board;
-import com.cobong.yuja.model.BoardAttach;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

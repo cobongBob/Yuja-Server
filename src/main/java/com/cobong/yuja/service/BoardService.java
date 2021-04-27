@@ -26,7 +26,7 @@ public class BoardService {
 	}
 
 	@Transactional
-	public Board get(Long bno) {
+	public Board findById(Long bno) {
 		Board board = boardRepository.findById(bno).orElseThrow(() -> new IllegalAccessError("해당글 없음" + bno));
 		return board;
 	}

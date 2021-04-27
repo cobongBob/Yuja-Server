@@ -33,7 +33,7 @@ public class BoardApiController {
 	}
 	
 //	@PostMapping("/api/{boardCode}/board/{bno}")
-	@PostMapping(path = "/api/board", consumes = "application/json")
+	@PostMapping(path = "/api/board")
 	public ResponseEntity<?> insertBoard(@RequestBody BoardSaveRequestDto dto) {
 		System.out.println("==========>"+dto);
 		return new ResponseEntity<Board>(boardService.save(dto),HttpStatus.CREATED);
@@ -42,7 +42,7 @@ public class BoardApiController {
 //	@GetMapping("/api/{boardCode}/board/{bno}")
 	@GetMapping("/{bno}")
 	public ResponseEntity<?> getOneBoard(@PathVariable Long bno) {
-		return new ResponseEntity<Board>(boardService.get(bno),HttpStatus.OK);
+		return new ResponseEntity<Board>(boardService.findById(bno),HttpStatus.OK);
 	}
 	
 //	@GetMapping("/api/{boardCode}/board")
@@ -51,15 +51,15 @@ public class BoardApiController {
 		return new ResponseEntity<List<BoardResponseDto>>(boardService.findAll(),HttpStatus.OK);
 	}
 	
-//  @DeleteMapping("/api/{boardCode}/board/{bno}")
-	@DeleteMapping("/{bno}")
-	public ResponseEntity<?> deleteBoard(@PathVariable Long bno){
-		return new ResponseEntity<String>(boardService.delete(bno),HttpStatus.OK);
-	}
-
 //	@PutMapping("/api/{boardCode}/board/{bno}")
 	@PutMapping("/{bno}")
 	public ResponseEntity<?> modifyBoard(@PathVariable Long bno, @RequestBody BoardUpdateRequestDto boardUpdateRequestDto){
 		return new ResponseEntity<Board>(boardService.modify(bno,boardUpdateRequestDto),HttpStatus.OK);
+	}
+	
+//  @DeleteMapping("/api/{boardCode}/board/{bno}")
+	@DeleteMapping("/{bno}")
+	public ResponseEntity<?> deleteBoard(@PathVariable Long bno){
+		return new ResponseEntity<String>(boardService.delete(bno),HttpStatus.OK);
 	}
 }
