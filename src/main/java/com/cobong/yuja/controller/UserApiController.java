@@ -16,6 +16,7 @@ import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.BoardUpdateRequestDto;
 import com.cobong.yuja.payload.request.UserSaveRequestDto;
+import com.cobong.yuja.payload.request.UserUpdateRequestDto;
 import com.cobong.yuja.payload.response.UserResponseDto;
 import com.cobong.yuja.service.UserService;
 
@@ -44,18 +45,14 @@ public class UserApiController {
 		return new ResponseEntity<List<UserResponseDto>>(userService.findAll(),HttpStatus.OK);
 	}
 	
+	// update
+	@PutMapping("/api/user/modify/{bno}")
+	public ResponseEntity<?> modify(@PathVariable Long bno, @RequestBody UserUpdateRequestDto userUpdateRequestDto){
+		return new ResponseEntity<UserResponseDto>(userService.modify(bno,userUpdateRequestDto),HttpStatus.OK);
+	}
 	
-	/*
-	 * @DeleteMapping("/api/user/delete/{bno}")
+	@DeleteMapping("/api/user/delete/{bno}")
 	public ResponseEntity<?> delete(@PathVariable Long bno){
 		return new ResponseEntity<String>(userService.delete(bno),HttpStatus.OK);
 	}
-
-    // update
-	@PutMapping("/api/user/modify/{bno}")
-	public ResponseEntity<?> modify(@PathVariable Long bno, @RequestBody BoardUpdateRequestDto boardUpdateRequestDto){
-		return new ResponseEntity<Board>(userService.modify(bno,boardUpdateRequestDto),HttpStatus.OK);
-	}
-	 * */
-	
 }
