@@ -9,7 +9,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +28,9 @@ import com.cobong.yuja.controller.BoardApiController;
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.payload.request.BoardSaveRequestDto;
 import com.cobong.yuja.payload.request.BoardUpdateRequestDto;
+import com.cobong.yuja.payload.request.UserSaveRequestDto;
+import com.cobong.yuja.payload.response.BoardResponseDto;
+import com.cobong.yuja.payload.response.UserResponseDto;
 import com.cobong.yuja.service.BoardService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -70,8 +75,10 @@ public class BoardControllerUnitTest {
 				.andExpect(jsonPath("$.thumbnail").value("테스트 썸네용"))
 				.andDo(MockMvcResultHandlers.print());
 	}
+	
 	@Test
 	public void getOne_test() throws Exception {
+		
 		//given
 		BoardSaveRequestDto boardSaveRequestDto =new BoardSaveRequestDto();
 		boardSaveRequestDto.setTitle("테스트 제목1");
@@ -79,45 +86,41 @@ public class BoardControllerUnitTest {
 		boardSaveRequestDto.setThumbnail("테스트 썸네일");
 		boardSaveRequestDto.setExpiredDate(new Date());
 		
+		Board board = new Board();
 		boardService.save(boardSaveRequestDto);
+		when(boardService.get(1L)).thenReturn(board);
 		//when
 		Long id = 1L;
-		
 		this.mockMvc.perform(get("/{bno}", id)
-										.accept(MediaType.APPLICATION_JSON))
+						.accept(MediaType.APPLICATION_JSON))
+						.andExpect(status().isOk())
 						.andExpect(jsonPath("$.title").value("테스트 제목1"))
 						.andExpect(jsonPath("$.content").value("테스트 내용1"))
 						.andExpect(jsonPath("$.thumnail").value("테스트 썸네일"))
 						.andDo(MockMvcResultHandlers.print());
-		
-		
-		
-		//then
-		ResultActions resultAction = mockMvc.perform(get("/{bno}",id).accept(MediaType.APPLICATION_JSON_UTF8));
-		
-		//then
-		resultAction
-		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.title").value("테스트 제목1"))
-		.andDo(MockMvcResultHandlers.print());
 	}
 	
 	@Test
     public void modify_test() throws Exception {
 
+		Board board = new Board();
+		board.setTitle("수정된 제목");
+		board.setContent("수정된 내용");
+		board.setThumbnail("수정된 썸네일");
+		board.setExpiredDate(new Date());
+		
 		BoardUpdateRequestDto boardUpdateRequestDto = new BoardUpdateRequestDto();
-		boardUpdateRequestDto.setTitle("수정된 제목");
-		boardUpdateRequestDto.setContent("수정된 내용");
-		boardUpdateRequestDto.setThumbnail("수정된 썸네일");
+				
+		String boardList = new ObjectMapper().writeValueAsString(boardUpdateRequestDto);
 		
-		boardService.modify(1L, boardUpdateRequestDto);
-		
-		
-		
+		when(boardService.modify(1L, boardUpdateRequestDto)).thenReturn(board);
+
 		this.mockMvc.perform(put("/{bno}", 1L)
 				.contentType(MediaType.APPLICATION_JSON)
+				.content(boardList)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
+				.andExpect(jsonPath("$.title").value("수정된 제목"))
 				.andDo(MockMvcResultHandlers.print());
 }
 
@@ -133,6 +136,43 @@ public class BoardControllerUnitTest {
 		MvcResult requestMvcResult = resultAction.andReturn();
 		String result = requestMvcResult.getResponse().getContentAsString();
 		assertEquals("success", result);
+	}
+	
+	@Test
+	public void getAll_test() throws Exception {
+		//given
+		BoardSaveRequestDto boardSaveRequestDto = new BoardSaveRequestDto();
+		boardSaveRequestDto.setTitle("테스트 제목");
+		boardSaveRequestDto.setContent("테스트 내용");
+		boardSaveRequestDto.setThumbnail("테스트 썸네일");
+		boardSaveRequestDto.setExpiredDate(new Date());
+		
+		BoardSaveRequestDto boardSaveRequestDto2 = new BoardSaveRequestDto();
+		boardSaveRequestDto2.setTitle("테스트 제목2");
+		boardSaveRequestDto2.setContent("테스트 내용2");
+		boardSaveRequestDto2.setThumbnail("테스트 썸네일2");
+		boardSaveRequestDto2.setExpiredDate(new Date());
+
+		
+		BoardResponseDto dto = new BoardResponseDto().entityToDto(boardSaveRequestDto.dtoToEntity());
+		BoardResponseDto dto2 = new BoardResponseDto().entityToDto(boardSaveRequestDto2.dtoToEntity());
+		
+		List<BoardResponseDto> testList = new ArrayList<BoardResponseDto>();
+		
+		testList.add(dto);
+		testList.add(dto2);
+		
+		boardService.save(boardSaveRequestDto);
+		boardService.save(boardSaveRequestDto2);
+		
+		//when
+		when(boardService.findAll()).thenReturn(testList);
+
+		//then
+		this.mockMvc.perform(get("/api/board")
+				.accept(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk())
+				.andDo(MockMvcResultHandlers.print());
 	}
 	
 }
