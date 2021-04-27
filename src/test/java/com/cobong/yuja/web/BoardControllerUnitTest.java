@@ -1,12 +1,14 @@
 package com.cobong.yuja.web;
 
 import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +17,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
@@ -44,8 +47,6 @@ public class BoardControllerUnitTest {
 		dto.setTitle("테스트 제목1");
 		dto.setContent("테스트 내용1");
 		dto.setThumbnail("테스트 썸네일");
-		//dto.setAttache(new ArrayList<>());
-		
 		dto.setExpiredDate(new Date());
 		Board board = dto.dtoToEntity();
 		
@@ -55,8 +56,7 @@ public class BoardControllerUnitTest {
 		resultBoard.setContent("테스트 내용1");
 		resultBoard.setThumbnail("테스트 썸네용");
 		String content = new ObjectMapper().writeValueAsString(board);
-//		given(boardService.boardSave(dto)).willReturn(resultBoard);
-		//when
+
 		when(boardService.save(dto)).thenReturn(resultBoard);
 		
 		this.mockMvc.perform(post("/api/board")
@@ -72,36 +72,32 @@ public class BoardControllerUnitTest {
 	@Test
 	public void getOne_test() throws Exception {
 		//given
-		BoardSaveRequestDto dto =new BoardSaveRequestDto();
-		dto.setTitle("테스트 제목1");
-		dto.setContent("테스트 내용1");
-		dto.setThumbnail("테스트 썸네일");
-		dto.setExpiredDate(new Date());
+		BoardSaveRequestDto boardSaveRequestDto =new BoardSaveRequestDto();
+		boardSaveRequestDto.setTitle("테스트 제목1");
+		boardSaveRequestDto.setContent("테스트 내용1");
+		boardSaveRequestDto.setThumbnail("테스트 썸네일");
+		boardSaveRequestDto.setExpiredDate(new Date());
 		
-		Board board = dto.dtoToEntity();
-		
+		boardService.save(boardSaveRequestDto);
 		//when
 		Long id = 1L;
 		
-		this.mockMvc.perform(get("api/board/{bno}", id)
+		this.mockMvc.perform(get("/{bno}", id)
 										.accept(MediaType.APPLICATION_JSON))
-						.andExpect(jsonPath("$.username").value("테스트 제목1"))
-						.andExpect(jsonPath("$.password").value("테스트 내용1"))
-						.andExpect(jsonPath("$.nickname").value("테스트 썸네일"))
-						.andExpect(jsonPath("$.realName").value("Real Name Test"))
-						.andExpect(jsonPath("$.bday").value("1995-08-05"))
-						.andExpect(jsonPath("$.userIp").value("165,849,949,466"))
+						.andExpect(jsonPath("$.title").value("테스트 제목1"))
+						.andExpect(jsonPath("$.content").value("테스트 내용1"))
+						.andExpect(jsonPath("$.thumnail").value("테스트 썸네일"))
 						.andDo(MockMvcResultHandlers.print());
 		
 		
 		
 		//then
-		ResultActions resultAction = mockMvc.perform(get("/api/user/get/{userId}",id).accept(MediaType.APPLICATION_JSON_UTF8));
+		ResultActions resultAction = mockMvc.perform(get("/{bno}",id).accept(MediaType.APPLICATION_JSON_UTF8));
 		
 		//then
 		resultAction
 		.andExpect(status().isOk())
-		.andExpect(jsonPath("$.username").value("테스트 제목1"))
+		.andExpect(jsonPath("$.title").value("테스트 제목1"))
 		.andDo(MockMvcResultHandlers.print());
 	}
 	
@@ -116,6 +112,15 @@ public class BoardControllerUnitTest {
 		boardService.modify(2L, boardUpdateRequestDto);
 
        }
-	
+	@Test
+	public void delete_test() {
+		when(boardService.delete(1L)).thenReturn("success");
+		
+		Long id = 1L;
+		this.mockMvc.perform(delete("{bno}",id)
+				.accept(MediaType.TEXT_PLAIN));
+		
+		MvcResult requestMvcResult = resultA
+	}
 	
 }
