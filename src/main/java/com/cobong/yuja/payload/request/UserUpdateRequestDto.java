@@ -1,7 +1,5 @@
 package com.cobong.yuja.payload.request;
 
-import java.util.Date;
-
 import com.cobong.yuja.model.User;
 
 import lombok.AllArgsConstructor;
