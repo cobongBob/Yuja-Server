@@ -1,9 +1,13 @@
 package com.cobong.yuja.controller;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cobong.yuja.model.Board;
 import com.cobong.yuja.payload.request.BoardSaveRequestDto;
 import com.cobong.yuja.service.BoardService;
 
@@ -20,9 +24,9 @@ public class RestApiController {
 		return "<h1>home</h1>";
 	}
 	
-	@PostMapping("/api/board/")
-	public String insert(BoardSaveRequestDto dto) {
-		String result = boardService.boardSave(dto);
-		return result;
+	@PostMapping("/api/board")
+	public ResponseEntity<?> insert(BoardSaveRequestDto dto) {
+		System.out.println("==========>"+dto);
+		return new ResponseEntity<Board>(boardService.boardSave(dto),HttpStatus.CREATED);
 	}
 }
