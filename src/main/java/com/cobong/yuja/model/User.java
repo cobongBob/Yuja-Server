@@ -82,7 +82,7 @@ public class User extends DateAudit {
 	@Column(length = 1000, nullable = true)
 	private String youtubeImg;
 	
-	@Column(nullable = true)
+	@Column(nullable = false)
 	private String userIp;
 
 	public void addAuthorities(Authorities authority) {

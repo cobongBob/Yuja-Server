@@ -37,7 +37,7 @@ public class BoardServiceUnitTest {
 		//when
 		when(boardRepository.save(board)).thenReturn(board);
 		
-		Board result = boardService.boardSave(dto);
+		Board result = boardService.save(dto);
 		
 		//then
 		log.info(result);

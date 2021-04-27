@@ -20,6 +20,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
+import com.cobong.yuja.controller.BoardApiController;
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.payload.request.BoardSaveRequestDto;
 import com.cobong.yuja.service.BoardService;
@@ -28,7 +29,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.log4j.Log4j2;
 
 @Log4j2
-@WebMvcTest
+@WebMvcTest(BoardApiController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 public class BoardControllerUnitTest {
 	@Autowired
@@ -56,7 +57,7 @@ public class BoardControllerUnitTest {
 		String content = new ObjectMapper().writeValueAsString(board);
 //		given(boardService.boardSave(dto)).willReturn(resultBoard);
 		//when
-		when(boardService.boardSave(dto)).thenReturn(resultBoard);
+		when(boardService.save(dto)).thenReturn(resultBoard);
 		
 		this.mockMvc.perform(post("/api/board")
 										.contentType(MediaType.APPLICATION_JSON)

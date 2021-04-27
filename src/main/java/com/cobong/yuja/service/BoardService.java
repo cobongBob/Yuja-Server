@@ -4,7 +4,6 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.payload.request.BoardSaveRequestDto;
@@ -19,7 +18,7 @@ public class BoardService {
 	private final BoardRepository boardRepository;
 
 	@Transactional
-	public Board Save(BoardSaveRequestDto dto) {
+	public Board save(BoardSaveRequestDto dto) {
 		System.out.println("============> service : " + dto);
 		Board board = boardRepository.save(dto.dtoToEntity());
 		return board;

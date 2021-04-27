@@ -19,11 +19,12 @@ import com.cobong.yuja.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
 
+
 @RestController
 @RequiredArgsConstructor
-public class RestApiController {
-	
+public class BoardApiController {
 	private final BoardService boardService;
+	
 	
 	@GetMapping("/")
 	public String home() {
@@ -33,7 +34,7 @@ public class RestApiController {
 	@PostMapping(path = "/api/board", consumes = "application/json")
 	public ResponseEntity<?> insert(@RequestBody BoardSaveRequestDto dto) {
 		System.out.println("==========>"+dto);
-		return new ResponseEntity<Board>(boardService.Save(dto),HttpStatus.CREATED);
+		return new ResponseEntity<Board>(boardService.save(dto),HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/api/get/{bno}")
@@ -47,7 +48,6 @@ public class RestApiController {
 		System.out.println("==========>"+dto);
 		return new ResponseEntity<String>("Success",HttpStatus.CREATED);
 	}
-
 	// delete
 	@DeleteMapping("/api/delete/{bno}")
 	public ResponseEntity<?> delete(@PathVariable Long bno){
