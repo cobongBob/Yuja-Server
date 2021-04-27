@@ -71,7 +71,6 @@ querydsl {
 	querydslSourcesDir = querydslDir
 }
 
-
 //sourceSets {
 // main {
 // 	java {
@@ -79,7 +78,6 @@ querydsl {
 //		}
 //	}
 //}
-
 
 configurations {
 	querydsl.extendsFrom compileClasspath
