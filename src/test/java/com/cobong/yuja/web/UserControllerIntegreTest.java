@@ -3,7 +3,6 @@ package com.cobong.yuja.web;
 import javax.persistence.EntityManager;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cobong.yuja.repository.UserRepository;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
 /**
  * 통합 테스트 (모든 Bean들을 똑같이 IoC 올리고 테스트하는것)
@@ -23,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
  * @Transactional 은 각 각의 테스트함수가 종료 될때마다 트랜잭션을 rollback해주는 어노테이션
  */
 
-@Slf4j
+@Log4j2
 @Transactional
 @AutoConfigureMockMvc // 단위테스트용 @WebMvcTest 에는 포함되어있다.
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK) 
