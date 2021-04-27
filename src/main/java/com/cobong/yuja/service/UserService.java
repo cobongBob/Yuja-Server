@@ -2,16 +2,13 @@ package com.cobong.yuja.service;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.UserSaveRequestDto;
 import com.cobong.yuja.payload.request.UserUpdateRequestDto;
-import com.cobong.yuja.payload.response.UserListResponseDto;
 import com.cobong.yuja.payload.response.UserResponseDto;
 import com.cobong.yuja.repository.UserRepository;
 
