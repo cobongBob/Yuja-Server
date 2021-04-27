@@ -1,16 +1,13 @@
 package com.cobong.yuja.web;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import javax.persistence.EntityManager;
 
@@ -29,7 +26,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.payload.request.BoardSaveRequestDto;
-import com.cobong.yuja.payload.response.BoardResponseDto;
 import com.cobong.yuja.repository.BoardRepository;
 import com.cobong.yuja.service.BoardService;
 import com.fasterxml.jackson.databind.ObjectMapper;

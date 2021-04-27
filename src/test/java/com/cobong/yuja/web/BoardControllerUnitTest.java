@@ -28,9 +28,7 @@ import com.cobong.yuja.controller.BoardApiController;
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.payload.request.BoardSaveRequestDto;
 import com.cobong.yuja.payload.request.BoardUpdateRequestDto;
-import com.cobong.yuja.payload.request.UserSaveRequestDto;
 import com.cobong.yuja.payload.response.BoardResponseDto;
-import com.cobong.yuja.payload.response.UserResponseDto;
 import com.cobong.yuja.service.BoardService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -88,7 +86,7 @@ public class BoardControllerUnitTest {
 		
 		Board board = new Board();
 		boardService.save(boardSaveRequestDto);
-		when(boardService.get(1L)).thenReturn(board);
+		when(boardService.findById(1L)).thenReturn(board);
 		//when
 		Long id = 1L;
 		this.mockMvc.perform(get("/{bno}", id)
