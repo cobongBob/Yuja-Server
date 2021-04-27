@@ -1,13 +1,10 @@
 package com.cobong.yuja.web;
 
 import static org.mockito.Mockito.when;
-import static org.mockito.BDDMockito.given;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.Date;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +17,9 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import com.cobong.yuja.controller.UserApiController;
-import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.User;
-import com.cobong.yuja.payload.request.BoardSaveRequestDto;
 import com.cobong.yuja.payload.request.UserSaveRequestDto;
-import com.cobong.yuja.payload.response.UserResponseDto;
-import com.cobong.yuja.repository.UserRepository;
 import com.cobong.yuja.service.UserService;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.log4j.Log4j2;

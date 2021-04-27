@@ -12,9 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.User;
-import com.cobong.yuja.payload.request.BoardUpdateRequestDto;
 import com.cobong.yuja.payload.request.UserSaveRequestDto;
 import com.cobong.yuja.payload.request.UserUpdateRequestDto;
 import com.cobong.yuja.payload.response.UserResponseDto;
