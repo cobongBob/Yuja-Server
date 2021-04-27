@@ -94,4 +94,21 @@ public class User extends DateAudit {
 		board.setUser(this);
 		getBoards().add(board);
 	}
+
+	public void modify(String username2, String password2, String nickname2, String realName2, String bday2,
+			String profilePic2, String providedId2, String provider2, String address2, String phone2, String bsn2,
+			String youtubeImg2, String userIp2) {
+		this.username = username2;
+		this.password = password2;
+		this.nickname = nickname2;
+		this.bday = bday2;
+		this.profilePic = profilePic2;
+		this.providedId = providedId2;
+		this.provider = profilePic2;
+		this.address = address2;
+		this.phone = phone2;
+		this.bsn = bsn2;
+		this.youtubeImg = youtubeImg2;
+		this.userIp = userIp2;
+	}
 }
