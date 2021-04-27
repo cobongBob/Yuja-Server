@@ -1,6 +1,6 @@
 package com.cobong.yuja.controller;
 
-import java.util.Map;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.payload.request.BoardSaveRequestDto;
 import com.cobong.yuja.payload.request.BoardUpdateRequestDto;
+import com.cobong.yuja.payload.response.BoardResponseDto;
 import com.cobong.yuja.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
@@ -31,32 +32,34 @@ public class BoardApiController {
 		return "<h1>home</h1>";
 	}
 	
+//	@PostMapping("/api/{boardCode}/board/{bno}")
 	@PostMapping(path = "/api/board", consumes = "application/json")
-	public ResponseEntity<?> insert(@RequestBody BoardSaveRequestDto dto) {
+	public ResponseEntity<?> insertBoard(@RequestBody BoardSaveRequestDto dto) {
 		System.out.println("==========>"+dto);
 		return new ResponseEntity<Board>(boardService.save(dto),HttpStatus.CREATED);
 	}
 	
-	@GetMapping("/api/get/{bno}")
-	public ResponseEntity<?> getBoard(@PathVariable Long bno) {
-		System.out.println("==========>" + bno);
+//	@GetMapping("/api/{boardCode}/board/{bno}")
+	@GetMapping("/{bno}")
+	public ResponseEntity<?> getOneBoard(@PathVariable Long bno) {
 		return new ResponseEntity<Board>(boardService.get(bno),HttpStatus.OK);
 	}
 	
-	@PostMapping("/api/test")
-	public ResponseEntity<?> testOnly(@RequestBody Map<String, String> dto) {
-		System.out.println("==========>"+dto);
-		return new ResponseEntity<String>("Success",HttpStatus.CREATED);
+//	@GetMapping("/api/{boardCode}/board")
+	@GetMapping("/api/board")
+	public ResponseEntity<?> getAllBoard(){
+		return new ResponseEntity<List<BoardResponseDto>>(boardService.findAll(),HttpStatus.OK);
 	}
-	// delete
-	@DeleteMapping("/api/delete/{bno}")
-	public ResponseEntity<?> delete(@PathVariable Long bno){
+	
+//  @DeleteMapping("/api/{boardCode}/board/{bno}")
+	@DeleteMapping("/{bno}")
+	public ResponseEntity<?> deleteBoard(@PathVariable Long bno){
 		return new ResponseEntity<String>(boardService.delete(bno),HttpStatus.OK);
 	}
 
-    // update
-	@PutMapping("/api/modify/{bno}")
-	public ResponseEntity<?> modify(@PathVariable Long bno, @RequestBody BoardUpdateRequestDto boardUpdateRequestDto){
+//	@PutMapping("/api/{boardCode}/board/{bno}")
+	@PutMapping("/{bno}")
+	public ResponseEntity<?> modifyBoard(@PathVariable Long bno, @RequestBody BoardUpdateRequestDto boardUpdateRequestDto){
 		return new ResponseEntity<Board>(boardService.modify(bno,boardUpdateRequestDto),HttpStatus.OK);
 	}
 }

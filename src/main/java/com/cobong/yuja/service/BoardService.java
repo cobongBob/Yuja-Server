@@ -1,11 +1,15 @@
 package com.cobong.yuja.service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.payload.request.BoardSaveRequestDto;
 import com.cobong.yuja.payload.request.BoardUpdateRequestDto;
+import com.cobong.yuja.payload.response.BoardResponseDto;
 import com.cobong.yuja.repository.BoardRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -17,7 +21,6 @@ public class BoardService {
 
 	@Transactional
 	public Board save(BoardSaveRequestDto dto) {
-		System.out.println("============> service : " + dto);
 		Board board = boardRepository.save(dto.dtoToEntity());
 		return board;
 	}
@@ -26,6 +29,13 @@ public class BoardService {
 	public Board get(Long bno) {
 		Board board = boardRepository.findById(bno).orElseThrow(() -> new IllegalAccessError("해당글 없음" + bno));
 		return board;
+	}
+	
+	@Transactional(readOnly = true)
+	public List<BoardResponseDto> findAll() {
+		List<BoardResponseDto> boards = new ArrayList<BoardResponseDto>();
+		boardRepository.findAll().forEach(e -> boards.add(new BoardResponseDto().entityToDto(e)));
+		return boards;
 	}
 
 	// delete
