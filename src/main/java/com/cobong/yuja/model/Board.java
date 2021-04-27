@@ -14,8 +14,6 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
 import com.cobong.yuja.model.audit.DateAudit;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
