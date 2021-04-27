@@ -1,12 +1,10 @@
 package com.cobong.yuja.payload.request;
 
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.cobong.yuja.model.Board;
-import com.cobong.yuja.model.BoardAttach;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
