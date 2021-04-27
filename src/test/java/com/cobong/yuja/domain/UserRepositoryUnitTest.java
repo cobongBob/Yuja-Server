@@ -8,9 +8,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cobong.yuja.repository.UserRepository;
 
+import lombok.extern.log4j.Log4j2;
+
 //단위 테스트( DB 관련된 Bean이 Ioc에 등록되면 됨)
-@Transactional
-@AutoConfigureTestDatabase(replace = Replace.ANY) //가짜 db로 테스트, replace.none은 실제 db로 테스트
+@Log4j2
+@AutoConfigureTestDatabase(replace = Replace.NONE) //가짜 db로 테스트, replace.none은 실제 db로 테스트
 @DataJpaTest //jpa관련 애들만 뜬다. repository들을 다 ioc에 등록해줌.
 public class UserRepositoryUnitTest {
 	@Autowired
