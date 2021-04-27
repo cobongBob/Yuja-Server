@@ -20,8 +20,9 @@ public class RestApiController {
 		return "<h1>home</h1>";
 	}
 	
-	@PostMapping("/api/board/")
+	@PostMapping("/api/board")
 	public String insert(BoardSaveRequestDto dto) {
+		System.out.println(dto);
 		String result = boardService.boardSave(dto);
 		return result;
 	}

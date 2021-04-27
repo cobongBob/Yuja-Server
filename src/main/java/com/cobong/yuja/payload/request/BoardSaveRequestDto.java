@@ -18,17 +18,18 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Builder
 public class BoardSaveRequestDto {
-	String title;
-	String content;
-	List<BoardAttach> attache;
-	String thumbnail;
-	String payType = "";
-	String payAmount = "";
-	String career = "";
-	String tools = "";
-	int hit = 0;
+	private String title;
+	private String content;
+	private List<BoardAttach> attache;
+	private String thumbnail;
+	private String payType = "";
+	private String payAmount = "";
+	private String career = "";
+	private String tools = "";
+	private int hit = 0;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	Date expiredDate;
+	private Date expiredDate;
+	
 	public Board dtoToEntity() {
 		return Board.builder()
 				.title(this.title)
