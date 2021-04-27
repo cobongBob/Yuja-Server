@@ -2,7 +2,6 @@ package com.cobong.yuja.service;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.payload.request.BoardSaveRequestDto;

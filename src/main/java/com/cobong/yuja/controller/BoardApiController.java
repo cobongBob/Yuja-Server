@@ -16,11 +16,12 @@ import com.cobong.yuja.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
 
+
 @RestController
 @RequiredArgsConstructor
-public class RestApiController {
-	
+public class BoardApiController {
 	private final BoardService boardService;
+	
 	
 	@GetMapping("/")
 	public String home() {
