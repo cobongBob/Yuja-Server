@@ -87,4 +87,19 @@ public class Board extends DateAudit{
 		comment.setBoard(this);
 		getComments().add(comment);
 	}
+
+	public Board modify(String title, String content, String thumbnail, String payType, String payAmount,
+			String career, String tools, Date expiredDate) {
+		
+		this.title=title;
+		this.content=content;
+		this.thumbnail=thumbnail;
+		this.payType=payType;
+		this.payAmount=payAmount;
+		this.career=career;
+		this.tools=tools;
+		this.expiredDate=expiredDate;
+		
+		return this;
+	}
 }
