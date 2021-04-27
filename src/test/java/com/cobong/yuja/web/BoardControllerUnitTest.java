@@ -2,7 +2,7 @@ package com.cobong.yuja.web;
 
 import static org.mockito.Mockito.when;
 import static org.mockito.BDDMockito.given;
-
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -23,6 +23,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import com.cobong.yuja.controller.BoardApiController;
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.payload.request.BoardSaveRequestDto;
+import com.cobong.yuja.payload.request.BoardUpdateRequestDto;
+import com.cobong.yuja.repository.BoardRepository;
 import com.cobong.yuja.service.BoardService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -69,4 +71,6 @@ public class BoardControllerUnitTest {
 				.andExpect(jsonPath("$.thumbnail").value("테스트 썸네용"))
 				.andDo(MockMvcResultHandlers.print());
 	}
+	
+	
 }
