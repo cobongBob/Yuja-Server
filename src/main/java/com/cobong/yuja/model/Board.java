@@ -68,7 +68,6 @@ public class Board extends DateAudit{
 	/*
 	 * 삭제 되는 시간을 일단위로 받음. 자동으로 새벽 3,4 시 쯤 확인하는 함수를 만들어 구현?
 	 * */
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date expiredDate;
 	
 	private String payType;
