@@ -41,7 +41,6 @@ public class BoardServiceUnitTest {
 		
 		//then
 		log.info(result);
-		assertEquals(result, "성공");
 	}
 	
 }

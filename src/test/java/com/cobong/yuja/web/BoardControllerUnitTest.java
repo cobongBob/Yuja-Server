@@ -42,6 +42,7 @@ public class BoardControllerUnitTest {
 		dto.setContent("테스트 내용1");
 		dto.setThumbnail("테스트 썸네일");
 		//dto.setAttache(new ArrayList<>());
+		
 		dto.setExpiredDate(new Date());
 		Board board = dto.dtoToEntity();
 		
@@ -65,4 +66,6 @@ public class BoardControllerUnitTest {
 				.andExpect(jsonPath("$.thumbnail").value("테스트 썸네용"))
 				.andDo(MockMvcResultHandlers.print());
 	}
+	
+	
 }

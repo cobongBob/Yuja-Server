@@ -20,7 +20,7 @@ public class UserService {
 	private final UserRepository userRepository;
 	
 	@Transactional
-	public User userSave(UserSaveRequestDto dto) {
+	public User save(UserSaveRequestDto dto) {
 		return userRepository.save(dto.dtoToEntity());
 	}
 	
@@ -53,6 +53,7 @@ public class UserService {
 		return dto;
 	}
 
+	@Transactional
 	public String delete(Long bno) {
 		userRepository.deleteById(bno);
 		return "success";

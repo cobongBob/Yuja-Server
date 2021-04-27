@@ -29,28 +29,29 @@ public class UserApiController {
 	@PostMapping(path = "/api/user")
 	public ResponseEntity<?> insertUser(@RequestBody UserSaveRequestDto dto) {
 		System.out.println("==========>"+dto);
-		return new ResponseEntity<User>(userService.userSave(dto),HttpStatus.CREATED);
+		return new ResponseEntity<User>(userService.save(dto),HttpStatus.CREATED);
 	}
 	
-	@GetMapping("/api/user/get/{userId}")
-	public ResponseEntity<?> getUser(@PathVariable Long userId) {
+	@GetMapping("/api/user/{userId}")
+	public ResponseEntity<?> getOneUser(@PathVariable Long userId) {
 		System.out.println("==========>" + userId);
 		return new ResponseEntity<UserResponseDto>(userService.findById(userId),HttpStatus.OK);
 	}
 	
-	@GetMapping("/api/user/getAll")
+	@GetMapping("/api/user")
 	public ResponseEntity<?> getAllUser(){
 		return new ResponseEntity<List<UserResponseDto>>(userService.findAll(),HttpStatus.OK);
 	}
 	
 	// update
-	@PutMapping("/api/user/modify/{bno}")
-	public ResponseEntity<?> modify(@PathVariable Long bno, @RequestBody UserUpdateRequestDto userUpdateRequestDto){
+	@PutMapping("/api/user/{bno}")
+	public ResponseEntity<?> modifyUser(@PathVariable Long bno, @RequestBody UserUpdateRequestDto userUpdateRequestDto){
+		System.out.println("=============>"+ bno+ "   "+userUpdateRequestDto);
 		return new ResponseEntity<UserResponseDto>(userService.modify(bno,userUpdateRequestDto),HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/api/user/delete/{bno}")
-	public ResponseEntity<?> delete(@PathVariable Long bno){
+	@DeleteMapping("/api/user/{bno}")
+	public ResponseEntity<?> deleteUser(@PathVariable Long bno){
 		return new ResponseEntity<String>(userService.delete(bno),HttpStatus.OK);
 	}
 }
