@@ -7,9 +7,9 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import com.cobong.yuja.service.UserService;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
-@Slf4j
+@Log4j2
 @WebMvcTest //controller관련된 빈만 뜬다.
 public class UserControllerUnitTest {
 	@Autowired

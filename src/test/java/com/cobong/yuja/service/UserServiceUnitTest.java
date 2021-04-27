@@ -6,16 +6,15 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.cobong.yuja.repository.UserRepository;
-import com.cobong.yuja.web.UserControllerUnitTest;
 
-import lombok.extern.slf4j.Slf4j;
+import lombok.extern.log4j.Log4j2;
 
 /**
 * 단위 테스트(service와 관련된 애들만 메모리에 띄움)
 * service와 관련된놈이 repository밖에 없다.
 *	UserRepository => 가짜 객체로만들수 있음
 */
-@Slf4j
+@Log4j2
 @ExtendWith(MockitoExtension.class)
 public class UserServiceUnitTest {
 	//UserService객체가 만들어질때 UserServiceUnitTest파일에 @Mock 으로 등록된 모든 애들을 주입받는다
