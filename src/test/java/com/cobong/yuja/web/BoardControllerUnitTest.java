@@ -44,7 +44,7 @@ public class BoardControllerUnitTest {
 		dto.setTitle("테스트 제목1");
 		dto.setContent("테스트 내용1");
 		dto.setThumbnail("테스트 썸네일");
-		dto.setAttache(new ArrayList<>());
+		//dto.setAttache(new ArrayList<>());
 		dto.setExpiredDate(new Date());
 		Board board = dto.dtoToEntity();
 		
@@ -65,7 +65,7 @@ public class BoardControllerUnitTest {
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.title").value("테스트 제목1"))
 				.andExpect(jsonPath("$.content").value("테스트 내용1"))
-				.andExpect(jsonPath("$.thumbnail").value("테스트 썸네일"))
+				.andExpect(jsonPath("$.thumbnail").value("테스트 썸네용"))
 				.andDo(MockMvcResultHandlers.print());
 	}
 }
