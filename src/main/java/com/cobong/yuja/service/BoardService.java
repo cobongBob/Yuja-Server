@@ -15,9 +15,9 @@ public class BoardService {
 	private final BoardRepository boardRepository;
 	
 	@Transactional
-	public String boardSave(BoardSaveRequestDto dto) {
+	public Board boardSave(BoardSaveRequestDto dto) {
+		System.out.println("============> service : "+ dto);
 		Board board = boardRepository.save(dto.dtoToEntity());
-		
-		return board != null?"성공":"실패";
+		return board;
 	}
 }
