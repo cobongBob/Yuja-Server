@@ -33,14 +33,14 @@ public class CustomBoardRepositoryImpl implements CustomBoardRepository{
 	@Override
 	public List<Board> boradsUserLiked(Long userId) {
 		return queryFactory.selectFrom(board)
-				.leftJoin(boardLiked).on(board.user.userId.eq(boardLiked.user.userId))
+				.leftJoin(boardLiked.board).on(board.user.userId.eq(boardLiked.user.userId)).fetchJoin()
 				.where(boardLiked.user.userId.eq(userId)).fetch();
 	}
 
 	@Override
 	public List<Board> boardsUserCommented(Long userId) {
 		return queryFactory.selectFrom(board)
-				.leftJoin(boardComment).on(board.user.userId.eq(boardComment.user.userId))
+				.leftJoin(boardComment.board).on(board.user.userId.eq(boardComment.user.userId)).fetchJoin()
 				.where(boardComment.user.userId.eq(userId)).fetch();
 	}
 
@@ -57,6 +57,7 @@ public class CustomBoardRepositoryImpl implements CustomBoardRepository{
 				.where(boardLiked.board.boardId.eq(boardId))
 				.fetchCount();
 	}
+	
 	@Override
 	public Long commentsReceived(Long boardId) {
 		return queryFactory.selectFrom(boardComment)
