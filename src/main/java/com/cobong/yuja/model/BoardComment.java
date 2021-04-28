@@ -59,4 +59,9 @@ public class BoardComment extends DateAudit{
     	return comment;
     }
 	
+	public BoardComment modifyComment(String content) {
+		this.content = content;
+		return this;
+	}
+	
 }

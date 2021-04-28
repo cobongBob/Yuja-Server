@@ -11,14 +11,17 @@ import static com.cobong.yuja.model.QBoardComment.*;
 
 @RequiredArgsConstructor
 public class CustomCommentRepositoryImpl implements CustomCommentRepository {
-//	private final JPAQueryFactory queryFactory;
+	private final JPAQueryFactory queryFactory;
 	
 
 	@Override
 	public List<BoardComment> findCommentByBoardId(Long boardId) {
-//		return queryFactory.selectFrom(boardComment)
-//				.where(boardComment.board.boardId.eq(boardId))
-//				.orderBy(boardComment.createdDate.asc()).fetch();
-		return null;
+		return queryFactory.selectFrom(boardComment)
+				.leftJoin(boardComment.parent)
+				.fetchJoin()
+				.where(boardComment.board.boardId.eq(boardId))
+				.orderBy(boardComment.parent.commentId.asc().nullsFirst()
+						,boardComment.createdDate.asc())
+				.fetch();
 	}
 }
