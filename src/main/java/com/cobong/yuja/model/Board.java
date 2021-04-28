@@ -67,14 +67,19 @@ public class Board extends DateAudit{
 	/*
 	 * 삭제 되는 시간을 일단위로 받음. 자동으로 새벽 3,4 시 쯤 확인하는 함수를 만들어 구현?
 	 * */
+	@Column(nullable = true)
 	private Date expiredDate;
 	
+	@Column(nullable = true)
 	private String payType;
 	
+	@Column(nullable = true)
 	private String payAmount;
 	
+	@Column(nullable = true)
 	private String career;
 	
+	@Column(nullable = true)
 	private String tools;
 
 	public Board modify(String title, String content, String thumbnail, String payType, String payAmount,

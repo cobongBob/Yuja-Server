@@ -13,13 +13,13 @@ import com.cobong.yuja.model.audit.DateAudit;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
+@EqualsAndHashCode(callSuper=false)
 @ToString(exclude = {"user","board","parent"})
 @NoArgsConstructor
 @AllArgsConstructor

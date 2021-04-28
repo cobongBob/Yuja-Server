@@ -40,13 +40,9 @@ public class BoardRepositoryUnitTest {
 	@Test
 	public void insertTest() {
 		//given
-		BoardType boardType = new BoardType();
-		boardType.setBoardName("일반게시판");
-		boardTypeRepository.save(boardType);
-		Board board = new Board();
-		board.setTitle("테스트 제목1");
-		board.setContent("테스트 내용1");
-		board.setThumbnail("썸네일 URL");
+
+		Board board = new Board(0L, null, null, "테스트 제목1", "테스트 내용1", null, null, 0, "테스트 썸네일", null, null, null, null, null);
+
 		//when
 		Board boardEntity = boardRepository.save(board);
 		

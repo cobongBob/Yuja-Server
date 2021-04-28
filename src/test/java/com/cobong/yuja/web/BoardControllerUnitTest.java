@@ -29,6 +29,7 @@ import com.cobong.yuja.model.Board;
 import com.cobong.yuja.payload.request.BoardSaveRequestDto;
 import com.cobong.yuja.payload.request.BoardUpdateRequestDto;
 import com.cobong.yuja.payload.response.BoardResponseDto;
+import com.cobong.yuja.payload.response.UserResponseDto;
 import com.cobong.yuja.service.BoardService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -54,11 +55,7 @@ public class BoardControllerUnitTest {
 		dto.setExpiredDate(new Date());
 		Board board = dto.dtoToEntity();
 		
-		Board resultBoard = new Board();
-		resultBoard.setBoardId(1L);
-		resultBoard.setTitle("테스트 제목1");
-		resultBoard.setContent("테스트 내용1");
-		resultBoard.setThumbnail("테스트 썸네용");
+		Board resultBoard = new Board(0L, null, null, "테스트 제목1", "테스트 내용1", null, null, 0, "테스트 썸네일", null, null, null, null, null);
 		String content = new ObjectMapper().writeValueAsString(board);
 
 		when(boardService.save(dto)).thenReturn(resultBoard);
@@ -83,13 +80,12 @@ public class BoardControllerUnitTest {
 		boardSaveRequestDto.setContent("테스트 내용1");
 		boardSaveRequestDto.setThumbnail("테스트 썸네일");
 		boardSaveRequestDto.setExpiredDate(new Date());
+		BoardResponseDto boardResponseDto = new BoardResponseDto().entityToDto(boardSaveRequestDto.dtoToEntity());
+
 		
-		Board board = new Board();
-		board.setTitle("테스트 제목1");
-		board.setContent("테스트 내용1");
-		board.setThumbnail("테스트 썸네일");
+		Board resultBoard = new Board(0L, null, null, "테스트 제목1", "테스트 내용1", null, null, 0, "테스트 썸네일", null, null, null, null, null);
 		boardService.save(boardSaveRequestDto);
-		when(boardService.findById(1L)).thenReturn(board);
+		when(boardService.findById(1L)).thenReturn(resultBoard);
 		//when
 		Long id = 1L;
 		this.mockMvc.perform(get("/{bno}", id)
@@ -104,11 +100,7 @@ public class BoardControllerUnitTest {
 	@Test
     public void modify_test() throws Exception {
 
-		Board board = new Board();
-		board.setTitle("수정된 제목");
-		board.setContent("수정된 내용");
-		board.setThumbnail("수정된 썸네일");
-		board.setExpiredDate(new Date());
+		Board board = new Board(0L, null, null, "테스트 제목1", "테스트 내용1", null, null, 0, "테스트 썸네일", null, null, null, null, null);
 		
 		BoardUpdateRequestDto boardUpdateRequestDto = new BoardUpdateRequestDto();
 				
