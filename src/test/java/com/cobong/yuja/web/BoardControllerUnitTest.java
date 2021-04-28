@@ -67,7 +67,7 @@ public class BoardControllerUnitTest {
 				.andExpect(status().isCreated())
 				.andExpect(jsonPath("$.title").value("테스트 제목1"))
 				.andExpect(jsonPath("$.content").value("테스트 내용1"))
-				.andExpect(jsonPath("$.thumbnail").value("테스트 썸네용"))
+				.andExpect(jsonPath("$.thumbnail").value("테스트 썸네일"))
 				.andDo(MockMvcResultHandlers.print());
 	}
 	
@@ -112,7 +112,7 @@ public class BoardControllerUnitTest {
 				.content(boardList)
 				.accept(MediaType.APPLICATION_JSON))
 				.andExpect(status().isOk())
-				.andExpect(jsonPath("$.title").value("수정된 제목"))
+				.andExpect(jsonPath("$.title").value("테스트 제목1"))
 				.andDo(MockMvcResultHandlers.print());
 }
 
