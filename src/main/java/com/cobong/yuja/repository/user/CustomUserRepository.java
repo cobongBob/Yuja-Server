@@ -2,8 +2,11 @@ package com.cobong.yuja.repository.user;
 
 import java.util.List;
 
-import com.cobong.yuja.model.Authorities;
+import com.cobong.yuja.model.User;
 
 public interface CustomUserRepository {
-	List<Authorities> authoritiesUser(Long userId);
+	
+	List<User> findByEmail(String username);
+	
+	List<User> userAuthorities(String authorityName);
 }
