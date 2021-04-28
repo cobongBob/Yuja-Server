@@ -17,7 +17,11 @@ public class CustomCommentRepositoryImpl implements CustomCommentRepository {
 	@Override
 	public List<BoardComment> findCommentByBoardId(Long boardId) {
 		return queryFactory.selectFrom(boardComment)
+				.leftJoin(boardComment.parent)
+				.fetchJoin()
 				.where(boardComment.board.boardId.eq(boardId))
-				.orderBy(boardComment.createdDate.asc()).fetch();
+				.orderBy(boardComment.parent.commentId.asc().nullsFirst()
+						,boardComment.createdDate.asc())
+				.fetch();
 	}
 }

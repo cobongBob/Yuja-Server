@@ -19,4 +19,11 @@ public interface BoardService {
 	
 	String delete(Long bno);
 	
+	List<BoardResponseDto> boardsInBoardType(Long boardCode);
+	
+	List<BoardResponseDto> boardsUserWrote(Long userId);
+	
+	List<BoardResponseDto> boardsUserLiked(Long userId);
+	
+	List<BoardResponseDto> boardsUserCommented(Long userId);
 }

@@ -6,14 +6,21 @@ import static com.cobong.yuja.model.QBoardComment.boardComment;
 
 import java.util.List;
 
+import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
+
 import com.cobong.yuja.model.Board;
+import com.cobong.yuja.model.QBoardComment;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 import lombok.RequiredArgsConstructor;
 
-@RequiredArgsConstructor
-public class CustomBoardRepositoryImpl implements CustomBoardRepository{
+public class CustomBoardRepositoryImpl extends QuerydslRepositorySupport implements CustomBoardRepository{
 	private final JPAQueryFactory queryFactory;
+	
+	public CustomBoardRepositoryImpl(JPAQueryFactory queryFactory) {
+		super(Board.class);
+		this.queryFactory = queryFactory;
+	}
 	
 	// BoardType.boardName? boardCode?
 	@Override
@@ -31,16 +38,16 @@ public class CustomBoardRepositoryImpl implements CustomBoardRepository{
 	}
 	
 	@Override
-	public List<Board> boradsUserLiked(Long userId) {
+	public List<Board> boardsUserLiked(Long userId) {
 		return queryFactory.selectFrom(board)
-				.leftJoin(boardLiked.board).on(board.user.userId.eq(boardLiked.user.userId)).fetchJoin()
+				.leftJoin(boardLiked.board, board).fetchJoin()
 				.where(boardLiked.user.userId.eq(userId)).fetch();
 	}
 
 	@Override
 	public List<Board> boardsUserCommented(Long userId) {
 		return queryFactory.selectFrom(board)
-				.leftJoin(boardComment.board).on(board.user.userId.eq(boardComment.user.userId)).fetchJoin()
+				.leftJoin(board.comments, boardComment).fetchJoin()
 				.where(boardComment.user.userId.eq(userId)).fetch();
 	}
 
