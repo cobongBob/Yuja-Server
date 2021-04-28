@@ -25,10 +25,11 @@ public class BoardService {
 		return board;
 	}
 
-	@Transactional
-	public Board findById(Long bno) {
+	@Transactional(readOnly = true)
+	public BoardResponseDto findById(Long bno) {
 		Board board = boardRepository.findById(bno).orElseThrow(() -> new IllegalAccessError("해당글 없음" + bno));
-		return board;
+		BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
+		return dto;
 	}
 	
 	@Transactional(readOnly = true)
@@ -47,7 +48,7 @@ public class BoardService {
 
 	// modify
 	@Transactional
-	public Board modify(Long bno, BoardUpdateRequestDto boardUpdateRequestDto) {
+	public BoardResponseDto modify(Long bno, BoardUpdateRequestDto boardUpdateRequestDto) {
 		Board board = boardRepository.findById(bno)
 				.orElseThrow(() -> new IllegalAccessError("해당글 없음" + bno));
 		
@@ -55,7 +56,8 @@ public class BoardService {
 				boardUpdateRequestDto.getThumbnail(),boardUpdateRequestDto.getPayType(),
 				boardUpdateRequestDto.getPayAmount(), boardUpdateRequestDto.getCareer(),
 				boardUpdateRequestDto.getTools(), boardUpdateRequestDto.getExpiredDate());
-		return board;
+		BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
+		return dto;
 	}
 
 }

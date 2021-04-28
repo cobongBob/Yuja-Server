@@ -42,7 +42,7 @@ public class BoardApiController {
 //	@GetMapping("/api/{boardCode}/board/{bno}")
 	@GetMapping("/{bno}")
 	public ResponseEntity<?> getOneBoard(@PathVariable Long bno) {
-		return new ResponseEntity<Board>(boardService.findById(bno),HttpStatus.OK);
+		return new ResponseEntity<BoardResponseDto>(boardService.findById(bno),HttpStatus.OK);
 	}
 	
 //	@GetMapping("/api/{boardCode}/board")
@@ -54,7 +54,7 @@ public class BoardApiController {
 //	@PutMapping("/api/{boardCode}/board/{bno}")
 	@PutMapping("/{bno}")
 	public ResponseEntity<?> modifyBoard(@PathVariable Long bno, @RequestBody BoardUpdateRequestDto boardUpdateRequestDto){
-		return new ResponseEntity<Board>(boardService.modify(bno,boardUpdateRequestDto),HttpStatus.OK);
+		return new ResponseEntity<BoardResponseDto>(boardService.modify(bno,boardUpdateRequestDto),HttpStatus.OK);
 	}
 	
 //  @DeleteMapping("/api/{boardCode}/board/{bno}")
