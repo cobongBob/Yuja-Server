@@ -24,12 +24,12 @@ public class CustomUserRepositoryImpl implements CustomUserRepository{
     }
 
 
-	@Override
-	public List<User> userAuthorities(String authorityName) {
-		return queryFactory
-				.selectFrom(user)
-				.join(authorities).on(authorities.user.userId.eq(user.userId)).fetchJoin()
-				.where(authorities.authority.eq(authorityName)).fet
-	}
+//	@Override
+//	public List<User> userAuthorities(String authorityName) {
+//		return queryFactory
+//				.selectFrom(user)
+//				.join(authorities).on(authorities.user.userId.eq(user.userId)).fetchJoin()
+//				.where(authorities.authority.eq(authorityName)).fet
+//	}
 
 }

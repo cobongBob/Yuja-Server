@@ -8,5 +8,5 @@ public interface CustomUserRepository {
 	
 	List<User> findByEmail(String username);
 	
-	List<User> userAuthorities(String authorityName);
+//	List<User> userAuthorities(String authorityName);
 }
