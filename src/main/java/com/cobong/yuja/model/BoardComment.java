@@ -19,7 +19,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
-@EqualsAndHashCode(callSuper=false)
 @Getter
 @ToString(exclude = {"user","board","parent"})
 @NoArgsConstructor

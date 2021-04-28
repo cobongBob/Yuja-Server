@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,12 +20,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-@Data
-@EqualsAndHashCode(callSuper=false)
+@Getter
+@ToString(exclude = {"attachments","comments","boardType","user"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -34,11 +35,11 @@ public class Board extends DateAudit{
 	@GeneratedValue(strategy = GenerationType.IDENTITY) //increment
 	private Long boardId;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "boardCode")	
 	private BoardType boardType;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "userId")
 	private User user;
 
@@ -75,16 +76,6 @@ public class Board extends DateAudit{
 	private String career;
 	
 	private String tools;
-	
-	public void addAttachments(BoardAttach attachment) {
-		attachment.setBoard(this);
-		getAttachments().add(attachment);
-	}
-	
-//	public void addComments(BoardComment comment) {
-//		comment.setBoard(this);
-//		getComments().add(comment);
-//	}
 
 	public Board modify(String title, String content, String thumbnail, String payType, String payAmount,
 			String career, String tools, Date expiredDate) {

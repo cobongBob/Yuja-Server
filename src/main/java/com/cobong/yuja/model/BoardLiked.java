@@ -1,6 +1,7 @@
 package com.cobong.yuja.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -12,12 +13,12 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-@Data
-@EqualsAndHashCode(callSuper=false)
+@Getter
+@ToString(exclude = {"user","board"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -27,12 +28,12 @@ public class BoardLiked extends DateAudit {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long likedId;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name ="userId")
 	@JsonManagedReference
 	private User user;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name ="boardId")
 	@JsonManagedReference
 	private Board board;

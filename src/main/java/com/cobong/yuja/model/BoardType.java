@@ -15,9 +15,12 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-@Data
+@Getter
+@ToString(exclude = {"boards"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -30,7 +33,7 @@ public class BoardType {
 	@Column(nullable = false)
 	private String boardName;
 	
-	@OneToMany(mappedBy = "boardType")	
+	@OneToMany(mappedBy = "boardType")
 	@JsonBackReference
 	private List<Board> boards = new ArrayList<Board>();
 }
