@@ -5,7 +5,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import com.cobong.yuja.repository.UserRepository;
+import com.cobong.yuja.repository.user.UserRepository;
 
 import lombok.extern.log4j.Log4j2;
 

@@ -31,7 +31,7 @@ import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.UserSaveRequestDto;
 import com.cobong.yuja.payload.request.UserUpdateRequestDto;
 import com.cobong.yuja.payload.response.UserResponseDto;
-import com.cobong.yuja.repository.UserRepository;
+import com.cobong.yuja.repository.user.UserRepository;
 import com.cobong.yuja.service.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
