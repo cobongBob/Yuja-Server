@@ -20,7 +20,6 @@ import com.cobong.yuja.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
 
-
 @RestController
 @RequiredArgsConstructor
 public class BoardApiController {
