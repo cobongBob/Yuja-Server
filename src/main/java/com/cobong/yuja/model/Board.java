@@ -81,10 +81,10 @@ public class Board extends DateAudit{
 		getAttachments().add(attachment);
 	}
 	
-	public void addComments(BoardComment comment) {
-		comment.setBoard(this);
-		getComments().add(comment);
-	}
+//	public void addComments(BoardComment comment) {
+//		comment.setBoard(this);
+//		getComments().add(comment);
+//	}
 
 	public Board modify(String title, String content, String thumbnail, String payType, String payAmount,
 			String career, String tools, Date expiredDate) {

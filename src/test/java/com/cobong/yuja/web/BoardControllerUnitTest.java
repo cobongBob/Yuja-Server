@@ -85,6 +85,9 @@ public class BoardControllerUnitTest {
 		boardSaveRequestDto.setExpiredDate(new Date());
 		
 		Board board = new Board();
+		board.setTitle("테스트 제목1");
+		board.setContent("테스트 내용1");
+		board.setThumbnail("테스트 썸네일");
 		boardService.save(boardSaveRequestDto);
 		when(boardService.findById(1L)).thenReturn(board);
 		//when
@@ -94,7 +97,7 @@ public class BoardControllerUnitTest {
 						.andExpect(status().isOk())
 						.andExpect(jsonPath("$.title").value("테스트 제목1"))
 						.andExpect(jsonPath("$.content").value("테스트 내용1"))
-						.andExpect(jsonPath("$.thumnail").value("테스트 썸네일"))
+						.andExpect(jsonPath("$.thumbnail").value("테스트 썸네일"))
 						.andDo(MockMvcResultHandlers.print());
 	}
 	
