@@ -5,7 +5,7 @@ import java.util.List;
 import com.cobong.yuja.model.Board;
 
 public interface CustomBoardRepository {
-	List<Board> boradsUserLiked(Long userId); // 좋아요 누른글 
+	List<Board> boardsUserLiked(Long userId); // 좋아요 누른글 
 	List<Board> boardsInBoardType(Long boardCode); // 특정 게시판의 board 목록 
 	List<Board> boardsUserWrote(Long userId); // 유저가 작성한 board 목록
 	List<Board> boardsUserCommented(Long userId); // 유저가 댓글단 board목록

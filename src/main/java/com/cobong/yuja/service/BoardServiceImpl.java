@@ -60,5 +60,47 @@ public class BoardServiceImpl implements BoardService {
 		BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
 		return dto;
 	}
-
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<BoardResponseDto> boardsInBoardType(Long boardCode){
+		List<Board> curBoard = boardRepository.boardsInBoardType(boardCode);
+		List<BoardResponseDto> curBoardResponseDto = new ArrayList<BoardResponseDto>();
+		for(Board board: curBoard) {
+			curBoardResponseDto.add(new BoardResponseDto().entityToDto(board));
+		}
+		return curBoardResponseDto;
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<BoardResponseDto> boardsUserWrote(Long userId) {
+		List<Board> curBoard = boardRepository.boardsUserWrote(userId);
+		List<BoardResponseDto> curBoardResponseDto = new ArrayList<BoardResponseDto>();
+		for(Board board: curBoard) {
+			curBoardResponseDto.add(new BoardResponseDto().entityToDto(board));
+		}
+		return curBoardResponseDto;
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public List<BoardResponseDto> boardsUserLiked(Long userId) {
+		List<Board> curBoard = boardRepository.boardsUserLiked(userId);
+		List<BoardResponseDto> curBoardResponseDto = new ArrayList<BoardResponseDto>();
+		for(Board board: curBoard) {
+			curBoardResponseDto.add(new BoardResponseDto().entityToDto(board));
+		}
+		return curBoardResponseDto;
+	}
+	
+	@Override
+	public List<BoardResponseDto> boardsUserCommented(Long userId) {
+		List<Board> curBoard = boardRepository.boardsUserCommented(userId);
+		List<BoardResponseDto> curBoardResponseDto = new ArrayList<BoardResponseDto>();
+		for(Board board: curBoard) {
+			curBoardResponseDto.add(new BoardResponseDto().entityToDto(board));
+		}
+		return curBoardResponseDto;
+	}
 }
