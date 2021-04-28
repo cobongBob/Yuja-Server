@@ -11,6 +11,7 @@ import com.cobong.yuja.payload.request.BoardSaveRequestDto;
 import com.cobong.yuja.payload.request.BoardUpdateRequestDto;
 import com.cobong.yuja.payload.response.BoardResponseDto;
 import com.cobong.yuja.repository.board.BoardRepository;
+import com.google.common.base.Optional;
 
 import lombok.RequiredArgsConstructor;
 
@@ -67,7 +68,11 @@ public class BoardServiceImpl implements BoardService {
 		List<Board> curBoard = boardRepository.boardsInBoardType(boardCode);
 		List<BoardResponseDto> curBoardResponseDto = new ArrayList<BoardResponseDto>();
 		for(Board board: curBoard) {
-			curBoardResponseDto.add(new BoardResponseDto().entityToDto(board));
+			int likes = Long.valueOf(boardRepository.likedReceived(board.getBoardId())).intValue();
+			int comments = Long.valueOf(boardRepository.commentsReceived(board.getBoardId())).intValue();
+			BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
+			dto.setLikesAndComments(likes, comments);
+			curBoardResponseDto.add(dto);
 		}
 		return curBoardResponseDto;
 	}
@@ -78,7 +83,11 @@ public class BoardServiceImpl implements BoardService {
 		List<Board> curBoard = boardRepository.boardsUserWrote(userId);
 		List<BoardResponseDto> curBoardResponseDto = new ArrayList<BoardResponseDto>();
 		for(Board board: curBoard) {
-			curBoardResponseDto.add(new BoardResponseDto().entityToDto(board));
+			int likes = Long.valueOf(boardRepository.likedReceived(board.getBoardId())).intValue();
+			int comments = Long.valueOf(boardRepository.commentsReceived(board.getBoardId())).intValue();
+			BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
+			dto.setLikesAndComments(likes, comments);
+			curBoardResponseDto.add(dto);
 		}
 		return curBoardResponseDto;
 	}
@@ -89,17 +98,26 @@ public class BoardServiceImpl implements BoardService {
 		List<Board> curBoard = boardRepository.boardsUserLiked(userId);
 		List<BoardResponseDto> curBoardResponseDto = new ArrayList<BoardResponseDto>();
 		for(Board board: curBoard) {
-			curBoardResponseDto.add(new BoardResponseDto().entityToDto(board));
+			int likes = Long.valueOf(boardRepository.likedReceived(board.getBoardId())).intValue();
+			int comments = Long.valueOf(boardRepository.commentsReceived(board.getBoardId())).intValue();
+			BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
+			dto.setLikesAndComments(likes, comments);
+			curBoardResponseDto.add(dto);
 		}
 		return curBoardResponseDto;
 	}
 	
 	@Override
+	@Transactional(readOnly = true)
 	public List<BoardResponseDto> boardsUserCommented(Long userId) {
 		List<Board> curBoard = boardRepository.boardsUserCommented(userId);
 		List<BoardResponseDto> curBoardResponseDto = new ArrayList<BoardResponseDto>();
 		for(Board board: curBoard) {
-			curBoardResponseDto.add(new BoardResponseDto().entityToDto(board));
+			int likes = Long.valueOf(boardRepository.likedReceived(board.getBoardId())).intValue();
+			int comments = Long.valueOf(boardRepository.commentsReceived(board.getBoardId())).intValue();
+			BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
+			dto.setLikesAndComments(likes, comments);
+			curBoardResponseDto.add(dto);
 		}
 		return curBoardResponseDto;
 	}
