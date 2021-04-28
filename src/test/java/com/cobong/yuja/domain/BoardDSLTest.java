@@ -21,7 +21,7 @@ public class BoardDSLTest {
 	
 	@Test
 	public void dslTest1() {
-		List<Board> res = boardRepository.boardsInBoardType(1L);
+		List<Board> res = boardRepository.boardsUserCommented(1L);
 		
 		for(Board board: res) {
 			log.info(board);
