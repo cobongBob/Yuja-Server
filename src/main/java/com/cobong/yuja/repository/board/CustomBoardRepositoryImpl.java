@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import com.cobong.yuja.model.Board;
+import com.cobong.yuja.model.BoardComment;
 import com.cobong.yuja.model.QBoardComment;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
@@ -39,8 +40,13 @@ public class CustomBoardRepositoryImpl extends QuerydslRepositorySupport impleme
 	
 	@Override
 	public List<Board> boardsUserLiked(Long userId) {
+		/***
+		 * Board와 BoardLiked는 연관관계를 가지고 있지 않기에 QueryDsl 자체적인 leftjoin 만으로는 안되는듯 하다. 
+		 * 그렇기에 사용한 방법이 연관관계를 가지지 않을 경우에 사용하는 방법이라고 찾은 현재의 방법.
+		 * https://jojoldu.tistory.com/396
+		 */
 		return queryFactory.selectFrom(board)
-				.leftJoin(boardLiked.board, board).fetchJoin()
+				.join(boardLiked).on(boardLiked.board.boardId.eq(board.boardId)).fetchJoin()
 				.where(boardLiked.user.userId.eq(userId)).fetch();
 	}
 
@@ -67,8 +73,8 @@ public class CustomBoardRepositoryImpl extends QuerydslRepositorySupport impleme
 	
 	@Override
 	public Long commentsReceived(Long boardId) {
-		return queryFactory.selectFrom(boardComment)
+		return (long) queryFactory.selectFrom(boardComment)
 				.where(boardComment.board.boardId.eq(boardId))
-				.fetchCount();
+				.fetch().size();
 	}
 }
