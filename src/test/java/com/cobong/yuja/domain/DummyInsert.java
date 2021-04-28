@@ -10,8 +10,8 @@ import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardComment;
 import com.cobong.yuja.model.BoardType;
 import com.cobong.yuja.model.User;
-import com.cobong.yuja.repository.BoardRepository;
 import com.cobong.yuja.repository.UserRepository;
+import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.comment.CommentRepository;
 
 @SpringBootTest

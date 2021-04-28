@@ -10,7 +10,7 @@ import com.cobong.yuja.model.Board;
 import com.cobong.yuja.payload.request.BoardSaveRequestDto;
 import com.cobong.yuja.payload.request.BoardUpdateRequestDto;
 import com.cobong.yuja.payload.response.BoardResponseDto;
-import com.cobong.yuja.repository.BoardRepository;
+import com.cobong.yuja.repository.board.BoardRepository;
 
 import lombok.RequiredArgsConstructor;
 

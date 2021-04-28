@@ -13,8 +13,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardType;
-import com.cobong.yuja.repository.BoardRepository;
 import com.cobong.yuja.repository.BoardTypeRepository;
+import com.cobong.yuja.repository.board.BoardRepository;
 
 import lombok.extern.log4j.Log4j2;
 

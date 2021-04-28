@@ -10,7 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.payload.request.BoardSaveRequestDto;
-import com.cobong.yuja.repository.BoardRepository;
+import com.cobong.yuja.repository.board.BoardRepository;
 
 import lombok.extern.log4j.Log4j2;
 

@@ -26,7 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.payload.request.BoardSaveRequestDto;
-import com.cobong.yuja.repository.BoardRepository;
+import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.service.BoardService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
