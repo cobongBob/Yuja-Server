@@ -11,9 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cobong.yuja.model.BoardComment;
 import com.cobong.yuja.payload.request.CommentRequestDto;
 import com.cobong.yuja.payload.response.CommentResponseDto;
-import com.cobong.yuja.repository.UserRepository;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.comment.CommentRepository;
+import com.cobong.yuja.repository.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 

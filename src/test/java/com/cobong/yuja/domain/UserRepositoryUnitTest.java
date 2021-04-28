@@ -6,7 +6,7 @@ import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabas
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cobong.yuja.repository.UserRepository;
+import com.cobong.yuja.repository.user.UserRepository;
 
 import lombok.extern.log4j.Log4j2;
 

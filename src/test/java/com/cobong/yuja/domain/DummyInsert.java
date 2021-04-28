@@ -10,9 +10,9 @@ import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardComment;
 import com.cobong.yuja.model.BoardType;
 import com.cobong.yuja.model.User;
-import com.cobong.yuja.repository.UserRepository;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.comment.CommentRepository;
+import com.cobong.yuja.repository.user.UserRepository;
 
 @SpringBootTest
 public class DummyInsert {
@@ -74,16 +74,4 @@ public class DummyInsert {
 			commentRepository.save(boardComment);
 		});
 	}
-// in progress..
-//	@Test
-//	public void insertAuthorities() {
-//		IntStream.rangeClosed(1, 100).forEach(i -> {
-//			Authorities authorities = Authorities.builder()
-//					.authorityId(i)
-//					.authority(null)
-//					.user(i)
-//					.build();
-//		});
-//	}
-	
 }
