@@ -14,7 +14,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardComment;
 import com.cobong.yuja.model.BoardType;
-import com.cobong.yuja.repository.CommentRepository;
+import com.cobong.yuja.repository.comment.CommentRepository;
 
 import lombok.extern.log4j.Log4j2;
 
