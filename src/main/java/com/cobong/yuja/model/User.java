@@ -1,6 +1,5 @@
 package com.cobong.yuja.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -15,12 +14,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
-@Data
-@EqualsAndHashCode(callSuper = false)
+@Getter
+@ToString(exclude = {"authorities","boards"})
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -39,7 +38,16 @@ public class User extends DateAudit {
 	 * */
 	@OneToMany(mappedBy = "user")
 	@JsonIgnoreProperties({"user"})
-	private List<Authorities> authorities = new ArrayList<Authorities>();
+	private List<Authorities> authorities;
+	
+	/* 현제 다대일 양방향으로 구현되어 있음. 양방향으로 할지, 단방향으로 할지 정하고 확인 후 커밋!!! 
+	 * 일반적으로는 접근의 용이함, 편리성 때문에 양방향을 선호하는 듯
+	 * 다만 양방향의 경우 발생하는 순환 참조를 해결해야 한다 ==> 
+	 * */
+	@OneToMany(mappedBy = "user")
+	@JsonIgnoreProperties({"user"})
+	private List<Board> boards;
+	
 	
 	@Column(nullable = false)
 	private String password;
@@ -52,14 +60,6 @@ public class User extends DateAudit {
 	
 	@Column(nullable = false)
 	private String bday;
-	
-	/* 현제 다대일 양방향으로 구현되어 있음. 양방향으로 할지, 단방향으로 할지 정하고 확인 후 커밋!!! 
-	 * 일반적으로는 접근의 용이함, 편리성 때문에 양방향을 선호하는 듯
-	 * 다만 양방향의 경우 발생하는 순환 참조를 해결해야 한다 ==> 
-	 * */
-	@OneToMany(mappedBy = "user")
-	@JsonIgnoreProperties({"user"})
-	private List<Board> boards;
 	
 	@Column(nullable = false, length = 1000)
 	private String profilePic;
@@ -85,17 +85,6 @@ public class User extends DateAudit {
 	@Column(nullable = false)
 	private String userIp;
 
-	public void addAuthorities(Authorities authority) {
-		authority.setUser(this);
-		getAuthorities().add(authority);
-	}	
-	
-	public void addBoard(Board board) {
-		board.setUser(this);
-		getBoards().add(board);
-	}
-
-	
 	public void modify(String username2, String password2, String nickname2, String realName2, String bday2,
 			String profilePic2, String providedId2, String provider2, String address2, String phone2, String bsn2,
 			String youtubeImg2, String userIp2) {
