@@ -92,3 +92,6 @@ tasks.withType(JavaCompile) {
 	options.annotationProcessorGeneratedSourcesDirectory = file(querydslDir) 
 }
 
+test {
+exclude '**/*'
+}
