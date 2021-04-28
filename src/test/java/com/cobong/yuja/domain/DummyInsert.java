@@ -74,4 +74,16 @@ public class DummyInsert {
 			commentRepository.save(boardComment);
 		});
 	}
+// in progress..
+//	@Test
+//	public void insertAuthorities() {
+//		IntStream.rangeClosed(1, 100).forEach(i -> {
+//			Authorities authorities = Authorities.builder()
+//					.authorityId(i)
+//					.authority(null)
+//					.user(i)
+//					.build();
+//		});
+//	}
+	
 }
