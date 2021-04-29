@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.cobong.yuja.model.BoardComment;
 import com.cobong.yuja.model.BoardLiked;
-import com.cobong.yuja.payload.request.Board.BoardLikedRequestDto;
+import com.cobong.yuja.payload.request.board.BoardLikedRequestDto;
 import com.cobong.yuja.payload.response.comment.CommentResponseDto;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.boardLiked.BoardLikedRepository;

@@ -3,8 +3,8 @@ package com.cobong.yuja.service.board;
 import java.util.List;
 
 import com.cobong.yuja.model.Board;
-import com.cobong.yuja.payload.request.Board.BoardSaveRequestDto;
-import com.cobong.yuja.payload.request.Board.BoardUpdateRequestDto;
+import com.cobong.yuja.payload.request.board.BoardSaveRequestDto;
+import com.cobong.yuja.payload.request.board.BoardUpdateRequestDto;
 import com.cobong.yuja.payload.response.board.BoardResponseDto;
 
 public interface BoardService {

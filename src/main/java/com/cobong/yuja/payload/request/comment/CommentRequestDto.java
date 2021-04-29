@@ -1,15 +1,16 @@
-package com.cobong.yuja.payload.request.Board;
+package com.cobong.yuja.payload.request.comment;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-public class BoardLikedRequestDto {
+public class CommentRequestDto {
+	private String content;
 	private Long userId;
 	private Long boardId;
+	private Long parentId;
+	private boolean deleted;
 }

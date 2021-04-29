@@ -26,8 +26,8 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import com.cobong.yuja.controller.BoardApiController;
 import com.cobong.yuja.model.Board;
-import com.cobong.yuja.payload.request.Board.BoardSaveRequestDto;
-import com.cobong.yuja.payload.request.Board.BoardUpdateRequestDto;
+import com.cobong.yuja.payload.request.board.BoardSaveRequestDto;
+import com.cobong.yuja.payload.request.board.BoardUpdateRequestDto;
 import com.cobong.yuja.payload.response.board.BoardResponseDto;
 import com.cobong.yuja.payload.response.user.UserResponseDto;
 import com.cobong.yuja.service.board.BoardService;

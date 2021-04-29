@@ -25,7 +25,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cobong.yuja.model.Board;
-import com.cobong.yuja.payload.request.Board.BoardSaveRequestDto;
+import com.cobong.yuja.payload.request.board.BoardSaveRequestDto;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.service.board.BoardService;
 import com.fasterxml.jackson.databind.ObjectMapper;

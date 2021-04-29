@@ -94,4 +94,28 @@ public class Board extends DateAudit{
 		
 		return this;
 	}
+
+	public Board createBoard(BoardType boardType, User user, String title, String content,
+			String thumbnail, Date expiredDate,
+			String payType, String payAmount, String career, String tools) {
+		/***
+		 * BoarCode 넣어야함!
+		 */
+		Board board = new Board();
+		board.boardId = boardId;
+		board.boardType = boardType;
+		board.user = user;
+		board.title = title;
+		board.content = content;
+		board.thumbnail = thumbnail;
+		board.expiredDate = expiredDate;
+		board.payType = payType;
+		board.payAmount = payAmount;
+		board.career = career;
+		board.tools = tools;
+		
+		return board;
+	}
+	
+	
 }

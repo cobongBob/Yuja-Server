@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cobong.yuja.payload.request.Board.BoardLikedRequestDto;
+import com.cobong.yuja.payload.request.board.BoardLikedRequestDto;
 import com.cobong.yuja.service.board.BoardLikedService;
 
 import lombok.RequiredArgsConstructor;

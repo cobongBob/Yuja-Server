@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cobong.yuja.model.BoardComment;
-import com.cobong.yuja.payload.request.Comment.CommentRequestDto;
+import com.cobong.yuja.payload.request.comment.CommentRequestDto;
 import com.cobong.yuja.payload.response.comment.CommentResponseDto;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.comment.CommentRepository;

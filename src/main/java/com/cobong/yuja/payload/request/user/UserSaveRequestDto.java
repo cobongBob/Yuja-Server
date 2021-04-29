@@ -1,4 +1,4 @@
-package com.cobong.yuja.payload.request.User;
+package com.cobong.yuja.payload.request.user;
 
 import com.cobong.yuja.model.User;
 

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cobong.yuja.model.User;
-import com.cobong.yuja.payload.request.User.UserSaveRequestDto;
-import com.cobong.yuja.payload.request.User.UserUpdateRequestDto;
+import com.cobong.yuja.payload.request.user.UserSaveRequestDto;
+import com.cobong.yuja.payload.request.user.UserUpdateRequestDto;
 import com.cobong.yuja.payload.response.user.UserResponseDto;
 import com.cobong.yuja.repository.user.UserRepository;
 

@@ -9,7 +9,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.cobong.yuja.model.Board;
-import com.cobong.yuja.payload.request.Board.BoardSaveRequestDto;
+import com.cobong.yuja.payload.request.board.BoardSaveRequestDto;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.service.board.BoardService;
 

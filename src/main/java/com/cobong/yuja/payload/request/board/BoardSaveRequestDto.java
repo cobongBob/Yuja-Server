@@ -1,4 +1,4 @@
-package com.cobong.yuja.payload.request.Board;
+package com.cobong.yuja.payload.request.board;
 
 import java.util.Date;
 
@@ -15,16 +15,24 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class BoardUpdateRequestDto {
+public class BoardSaveRequestDto {
 	private String title;
 	private String content;
-//	private List<BoardAttach> attache;
+	
+	private Long boardCode;
+	private Long userId;
+	/*
+	 * @JsonFormat(shape=JsonFormat.Shape.OBJECT)
+	private List<BoardAttach> attache;
+	 * */
+	
 	private String thumbnail;
 	private String payType = "";
 	private String payAmount = "";
 	private String career = "";
 	private String tools = "";
 	private int hit = 0;
+	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date expiredDate;
 	

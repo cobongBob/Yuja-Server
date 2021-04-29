@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cobong.yuja.model.Board;
-import com.cobong.yuja.payload.request.Board.BoardSaveRequestDto;
-import com.cobong.yuja.payload.request.Board.BoardUpdateRequestDto;
+import com.cobong.yuja.payload.request.board.BoardSaveRequestDto;
+import com.cobong.yuja.payload.request.board.BoardUpdateRequestDto;
 import com.cobong.yuja.payload.response.board.BoardResponseDto;
 import com.cobong.yuja.service.board.BoardService;
 
