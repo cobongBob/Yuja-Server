@@ -3,10 +3,6 @@ package com.cobong.yuja.payload.response;
 import java.util.Date;
 
 import com.cobong.yuja.model.Board;
-import com.cobong.yuja.model.User;
-import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import lombok.Getter;
 
