@@ -8,30 +8,28 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.cobong.yuja.model.audit.DateAudit;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@Entity
 @Getter
-@ToString(exclude = {"user","board"})
+@ToString(exclude = {"user", "authorities"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Entity
-public class BoardLiked extends DateAudit {
+public class UserRole {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long likedId;
+	private Long userRoleId;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name ="userId")
 	private User user;
-	
+
 	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name ="boardId")
-	private Board board;
+	@JoinColumn(name ="authorityId")
+	private Authorities authorities;
 }

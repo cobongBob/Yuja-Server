@@ -6,12 +6,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.cobong.yuja.model.Authorities;
-import com.cobong.yuja.model.AuthorityNames;
 import com.cobong.yuja.model.User;
-import com.cobong.yuja.payload.response.UserFckingDto;
 import com.cobong.yuja.repository.user.UserRepository;
-import com.querydsl.core.Tuple;
 
 import lombok.extern.log4j.Log4j2;
 
@@ -34,16 +30,6 @@ public class UserDSLTest {
 //
 //		return userRepository.save(settingUser);
 //	}
-//	
-	@Test
-	public void save_test() {
-		
-		List<UserFckingDto> list = 
-				userRepository.userAuthorities(7L);
-		for(UserFckingDto user : list) {
-			log.info(user);
-		}
-	}
 	
 	@Test
 	public void save_test2() {

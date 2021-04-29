@@ -16,7 +16,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.cobong.yuja.model.audit.DateAudit;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -51,11 +50,9 @@ public class Board extends DateAudit{
 	private String content;
 	
 	@OneToMany(mappedBy = "board")
-	@JsonIgnoreProperties({"board"})
 	private List<BoardAttach> attachments = new ArrayList<BoardAttach>();
 	
 	@OneToMany(mappedBy = "board")
-	@JsonIgnoreProperties({"board"})
 	private List<BoardComment> comments = new ArrayList<BoardComment>();
 	
 	@Column(nullable = false)
