@@ -35,7 +35,7 @@ public class BoardLikedServiceImpl implements BoardLikedService{
 	@Override
 	@Transactional
 	public String disLiked(BoardLikedRequestDto dto) {
-		boardLikedRepository.deleteByUseridAndBoardid(dto.getUserId(), dto.getBoardId());
+		boardLikedRepository.deleteByUserIdAndBoardId(dto.getUserId(), dto.getBoardId());
 		return "Success!";
 	}
 
