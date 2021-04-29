@@ -46,8 +46,7 @@ public class CommentServiceImpl implements CommentService {
 	@Transactional
 	@Override
 	public CommentResponseDto save(CommentRequestDto dto) {
-		BoardComment comment = new BoardComment();
-		comment.createComment(dto.getContent(),
+		BoardComment comment = new BoardComment().createComment(dto.getContent(),
 				boardRepository.findById(dto.getBoardId()).orElseThrow(()->new IllegalArgumentException("존재하지않는 글")),
 				userRepository.findById(dto.getUserId()).orElseThrow(()->new IllegalArgumentException("존재하지않는 유저")),
 				dto.getParentId() != null? 
@@ -78,8 +77,11 @@ public class CommentServiceImpl implements CommentService {
 	@Transactional
 	@Override
 	public String deleteById(Long commentId) {
-		commentRepository.deleteById(commentId);
-		return "Success";
+		BoardComment boardComment = commentRepository.findById(commentId).orElseThrow(()->new IllegalArgumentException("존재하지 않는 댓글"));
+		//select후 영속화
+		boardComment.deleteComment();
+		//안의 deleted가 true로 바뀐다.
+		return "deleted";
 	}
 	
 	/**
@@ -98,7 +100,7 @@ public class CommentServiceImpl implements CommentService {
 		comments.stream().forEach(comment -> {
 			CommentResponseDto dto = new CommentResponseDto();
 			dto = dto.entityToDto(comment);
-			map.put(dto.getCId(), dto);
+			map.put(dto.getCommentId(), dto);
 			if(comment.getParent() != null) {
 				map.get(comment.getParent().getCommentId()).getChildren().add(dto);
 			} else {
