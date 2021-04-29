@@ -40,7 +40,10 @@ public class BoardAttach {
 	 * @Enumerated(EnumType.STRING)
 	private FileUploadPaths uploadPath;
 	 * */
-	
+    @Column(nullable = false)
+    private String origFilename;
+    
 	@Column(nullable = false)
 	private String fileName;
+	
 }
