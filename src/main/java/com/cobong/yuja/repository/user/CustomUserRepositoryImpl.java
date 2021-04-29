@@ -36,8 +36,11 @@ public class CustomUserRepositoryImpl implements CustomUserRepository {
 	}
 
 	@Override
-	public List<Authorities> authoritiesUser(Long id) {
-		
-		return null;
+	public List<User> authoritiesUser(String auth) {
+		return queryFactory
+				.selectFrom(user)
+				.join(authorities).on(user.userId.eq(authorities.user.userId))
+				.fetchJoin()
+				.fetch();
 	}
 }
