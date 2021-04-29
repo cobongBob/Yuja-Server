@@ -12,4 +12,5 @@ public class CommentRequestDto {
 	private Long userId;
 	private Long boardId;
 	private Long parentId;
+	private boolean deleted;
 }

@@ -63,5 +63,9 @@ public class BoardComment extends DateAudit{
 		this.content = content;
 		return this;
 	}
+
+	public void deleteComment() {
+		this.deleted = true;
+	}
 	
 }
