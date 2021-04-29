@@ -11,5 +11,5 @@ public interface CustomUserRepository {
 	List<User> findByEmail(String username);
 	
 	List<UserFckingDto> userAuthorities(Long authorityId );
-	List<Authorities> authoritiesUser(Long id);
+	List<User> authoritiesUser(String auth);
 }
