@@ -7,11 +7,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cobong.yuja.model.Board;
+import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.BoardSaveRequestDto;
 import com.cobong.yuja.payload.request.BoardUpdateRequestDto;
 import com.cobong.yuja.payload.response.BoardResponseDto;
 import com.cobong.yuja.repository.board.BoardRepository;
-import com.google.common.base.Optional;
+import com.cobong.yuja.repository.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -19,12 +20,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
 	private final BoardRepository boardRepository;
+	private final UserRepository userRepository;
 	
 	@Override
 	@Transactional
 	public Board save(BoardSaveRequestDto dto) {
-		Board board = boardRepository.save(dto.dtoToEntity());
-		return board;
+		User user = userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("해당유저 없음 "+dto.getUserId()));
+		Board board = new Board().createBoard(null, user, dto.getTitle(), dto.getContent(), dto.getThumbnail(), dto.getExpiredDate(),
+				dto.getPayType(), dto.getPayAmount(), dto.getCareer(), dto.getTools());
+		
+		/***
+		 * BoarCode 넣어야함!
+		 */
+		Board board2 = boardRepository.save(board);
+		return board2;
 	}
 	@Override
 	@Transactional(readOnly = true)
@@ -71,7 +80,10 @@ public class BoardServiceImpl implements BoardService {
 			int likes = Long.valueOf(boardRepository.likedReceived(board.getBoardId())).intValue();
 			int comments = Long.valueOf(boardRepository.commentsReceived(board.getBoardId())).intValue();
 			BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
-			dto.setLikesAndComments(likes, comments);
+			//dto.setLikesAndComments(likes, comments);
+			/*
+			 * 유저 아이디 값을 받도록 바꾸어야 한다.
+			 * */
 			curBoardResponseDto.add(dto);
 		}
 		return curBoardResponseDto;
@@ -83,10 +95,11 @@ public class BoardServiceImpl implements BoardService {
 		List<Board> curBoard = boardRepository.boardsUserWrote(userId);
 		List<BoardResponseDto> curBoardResponseDto = new ArrayList<BoardResponseDto>();
 		for(Board board: curBoard) {
+			boolean likedOrNot = boardRepository.likedOrNot(board.getBoardId(), userId);
 			int likes = Long.valueOf(boardRepository.likedReceived(board.getBoardId())).intValue();
 			int comments = Long.valueOf(boardRepository.commentsReceived(board.getBoardId())).intValue();
 			BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
-			dto.setLikesAndComments(likes, comments);
+			dto.setLikesAndComments(likes, comments, likedOrNot);
 			curBoardResponseDto.add(dto);
 		}
 		return curBoardResponseDto;
@@ -98,10 +111,11 @@ public class BoardServiceImpl implements BoardService {
 		List<Board> curBoard = boardRepository.boardsUserLiked(userId);
 		List<BoardResponseDto> curBoardResponseDto = new ArrayList<BoardResponseDto>();
 		for(Board board: curBoard) {
+			boolean likedOrNot = boardRepository.likedOrNot(board.getBoardId(), userId);
 			int likes = Long.valueOf(boardRepository.likedReceived(board.getBoardId())).intValue();
 			int comments = Long.valueOf(boardRepository.commentsReceived(board.getBoardId())).intValue();
 			BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
-			dto.setLikesAndComments(likes, comments);
+			dto.setLikesAndComments(likes, comments, likedOrNot);
 			curBoardResponseDto.add(dto);
 		}
 		return curBoardResponseDto;
@@ -113,10 +127,11 @@ public class BoardServiceImpl implements BoardService {
 		List<Board> curBoard = boardRepository.boardsUserCommented(userId);
 		List<BoardResponseDto> curBoardResponseDto = new ArrayList<BoardResponseDto>();
 		for(Board board: curBoard) {
+			boolean likedOrNot = boardRepository.likedOrNot(board.getBoardId(), userId);
 			int likes = Long.valueOf(boardRepository.likedReceived(board.getBoardId())).intValue();
 			int comments = Long.valueOf(boardRepository.commentsReceived(board.getBoardId())).intValue();
 			BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
-			dto.setLikesAndComments(likes, comments);
+			dto.setLikesAndComments(likes, comments, likedOrNot);
 			curBoardResponseDto.add(dto);
 		}
 		return curBoardResponseDto;

@@ -19,6 +19,8 @@ public class BoardSaveRequestDto {
 	private String title;
 	private String content;
 	
+	private Long boardCode;
+	private Long userId;
 	/*
 	 * @JsonFormat(shape=JsonFormat.Shape.OBJECT)
 	private List<BoardAttach> attache;

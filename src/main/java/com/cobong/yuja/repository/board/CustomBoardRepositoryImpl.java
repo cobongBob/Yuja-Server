@@ -9,6 +9,7 @@ import java.util.List;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 
 import com.cobong.yuja.model.Board;
+import com.cobong.yuja.model.BoardLiked;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
 public class CustomBoardRepositoryImpl extends QuerydslRepositorySupport implements CustomBoardRepository {
@@ -69,5 +70,18 @@ public class CustomBoardRepositoryImpl extends QuerydslRepositorySupport impleme
 	public Long commentsReceived(Long boardId) {
 		return (long) queryFactory.selectFrom(boardComment).where(boardComment.board.boardId.eq(boardId)).fetch()
 				.size();
+	}
+	
+	@Override
+	public boolean likedOrNot(Long boardId, Long userId) {
+		List<BoardLiked> check = queryFactory.selectFrom(boardLiked)
+				.where(boardLiked.board.boardId.eq(boardId), boardLiked.user.userId.eq(userId))
+				.fetch();
+		
+		if(check.size() == 0) {
+			return false;
+		} else {
+			return true;
+		}
 	}
 }
