@@ -1,4 +1,4 @@
-package com.cobong.yuja.payload.request;
+package com.cobong.yuja.payload.request.User;
 
 import com.cobong.yuja.model.User;
 
@@ -11,19 +11,19 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class UserSaveRequestDto {
+public class UserUpdateRequestDto {
 	private String username;
 	private String password;
 	private String nickname;
 	private String realName;
 	private String bday;
-	private String profilePic = "";
-	private String providedId ="";
-	private String provider ="";
-	private String address ="";
-	private String phone ="";
-	private String bsn ="";
-	private String youtubeImg ="";
+	private String profilePic;
+	private String providedId;
+	private String provider;
+	private String address;
+	private String phone;
+	private String bsn;
+	private String youtubeImg;
 	private String userIp;
 	
 	public User dtoToEntity() {

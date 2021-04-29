@@ -25,10 +25,10 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 
 import com.cobong.yuja.controller.UserApiController;
 import com.cobong.yuja.model.User;
-import com.cobong.yuja.payload.request.UserSaveRequestDto;
-import com.cobong.yuja.payload.request.UserUpdateRequestDto;
-import com.cobong.yuja.payload.response.UserResponseDto;
-import com.cobong.yuja.service.UserService;
+import com.cobong.yuja.payload.request.User.UserSaveRequestDto;
+import com.cobong.yuja.payload.request.User.UserUpdateRequestDto;
+import com.cobong.yuja.payload.response.user.UserResponseDto;
+import com.cobong.yuja.service.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.log4j.Log4j2;

@@ -1,4 +1,4 @@
-package com.cobong.yuja.service;
+package com.cobong.yuja.service.comment;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,8 +9,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cobong.yuja.model.BoardComment;
-import com.cobong.yuja.payload.request.CommentRequestDto;
-import com.cobong.yuja.payload.response.CommentResponseDto;
+import com.cobong.yuja.payload.request.Comment.CommentRequestDto;
+import com.cobong.yuja.payload.response.comment.CommentResponseDto;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.comment.CommentRepository;
 import com.cobong.yuja.repository.user.UserRepository;

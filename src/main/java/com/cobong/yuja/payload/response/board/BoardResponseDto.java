@@ -1,9 +1,10 @@
-package com.cobong.yuja.payload.response;
+package com.cobong.yuja.payload.response.board;
 
 import java.time.Instant;
 import java.util.Date;
 
 import com.cobong.yuja.model.Board;
+import com.cobong.yuja.payload.response.user.UserResponseDto;
 
 import lombok.Getter;
 

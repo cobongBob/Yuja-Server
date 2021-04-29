@@ -1,4 +1,4 @@
-package com.cobong.yuja.service;
+package com.cobong.yuja.service.board;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cobong.yuja.model.Board;
-import com.cobong.yuja.payload.request.BoardSaveRequestDto;
-import com.cobong.yuja.payload.request.BoardUpdateRequestDto;
-import com.cobong.yuja.payload.response.BoardResponseDto;
+import com.cobong.yuja.payload.request.Board.BoardSaveRequestDto;
+import com.cobong.yuja.payload.request.Board.BoardUpdateRequestDto;
+import com.cobong.yuja.payload.response.board.BoardResponseDto;
 import com.cobong.yuja.repository.board.BoardRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -52,6 +52,7 @@ public class BoardServiceImpl implements BoardService {
 	public BoardResponseDto modify(Long bno, BoardUpdateRequestDto boardUpdateRequestDto) {
 		Board board = boardRepository.findById(bno)
 				.orElseThrow(() -> new IllegalAccessError("해당글 없음" + bno));
+		//영속화
 		
 		board.modify(boardUpdateRequestDto.getTitle(), boardUpdateRequestDto.getContent(), 
 				boardUpdateRequestDto.getThumbnail(),boardUpdateRequestDto.getPayType(),

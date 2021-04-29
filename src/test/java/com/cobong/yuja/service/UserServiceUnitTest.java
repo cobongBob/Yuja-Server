@@ -6,6 +6,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.cobong.yuja.repository.user.UserRepository;
+import com.cobong.yuja.service.user.UserService;
 
 import lombok.extern.log4j.Log4j2;
 

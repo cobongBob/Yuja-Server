@@ -9,8 +9,9 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.cobong.yuja.model.Board;
-import com.cobong.yuja.payload.request.BoardSaveRequestDto;
+import com.cobong.yuja.payload.request.Board.BoardSaveRequestDto;
 import com.cobong.yuja.repository.board.BoardRepository;
+import com.cobong.yuja.service.board.BoardService;
 
 import lombok.extern.log4j.Log4j2;
 

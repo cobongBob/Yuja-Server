@@ -3,6 +3,7 @@ package com.cobong.yuja.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,6 +31,6 @@ public class BoardType {
 	@Column(nullable = false)
 	private String boardName;
 	
-	@OneToMany(mappedBy = "boardType")
+	@OneToMany(mappedBy = "boardType",cascade = CascadeType.REMOVE)
 	private List<Board> boards = new ArrayList<Board>();
 }

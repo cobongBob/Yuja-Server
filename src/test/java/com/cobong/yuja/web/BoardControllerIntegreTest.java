@@ -25,9 +25,9 @@ import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cobong.yuja.model.Board;
-import com.cobong.yuja.payload.request.BoardSaveRequestDto;
+import com.cobong.yuja.payload.request.Board.BoardSaveRequestDto;
 import com.cobong.yuja.repository.board.BoardRepository;
-import com.cobong.yuja.service.BoardService;
+import com.cobong.yuja.service.board.BoardService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import lombok.extern.log4j.Log4j2;

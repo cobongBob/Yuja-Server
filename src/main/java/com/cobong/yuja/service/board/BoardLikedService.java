@@ -1,6 +1,6 @@
-package com.cobong.yuja.service;
+package com.cobong.yuja.service.board;
 
-import com.cobong.yuja.payload.request.BoardLikedRequestDto;
+import com.cobong.yuja.payload.request.Board.BoardLikedRequestDto;
 
 public interface BoardLikedService {
 	String liked(BoardLikedRequestDto dto);

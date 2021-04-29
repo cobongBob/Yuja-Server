@@ -1,4 +1,4 @@
-package com.cobong.yuja.payload.response;
+package com.cobong.yuja.payload.response.comment;
 
 import java.util.ArrayList;
 import java.util.List;

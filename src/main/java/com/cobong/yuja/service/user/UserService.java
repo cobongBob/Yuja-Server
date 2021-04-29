@@ -1,11 +1,11 @@
-package com.cobong.yuja.service;
+package com.cobong.yuja.service.user;
 
 import java.util.List;
 
 import com.cobong.yuja.model.User;
-import com.cobong.yuja.payload.request.UserSaveRequestDto;
-import com.cobong.yuja.payload.request.UserUpdateRequestDto;
-import com.cobong.yuja.payload.response.UserResponseDto;
+import com.cobong.yuja.payload.request.User.UserSaveRequestDto;
+import com.cobong.yuja.payload.request.User.UserUpdateRequestDto;
+import com.cobong.yuja.payload.response.user.UserResponseDto;
 
 public interface UserService {
 

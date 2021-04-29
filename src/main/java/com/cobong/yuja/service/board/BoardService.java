@@ -1,11 +1,11 @@
-package com.cobong.yuja.service;
+package com.cobong.yuja.service.board;
 
 import java.util.List;
 
 import com.cobong.yuja.model.Board;
-import com.cobong.yuja.payload.request.BoardSaveRequestDto;
-import com.cobong.yuja.payload.request.BoardUpdateRequestDto;
-import com.cobong.yuja.payload.response.BoardResponseDto;
+import com.cobong.yuja.payload.request.Board.BoardSaveRequestDto;
+import com.cobong.yuja.payload.request.Board.BoardUpdateRequestDto;
+import com.cobong.yuja.payload.response.board.BoardResponseDto;
 
 public interface BoardService {
 	

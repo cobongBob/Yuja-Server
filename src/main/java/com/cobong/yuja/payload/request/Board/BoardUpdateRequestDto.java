@@ -1,4 +1,4 @@
-package com.cobong.yuja.payload.request;
+package com.cobong.yuja.payload.request.Board;
 
 import java.util.Date;
 

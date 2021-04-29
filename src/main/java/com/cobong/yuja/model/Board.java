@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -49,10 +50,10 @@ public class Board extends DateAudit{
 	@Column(nullable = false)
 	private String content;
 	
-	@OneToMany(mappedBy = "board")
+	@OneToMany(mappedBy = "board",cascade = CascadeType.REMOVE)
 	private List<BoardAttach> attachments = new ArrayList<BoardAttach>();
 	
-	@OneToMany(mappedBy = "board")
+	@OneToMany(mappedBy = "board",cascade = CascadeType.REMOVE)
 	private List<BoardComment> comments = new ArrayList<BoardComment>();
 	
 	@Column(nullable = false)

@@ -10,9 +10,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cobong.yuja.payload.request.CommentRequestDto;
-import com.cobong.yuja.payload.response.CommentResponseDto;
-import com.cobong.yuja.service.CommentService;
+import com.cobong.yuja.payload.request.Comment.CommentRequestDto;
+import com.cobong.yuja.payload.response.comment.CommentResponseDto;
+import com.cobong.yuja.service.comment.CommentService;
 
 import lombok.RequiredArgsConstructor;
 

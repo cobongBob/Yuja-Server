@@ -1,4 +1,4 @@
-package com.cobong.yuja.payload.request;
+package com.cobong.yuja.payload.request.Comment;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

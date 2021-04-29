@@ -1,4 +1,4 @@
-package com.cobong.yuja.service;
+package com.cobong.yuja.service.user;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cobong.yuja.model.User;
-import com.cobong.yuja.payload.request.UserSaveRequestDto;
-import com.cobong.yuja.payload.request.UserUpdateRequestDto;
-import com.cobong.yuja.payload.response.UserResponseDto;
+import com.cobong.yuja.payload.request.User.UserSaveRequestDto;
+import com.cobong.yuja.payload.request.User.UserUpdateRequestDto;
+import com.cobong.yuja.payload.response.user.UserResponseDto;
 import com.cobong.yuja.repository.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;

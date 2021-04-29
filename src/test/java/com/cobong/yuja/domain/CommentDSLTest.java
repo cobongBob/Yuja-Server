@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 import com.cobong.yuja.model.BoardComment;
-import com.cobong.yuja.payload.response.CommentResponseDto;
+import com.cobong.yuja.payload.response.comment.CommentResponseDto;
 import com.cobong.yuja.repository.comment.CommentRepository;
-import com.cobong.yuja.service.CommentService;
+import com.cobong.yuja.service.comment.CommentService;
 
 import lombok.extern.log4j.Log4j2;
 
