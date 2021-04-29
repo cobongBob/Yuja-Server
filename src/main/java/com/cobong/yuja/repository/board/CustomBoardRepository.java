@@ -12,4 +12,6 @@ public interface CustomBoardRepository {
 	List<Board> boardsSearched(String search); //재목으로 검색한 board 목록
 	Long likedReceived(Long boardId); // 좋아요 수 구하는 함수
 	Long commentsReceived(Long boardId); // 댓글 갯수 구하는 함수
+	
+	boolean likedOrNot(Long userId, Long boardId);
 }

@@ -1,5 +1,6 @@
 package com.cobong.yuja.payload.response;
 
+import java.time.Instant;
 import java.util.Date;
 
 import com.cobong.yuja.model.Board;
@@ -25,6 +26,8 @@ public class BoardResponseDto {
 	
 	private int likes;
 	private int comments;
+	private boolean liked;
+	private Instant updatedDate;
 	
 	public BoardResponseDto entityToDto(Board entity) {
 		this.id=entity.getBoardId();
@@ -38,12 +41,14 @@ public class BoardResponseDto {
 		this.payAmount=entity.getPayAmount();
 		this.career=entity.getCareer();
 		this.tools=entity.getTools();
+		this.updatedDate = entity.getUpdatedDate();
 		
 		return this;
 	}
 	
-	public void setLikesAndComments(int likes, int comments) {
+	public void setLikesAndComments(int likes, int comments, boolean likedOrNot) {
 		this.likes = likes;
 		this.comments = comments;
+		this.liked = likedOrNot;
 	}
 }
