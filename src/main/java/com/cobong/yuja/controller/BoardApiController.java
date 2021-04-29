@@ -32,7 +32,7 @@ public class BoardApiController {
 	}
 	
 //	@PostMapping("/api/{boardCode}/board/{bno}")
-	@PostMapping(path = "/api/board")
+	@PostMapping("/api/board")
 	public ResponseEntity<?> insertBoard(@RequestBody BoardSaveRequestDto dto) {
 		System.out.println("==========>"+dto);
 		return new ResponseEntity<Board>(boardService.save(dto),HttpStatus.CREATED);
@@ -62,7 +62,7 @@ public class BoardApiController {
 		return new ResponseEntity<String>(boardService.delete(bno),HttpStatus.OK);
 	}
 	
-	@GetMapping("/api/{boardCode}")
+	@GetMapping("/api/board/{boardCode}")
 	public ResponseEntity<?> boardsInBoardType(@PathVariable Long boardCode){
 		/***
 		 * 선택한 게시판(유튜버,편집자, 썸네일러)의 글을 다 떙겨오는 컨트롤러
@@ -71,7 +71,7 @@ public class BoardApiController {
 		return new ResponseEntity<List<BoardResponseDto>>(boardService.boardsInBoardType(boardCode), HttpStatus.OK);
 	}
 	
-	@GetMapping("/api/{userId}")
+	@GetMapping("/api/userboard/{userId}")
 	public ResponseEntity<?> boardsUserWrote(@PathVariable Long userId){
 		/***
 		 * 매핑 받는 주소가 많이 걱정된다. 일단 하나의 보드만을 가져오는 친구와 차별을 두기위해 api를 추가했음.
