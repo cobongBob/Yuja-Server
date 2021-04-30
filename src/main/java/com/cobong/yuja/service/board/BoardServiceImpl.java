@@ -1,11 +1,16 @@
 package com.cobong.yuja.service.board;
 
-import java.io.File;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardAttach;
@@ -18,6 +23,7 @@ import com.cobong.yuja.repository.BoardTypeRepository;
 import com.cobong.yuja.repository.attach.AttachRepository;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.user.UserRepository;
+import com.google.common.io.Files;
 
 import lombok.RequiredArgsConstructor;
 
@@ -41,15 +47,17 @@ public class BoardServiceImpl implements BoardService {
 		for(Long i: dto.getBoardAttachIds()) {
 			BoardAttach boardAttach = attachRepository.findById(i).orElseThrow(() -> new IllegalAccessError("해당유저 없음 "+dto.getUserId()));
 			if(!boardAttach.isFlag()) {
-				
-				
-				
+				File temp = new File(boardAttach.getTempPath());
+				File dest = new File(boardAttach.getUploadPath());
+				try {
+					Files.move(temp, dest);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 				boardAttach.completelySave();
 				attachRepository.save(boardAttach);
 			}
 		}
-		
-		
 		return board2;
 	}
 	@Override

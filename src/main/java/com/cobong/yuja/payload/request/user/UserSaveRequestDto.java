@@ -3,14 +3,12 @@ package com.cobong.yuja.payload.request.user;
 import com.cobong.yuja.model.User;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
 public class UserSaveRequestDto {
 	private String username;
 	private String password;

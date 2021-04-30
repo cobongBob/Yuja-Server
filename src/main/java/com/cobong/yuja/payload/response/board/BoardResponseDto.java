@@ -26,9 +26,7 @@ public class BoardResponseDto {
 	private int comments;
 	private boolean liked;
 	private Instant updatedDate;
-	
 	private List<Long> boardAttachIds;
-	
 	private String channelName;
 	private int recruitingNum;
 	private String receptionMethod;
@@ -48,7 +46,6 @@ public class BoardResponseDto {
 		this.career=entity.getCareer();
 		this.tools=entity.getTools();
 		this.updatedDate = entity.getUpdatedDate();
-		
 		this.channelName = entity.getChannelName();
 		this.recruitingNum = entity.getRecruitingNum();
 		this.receptionMethod = entity.getReceptionMethod();
