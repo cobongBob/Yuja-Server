@@ -12,13 +12,11 @@ import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardLiked;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 
-public class CustomBoardRepositoryImpl extends QuerydslRepositorySupport implements CustomBoardRepository {
-	private final JPAQueryFactory queryFactory;
+import lombok.RequiredArgsConstructor;
 
-	public CustomBoardRepositoryImpl(JPAQueryFactory queryFactory) {
-		super(Board.class);
-		this.queryFactory = queryFactory;
-	}
+@RequiredArgsConstructor
+public class CustomBoardRepositoryImpl implements CustomBoardRepository {
+	private final JPAQueryFactory queryFactory;
 
 	// BoardType.boardName? boardCode?
 	@Override

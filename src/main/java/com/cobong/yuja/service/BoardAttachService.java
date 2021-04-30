@@ -8,13 +8,13 @@ import com.cobong.yuja.model.BoardAttach;
 import com.cobong.yuja.payload.request.AttachDto;
 import com.cobong.yuja.repository.attach.AttachRepository;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor
 public class BoardAttachService {
-	private AttachRepository attachRepository;
+	private final AttachRepository attachRepository;
 	
-	public BoardAttachService(AttachRepository attachRepository) {
-		this.attachRepository = attachRepository;
-	}
 	
 	@Transactional
 	public Long saveFile(AttachDto attachDto) {
