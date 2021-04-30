@@ -36,14 +36,20 @@ public class BoardAttach {
 	@Column(nullable = false)
 	private String uploadPath;
 	
-	/*
-	 * @Enumerated(EnumType.STRING)
-	private FileUploadPaths uploadPath;
-	 * */
+	@Column(nullable = false)
+	private String tempPath;
+	
     @Column(nullable = false)
     private String origFilename;
     
 	@Column(nullable = false)
 	private String fileName;
 	
+	@Column(nullable = false)
+	private boolean flag;
+	//파일이 업로드되어 있는지 아닌지를 알려주는 불리언 변수
+	
+	public void completelySave() {
+		this.flag = true;
+	}
 }

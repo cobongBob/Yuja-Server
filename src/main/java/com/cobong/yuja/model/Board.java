@@ -79,6 +79,14 @@ public class Board extends DateAudit{
 	
 	@Column(nullable = true)
 	private String tools;
+	
+	private String channelName;
+	
+	private int recruitingNum;
+	
+	private String receptionMethod;
+	
+	private String manager;
 
 	public Board modify(String title, String content, String thumbnail, String payType, String payAmount,
 			String career, String tools, Date expiredDate) {
