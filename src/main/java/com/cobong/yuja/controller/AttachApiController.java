@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cobong.yuja.payload.request.AttachDto;
-import com.cobong.yuja.payload.request.BoardSaveRequestDto;
+import com.cobong.yuja.payload.request.board.BoardSaveRequestDto;
 import com.cobong.yuja.service.BoardAttachService;
-import com.cobong.yuja.service.BoardService;
+import com.cobong.yuja.service.board.BoardService;
 import com.cobong.yuja.util.MD5Generator;
 
 import lombok.RequiredArgsConstructor;
