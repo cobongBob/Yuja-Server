@@ -10,6 +10,7 @@ import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardComment;
 import com.cobong.yuja.model.BoardType;
 import com.cobong.yuja.model.User;
+import com.cobong.yuja.repository.BoardTypeRepository;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.comment.CommentRepository;
 import com.cobong.yuja.repository.user.UserRepository;
@@ -24,6 +25,23 @@ public class DummyInsert {
 	
 	@Autowired
 	private CommentRepository commentRepository;
+	
+	@Autowired
+	private BoardTypeRepository boardTypeRepository;
+	
+	@Test
+	public void insertType() {
+//		1. Youtube
+//		2. Editor
+//		3. Thumb
+		BoardType boardType = new BoardType(null,"YoutuberBoard",null);
+		boardTypeRepository.save(boardType);
+		boardType = new BoardType(null,"EditorBoard",null);
+		boardTypeRepository.save(boardType);
+		boardType = new BoardType(null,"ThumbBoard",null);
+		boardTypeRepository.save(boardType);
+	}
+	
 	
 	@Test
 	public void insertUser() {
