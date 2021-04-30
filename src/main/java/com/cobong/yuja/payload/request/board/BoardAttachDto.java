@@ -16,14 +16,13 @@ import lombok.Setter;
 @NoArgsConstructor
 @Builder
 public class BoardAttachDto {
-	private Board board;
+	private Long boardId;
 	private String uploadPath;
 	private String fileName;
 	private String origFilename;
 
 	public BoardAttach toEntitiy() {
 		return BoardAttach.builder()
-				.board(this.board)
 				.uploadPath(this.uploadPath)
 				.fileName(this.fileName)
 				.origFilename(this.origFilename)

@@ -45,7 +45,6 @@ public class User extends DateAudit {
 	@OneToMany(mappedBy = "user")
 	private List<Board> boards;
 	
-	
 	@Column(nullable = false)
 	private String password;
 	

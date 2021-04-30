@@ -91,16 +91,12 @@ public class Board extends DateAudit{
 		this.career=career;
 		this.tools=tools;
 		this.expiredDate=expiredDate;
-		
 		return this;
 	}
 
 	public Board createBoard(BoardType boardType, User user, String title, String content,
 			String thumbnail, Date expiredDate,
 			String payType, String payAmount, String career, String tools) {
-		/***
-		 * BoarCode 넣어야함!
-		 */
 		Board board = new Board();
 		board.boardId = boardId;
 		board.boardType = boardType;
@@ -113,7 +109,6 @@ public class Board extends DateAudit{
 		board.payAmount = payAmount;
 		board.career = career;
 		board.tools = tools;
-		
 		return board;
 	}
 	
