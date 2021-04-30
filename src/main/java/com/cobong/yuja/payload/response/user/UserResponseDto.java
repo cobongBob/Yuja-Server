@@ -36,7 +36,6 @@ public class UserResponseDto {
 		this.bsn = entity.getBsn();
 		this.youtubeImg = entity.getYoutubeImg();
 		this.userIp = entity.getUserIp();
-		
 		return this;
 	}
 	

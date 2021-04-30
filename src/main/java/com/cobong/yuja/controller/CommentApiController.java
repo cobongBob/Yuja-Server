@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cobong.yuja.payload.request.comment.CommentRequestDto;
-import com.cobong.yuja.payload.response.comment.CommentResponseDto;
 import com.cobong.yuja.service.comment.CommentService;
 
 import lombok.RequiredArgsConstructor;

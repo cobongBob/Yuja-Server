@@ -17,12 +17,12 @@ import lombok.RequiredArgsConstructor;
 public class BoardLikedApiController {
 	private final BoardLikedService boardLikedService;
 	
-	@PostMapping("/api/boardliked")
+	@PostMapping("/api/board/liked")
 	public ResponseEntity<?> insertLike(@RequestBody BoardLikedRequestDto dto){
 		return new ResponseEntity<>(boardLikedService.liked(dto), HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping("/api/boardliked")
+	@DeleteMapping("/api/board/liked")
 	public ResponseEntity<?> deleteLike(@RequestBody BoardLikedRequestDto dto){
 		return new ResponseEntity<>(boardLikedService.disLiked(dto), HttpStatus.OK);
 	}

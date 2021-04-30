@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.cobong.yuja.payload.request.AttachDto;
+import com.cobong.yuja.payload.request.board.BoardAttachDto;
 import com.cobong.yuja.payload.request.board.BoardSaveRequestDto;
-import com.cobong.yuja.service.BoardAttachService;
+import com.cobong.yuja.service.board.BoardAttachService;
 import com.cobong.yuja.service.board.BoardService;
 import com.cobong.yuja.util.MD5Generator;
 
@@ -26,7 +26,7 @@ public class AttachApiController {
 //		this.attachService = attachService;
 //	}
 
-	@PostMapping("/api/upload")
+	@PostMapping("/api/board/img/upload")
 	public String write(@RequestParam("file") MultipartFile files, BoardSaveRequestDto dto) {
 		try {
 			String origFilename = files.getOriginalFilename();
@@ -47,7 +47,7 @@ public class AttachApiController {
 			String uploadPath = savePath + "\\" + filename;
 			files.transferTo(new File(uploadPath));
 
-			AttachDto attachDto = new AttachDto();
+			BoardAttachDto attachDto = new BoardAttachDto();
 			attachDto.setOrigFilename(origFilename);
 			attachDto.setUploadPath(uploadPath);
 			attachDto.setFileName(filename);

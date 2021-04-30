@@ -11,12 +11,9 @@ import lombok.Getter;
 @Getter
 public class BoardResponseDto {
 	private Long id;
-//	private BoardType boardType;
 	private UserResponseDto user;
 	private String title;
 	private String content;
-//	private List<BoardAttach> attachments = new ArrayList<BoardAttach>();
-//	private List<BoardComment> comments = new ArrayList<BoardComment>();
 	private int hit; 
 	private String thumbnail;
 	private Date expiredDate;
@@ -24,7 +21,6 @@ public class BoardResponseDto {
 	private String payAmount;
 	private String career;
 	private String tools;
-	
 	private int likes;
 	private int comments;
 	private boolean liked;
@@ -43,7 +39,6 @@ public class BoardResponseDto {
 		this.career=entity.getCareer();
 		this.tools=entity.getTools();
 		this.updatedDate = entity.getUpdatedDate();
-		
 		return this;
 	}
 	

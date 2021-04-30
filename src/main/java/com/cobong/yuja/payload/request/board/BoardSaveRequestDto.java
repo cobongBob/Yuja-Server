@@ -18,21 +18,14 @@ import lombok.NoArgsConstructor;
 public class BoardSaveRequestDto {
 	private String title;
 	private String content;
-	
 	private Long boardCode;
 	private Long userId;
-	/*
-	 * @JsonFormat(shape=JsonFormat.Shape.OBJECT)
-	private List<BoardAttach> attache;
-	 * */
-	
 	private String thumbnail;
 	private String payType = "";
 	private String payAmount = "";
 	private String career = "";
 	private String tools = "";
 	private int hit = 0;
-	
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date expiredDate;
 	

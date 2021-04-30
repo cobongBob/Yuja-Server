@@ -1,7 +1,5 @@
 package com.cobong.yuja.controller;
 
-import java.util.List;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,10 +10,8 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.user.UserSaveRequestDto;
 import com.cobong.yuja.payload.request.user.UserUpdateRequestDto;
-import com.cobong.yuja.payload.response.user.UserResponseDto;
 import com.cobong.yuja.service.user.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -28,13 +24,11 @@ public class UserApiController {
 	
 	@PostMapping(path = "/api/user")
 	public ResponseEntity<?> insertUser(@RequestBody UserSaveRequestDto dto) {
-		System.out.println("==========>"+dto);
 		return new ResponseEntity<>(userService.save(dto),HttpStatus.CREATED);
 	}
 	
 	@GetMapping("/api/user/{userId}")
 	public ResponseEntity<?> getOneUser(@PathVariable Long userId) {
-		System.out.println("==========>" + userId);
 		return new ResponseEntity<>(userService.findById(userId),HttpStatus.OK);
 	}
 	
@@ -43,10 +37,8 @@ public class UserApiController {
 		return new ResponseEntity<>(userService.findAll(),HttpStatus.OK);
 	}
 	
-	// update
 	@PutMapping("/api/user/{bno}")
 	public ResponseEntity<?> modifyUser(@PathVariable Long bno, @RequestBody UserUpdateRequestDto userUpdateRequestDto){
-		System.out.println("=============>"+ bno+ "   "+userUpdateRequestDto);
 		return new ResponseEntity<>(userService.modify(bno,userUpdateRequestDto),HttpStatus.OK);
 	}
 	

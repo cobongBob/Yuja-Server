@@ -1,4 +1,4 @@
-package com.cobong.yuja.payload.request;
+package com.cobong.yuja.payload.request.board;
 
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardAttach;
@@ -15,8 +15,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class AttachDto {
-	
+public class BoardAttachDto {
 	private Board board;
 	private String uploadPath;
 	private String fileName;

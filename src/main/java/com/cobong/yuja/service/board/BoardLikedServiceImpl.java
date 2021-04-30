@@ -4,10 +4,8 @@ import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 
-import com.cobong.yuja.model.BoardComment;
 import com.cobong.yuja.model.BoardLiked;
 import com.cobong.yuja.payload.request.board.BoardLikedRequestDto;
-import com.cobong.yuja.payload.response.comment.CommentResponseDto;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.boardLiked.BoardLikedRepository;
 import com.cobong.yuja.repository.user.UserRepository;
@@ -27,7 +25,6 @@ public class BoardLikedServiceImpl implements BoardLikedService{
 		BoardLiked liked = BoardLiked.builder()
 				.user(userRepository.findById(dto.getUserId()).orElseThrow(()->new IllegalArgumentException("존재하지않는 유저")))
 				.board(boardRepository.findById(dto.getBoardId()).orElseThrow(()->new IllegalArgumentException("존재하지않는 글"))).build();
-	
 		boardLikedRepository.save(liked);
 		return "Success!!";
 	}
@@ -38,5 +35,4 @@ public class BoardLikedServiceImpl implements BoardLikedService{
 		boardLikedRepository.deleteByUserIdAndBoardId(dto.getUserId(), dto.getBoardId());
 		return "Success!";
 	}
-
 }

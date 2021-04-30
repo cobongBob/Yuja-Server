@@ -18,7 +18,6 @@ import lombok.NoArgsConstructor;
 public class BoardUpdateRequestDto {
 	private String title;
 	private String content;
-//	private List<BoardAttach> attache;
 	private String thumbnail;
 	private String payType = "";
 	private String payAmount = "";

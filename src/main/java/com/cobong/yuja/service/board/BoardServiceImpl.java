@@ -7,10 +7,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cobong.yuja.model.Board;
+import com.cobong.yuja.model.BoardType;
 import com.cobong.yuja.model.User;
-import com.cobong.yuja.payload.request.board.BoardUpdateRequestDto;
 import com.cobong.yuja.payload.request.board.BoardSaveRequestDto;
+import com.cobong.yuja.payload.request.board.BoardUpdateRequestDto;
 import com.cobong.yuja.payload.response.board.BoardResponseDto;
+import com.cobong.yuja.repository.BoardTypeRepository;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 
@@ -20,18 +22,16 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
 	private final BoardRepository boardRepository;
+	private final BoardTypeRepository boardTypeRepository;
 	private final UserRepository userRepository;
 	
 	@Override
 	@Transactional
 	public Board save(BoardSaveRequestDto dto) {
 		User user = userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("해당유저 없음 "+dto.getUserId()));
-		Board board = new Board().createBoard(null, user, dto.getTitle(), dto.getContent(), dto.getThumbnail(), dto.getExpiredDate(),
+		BoardType boardType = boardTypeRepository.findById(dto.getBoardCode()).orElseThrow(() -> new IllegalAccessError("해당글 타입 없음" + dto.getBoardCode()));
+		Board board = new Board().createBoard(boardType, user, dto.getTitle(), dto.getContent(), dto.getThumbnail(), dto.getExpiredDate(),
 				dto.getPayType(), dto.getPayAmount(), dto.getCareer(), dto.getTools());
-		
-		/***
-		 * BoarCode 넣어야함!
-		 */
 		Board board2 = boardRepository.save(board);
 		return board2;
 	}
