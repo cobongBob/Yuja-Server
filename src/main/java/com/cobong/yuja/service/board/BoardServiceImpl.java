@@ -1,5 +1,6 @@
 package com.cobong.yuja.service.board;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,12 +8,14 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cobong.yuja.model.Board;
+import com.cobong.yuja.model.BoardAttach;
 import com.cobong.yuja.model.BoardType;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.board.BoardSaveRequestDto;
 import com.cobong.yuja.payload.request.board.BoardUpdateRequestDto;
 import com.cobong.yuja.payload.response.board.BoardResponseDto;
 import com.cobong.yuja.repository.BoardTypeRepository;
+import com.cobong.yuja.repository.attach.AttachRepository;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 
@@ -24,6 +27,7 @@ public class BoardServiceImpl implements BoardService {
 	private final BoardRepository boardRepository;
 	private final BoardTypeRepository boardTypeRepository;
 	private final UserRepository userRepository;
+	private final AttachRepository attachRepository;
 	
 	@Override
 	@Transactional
@@ -33,6 +37,19 @@ public class BoardServiceImpl implements BoardService {
 		Board board = new Board().createBoard(boardType, user, dto.getTitle(), dto.getContent(), dto.getThumbnail(), dto.getExpiredDate(),
 				dto.getPayType(), dto.getPayAmount(), dto.getCareer(), dto.getTools());
 		Board board2 = boardRepository.save(board);
+		
+		for(Long i: dto.getBoardAttachIds()) {
+			BoardAttach boardAttach = attachRepository.findById(i).orElseThrow(() -> new IllegalAccessError("해당유저 없음 "+dto.getUserId()));
+			if(!boardAttach.isFlag()) {
+				
+				
+				
+				boardAttach.completelySave();
+				attachRepository.save(boardAttach);
+			}
+		}
+		
+		
 		return board2;
 	}
 	@Override

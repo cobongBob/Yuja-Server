@@ -80,6 +80,9 @@ public class User extends DateAudit {
 	
 	@Column(nullable = false)
 	private String userIp;
+	
+	@Column(nullable = false)
+	private boolean isMarketingChecked;
 
 	public void modify(String username2, String password2, String nickname2, String realName2, String bday2,
 			String profilePic2, String providedId2, String provider2, String address2, String phone2, String bsn2,

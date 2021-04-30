@@ -25,6 +25,7 @@ public class UserSaveRequestDto {
 	private String bsn ="";
 	private String youtubeImg ="";
 	private String userIp;
+	private boolean isMarketingChecked;
 	
 	public User dtoToEntity() {
 		return User.builder()
@@ -41,6 +42,7 @@ public class UserSaveRequestDto {
 				.bsn(this.bsn)
 				.youtubeImg(this.youtubeImg)
 				.userIp(this.userIp)
+				.isMarketingChecked(this.isMarketingChecked)
 				.build();
 	}
 }

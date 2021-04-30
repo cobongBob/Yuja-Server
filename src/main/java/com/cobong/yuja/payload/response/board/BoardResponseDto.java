@@ -2,6 +2,7 @@ package com.cobong.yuja.payload.response.board;
 
 import java.time.Instant;
 import java.util.Date;
+import java.util.List;
 
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.payload.response.user.UserResponseDto;
@@ -26,6 +27,14 @@ public class BoardResponseDto {
 	private boolean liked;
 	private Instant updatedDate;
 	
+	private List<Long> boardAttachIds;
+	
+	private String channelName;
+	private int recruitingNum;
+	private String receptionMethod;
+	private String portfolioFormat;
+	private String manager;
+	
 	public BoardResponseDto entityToDto(Board entity) {
 		this.id=entity.getBoardId();
 		this.user = new UserResponseDto().entityToDto(entity.getUser());
@@ -39,6 +48,11 @@ public class BoardResponseDto {
 		this.career=entity.getCareer();
 		this.tools=entity.getTools();
 		this.updatedDate = entity.getUpdatedDate();
+		
+		this.channelName = entity.getChannelName();
+		this.recruitingNum = entity.getRecruitingNum();
+		this.receptionMethod = entity.getReceptionMethod();
+		this.manager = entity.getManager();
 		return this;
 	}
 	
