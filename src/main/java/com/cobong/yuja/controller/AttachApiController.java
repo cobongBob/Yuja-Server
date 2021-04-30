@@ -43,14 +43,14 @@ public class AttachApiController {
 				// 파일이 저장되는 폴더가 없으면 폴더를 생성
 				if (!new File(savePath).exists()) {
 					try {
-						new File(savePath).mkdir();
+						new File(savePath).mkdirs();
 						System.out.println(savePath);
 					} catch (Exception e) {
 						e.getStackTrace();
 					}
 				}
-				String uploadPath = System.getProperty("user.dir") + File.separator+"files" + File.separator +"temp"+ File.separator + filename;
-				file.transferTo(new File(savePath));
+				String uploadPath = savePath + File.separator + filename;
+				file.transferTo(new File(uploadPath));
 	
 				attachDto.setOrigFilename(origFilename);
 				attachDto.setUploadPath(uploadPath);
