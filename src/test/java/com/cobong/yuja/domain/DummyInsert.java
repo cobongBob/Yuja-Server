@@ -63,7 +63,8 @@ public class DummyInsert {
 	public void insertBoard() {
 		IntStream.rangeClosed(1, 100).forEach(i -> {
 			User user = User.builder().userId(Long.valueOf(i)).build();
-			BoardType boardType = new BoardType(1L, "FreeBoard", null);
+			
+			BoardType boardType = boardTypeRepository.findById(1L).orElseThrow(()-> new IllegalArgumentException("존재하지 x"));
 			Board board = Board.builder()
 					.boardType(boardType)
 					.user(user)

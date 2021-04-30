@@ -30,11 +30,9 @@ public class AttachApiController {
 	public String write(@RequestParam("file") MultipartFile files, BoardSaveRequestDto dto) {
 		try {
 			String origFilename = files.getOriginalFilename();
-			String fileType = origFilename.substring(origFilename.indexOf("."));
-			System.out.println(fileType);
-			String filename = new MD5Generator(origFilename).toString()+fileType;
-			// 실행되는 위치의 'temp' 폴더에 파일이 저장
-			String savePath = System.getProperty("user.dir") + "\\files\\temp";
+			String filename = new MD5Generator(origFilename).toString();
+			// 실행되는 위치의 'files' 폴더에 파일이 저장
+			String savePath = System.getProperty("user.dir") + "\\files";
 			System.out.println(savePath);
 			// 파일이 저장되는 폴더가 없으면 폴더를 생성
 			if (!new File(savePath).exists()) {
@@ -56,6 +54,7 @@ public class AttachApiController {
 
 			Long fileId = attachService.saveFile(attachDto);
 			dto.setUserId(fileId);
+			boardService.save(dto);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
