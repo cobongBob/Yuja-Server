@@ -7,13 +7,16 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class BoardAttachDto {
+	private Long attachId;
 	private Long boardId;
 	private String uploadPath;
 	private String tempPath;
