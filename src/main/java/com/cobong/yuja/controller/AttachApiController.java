@@ -33,42 +33,6 @@ import lombok.RequiredArgsConstructor;
 public class AttachApiController {
 	private final BoardAttachService attachService;
 
-//	@PostMapping("/api/board/img/upload")
-//	public ResponseEntity<?> write(@RequestParam("file") MultipartFile[] files, BoardSaveRequestDto dto) {
-//		List<Long> boardAttachIds = new ArrayList<Long>();
-//		for(MultipartFile file: files) {
-//			BoardAttachDto attachDto = new BoardAttachDto();
-//			try {
-//				String origFilename = file.getOriginalFilename();
-//				
-//				//시간을 파일이름을 만드는 방향으로 가자.
-//				String filename = UUID.randomUUID().toString()+ origFilename;
-//				// 실행되는 위치의 'temp' 폴더에 파일이 저장
-//				String savePath = System.getProperty("user.dir") + File.separator+"files" + File.separator +"temp";
-//				// 파일이 저장되는 폴더가 없으면 폴더를 생성
-//				if (!new File(savePath).exists()) {
-//					try {
-//						new File(savePath).mkdirs();
-//						System.out.println(savePath);
-//					} catch (Exception e) {
-//						e.getStackTrace();
-//					}
-//				}
-//				String uploadPath = savePath + File.separator + filename;
-//				file.transferTo(new File(uploadPath));
-//	
-//				attachDto.setOrigFilename(origFilename);
-//				attachDto.setUploadPath(uploadPath);
-//				attachDto.setFileName(filename);
-//				attachDto.setTempPath(savePath);
-//	
-//				boardAttachIds.add(attachService.saveFile(attachDto));
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		return new ResponseEntity<>(boardAttachIds, HttpStatus.OK);
-//	}
 	@PostMapping("/api/board/img/upload")
 	public ResponseEntity<?> write(@RequestParam("file") MultipartFile[] files, BoardSaveRequestDto dto) {
 		List<BoardAttachDto> boardAttachIds = new ArrayList<>();
@@ -77,11 +41,14 @@ public class AttachApiController {
 			try {
 				String origFilename = file.getOriginalFilename();
 				
+				//시간을 파일이름을 만드는 방향으로 가자.
 				String filename = UUID.randomUUID().toString()+ origFilename;
+				// 실행되는 위치의 'temp' 폴더에 파일이 저장
 				String savePath = System.getProperty("user.dir") + File.separator+"files" + File.separator +"temp";
+				// 파일이 저장되는 폴더가 없으면 폴더를 생성
 				if (!new File(savePath).exists()) {
 					try {
-						new File(savePath).mkdirs();
+						new File(savePath).mkdirs(); //mkdirs는 폴더안에 폴더를 찾는데 그 상위폴더 조차 존재치 않으면 만들어준다.
 						System.out.println(savePath);
 					} catch (Exception e) {
 						e.getStackTrace();
@@ -95,14 +62,14 @@ public class AttachApiController {
 				attachDto.setFileName(filename);
 				attachDto.setTempPath(savePath);
 				boardAttachIds.add(attachService.saveFileEdited(attachDto));
-				System.out.println(boardAttachIds.get(0));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
 		return new ResponseEntity<>(boardAttachIds, HttpStatus.OK);
 	}
-
+	
+	//파일 다운로드를 위한 로직인데.. 필요한가?
 	@GetMapping("/api/board/img/download/{attachId}")
 	public ResponseEntity<?> send(@PathVariable Long attachId) {
 		BoardAttachDto attachDto = attachService.findById(attachId);
