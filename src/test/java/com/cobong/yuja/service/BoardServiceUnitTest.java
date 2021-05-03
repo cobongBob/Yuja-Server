@@ -10,6 +10,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.payload.request.board.BoardSaveRequestDto;
+import com.cobong.yuja.payload.response.board.BoardResponseDto;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.service.board.BoardService;
 
@@ -37,7 +38,7 @@ public class BoardServiceUnitTest {
 		//when
 		when(boardRepository.save(board)).thenReturn(board);
 		
-		Board result = boardService.save(dto);
+		BoardResponseDto result = boardService.save(dto);
 		
 		//then
 		log.info(result);

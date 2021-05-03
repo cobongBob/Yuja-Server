@@ -55,7 +55,8 @@ public class BoardControllerUnitTest {
 		dto.setExpiredDate(new Date());
 		Board board = dto.dtoToEntity();
 		
-		Board resultBoard = new Board(0L, null, null, "테스트 제목1", "테스트 내용1", null, null, 0, "테스트 썸네일", null, null, null, null, null, null, 0, null, null);
+				Board a = new Board(0L, null, null, "테스트 제목1", "테스트 내용1", null, null, 0, "테스트 썸네일", null, null, null, null, null, null, 0, null, null);
+				BoardResponseDto resultBoard = new BoardResponseDto().entityToDto(a);
 		String content = new ObjectMapper().writeValueAsString(board);
 
 		when(boardService.save(dto)).thenReturn(resultBoard);
