@@ -21,7 +21,7 @@ import lombok.RequiredArgsConstructor;
 public class BoardApiController {
 	private final BoardService boardService;
 	
-	@PostMapping("/api/{boardCode}/board/{bno}")
+	@PostMapping("/api/{boardCode}/board")
 	public ResponseEntity<?> insertBoard(@RequestBody BoardSaveRequestDto dto, @PathVariable Long boardCode) {
 		dto.setBoardCode(boardCode);
 		return new ResponseEntity<>(boardService.save(dto),HttpStatus.CREATED);
