@@ -26,7 +26,7 @@ public class BoardResponseDto {
 	private int comments;
 	private boolean liked;
 	private Instant updatedDate;
-	private List<Long> boardAttachIds;
+	private List<String> boardAttachFileNames;
 	private String channelName;
 	private int recruitingNum;
 	private String receptionMethod;
@@ -57,5 +57,9 @@ public class BoardResponseDto {
 		this.likes = likes;
 		this.comments = comments;
 		this.liked = likedOrNot;
+	}
+	
+	public void setAttaches(List<String> attaches) {
+		this.boardAttachFileNames = attaches;
 	}
 }

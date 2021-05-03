@@ -54,4 +54,7 @@ public class BoardAttach {
 	public void addBoard(Board board) {
 		this.board = board;
 	}
+	public void deleteByFlag() {
+		this.flag = false;
+	}
 }

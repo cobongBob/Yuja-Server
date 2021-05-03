@@ -30,6 +30,7 @@ public class BoardUpdateRequestDto {
 	private String receptionMethod = "";
 	private String manager = "";
 	private List<Long> boardAttachIds;
+	private List<String> boardAttachToBeDeleted;
 	
 	public Board dtoToEntity() {
 		return Board.builder()

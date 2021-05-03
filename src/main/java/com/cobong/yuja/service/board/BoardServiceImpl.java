@@ -45,7 +45,7 @@ public class BoardServiceImpl implements BoardService {
 		Board board2 = boardRepository.save(board);
 		
 		for(Long i: dto.getBoardAttachIds()) {
-			BoardAttach boardAttach = attachRepository.findById(i).orElseThrow(() -> new IllegalAccessError("해당유저 없음 "+dto.getUserId()));
+			BoardAttach boardAttach = attachRepository.findById(i).orElseThrow(() -> new IllegalAccessError("해당 이미지 없음 "+i));
 			if(!boardAttach.isFlag()) {
 				File temp = new File(boardAttach.getTempPath());
 				File dest = new File(boardAttach.getUploadPath());
@@ -65,7 +65,15 @@ public class BoardServiceImpl implements BoardService {
 	@Transactional(readOnly = true)
 	public BoardResponseDto findById(Long bno) {
 		Board board = boardRepository.findById(bno).orElseThrow(() -> new IllegalAccessError("해당글 없음" + bno));
+		
+		List<String> boardAttachesToSend = new ArrayList<String>();
+		List<BoardAttach> attaches = attachRepository.findAllByBoardId(bno);
+		for(BoardAttach boardAttach: attaches) {
+			boardAttachesToSend.add(boardAttach.getFileName());
+		}
+		
 		BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
+		dto.setAttaches(boardAttachesToSend);
 		return dto;
 	}
 	@Override
@@ -79,8 +87,21 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	@Transactional
 	public String delete(Long bno) {
-		 boardRepository.deleteById(bno);
-		 return "success";
+		List<BoardAttach> attaches = attachRepository.findAllByBoardId(bno);
+		for(BoardAttach boardAttach: attaches) {
+			boardAttach.deleteByFlag();
+			
+			File toDel = new File(boardAttach.getUploadPath());
+			if(toDel.exists()) {
+				toDel.delete();				
+			} else {
+				System.out.println("Such File does not exist!");
+			}
+			
+			attachRepository.save(boardAttach);
+		}
+		boardRepository.deleteById(bno);
+		return "success";
 	}
 
 	@Override
@@ -94,6 +115,35 @@ public class BoardServiceImpl implements BoardService {
 				boardUpdateRequestDto.getPayAmount(), boardUpdateRequestDto.getCareer(),
 				boardUpdateRequestDto.getTools(), boardUpdateRequestDto.getExpiredDate());
 		BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
+		
+		for(Long i: boardUpdateRequestDto.getBoardAttachIds()) {
+			BoardAttach boardAttach = attachRepository.findById(i).orElseThrow(() -> new IllegalAccessError("해당 이미지 없음 "+i));
+			if(!boardAttach.isFlag()) {
+				File temp = new File(boardAttach.getTempPath());
+				File dest = new File(boardAttach.getUploadPath());
+				try {
+					Files.move(temp, dest);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				boardAttach.completelySave();
+			}
+			boardAttach.addBoard(board);
+			attachRepository.save(boardAttach);
+		}
+		for(String i: boardUpdateRequestDto.getBoardAttachToBeDeleted()) {
+			BoardAttach boardAttach = attachRepository.findByFileName(i);
+			boardAttach.deleteByFlag();
+			
+			File toDel = new File(boardAttach.getUploadPath());
+			if(toDel.exists()) {
+				toDel.delete();				
+			} else {
+				System.out.println("Such File does not exist!");
+			}
+			
+			attachRepository.save(boardAttach);
+		}
 		return dto;
 	}
 	
