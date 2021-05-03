@@ -55,8 +55,9 @@ public class BoardServiceImpl implements BoardService {
 					e.printStackTrace();
 				}
 				boardAttach.completelySave();
-				attachRepository.save(boardAttach);
 			}
+			boardAttach.addBoard(board2);
+			attachRepository.save(boardAttach);
 		}
 		return board2;
 	}

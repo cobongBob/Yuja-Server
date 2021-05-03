@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
@@ -41,8 +43,10 @@ public class AttachApiController {
 			try {
 				String origFilename = file.getOriginalFilename();
 				
+				
+				String dateNow = new SimpleDateFormat("YYYYMMddHHmmssSSSSSS").format(new Date());
 				//시간을 파일이름을 만드는 방향으로 가자.
-				String filename = UUID.randomUUID().toString()+ origFilename;
+				String filename = dateNow+ origFilename;
 				// 실행되는 위치의 'temp' 폴더에 파일이 저장
 				String savePath = System.getProperty("user.dir") + File.separator+"files" + File.separator +"temp";
 				// 파일이 저장되는 폴더가 없으면 폴더를 생성
@@ -54,13 +58,17 @@ public class AttachApiController {
 						e.getStackTrace();
 					}
 				}
-				String uploadPath = savePath + File.separator + filename;
-				file.transferTo(new File(uploadPath));
+				savePath += File.separator + filename;
 				
+				file.transferTo(new File(savePath));
+				
+				String uploadPath = System.getProperty("user.dir") + File.separator+"files" + File.separator +"actual" + File.separator + filename;
+
 				attachDto.setOrigFilename(origFilename);
 				attachDto.setUploadPath(uploadPath);
 				attachDto.setFileName(filename);
 				attachDto.setTempPath(savePath);
+				
 				boardAttachIds.add(attachService.saveFileEdited(attachDto));
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -68,6 +76,14 @@ public class AttachApiController {
 		}
 		return new ResponseEntity<>(boardAttachIds, HttpStatus.OK);
 	}
+	
+	/***
+	 * 회원가입시 프로필 사진 업로드용 컨트롤러 필요
+	 */
+	
+	/***
+	 * 썸네일러 썸네일 
+	 */
 	
 	//파일 다운로드를 위한 로직인데.. 필요한가?
 	@GetMapping("/api/board/img/download/{attachId}")

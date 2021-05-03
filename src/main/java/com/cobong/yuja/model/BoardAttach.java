@@ -30,7 +30,6 @@ public class BoardAttach {
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name ="boardId")
-	@JsonManagedReference
 	private Board board;
 	
 	@Column(nullable = false)
@@ -51,5 +50,8 @@ public class BoardAttach {
 	
 	public void completelySave() {
 		this.flag = true;
+	}
+	public void addBoard(Board board) {
+		this.board = board;
 	}
 }
