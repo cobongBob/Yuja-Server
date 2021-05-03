@@ -1,5 +1,6 @@
 package com.cobong.yuja.payload.response.comment;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,18 +19,19 @@ public class CommentResponseDto {
 	private Long userId;
 	private String nickname;
 	private boolean deleted;
-//	private String updateDate;
+	private Instant updatedDate;
 	private List<CommentResponseDto> children = new ArrayList<>();
 	
-	public CommentResponseDto(Long commentId, String content, Long userId, String nickname, boolean deleted) {
+	public CommentResponseDto(Long commentId, String content, Long userId, String nickname, boolean deleted, Instant updatedDate) {
 		this.commentId = commentId;
 		this.content = content;
 		this.userId = userId;
 		this.nickname = nickname;
 		this.deleted = deleted;
+		this.updatedDate = updatedDate;
 	}
 	
 	public CommentResponseDto entityToDto(BoardComment comment) {
-		return new CommentResponseDto(comment.getCommentId(), comment.getContent(), comment.getUser().getUserId(), comment.getUser().getNickname(), comment.isDeleted());
+		return new CommentResponseDto(comment.getCommentId(), comment.getContent(), comment.getUser().getUserId(), comment.getUser().getNickname(), comment.isDeleted(), comment.getUpdatedDate());
 	}
 }
