@@ -61,7 +61,16 @@ public class BoardAttachService {
 					boardType += "ThumbBoard";
 					break;
 				}
-				String uploadPath = System.getProperty("user.dir") + File.separator+"files" + File.separator +boardType + File.separator + filename;
+				String uploadPath = System.getProperty("user.dir") + File.separator+"files" + File.separator +boardType;
+				if (!new File(uploadPath).exists()) {
+					try {
+						new File(uploadPath).mkdirs();
+						System.out.println(uploadPath);
+					} catch (Exception e) {
+						e.getStackTrace();
+					}
+				}
+				uploadPath += File.separator + filename;
 
 				attachDto.setOrigFilename(origFilename);
 				attachDto.setUploadPath(uploadPath);

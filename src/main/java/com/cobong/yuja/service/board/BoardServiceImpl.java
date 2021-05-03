@@ -43,7 +43,7 @@ public class BoardServiceImpl implements BoardService {
 		Board board = new Board().createBoard(boardType, user, dto.getTitle(), dto.getContent(), dto.getThumbnail(), dto.getExpiredDate(),
 				dto.getPayType(), dto.getPayAmount(), dto.getCareer(), dto.getTools());
 		Board board2 = boardRepository.save(board);
-		
+		//null일경우 처리 필요
 		for(Long i: dto.getBoardAttachIds()) {
 			BoardAttach boardAttach = attachRepository.findById(i).orElseThrow(() -> new IllegalAccessError("해당 이미지 없음 "+i));
 			if(!boardAttach.isFlag()) {
