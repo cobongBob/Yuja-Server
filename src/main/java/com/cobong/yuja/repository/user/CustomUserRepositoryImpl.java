@@ -13,12 +13,12 @@ import lombok.RequiredArgsConstructor;
 public class CustomUserRepositoryImpl implements CustomUserRepository {
 	private final JPAQueryFactory queryFactory;
 
-//	@Override
-//	public List<User> findByEmail(String username) {
-//		return queryFactory
-//				.selectFrom(user)
-//				.where(user.username
-//						.eq(username))
-//				.fetch();
-//	}
+	@Override
+	public List<User> findByEmail(String username) {
+		return queryFactory
+				.selectFrom(user)
+				.where(user.username
+						.eq(username))
+				.fetch();
+	}
 }
