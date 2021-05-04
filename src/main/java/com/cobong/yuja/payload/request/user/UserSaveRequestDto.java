@@ -15,7 +15,6 @@ public class UserSaveRequestDto {
 	private String nickname;
 	private String realName;
 	private String bday;
-	private String profilePic = "";
 	private String providedId ="";
 	private String provider ="";
 	private String address ="";
@@ -24,6 +23,7 @@ public class UserSaveRequestDto {
 	private String youtubeImg ="";
 	private String userIp;
 	private boolean isMarketingChecked;
+	private Long profilePicId;
 	
 	public User dtoToEntity() {
 		return User.builder()
@@ -32,7 +32,6 @@ public class UserSaveRequestDto {
 				.nickname(this.nickname)
 				.realName(this.realName)
 				.bday(this.bday)
-				.profilePic(this.profilePic)
 				.providedId(this.providedId)
 				.provider(this.provider)
 				.address(this.address)

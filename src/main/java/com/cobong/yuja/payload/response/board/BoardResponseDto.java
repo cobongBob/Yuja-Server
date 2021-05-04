@@ -8,8 +8,10 @@ import com.cobong.yuja.model.Board;
 import com.cobong.yuja.payload.response.user.UserResponseDto;
 
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class BoardResponseDto {
 	private Long id;
 	private UserResponseDto user;
@@ -21,7 +23,7 @@ public class BoardResponseDto {
 	private String payType;
 	private String payAmount;
 	private String career;
-	private String tools;
+	private List<String> tools;
 	private int likes;
 	private int comments;
 	private boolean liked;
@@ -44,7 +46,6 @@ public class BoardResponseDto {
 		this.payType=entity.getPayType();
 		this.payAmount=entity.getPayAmount();
 		this.career=entity.getCareer();
-		this.tools=entity.getTools();
 		this.updatedDate = entity.getUpdatedDate();
 		this.channelName = entity.getChannelName();
 		this.recruitingNum = entity.getRecruitingNum();

@@ -1,5 +1,6 @@
 package com.cobong.yuja.payload.request.board;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -21,7 +22,7 @@ public class BoardUpdateRequestDto {
 	private String payType = "";
 	private String payAmount = "";
 	private String career = "";
-	private String tools = "";
+	private List<String> tools = new ArrayList<String>();
 	private int hit = 0;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date expiredDate;
@@ -40,7 +41,6 @@ public class BoardUpdateRequestDto {
 				.payType(this.payType)
 				.payAmount(this.payAmount)
 				.career(this.career)
-				.tools(this.tools)
 				.hit(this.hit)
 				.expiredDate(this.expiredDate)
 				.channelName(this.channelName)

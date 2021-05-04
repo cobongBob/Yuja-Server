@@ -28,7 +28,6 @@ public class UserResponseDto {
 		this.nickname = entity.getNickname();
 		this.realName = entity.getRealName();
 		this.bday = entity.getBday();
-		this.profilePic = entity.getProfilePic();
 		this.providedId = entity.getProvidedId();
 		this.provider = entity.getProvider();
 		this.address = entity.getAddress();
