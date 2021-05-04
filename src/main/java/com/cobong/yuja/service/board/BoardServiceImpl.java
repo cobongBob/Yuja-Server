@@ -131,6 +131,7 @@ public class BoardServiceImpl implements BoardService {
 			boardAttach.addBoard(board);
 			attachRepository.save(boardAttach);
 		}
+		
 		for(String i: boardUpdateRequestDto.getBoardAttachToBeDeleted()) {
 			BoardAttach boardAttach = attachRepository.findByFileName(i);
 			boardAttach.deleteByFlag();
