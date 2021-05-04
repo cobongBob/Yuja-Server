@@ -26,37 +26,37 @@ import com.cobong.yuja.security.JwtAuthenticationFiter;
 		prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
-	@Autowired
-	PrincipalDetailsService principalDetailsService;
-	
-	@Autowired
-	JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-	
-	// 유효성, 토큰관련 세부사항 로드
-	@Bean
-	public JwtAuthenticationFiter jwtAuthenticationFiter() {
-		return new JwtAuthenticationFiter();
-	}
-
-	// 사용자 인증을 위한 Spring Security 를 생성하는데 사용
-	@Override
-	protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-		authenticationManagerBuilder
-		.userDetailsService(principalDetailsService)
-		.passwordEncoder(passwordEncoder());
-	}
-	
-	@Bean
-	private PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
-	
-	//AuthenticationFilter에서 생성한 UsernamePasswordToken을 AuthenticationManager에게 전달
-	@Bean(BeanIds.AUTHENTICATION_MANAGER)
-	@Override
-	public AuthenticationManager authenticationManagerBean() throws Exception {
-		return super.authenticationManagerBean();
-	}
+//	@Autowired
+//	PrincipalDetailsService principalDetailsService;
+//	
+//	@Autowired
+//	JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+//	
+//	// 유효성, 토큰관련 세부사항 로드
+//	@Bean
+//	public JwtAuthenticationFiter jwtAuthenticationFiter() {
+//		return new JwtAuthenticationFiter();
+//	}
+//
+//	// 사용자 인증을 위한 Spring Security 를 생성하는데 사용
+//	@Override
+//	protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+//		authenticationManagerBuilder
+//		.userDetailsService(principalDetailsService)
+//		.passwordEncoder(passwordEncoder());
+//	}
+//	
+//	@Bean
+//	private PasswordEncoder passwordEncoder() {
+//		return new BCryptPasswordEncoder();
+//	}
+//	
+//	//AuthenticationFilter에서 생성한 UsernamePasswordToken을 AuthenticationManager에게 전달
+//	@Bean(BeanIds.AUTHENTICATION_MANAGER)
+//	@Override
+//	public AuthenticationManager authenticationManagerBean() throws Exception {
+//		return super.authenticationManagerBean();
+//	}
 
 	// WebSecurityConfigurerAdapter configure메소드 더 진행해야댐
 	@Override
@@ -67,7 +67,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.csrf()
 				.disable()
 			.exceptionHandling()
-				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+//				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
 				.and()
 			.sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // https://www.inflearn.com/questions/34886
