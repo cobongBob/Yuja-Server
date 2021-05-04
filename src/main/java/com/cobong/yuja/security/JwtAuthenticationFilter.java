@@ -18,7 +18,7 @@ import com.cobong.yuja.config.auth.PrincipalDetails;
 import com.cobong.yuja.config.auth.PrincipalDetailsService;
 
 // Client에서 request로 엄어온 정보를 가지고 로그인에서 필터링
-public class JwtAuthenticationFiter extends OncePerRequestFilter {
+public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	
 	@Autowired
 	private JwtTokenProvider tokenProvider;

@@ -13,10 +13,11 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.cobong.yuja.config.auth.PrincipalDetailsService;
 import com.cobong.yuja.security.JwtAuthenticationEntryPoint;
-import com.cobong.yuja.security.JwtAuthenticationFiter;
+import com.cobong.yuja.security.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -26,39 +27,39 @@ import com.cobong.yuja.security.JwtAuthenticationFiter;
 		prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
-//	@Autowired
-//	PrincipalDetailsService principalDetailsService;
-//	
-//	@Autowired
-//	JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
-//	
-//	// 유효성, 토큰관련 세부사항 로드
-//	@Bean
-//	public JwtAuthenticationFiter jwtAuthenticationFiter() {
-//		return new JwtAuthenticationFiter();
-//	}
-//
-//	// 사용자 인증을 위한 Spring Security 를 생성하는데 사용
-//	@Override
-//	protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
-//		authenticationManagerBuilder
-//		.userDetailsService(principalDetailsService)
-//		.passwordEncoder(passwordEncoder());
-//	}
-//	
-//	@Bean
-//	private PasswordEncoder passwordEncoder() {
-//		return new BCryptPasswordEncoder();
-//	}
-//	
-//	//AuthenticationFilter에서 생성한 UsernamePasswordToken을 AuthenticationManager에게 전달
-//	@Bean(BeanIds.AUTHENTICATION_MANAGER)
-//	@Override
-//	public AuthenticationManager authenticationManagerBean() throws Exception {
-//		return super.authenticationManagerBean();
-//	}
+	@Autowired
+	PrincipalDetailsService principalDetailsService;
+	
+	@Autowired
+	JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	
+	// 유효성, 토큰관련 세부사항 로드
+	@Bean
+	public JwtAuthenticationFilter jwtAuthenticationFilter() {
+		return new JwtAuthenticationFilter();
+	}
 
-	// WebSecurityConfigurerAdapter configure메소드 더 진행해야댐
+	// 사용자 인증을 위한 Spring Security 를 생성하는데 사용
+	@Override
+	protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
+		authenticationManagerBuilder
+		.userDetailsService(principalDetailsService)
+		.passwordEncoder(passwordEncoder());
+	}
+	
+	@Bean
+	private PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
+	
+	//AuthenticationFilter에서 생성한 UsernamePasswordToken을 AuthenticationManager에게 전달
+	@Bean(BeanIds.AUTHENTICATION_MANAGER)
+	@Override
+	public AuthenticationManager authenticationManagerBean() throws Exception {
+		return super.authenticationManagerBean();
+	}
+
+	// antMatchers 설정 진행해야댐
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
@@ -67,13 +68,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.csrf()
 				.disable()
 			.exceptionHandling()
-//				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
 				.and()
 			.sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // https://www.inflearn.com/questions/34886
 				.and()
 			.authorizeRequests()
+//				.antMatchers()
+//					.permitAll()
+//				.antMatchers()
+//					.hasAuthority("ROLE_GENERAL")
+//				.antMatchers()
+//					.hasAuthority("ROLE_YOUTUBER")
+//				.antMatchers()
+//					.hasAuthority("ROLE_EDITOR")
+//				.antMatchers()
+//					.hasAuthority("ROLE_THUMBNAILOR")
+//				.antMatchers()
+//					.hasAuthority("ROLE_ADMIN")
+//				.antMatchers()
+//					.hasAuthority("ROLE_MANAGER")
 				.anyRequest()
-				.permitAll();
+					.permitAll(); // 임시
+//					.authenticated();
+		
+		// 내 커스텀 필터를 추가하고 가장먼저 실행시킴
+		http
+			.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 }
