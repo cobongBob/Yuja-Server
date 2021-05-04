@@ -9,7 +9,7 @@ import com.cobong.yuja.payload.response.board.BoardResponseDto;
 
 public interface BoardService {
 	
-	Board save(BoardSaveRequestDto dto);
+	BoardResponseDto save(BoardSaveRequestDto dto);
 	
 	BoardResponseDto findById(Long bno);
 	

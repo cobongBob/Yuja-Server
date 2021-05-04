@@ -37,13 +37,13 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
 	@Transactional
-	public Board save(BoardSaveRequestDto dto) {
+	public BoardResponseDto save(BoardSaveRequestDto dto) {
 		User user = userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("해당유저 없음 "+dto.getUserId()));
 		BoardType boardType = boardTypeRepository.findById(dto.getBoardCode()).orElseThrow(() -> new IllegalAccessError("해당글 타입 없음" + dto.getBoardCode()));
 		Board board = new Board().createBoard(boardType, user, dto.getTitle(), dto.getContent(), dto.getThumbnail(), dto.getExpiredDate(),
 				dto.getPayType(), dto.getPayAmount(), dto.getCareer(), dto.getTools());
 		Board board2 = boardRepository.save(board);
-		
+		//null일경우 처리 필요
 		for(Long i: dto.getBoardAttachIds()) {
 			BoardAttach boardAttach = attachRepository.findById(i).orElseThrow(() -> new IllegalAccessError("해당 이미지 없음 "+i));
 			if(!boardAttach.isFlag()) {
@@ -59,7 +59,7 @@ public class BoardServiceImpl implements BoardService {
 			boardAttach.addBoard(board2);
 			attachRepository.save(boardAttach);
 		}
-		return board2;
+		return new BoardResponseDto().entityToDto(board2);
 	}
 	@Override
 	@Transactional(readOnly = true)
