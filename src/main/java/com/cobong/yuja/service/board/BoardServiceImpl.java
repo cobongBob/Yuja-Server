@@ -89,15 +89,12 @@ public class BoardServiceImpl implements BoardService {
 	public String delete(Long bno) {
 		List<BoardAttach> attaches = attachRepository.findAllByBoardId(bno);
 		for(BoardAttach boardAttach: attaches) {
-			boardAttach.deleteByFlag();
-			
 			File toDel = new File(boardAttach.getUploadPath());
 			if(toDel.exists()) {
 				toDel.delete();				
 			} else {
 				System.out.println("Such File does not exist!");
 			}
-			
 			attachRepository.save(boardAttach);
 		}
 		boardRepository.deleteById(bno);

@@ -51,7 +51,7 @@ public class Board extends DateAudit{
 	@Column(nullable = false)
 	private String content;
 	
-	@OneToMany(mappedBy = "board")
+	@OneToMany(mappedBy = "board",cascade = CascadeType.REMOVE)
 	private List<BoardAttach> attachments = new ArrayList<BoardAttach>();
 	
 	@OneToMany(mappedBy = "board",cascade = CascadeType.REMOVE)

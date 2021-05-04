@@ -25,6 +25,14 @@ public class UserSaveRequestDto {
 	private String userIp;
 	private boolean isMarketingChecked;
 	
+	public void setIsMarketingChecked(boolean isMarketingChecked) {
+		this.isMarketingChecked = isMarketingChecked;
+	}
+	
+	public boolean getIsMarketingChecked() {
+		return this.isMarketingChecked;
+	}
+	
 	public User dtoToEntity() {
 		return User.builder()
 				.username(this.username)
