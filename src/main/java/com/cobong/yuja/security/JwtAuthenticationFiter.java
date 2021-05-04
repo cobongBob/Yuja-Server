@@ -40,11 +40,13 @@ public class JwtAuthenticationFiter extends OncePerRequestFilter {
 				PrincipalDetails principalDetails = principalDetailsService.loadUserById(userId);
 				
 				// 비번빼고 아이디 권한 UsernamePasswordAuthenticationToken에 저장
+				// AuthenticationManager에게 전달
 				UsernamePasswordAuthenticationToken authenticationToken =
 						new UsernamePasswordAuthenticationToken(principalDetails, null, principalDetails.getAuthorities());
 				
 				authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 				
+				// SessionCreationPolicy.STATELESS
 				// 인증 정보가 일치함으로 context 에 인증정보를 저장하고 통과시키고  SecurityContextHolder에 set
 				SecurityContextHolder.getContext().setAuthentication(authenticationToken); 
 			}

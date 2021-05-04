@@ -9,11 +9,9 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import com.cobong.yuja.model.Authorities;
 import com.cobong.yuja.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-import lombok.EqualsAndHashCode;
 import lombok.Getter;
 
 @Getter
@@ -41,7 +39,6 @@ public class PrincipalDetails implements UserDetails {
 	private String youtubeImg;
 	
 	private Collection<? extends GrantedAuthority> authority;
-	
 	
 	public PrincipalDetails(Long userId, String username, String password, String realname, String bday,
 			String nickname, String address, String bsn, String youtubeImg,
