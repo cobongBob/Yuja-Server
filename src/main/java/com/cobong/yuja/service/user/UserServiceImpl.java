@@ -49,11 +49,10 @@ public class UserServiceImpl implements UserService {
 		
 		user.modify(userUpdateRequestDto.getUsername(), userUpdateRequestDto.getPassword(), 
 				userUpdateRequestDto.getNickname(),userUpdateRequestDto.getRealName(),
-				userUpdateRequestDto.getBday(), userUpdateRequestDto.getProfilePic(),
-				userUpdateRequestDto.getProvidedId(), userUpdateRequestDto.getProvider(),
+				userUpdateRequestDto.getBday(),userUpdateRequestDto.getProvidedId(), 
+				userUpdateRequestDto.getProvider(), userUpdateRequestDto.getUserIp(),
 				userUpdateRequestDto.getAddress(), userUpdateRequestDto.getPhone(),
-				userUpdateRequestDto.getBsn(), userUpdateRequestDto.getYoutubeImg(),
-				userUpdateRequestDto.getUserIp());
+				userUpdateRequestDto.getBsn(), userUpdateRequestDto.getYoutubeImg());
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
 		return dto;
 	}

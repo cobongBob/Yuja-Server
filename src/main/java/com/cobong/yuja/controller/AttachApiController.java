@@ -39,11 +39,13 @@ public class AttachApiController {
 	 */
 	
 	//@PostMapping("/api/register/profilePicture/upload")
-	@PostMapping("/api/register/profilePicture/upload")
-	public ResponseEntity<?> profileUpload(@RequestParam("file") MultipartFile[] files) {
-		Long boardCode = 1L;
-		return new ResponseEntity<>(attachService.saveProfile(files, boardCode), HttpStatus.OK);
+	
+	/*
+	@PostMapping("/api/{userId}/profilePicture/upload")
+	public ResponseEntity<?> profileUpload(@RequestParam("file") MultipartFile[] files, @PathVariable Long userId) {
+		return new ResponseEntity<>(attachService.saveProfile(files, userId), HttpStatus.OK);
 	}
+	 * */
 	
 	
 	/***

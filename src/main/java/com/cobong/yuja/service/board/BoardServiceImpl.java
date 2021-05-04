@@ -3,6 +3,7 @@ package com.cobong.yuja.service.board;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import java.io.File;
@@ -40,8 +41,11 @@ public class BoardServiceImpl implements BoardService {
 	public BoardResponseDto save(BoardSaveRequestDto dto) {
 		User user = userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("해당유저 없음 "+dto.getUserId()));
 		BoardType boardType = boardTypeRepository.findById(dto.getBoardCode()).orElseThrow(() -> new IllegalAccessError("해당글 타입 없음" + dto.getBoardCode()));
+		
+		String toolsCombined = String.join(",", dto.getTools());
+		
 		Board board = new Board().createBoard(boardType, user, dto.getTitle(), dto.getContent(), dto.getThumbnail(), dto.getExpiredDate(),
-				dto.getPayType(), dto.getPayAmount(), dto.getCareer(), dto.getTools());
+				dto.getPayType(), dto.getPayAmount(), dto.getCareer(), toolsCombined);
 		Board board2 = boardRepository.save(board);
 		//null일경우 처리 필요
 		for(Long i: dto.getBoardAttachIds()) {
@@ -66,6 +70,7 @@ public class BoardServiceImpl implements BoardService {
 	public BoardResponseDto findById(Long bno) {
 		Board board = boardRepository.findById(bno).orElseThrow(() -> new IllegalAccessError("해당글 없음" + bno));
 		
+		List<String> tools = Arrays.asList(board.getTools().split(","));
 		List<String> boardAttachesToSend = new ArrayList<String>();
 		List<BoardAttach> attaches = attachRepository.findAllByBoardId(bno);
 		for(BoardAttach boardAttach: attaches) {
@@ -74,6 +79,7 @@ public class BoardServiceImpl implements BoardService {
 		
 		BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
 		dto.setAttaches(boardAttachesToSend);
+		dto.setTools(tools);
 		return dto;
 	}
 	@Override
@@ -106,11 +112,11 @@ public class BoardServiceImpl implements BoardService {
 	public BoardResponseDto modify(Long bno, BoardUpdateRequestDto boardUpdateRequestDto) {
 		Board board = boardRepository.findById(bno)
 				.orElseThrow(() -> new IllegalAccessError("해당글 없음" + bno));
-		
+		String toolsCombined = String.join(",", boardUpdateRequestDto.getTools());
 		board.modify(boardUpdateRequestDto.getTitle(), boardUpdateRequestDto.getContent(), 
 				boardUpdateRequestDto.getThumbnail(),boardUpdateRequestDto.getPayType(),
 				boardUpdateRequestDto.getPayAmount(), boardUpdateRequestDto.getCareer(),
-				boardUpdateRequestDto.getTools(), boardUpdateRequestDto.getExpiredDate());
+				toolsCombined, boardUpdateRequestDto.getExpiredDate());
 		BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
 		
 		for(Long i: boardUpdateRequestDto.getBoardAttachIds()) {
@@ -128,6 +134,7 @@ public class BoardServiceImpl implements BoardService {
 			boardAttach.addBoard(board);
 			attachRepository.save(boardAttach);
 		}
+		
 		for(String i: boardUpdateRequestDto.getBoardAttachToBeDeleted()) {
 			BoardAttach boardAttach = attachRepository.findByFileName(i);
 			boardAttach.deleteByFlag();

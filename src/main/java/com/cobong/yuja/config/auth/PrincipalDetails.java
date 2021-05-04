@@ -44,7 +44,7 @@ public class PrincipalDetails implements UserDetails {
 	
 	
 	public PrincipalDetails(Long userId, String username, String password, String realname, String bday,
-			String nickname, String profilePic, String address, String bsn, String youtubeImg,
+			String nickname, String address, String bsn, String youtubeImg,
 			Collection<? extends GrantedAuthority> authority) {
 		this.userId = userId;
 		this.username = username;
@@ -52,7 +52,6 @@ public class PrincipalDetails implements UserDetails {
 		this.realname = realname;
 		this.bday = bday;
 		this.nickname = nickname;
-		this.profilePic = profilePic;
 		this.address = address;
 		this.bsn = bsn;
 		this.youtubeImg = youtubeImg;
@@ -68,7 +67,7 @@ public class PrincipalDetails implements UserDetails {
 				.collect(Collectors.toList());
 
 		return new PrincipalDetails(user.getUserId(),user.getUsername(),user.getPassword(), user.getRealName(),
-				user.getBday(), user.getNickname(), user.getProfilePic(), user.getAddress(), user.getBsn(),user.getYoutubeImg(), 
+				user.getBday(), user.getNickname(), user.getAddress(), user.getBsn(),user.getYoutubeImg(), 
 				authority);
 	}
 	

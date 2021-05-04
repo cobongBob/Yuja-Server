@@ -52,7 +52,6 @@ public class DummyInsert {
 					.nickname("nickname"+i)
 					.realName("tester"+i)
 					.bday("2000-01-"+i)
-					.profilePic("url.jpg")
 					.userIp("111.111.111.111")
 					.build();
 			userRepository.save(user);

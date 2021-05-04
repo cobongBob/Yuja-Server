@@ -15,7 +15,7 @@ public class UserUpdateRequestDto {
 	private String nickname;
 	private String realName;
 	private String bday;
-	private String profilePic;
+	private Long profilePicId;
 	private String providedId;
 	private String provider;
 	private String address;
@@ -31,7 +31,6 @@ public class UserUpdateRequestDto {
 				.nickname(this.nickname)
 				.realName(this.realName)
 				.bday(this.bday)
-				.profilePic(this.profilePic)
 				.providedId(this.providedId)
 				.provider(this.provider)
 				.address(this.address)
