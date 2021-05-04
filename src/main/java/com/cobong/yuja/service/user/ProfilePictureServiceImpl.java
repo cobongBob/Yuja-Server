@@ -19,7 +19,7 @@ public class ProfilePictureServiceImpl implements ProfilePictureService {
 	private final ProfilePictureRepository profilePictureRepository;
 	
 	@Override
-	public ProfilePictureDto saveFile(MultipartFile file, Long userId) {
+	public ProfilePictureDto saveFile(MultipartFile file) {
 		ProfilePictureDto dto = new ProfilePictureDto();
 		try {
 			String origFilename = file.getOriginalFilename();

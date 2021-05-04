@@ -17,8 +17,8 @@ import lombok.RequiredArgsConstructor;
 public class ProfilePictureApiController {
 	private final ProfilePictureService profilePictureService;
 	
-	@PostMapping("/api/profile/{userId}")
-	public ResponseEntity<?> saveProfilePicture(@RequestParam("file") MultipartFile file, @PathVariable Long userId){
-		return new ResponseEntity<>(profilePictureService.saveFile(file, userId), HttpStatus.OK);
+	@PostMapping("/api/user/profile")
+	public ResponseEntity<?> saveProfilePicture(@RequestParam("file") MultipartFile file){
+		return new ResponseEntity<>(profilePictureService.saveFile(file), HttpStatus.OK);
 	}
 }

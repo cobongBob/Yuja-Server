@@ -1,16 +1,21 @@
 package com.cobong.yuja.service.user;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cobong.yuja.model.ProfilePicture;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.user.UserSaveRequestDto;
 import com.cobong.yuja.payload.request.user.UserUpdateRequestDto;
 import com.cobong.yuja.payload.response.user.UserResponseDto;
+import com.cobong.yuja.repository.user.ProfilePictureRepository;
 import com.cobong.yuja.repository.user.UserRepository;
+import com.google.common.io.Files;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,11 +23,26 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 	private final UserRepository userRepository;
+	private final ProfilePictureRepository profilePictureRepository;
 	
 	@Override
 	@Transactional
-	public User save(UserSaveRequestDto dto) {
-		return userRepository.save(dto.dtoToEntity());
+	public UserResponseDto save(UserSaveRequestDto dto) {
+		ProfilePicture profilePicture = profilePictureRepository.findById(dto.getProfilePicId()).orElseThrow(()-> new IllegalArgumentException("해당 프로필 사진을 찾을수 없습니다."));
+		User user = userRepository.save(dto.dtoToEntity());
+		if(!profilePicture.isFlag()) {
+			File temp = new File(profilePicture.getTempPath());
+			File dest = new File(profilePicture.getUploadPath());
+			try {
+				Files.move(temp, dest);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+			profilePicture.completelySave();
+			profilePicture.addUser(user);
+		}
+		UserResponseDto userResponseDto = new UserResponseDto().entityToDto(user);
+		return userResponseDto;
 	}
 	
 	@Override

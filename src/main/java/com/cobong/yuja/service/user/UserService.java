@@ -9,7 +9,7 @@ import com.cobong.yuja.payload.response.user.UserResponseDto;
 
 public interface UserService {
 
-	User save(UserSaveRequestDto dto);
+	UserResponseDto save(UserSaveRequestDto dto);
 
 	UserResponseDto findById(Long id);
 
