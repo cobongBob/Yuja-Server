@@ -2,9 +2,9 @@ package com.cobong.yuja.payload.response.user;
 
 import com.cobong.yuja.model.User;
 
-import lombok.Getter;
+import lombok.Data;
 
-@Getter
+@Data
 public class UserResponseDto {
 	private Long id;
 	private String username;

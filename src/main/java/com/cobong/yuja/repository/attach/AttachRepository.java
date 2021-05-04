@@ -6,7 +6,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
-import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardAttach;
 
 public interface AttachRepository extends JpaRepository<BoardAttach, Long>, CustomAttachRepository {

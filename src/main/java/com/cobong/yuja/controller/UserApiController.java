@@ -24,7 +24,6 @@ public class UserApiController {
 	
 	@PostMapping(path = "/api/user")
 	public ResponseEntity<?> insertUser(@RequestBody UserSaveRequestDto dto) {
-		System.out.println("***********************"+dto);
 		return new ResponseEntity<>(userService.save(dto),HttpStatus.CREATED);
 	}
 	

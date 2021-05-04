@@ -34,19 +34,6 @@ public class AttachApiController {
 		Long boardCode = 1L; //테스트용 보드 코드
 		return new ResponseEntity<>(attachService.saveFile(files, boardCode), HttpStatus.OK);
 	}
-	/***
-	 * 회원가입시 프로필 사진 업로드용 컨트롤러 필요
-	 */
-	
-	//@PostMapping("/api/register/profilePicture/upload")
-	
-	/*
-	@PostMapping("/api/{userId}/profilePicture/upload")
-	public ResponseEntity<?> profileUpload(@RequestParam("file") MultipartFile[] files, @PathVariable Long userId) {
-		return new ResponseEntity<>(attachService.saveProfile(files, userId), HttpStatus.OK);
-	}
-	 * */
-	
 	
 	/***
 	 * 썸네일러 썸네일 
