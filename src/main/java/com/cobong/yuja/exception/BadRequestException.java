@@ -1,4 +1,4 @@
-package com.cobong.yuja.security;
+package com.cobong.yuja.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;

@@ -1,4 +1,4 @@
-package com.cobong.yuja.security;
+package com.cobong.yuja.controller;
 
 import javax.validation.Valid;
 
@@ -11,6 +11,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.cobong.yuja.config.jwt.JwtAuthenticationResponse;
+import com.cobong.yuja.config.jwt.JwtTokenProvider;
+import com.cobong.yuja.payload.request.user.LoginRequest;
 
 import lombok.RequiredArgsConstructor;
 

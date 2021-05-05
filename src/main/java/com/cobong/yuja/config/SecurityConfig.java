@@ -16,8 +16,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.cobong.yuja.config.auth.PrincipalDetailsService;
-import com.cobong.yuja.security.JwtAuthenticationEntryPoint;
-import com.cobong.yuja.security.JwtAuthenticationFilter;
+import com.cobong.yuja.config.jwt.JwtAuthenticationEntryPoint;
+import com.cobong.yuja.config.jwt.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
