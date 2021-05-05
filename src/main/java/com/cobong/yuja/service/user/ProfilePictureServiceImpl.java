@@ -1,13 +1,18 @@
 package com.cobong.yuja.service.user;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+
+import javax.imageio.ImageIO;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cobong.yuja.model.ProfilePicture;
+import com.cobong.yuja.model.Thumbnail;
 import com.cobong.yuja.payload.request.user.ProfilePictureDto;
 import com.cobong.yuja.repository.user.ProfilePictureRepository;
 
@@ -29,6 +34,7 @@ public class ProfilePictureServiceImpl implements ProfilePictureService {
 			
 			// 실행되는 위치의 'temp' 폴더에 파일이 저장
 			String savePath = System.getProperty("user.dir") + File.separator+"files" + File.separator +"temp";
+			
 			// 파일이 저장되는 폴더가 없으면 폴더를 생성
 			if (!new File(savePath).exists()) {
 				try {
@@ -39,10 +45,19 @@ public class ProfilePictureServiceImpl implements ProfilePictureService {
 				}
 			}
 			savePath += File.separator + filename;
+			System.out.println("============>   "+ImageIO.read(file.getInputStream()));
 			
-			file.transferTo(new File(savePath));
+			BufferedImage resizedProfile = new BufferedImage(160, 160, ImageIO.read(file.getInputStream()).getType());
+	        
+			Graphics2D graphics2D = resizedProfile.createGraphics();
+	        graphics2D.drawImage(ImageIO.read(file.getInputStream()), 0, 0, 160, 160, null);
+	        graphics2D.dispose();
 			
-			String uploadPath = System.getProperty("user.dir") + File.separator+"files" + File.separator + "profiles" + File.separator;
+	        if(ImageIO.write(resizedProfile, "jpeg", new File(savePath))) {
+	        	System.out.println("Hurray!!!");
+	        }
+
+	        String uploadPath = System.getProperty("user.dir") + File.separator+"files" + File.separator + "profiles" + File.separator;
 			
 			if (!new File(uploadPath).exists()) {
 				try {
@@ -53,6 +68,7 @@ public class ProfilePictureServiceImpl implements ProfilePictureService {
 				}
 			}
 			uploadPath += File.separator + filename;
+			
 			
 			dto.setOrigFilename(origFilename);
 			dto.setUploadPath(uploadPath);
