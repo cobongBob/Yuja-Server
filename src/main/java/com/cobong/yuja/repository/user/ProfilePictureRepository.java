@@ -7,6 +7,8 @@ import org.springframework.data.repository.query.Param;
 import com.cobong.yuja.model.ProfilePicture;
 
 public interface ProfilePictureRepository extends JpaRepository<ProfilePicture, Long>{
-	@Query("SELECT P FROM ProfilePicture P WHERE userId = :userId and flag = true")
-	ProfilePicture findByUserIdAndFlag(@Param("userId") Long userId);
+	ProfilePicture findByUserUserId(Long userId);
+	
+//	@Query("SELECT P FROM PofilePicture P WHERE P.userId = :userId AND flag = :1")
+//	ProfilePicture findByUserIdAndFlag(@Param("userId") Long userId);
 }

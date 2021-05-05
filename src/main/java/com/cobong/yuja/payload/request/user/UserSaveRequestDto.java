@@ -23,7 +23,7 @@ public class UserSaveRequestDto {
 	private String youtubeImg ="";
 	private String userIp;
 	private boolean isMarketingChecked;
-	private Long profilePicId;
+	private Long profilePicId = 0L;
 	
 	public void setIsMarketingChecked(boolean isMarketingChecked) {
 		this.isMarketingChecked = isMarketingChecked;

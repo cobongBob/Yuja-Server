@@ -15,11 +15,12 @@ public class ProfilePictureRepositoryTest {
 	@Autowired
 	private ProfilePictureRepository ppr;
 	
-	
 	@Test
 	public void pprTest() {
-		ProfilePicture pp = ppr.findByUserIdAndFlag(3L);
-		
-		log.info(pp);
+		if(ppr.findByUserUserId(5L) != null) {
+			System.out.println("NOT NULL!!!!!!!!!!!!!");
+		} else {
+			System.out.println("Null!!!");
+		}
 	}
 }

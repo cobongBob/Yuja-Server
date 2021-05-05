@@ -2,6 +2,7 @@ package com.cobong.yuja.model;
 
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -57,7 +58,7 @@ public class User extends DateAudit {
 	@Column(nullable = false)
 	private String bday;
 
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<ProfilePicture> profilePic;
 	
 	@Column(nullable = true)

@@ -15,7 +15,7 @@ public class UserUpdateRequestDto {
 	private String nickname;
 	private String realName;
 	private String bday;
-	private Long profilePicId;
+	private Long profilePicId = 0L;
 	private String providedId;
 	private String provider;
 	private String address;

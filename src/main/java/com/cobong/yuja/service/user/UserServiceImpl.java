@@ -52,11 +52,16 @@ public class UserServiceImpl implements UserService {
 	public UserResponseDto findById(Long id) {
 		User user = userRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
-		ProfilePicture profilePicture = profilePictureRepository.findByUserIdAndFlag(id);
+		
+		ProfilePicture profilePicture = profilePictureRepository.findByUserUserId(id);
+		if(profilePicture != null) {
+			dto.setProfilePic(profilePicture.getUploadPath());			
+		} else {
+			dto.setProfilePic("");
+		} 
 		/***
-		 * 미완!! 여기를 끝내야 한드아아아아아아아
+		 * 예외처리 완료시 else에 추가해야함
 		 */
-		dto.setProfilePic(profilePicture.getUploadPath());
 		return dto;
 	}
 	
@@ -64,7 +69,18 @@ public class UserServiceImpl implements UserService {
 	@Transactional(readOnly = true)
 	public List<UserResponseDto> findAll(){
 		List<UserResponseDto> users = new ArrayList<UserResponseDto>();
-		userRepository.findAll().forEach(e -> users.add(new UserResponseDto().entityToDto(e)));
+		List<User> entityList = userRepository.findAll();
+		
+		for(User user: entityList) {
+			UserResponseDto dto = new UserResponseDto().entityToDto(user);
+			ProfilePicture profilePicture = profilePictureRepository.findByUserUserId(user.getUserId());
+			if(profilePicture != null) {
+				dto.setProfilePic(profilePicture.getUploadPath());			
+			} else {
+				dto.setProfilePic("");
+			}
+			users.add(dto);
+		}
 		return users;
 	}
 
@@ -80,16 +96,56 @@ public class UserServiceImpl implements UserService {
 				userUpdateRequestDto.getProvider(), userUpdateRequestDto.getUserIp(),
 				userUpdateRequestDto.getAddress(), userUpdateRequestDto.getPhone(),
 				userUpdateRequestDto.getBsn(), userUpdateRequestDto.getYoutubeImg());
+		
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
-		
-		
-		
+
+		if(userUpdateRequestDto.getProfilePicId() != 0L) {
+			//updateRequest에서 프로필 사진이 변경되는떄(넘어오는 ProfilePictureId가 존재할 때)
+
+			ProfilePicture profilePicture = profilePictureRepository.findById(userUpdateRequestDto.getProfilePicId()).orElseThrow(()-> new IllegalArgumentException("해당 프로필 사진을 찾을수 없습니다."));
+			//새로 등록될 프로필사진
+			
+			if(profilePictureRepository.findByUserUserId(user.getUserId()) != null) {
+				//만약 유저가 이전에 프로필사진을 등록시켜 놓은 경우
+				
+				ProfilePicture originalProfilePicture = profilePictureRepository.findByUserUserId(user.getUserId());
+				//원래 존재하던 프로필사진
+				
+				//원래 있던 프로필사진 삭제
+				File toDel = new File(originalProfilePicture.getUploadPath());
+				if(toDel.exists()) {
+					toDel.delete();				
+				} else {
+					System.out.println("Such File does not exist!");
+				}
+				profilePictureRepository.delete(originalProfilePicture);
+			}
+			// 새로추가된 프로필사진 이동후 저장.
+			if(!profilePicture.isFlag()) {
+				File temp = new File(profilePicture.getTempPath());
+				File dest = new File(profilePicture.getUploadPath());
+				try {
+					Files.move(temp, dest);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				profilePicture.completelySave();
+				profilePicture.addUser(user);
+			}
+		}
 		return dto;
 	}
 
 	@Override
 	@Transactional
 	public String delete(Long bno) {
+		ProfilePicture originalProfilePicture = profilePictureRepository.findByUserUserId(bno);
+		File toDel = new File(originalProfilePicture.getUploadPath());
+		if(toDel.exists()) {
+			toDel.delete();				
+		} else {
+			System.out.println("Such File does not exist!");
+		}
 		userRepository.deleteById(bno);
 		return "success";
 	}

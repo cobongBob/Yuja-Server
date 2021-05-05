@@ -48,20 +48,24 @@ public class BoardServiceImpl implements BoardService {
 				dto.getPayType(), dto.getPayAmount(), dto.getCareer(), toolsCombined);
 		Board board2 = boardRepository.save(board);
 		//null일경우 처리 필요
-		for(Long i: dto.getBoardAttachIds()) {
-			BoardAttach boardAttach = attachRepository.findById(i).orElseThrow(() -> new IllegalAccessError("해당 이미지 없음 "+i));
-			if(!boardAttach.isFlag()) {
-				File temp = new File(boardAttach.getTempPath());
-				File dest = new File(boardAttach.getUploadPath());
-				try {
-					Files.move(temp, dest);
-				} catch (IOException e) {
-					e.printStackTrace();
+		if(dto.getBoardAttachIds() != null) {
+			for(Long i: dto.getBoardAttachIds()) {
+				BoardAttach boardAttach = attachRepository.findById(i).orElseThrow(() -> new IllegalAccessError("해당 이미지 없음 "+i));
+				if(!boardAttach.isFlag()) {
+					File temp = new File(boardAttach.getTempPath());
+					File dest = new File(boardAttach.getUploadPath());
+					try {
+						Files.move(temp, dest);
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
+					boardAttach.completelySave();
 				}
-				boardAttach.completelySave();
+				boardAttach.addBoard(board2);
+				attachRepository.save(boardAttach);
 			}
-			boardAttach.addBoard(board2);
-			attachRepository.save(boardAttach);
+		} else {
+		
 		}
 		return new BoardResponseDto().entityToDto(board2);
 	}
