@@ -73,8 +73,10 @@ public class BoardServiceImpl implements BoardService {
 	@Transactional(readOnly = true)
 	public BoardResponseDto findById(Long bno) {
 		Board board = boardRepository.findById(bno).orElseThrow(() -> new IllegalAccessError("해당글 없음" + bno));
-		
-		List<String> tools = Arrays.asList(board.getTools().split(","));
+		List<String> tools = new ArrayList<>();
+		if(board.getTools() != null) {
+			tools = Arrays.asList(board.getTools().split(","));
+		}
 		List<String> boardAttachesToSend = new ArrayList<String>();
 		List<BoardAttach> attaches = attachRepository.findAllByBoardId(bno);
 		for(BoardAttach boardAttach: attaches) {
