@@ -1,4 +1,4 @@
-package com.cobong.yuja.config.jwt;
+package com.cobong.yuja.payload.response.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
