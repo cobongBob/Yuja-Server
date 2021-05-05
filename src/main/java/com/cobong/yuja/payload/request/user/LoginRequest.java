@@ -1,4 +1,4 @@
-package com.cobong.yuja.security;
+package com.cobong.yuja.payload.request.user;
 
 import javax.validation.constraints.NotBlank;
 
@@ -8,6 +8,7 @@ import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class LoginRequest {
 
 	@NotBlank

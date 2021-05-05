@@ -1,4 +1,4 @@
-package com.cobong.yuja.security;
+package com.cobong.yuja.config.jwt;
 
 import java.util.Date;
 

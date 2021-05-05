@@ -1,4 +1,4 @@
-package com.cobong.yuja.security;
+package com.cobong.yuja.payload.request.user;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;

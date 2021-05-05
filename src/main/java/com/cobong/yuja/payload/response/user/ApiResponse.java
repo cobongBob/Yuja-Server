@@ -1,4 +1,4 @@
-package com.cobong.yuja.security;
+package com.cobong.yuja.payload.response.user;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
