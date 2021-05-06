@@ -34,6 +34,7 @@ public class BoardResponseDto {
 	private String portfolioFormat;
 	private String manager;
 	private String worker;
+	private String yWhen;
 	
 	public BoardResponseDto entityToDto(Board entity) {
 		this.id=entity.getBoardId();
@@ -51,6 +52,7 @@ public class BoardResponseDto {
 		this.receptionMethod = entity.getReceptionMethod();
 		this.manager = entity.getManager();
 		this.worker = entity.getWorker();
+		this.yWhen = entity.getYWhen();
 		return this;
 	}
 	

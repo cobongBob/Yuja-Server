@@ -17,7 +17,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
 import com.cobong.yuja.model.audit.DateAudit;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -69,38 +68,30 @@ public class Board extends DateAudit{
 	/*
 	 * 삭제 되는 시간을 일단위로 받음. 자동으로 새벽 3,4 시 쯤 확인하는 함수를 만들어 구현?
 	 * */
-	@Column(nullable = true)
 	private Date expiredDate;
 	
-	@Column(nullable = true)
 	private String payType;
 	
-	@Column(nullable = true)
 	private String payAmount;
 	
-	@Column(nullable = true)
 	private String career;
 	
-	@Column(nullable = true)
 	private String tools;
 	
-	@Column(nullable = true)
 	private String channelName;
 	
-	@Column(nullable = true)
 	private int recruitingNum;
 	
-	@Column(nullable = true)
 	private String receptionMethod;
 	
-	@Column(nullable = true)
 	private String manager;
 	
-	@Column(nullable = true)
 	private String worker;
+	
+	private String yWhen;
 
 	public Board modify(String title, String content, String payType, String payAmount,
-			String career, String tools, Date expiredDate, String worker) {
+			String career, String tools, Date expiredDate, String worker, String yWhen) {
 		
 		this.title=title;
 		this.content=content;
@@ -110,11 +101,12 @@ public class Board extends DateAudit{
 		this.tools=tools;
 		this.expiredDate=expiredDate;
 		this.worker=worker;
+		this.yWhen = yWhen;
 		return this;
 	}
 
 	public Board createBoard(BoardType boardType, User user, String title, String content, Date expiredDate,
-			String payType, String payAmount, String career, String tools, String worker) {
+			String payType, String payAmount, String career, String tools, String worker, String yWhen) {
 		Board board = new Board();
 		board.boardId = boardId;
 		board.boardType = boardType;

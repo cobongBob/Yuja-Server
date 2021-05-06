@@ -33,6 +33,7 @@ public class BoardSaveRequestDto {
 	private String manager = "";
 	private List<Long> boardAttachIds;
 	private String worker = "";
+	private String yWhen = "";
 	
 	public Board dtoToEntity() {
 		return Board.builder()
@@ -48,6 +49,7 @@ public class BoardSaveRequestDto {
 				.receptionMethod(this.receptionMethod)
 				.manager(this.manager)
 				.worker(this.worker)
+				.yWhen(this.yWhen)
 				.build();
 	}
 }
