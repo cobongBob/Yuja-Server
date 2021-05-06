@@ -84,16 +84,23 @@ public class Board extends DateAudit{
 	@Column(nullable = true)
 	private String tools;
 	
+	@Column(nullable = true)
 	private String channelName;
 	
+	@Column(nullable = true)
 	private int recruitingNum;
 	
+	@Column(nullable = true)
 	private String receptionMethod;
 	
+	@Column(nullable = true)
 	private String manager;
+	
+	@Column(nullable = true)
+	private String worker;
 
 	public Board modify(String title, String content, String payType, String payAmount,
-			String career, String tools, Date expiredDate) {
+			String career, String tools, Date expiredDate, String worker) {
 		
 		this.title=title;
 		this.content=content;
@@ -102,11 +109,12 @@ public class Board extends DateAudit{
 		this.career=career;
 		this.tools=tools;
 		this.expiredDate=expiredDate;
+		this.worker=worker;
 		return this;
 	}
 
 	public Board createBoard(BoardType boardType, User user, String title, String content, Date expiredDate,
-			String payType, String payAmount, String career, String tools) {
+			String payType, String payAmount, String career, String tools, String worker) {
 		Board board = new Board();
 		board.boardId = boardId;
 		board.boardType = boardType;
@@ -118,6 +126,7 @@ public class Board extends DateAudit{
 		board.payAmount = payAmount;
 		board.career = career;
 		board.tools = tools;
+		board.worker =worker;
 		return board;
 	}
 	

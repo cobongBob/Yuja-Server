@@ -55,12 +55,12 @@ public class DummyInsert {
 	
 	@Test
 	public void insertUser() {
-		IntStream.rangeClosed(1, 100).forEach(i -> {
+		IntStream.rangeClosed(1, 102).forEach(i -> {
 			User user = User.builder()
-					.username("user"+i)
+					.username("user "+i)
 					.password(passwordEncoder.encode("1111"))
-					.nickname("nickname"+i)
-					.realName("tester"+i)
+					.nickname("nickname "+i)
+					.realName("tester "+i)
 					.bday("2000-01-"+i)
 					.userIp("111.111.111.111")
 					.build();
@@ -70,7 +70,7 @@ public class DummyInsert {
 	
 	@Test
 	public void insertBoard() {
-		IntStream.rangeClosed(1, 100).forEach(i -> {
+		IntStream.rangeClosed(1, 102).forEach(i -> {
 			User user = User.builder().userId(Long.valueOf(i)).build();
 			BoardType boardType = boardTypeRepository.findById(1L).orElseThrow(()-> new IllegalArgumentException("존재하지 x"));
 			Board board = Board.builder()
@@ -79,7 +79,7 @@ public class DummyInsert {
 					.career("신입")
 					.channelName("테스트채널 "+i)
 					.expiredDate(new Date())
-					.manager("테스트매니저"+i)
+					.manager("테스트매니저 "+i)
 					.payAmount("100,000")
 					.payType("건당")
 					.receptionMethod("비대면")
@@ -87,6 +87,7 @@ public class DummyInsert {
 					.tools("프리미어 프로,파이널,베가스")
 					.title("테스트 제목 "+i)
 					.content("테스트 내용 "+i)
+					.worker("편집자")
 					.hit(i)
 					.build();
 			boardRepository.save(board);
@@ -95,9 +96,9 @@ public class DummyInsert {
 	
 	@Test
 	public void insertLikes() {
-		IntStream.range(1, 100).forEach(i -> {
-			long bno = (long) (Math.random() * 100) + 1;
-			long uno = (long) (Math.random() * 100) + 1;
+		IntStream.range(1, 102).forEach(i -> {
+			long bno = (long) (Math.random() * 102) + 1;
+			long uno = (long) (Math.random() * 102) + 1;
 			Board board = Board.builder().boardId(bno).build();
 			User user = User.builder().userId(uno).build();
 			BoardLiked boardLiked = BoardLiked.builder()
@@ -110,9 +111,9 @@ public class DummyInsert {
 	
 	@Test
 	public void insertComment() {
-		IntStream.range(1, 100).forEach(i -> {
-			long bno = (long) (Math.random() * 100) + 1;
-			long uno = (long) (Math.random() * 100) + 1;
+		IntStream.range(1, 102).forEach(i -> {
+			long bno = (long) (Math.random() * 102) + 1;
+			long uno = (long) (Math.random() * 102) + 1;
 			Board board = Board.builder().boardId(bno).build();
 			User user = User.builder().userId(uno).build();
 			BoardComment boardComment = BoardComment.builder()

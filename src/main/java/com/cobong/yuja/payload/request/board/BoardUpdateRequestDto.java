@@ -31,6 +31,7 @@ public class BoardUpdateRequestDto {
 	private String manager = "";
 	private List<Long> boardAttachIds;
 	private List<String> boardAttachToBeDeleted;
+	private String worker = "";
 	
 	public Board dtoToEntity() {
 		return Board.builder()
@@ -45,6 +46,7 @@ public class BoardUpdateRequestDto {
 				.recruitingNum(this.recruitingNum)
 				.receptionMethod(this.receptionMethod)
 				.manager(this.manager)
+				.worker(this.worker)
 				.build();
 	}
 }

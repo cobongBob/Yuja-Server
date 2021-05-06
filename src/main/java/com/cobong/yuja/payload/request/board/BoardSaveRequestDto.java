@@ -32,6 +32,7 @@ public class BoardSaveRequestDto {
 	private String receptionMethod = "";
 	private String manager = "";
 	private List<Long> boardAttachIds;
+	private String worker = "";
 	
 	public Board dtoToEntity() {
 		return Board.builder()
@@ -46,6 +47,7 @@ public class BoardSaveRequestDto {
 				.recruitingNum(this.recruitingNum)
 				.receptionMethod(this.receptionMethod)
 				.manager(this.manager)
+				.worker(this.worker)
 				.build();
 	}
 }
