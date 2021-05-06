@@ -40,7 +40,7 @@ public class UserServiceImpl implements UserService {
 		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 
 		Authorities authorities = authoritiesRepository.findByAuthority(AuthorityNames.GENERAL)
-				.orElseThrow(() -> new AppException("Authority not set"));
+				.orElseThrow(() -> new AppException("Authority(GENERAL) not set"));
 
 		User entity = User.builder()
 		.username(dto.getUsername())

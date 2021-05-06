@@ -55,8 +55,8 @@ dependencies {
 	implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.0'
 	
 	// validation
-	implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
-	
+	implementation 'org.springframework.boot:spring-boot-starter-validation'
+
 	//Thumbnailator
 	implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.8'
 }
