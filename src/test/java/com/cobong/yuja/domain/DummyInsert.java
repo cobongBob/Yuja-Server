@@ -68,7 +68,7 @@ public class DummyInsert {
 	@Test
 	public void insertUser() {
 		Authorities auth = authRepo.findById(1L).orElseThrow(()->new IllegalArgumentException("ghi"));
-		IntStream.rangeClosed(1, 5).forEach(i -> {
+		IntStream.rangeClosed(1, 102).forEach(i -> {
 			User user = User.builder()
 					.username("user "+i)
 					.password(passwordEncoder.encode("1111"))

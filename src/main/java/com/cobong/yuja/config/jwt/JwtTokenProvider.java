@@ -21,25 +21,33 @@ import io.jsonwebtoken.UnsupportedJwtException;
 // 로그인 한 후 JWT를 생성하고, JWT 유효성을 검사파트
 @Component
 public class JwtTokenProvider {
-
+	public final static long TOKEN_VALIDATION_SECOND = 1000L * 20;
+    public final static long REFRESH_TOKEN_VALIDATION_SECOND = 1000L * 60 * 24;
 	private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
-
+	
+	final static public String ACCESS_TOKEN_NAME = "accessToken";
+    final static public String REFRESH_TOKEN_NAME = "refreshToken";
+    
 	// apc.yml에 설정함
 	@Value("${app.jwtSecret}")
 	private String jwtSecret;
-
-	// +7일로 해둠
-	@Value("${app.jwtExpirationInMs}")
-	private int jwtExpirationInMs;
-
-	// JWT 생성 파트
+	
+	
 	public String generateToken(Authentication authentication) {
+        return doGenerateToken(authentication, TOKEN_VALIDATION_SECOND);
+    }
+
+    public String generateRefreshToken(Authentication authentication) {
+        return doGenerateToken(authentication, REFRESH_TOKEN_VALIDATION_SECOND);
+    }
+	// JWT 생성 파트
+	public String doGenerateToken(Authentication authentication, long expireTime) {
 
 		// getPrincipal PrincipalDetails담겨있는 정보를 가져옴
 		PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
 
 		Date now = new Date();
-		Date expirydate = new Date(now.getTime() + jwtExpirationInMs);
+		Date expirydate = new Date(now.getTime() + expireTime);
 
 		return Jwts.builder()
 				.setSubject(Long.toString(principalDetails.getUserId())) // sub에서 UserId를 구분
@@ -82,4 +90,16 @@ public class JwtTokenProvider {
 		}
 		return false;
 	}
+	public Claims extractAllClaims(String token) throws ExpiredJwtException {
+		return Jwts
+				.parser()
+				.setSigningKey(jwtSecret)
+				.parseClaimsJws(token)
+				.getBody();
+	}
+	
+	 public Boolean isTokenExpired(String token) {
+	        Date expiration = extractAllClaims(token).getExpiration();
+	        return expiration.before(new Date());
+	    }
 }

@@ -98,6 +98,13 @@ public class UserServiceImpl implements UserService {
 		 */
 		return dto;
 	}
+	@Override
+	@Transactional(readOnly = true)
+	public UserResponseDto findByUsername(String username) {
+		User user = userRepository.findByUsername(username).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
+		UserResponseDto dto = new UserResponseDto().entityToDto(user);
+		return dto;
+	}
 	
 	@Override
 	@Transactional(readOnly = true)

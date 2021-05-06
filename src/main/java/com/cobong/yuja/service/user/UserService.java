@@ -19,4 +19,6 @@ public interface UserService {
 
 	String delete(Long bno);
 
+	UserResponseDto findByUsername(String username);
+
 }
