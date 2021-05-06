@@ -60,7 +60,7 @@ public class PrincipalDetails implements UserDetails {
 		List<GrantedAuthority> authority = 
 				user.getAuthorities()
 				.stream()
-				.map(roles -> new SimpleGrantedAuthority(roles.getAuthorities().getAuthority().getValue()))
+				.map(roles -> new SimpleGrantedAuthority(roles.getAuthority().name()))
 				.collect(Collectors.toList());
 
 		return new PrincipalDetails(user.getUserId(),user.getUsername(),user.getPassword(), user.getRealName(),
@@ -73,7 +73,6 @@ public class PrincipalDetails implements UserDetails {
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		return authority;
 	}
-
 
 	@Override
 	public boolean isAccountNonExpired() {
@@ -113,9 +112,4 @@ public class PrincipalDetails implements UserDetails {
 	public int hashCode() {
 		return Objects.hash(userId);
 	}
-
-
-
-	
-
 }

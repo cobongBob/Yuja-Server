@@ -1,7 +1,5 @@
 package com.cobong.yuja.service.user;
 
-import java.awt.Graphics2D;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
@@ -13,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cobong.yuja.model.ProfilePicture;
-import com.cobong.yuja.model.Thumbnail;
 import com.cobong.yuja.payload.request.user.ProfilePictureDto;
 import com.cobong.yuja.repository.user.ProfilePictureRepository;
 

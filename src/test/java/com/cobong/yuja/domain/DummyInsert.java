@@ -1,5 +1,6 @@
 package com.cobong.yuja.domain;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.stream.IntStream;
 
@@ -8,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import com.cobong.yuja.model.Authorities;
+import com.cobong.yuja.model.AuthorityNames;
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardComment;
 import com.cobong.yuja.model.BoardLiked;
@@ -17,6 +20,7 @@ import com.cobong.yuja.repository.BoardTypeRepository;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.boardLiked.BoardLikedRepository;
 import com.cobong.yuja.repository.comment.CommentRepository;
+import com.cobong.yuja.repository.user.AuthoritiesRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 
 @SpringBootTest
@@ -38,6 +42,9 @@ public class DummyInsert {
 	
 	@Autowired
 	private BoardLikedRepository boardLikedRepository;
+
+	@Autowired
+	private AuthoritiesRepository authRepo;
 	
 	@Test //이놈 돌릴땐 yml에서 create로 바꿔주시고 돌린후 update로 돌려주세요
 	public void insertType() {
@@ -52,10 +59,17 @@ public class DummyInsert {
 		boardTypeRepository.save(boardType);
 	}
 	
+	@Test
+	public void insertAuth() {
+		Authorities authorities = new Authorities(1L,AuthorityNames.GENERAL);
+		authRepo.save(authorities);
+	}
+	
 	
 	@Test
 	public void insertUser() {
-		IntStream.rangeClosed(1, 102).forEach(i -> {
+		Authorities auth = authRepo.findById(1L).orElseThrow(()->new IllegalArgumentException("ghi"));
+		IntStream.rangeClosed(1, 5).forEach(i -> {
 			User user = User.builder()
 					.username("user "+i)
 					.password(passwordEncoder.encode("1111"))
@@ -63,6 +77,7 @@ public class DummyInsert {
 					.realName("tester "+i)
 					.bday("2000-01-"+i)
 					.userIp("111.111.111.111")
+					.authorities(Collections.singletonList(auth))
 					.build();
 			userRepository.save(user);
 		});

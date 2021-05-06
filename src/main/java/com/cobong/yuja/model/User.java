@@ -5,9 +5,13 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 
 import com.cobong.yuja.model.audit.DateAudit;
@@ -36,8 +40,9 @@ public class User extends DateAudit {
 	 * 디폴트 값을 General로 주는 방법 찾아보기
 	 * sts 가 주는 힌트는 @Builder.Default를 이용하라는 듯 하다.  
 	 * */
-	@OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
-	private List<UserRole> authorities;
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "UserRole", joinColumns = @JoinColumn(name="userId"), inverseJoinColumns = @JoinColumn(name="authorityId"))
+	private List<Authorities> authorities;
 	
 	/* 현제 다대일 양방향으로 구현되어 있음. 양방향으로 할지, 단방향으로 할지 정하고 확인 후 커밋!!! 
 	 * 일반적으로는 접근의 용이함, 편리성 때문에 양방향을 선호하는 듯

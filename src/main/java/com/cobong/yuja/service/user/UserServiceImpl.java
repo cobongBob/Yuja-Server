@@ -3,16 +3,22 @@ package com.cobong.yuja.service.user;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cobong.yuja.exception.AppException;
+import com.cobong.yuja.model.Authorities;
+import com.cobong.yuja.model.AuthorityNames;
 import com.cobong.yuja.model.ProfilePicture;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.user.UserSaveRequestDto;
 import com.cobong.yuja.payload.request.user.UserUpdateRequestDto;
 import com.cobong.yuja.payload.response.user.UserResponseDto;
+import com.cobong.yuja.repository.user.AuthoritiesRepository;
 import com.cobong.yuja.repository.user.ProfilePictureRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 import com.google.common.io.Files;
@@ -24,14 +30,42 @@ import lombok.RequiredArgsConstructor;
 public class UserServiceImpl implements UserService {
 	private final UserRepository userRepository;
 	private final ProfilePictureRepository profilePictureRepository;
+	private final PasswordEncoder passwordEncoder;
+	private final AuthoritiesRepository authoritiesRepository;
+	
 	
 	@Override
 	@Transactional
 	public UserResponseDto save(UserSaveRequestDto dto) {		
-		User user = userRepository.save(dto.dtoToEntity());
-		if(dto.getProfilePicId() != 0) {
-			ProfilePicture profilePicture = profilePictureRepository.findById(dto.getProfilePicId()).orElseThrow(()-> new IllegalArgumentException("해당 프로필 사진을 찾을수 없습니다."));
-			if(!profilePicture.isFlag()) {
+		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
+
+		Authorities authorities = authoritiesRepository.findByAuthority(AuthorityNames.GENERAL)
+				.orElseThrow(() -> new AppException("Authority not set"));
+
+		User entity = User.builder()
+		.username(dto.getUsername())
+		.password(dto.getPassword())
+		.nickname(dto.getNickname())
+		.realName(dto.getRealName())
+		.authorities(Collections.singletonList((authorities)))
+		.bday(dto.getBday())
+		.providedId(dto.getProvidedId())
+		.provider(dto.getProvider())
+		.address(dto.getAddress())
+		.phone(dto.getPhone())
+		.bsn(dto.getBsn())
+		.youtubeImg(dto.getYoutubeImg())
+		.userIp(dto.getUserIp())
+		.isMarketingChecked(dto.getIsMarketingChecked())
+		.build();
+
+		User user = userRepository.save(entity);
+
+
+		if (dto.getProfilePicId() != 0) {
+			ProfilePicture profilePicture = profilePictureRepository.findById(dto.getProfilePicId())
+					.orElseThrow(() -> new IllegalArgumentException("해당 프로필 사진을 찾을수 없습니다."));
+			if (!profilePicture.isFlag()) {
 				File temp = new File(profilePicture.getTempPath());
 				File dest = new File(profilePicture.getUploadPath());
 				try {

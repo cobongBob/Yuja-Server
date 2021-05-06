@@ -2,8 +2,6 @@ package com.cobong.yuja.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -24,11 +22,9 @@ public class UserApiController {
 
 	private final UserService userService;
 	
-	private final PasswordEncoder passwordEncoder;
 	
 	@PostMapping(path = "/api/user")
 	public ResponseEntity<?> insertUser(@RequestBody UserSaveRequestDto dto) {
-		dto.setPassword(passwordEncoder.encode(dto.getPassword()));//나중에 처리해야함
 		return new ResponseEntity<>(userService.save(dto),HttpStatus.CREATED);
 	}
 	
