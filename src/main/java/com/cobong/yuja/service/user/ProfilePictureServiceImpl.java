@@ -3,6 +3,7 @@ package com.cobong.yuja.service.user;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -17,6 +18,7 @@ import com.cobong.yuja.payload.request.user.ProfilePictureDto;
 import com.cobong.yuja.repository.user.ProfilePictureRepository;
 
 import lombok.RequiredArgsConstructor;
+import net.coobird.thumbnailator.Thumbnailator;
 
 @Service
 @RequiredArgsConstructor
@@ -45,17 +47,14 @@ public class ProfilePictureServiceImpl implements ProfilePictureService {
 				}
 			}
 			savePath += File.separator + filename;
-			System.out.println("============>   "+ImageIO.read(file.getInputStream()));
 			
-			BufferedImage resizedProfile = new BufferedImage(160, 160, ImageIO.read(file.getInputStream()).getType());
-	        
-			Graphics2D graphics2D = resizedProfile.createGraphics();
-	        graphics2D.drawImage(ImageIO.read(file.getInputStream()), 0, 0, 160, 160, null);
-	        graphics2D.dispose();
-			
-	        if(ImageIO.write(resizedProfile, "jpeg", new File(savePath))) {
-	        	System.out.println("Hurray!!!");
-	        }
+			FileOutputStream res = new FileOutputStream(new File(savePath));
+			if(ImageIO.read(file.getInputStream()).getHeight() < ImageIO.read(file.getInputStream()).getWidth()) {
+				Thumbnailator.createThumbnail(file.getInputStream(), res, 160, ImageIO.read(file.getInputStream()).getHeight());
+			} else {
+				Thumbnailator.createThumbnail(file.getInputStream(), res, ImageIO.read(file.getInputStream()).getWidth(), 160);	
+			}
+			res.close();
 
 	        String uploadPath = System.getProperty("user.dir") + File.separator+"files" + File.separator + "profiles" + File.separator;
 			
@@ -68,7 +67,6 @@ public class ProfilePictureServiceImpl implements ProfilePictureService {
 				}
 			}
 			uploadPath += File.separator + filename;
-			
 			
 			dto.setOrigFilename(origFilename);
 			dto.setUploadPath(uploadPath);

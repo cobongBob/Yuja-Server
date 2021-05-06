@@ -77,6 +77,10 @@ public class BoardServiceImpl implements BoardService {
 		if(board.getTools() != null) {
 			tools = Arrays.asList(board.getTools().split(","));
 		}
+		
+		int likes = Long.valueOf(boardRepository.likedReceived(board.getBoardId())).intValue();
+		int comments = Long.valueOf(boardRepository.commentsReceived(board.getBoardId())).intValue();
+		
 		List<String> boardAttachesToSend = new ArrayList<String>();
 		List<BoardAttach> attaches = attachRepository.findAllByBoardId(bno);
 		for(BoardAttach boardAttach: attaches) {
@@ -84,6 +88,7 @@ public class BoardServiceImpl implements BoardService {
 		}
 		
 		BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
+		dto.setLikesAndComments(likes, comments);
 		dto.setAttaches(boardAttachesToSend);
 		dto.setTools(tools);
 		return dto;
@@ -166,7 +171,12 @@ public class BoardServiceImpl implements BoardService {
 			int likes = Long.valueOf(boardRepository.likedReceived(board.getBoardId())).intValue();
 			int comments = Long.valueOf(boardRepository.commentsReceived(board.getBoardId())).intValue();
 			BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
-			//dto.setLikesAndComments(likes, comments);
+			List<String> tools = new ArrayList<>();
+			if(board.getTools() != null) {
+				tools = Arrays.asList(board.getTools().split(","));
+			}
+			dto.setTools(tools);
+			dto.setLikesAndComments(likes, comments);
 			/*
 			 * 유저 아이디 값을 받도록 바꾸어야 한다.
 			 * */
@@ -185,7 +195,13 @@ public class BoardServiceImpl implements BoardService {
 			int likes = Long.valueOf(boardRepository.likedReceived(board.getBoardId())).intValue();
 			int comments = Long.valueOf(boardRepository.commentsReceived(board.getBoardId())).intValue();
 			BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
-			dto.setLikesAndComments(likes, comments, likedOrNot);
+			List<String> tools = new ArrayList<>();
+			if(board.getTools() != null) {
+				tools = Arrays.asList(board.getTools().split(","));
+			}
+			dto.setTools(tools);
+			dto.setLikesAndComments(likes, comments);
+			dto.setLiked(likedOrNot);
 			curBoardResponseDto.add(dto);
 		}
 		return curBoardResponseDto;
@@ -201,7 +217,13 @@ public class BoardServiceImpl implements BoardService {
 			int likes = Long.valueOf(boardRepository.likedReceived(board.getBoardId())).intValue();
 			int comments = Long.valueOf(boardRepository.commentsReceived(board.getBoardId())).intValue();
 			BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
-			dto.setLikesAndComments(likes, comments, likedOrNot);
+			List<String> tools = new ArrayList<>();
+			if(board.getTools() != null) {
+				tools = Arrays.asList(board.getTools().split(","));
+			}
+			dto.setTools(tools);
+			dto.setLikesAndComments(likes, comments);
+			dto.setLiked(likedOrNot);
 			curBoardResponseDto.add(dto);
 		}
 		return curBoardResponseDto;
@@ -217,7 +239,13 @@ public class BoardServiceImpl implements BoardService {
 			int likes = Long.valueOf(boardRepository.likedReceived(board.getBoardId())).intValue();
 			int comments = Long.valueOf(boardRepository.commentsReceived(board.getBoardId())).intValue();
 			BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
-			dto.setLikesAndComments(likes, comments, likedOrNot);
+			List<String> tools = new ArrayList<>();
+			if(board.getTools() != null) {
+				tools = Arrays.asList(board.getTools().split(","));
+			}
+			dto.setTools(tools);
+			dto.setLikesAndComments(likes, comments);
+			dto.setLiked(likedOrNot);
 			curBoardResponseDto.add(dto);
 		}
 		return curBoardResponseDto;

@@ -54,10 +54,9 @@ public class BoardResponseDto {
 		return this;
 	}
 	
-	public void setLikesAndComments(int likes, int comments, boolean likedOrNot) {
+	public void setLikesAndComments(int likes, int comments) {
 		this.likes = likes;
 		this.comments = comments;
-		this.liked = likedOrNot;
 	}
 	
 	public void setAttaches(List<String> attaches) {

@@ -56,6 +56,9 @@ dependencies {
 	
 	// validation
 	implementation group: 'javax.validation', name: 'validation-api', version: '2.0.1.Final'
+	
+	//Thumbnailator
+	implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.8'
 }
 
 test {
