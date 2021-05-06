@@ -52,7 +52,6 @@ public class DummyInsert {
 		boardTypeRepository.save(boardType);
 	}
 	
-	
 	@Test
 	public void insertUser() {
 		IntStream.rangeClosed(1, 102).forEach(i -> {
