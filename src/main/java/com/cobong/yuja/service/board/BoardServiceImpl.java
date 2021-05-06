@@ -44,7 +44,7 @@ public class BoardServiceImpl implements BoardService {
 		
 		String toolsCombined = String.join(",", dto.getTools());
 		
-		Board board = new Board().createBoard(boardType, user, dto.getTitle(), dto.getContent(), dto.getThumbnail(), dto.getExpiredDate(),
+		Board board = new Board().createBoard(boardType, user, dto.getTitle(), dto.getContent(), dto.getExpiredDate(),
 				dto.getPayType(), dto.getPayAmount(), dto.getCareer(), toolsCombined);
 		Board board2 = boardRepository.save(board);
 		//null일경우 처리 필요
@@ -120,7 +120,7 @@ public class BoardServiceImpl implements BoardService {
 				.orElseThrow(() -> new IllegalAccessError("해당글 없음" + bno));
 		String toolsCombined = String.join(",", boardUpdateRequestDto.getTools());
 		board.modify(boardUpdateRequestDto.getTitle(), boardUpdateRequestDto.getContent(), 
-				boardUpdateRequestDto.getThumbnail(),boardUpdateRequestDto.getPayType(),
+				boardUpdateRequestDto.getPayType(),
 				boardUpdateRequestDto.getPayAmount(), boardUpdateRequestDto.getCareer(),
 				toolsCombined, boardUpdateRequestDto.getExpiredDate());
 		BoardResponseDto dto = new BoardResponseDto().entityToDto(board);

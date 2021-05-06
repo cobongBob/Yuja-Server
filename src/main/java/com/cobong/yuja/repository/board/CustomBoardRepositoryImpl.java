@@ -6,8 +6,6 @@ import static com.cobong.yuja.model.QBoardLiked.boardLiked;
 
 import java.util.List;
 
-import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
-
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardLiked;
 import com.querydsl.jpa.impl.JPAQueryFactory;

@@ -51,11 +51,10 @@ public class BoardControllerUnitTest {
 		BoardSaveRequestDto dto =new BoardSaveRequestDto();
 		dto.setTitle("테스트 제목1");
 		dto.setContent("테스트 내용1");
-		dto.setThumbnail("테스트 썸네일");
 		dto.setExpiredDate(new Date());
 		Board board = dto.dtoToEntity();
 		
-				Board a = new Board(0L, null, null, "테스트 제목1", "테스트 내용1", null, null, 0, "테스트 썸네일", null, null, null, null, null, null, 0, null, null);
+				Board a = new Board(0L, null, null, "테스트 제목1", "테스트 내용1", null, null, null, 0, null, null, null, null, null, null, null, 0, null, null);
 				BoardResponseDto resultBoard = new BoardResponseDto().entityToDto(a);
 		String content = new ObjectMapper().writeValueAsString(board);
 
@@ -79,11 +78,10 @@ public class BoardControllerUnitTest {
 		BoardSaveRequestDto boardSaveRequestDto =new BoardSaveRequestDto();
 		boardSaveRequestDto.setTitle("테스트 제목1");
 		boardSaveRequestDto.setContent("테스트 내용1");
-		boardSaveRequestDto.setThumbnail("테스트 썸네일");
 		boardSaveRequestDto.setExpiredDate(new Date());
 		BoardResponseDto boardResponseDto = new BoardResponseDto().entityToDto(boardSaveRequestDto.dtoToEntity());
 
-		BoardResponseDto resultBoard = new BoardResponseDto().entityToDto(new Board(0L, null, null, "테스트 제목1", "테스트 내용1", null, null, 0, "테스트 썸네일", null, null, null, null, null, null, 0, null, null));
+		BoardResponseDto resultBoard = new BoardResponseDto().entityToDto(new Board(0L, null, null, "테스트 제목1", "테스트 내용1", null, null, null, 0, null, null, null, null, null, null, null, 0, null, null));
 		boardService.save(boardSaveRequestDto);
 		when(boardService.findById(1L)).thenReturn(resultBoard);
 		//when
@@ -100,7 +98,7 @@ public class BoardControllerUnitTest {
 	@Test
     public void modify_test() throws Exception {
 
-		BoardResponseDto board = new BoardResponseDto().entityToDto(new Board(0L, null, null, "테스트 제목1", "테스트 내용1", null, null, 0, "테스트 썸네일", null, null, null, null, null, null, 0, null, null));
+		BoardResponseDto board = new BoardResponseDto().entityToDto(new Board(0L, null, null, "테스트 제목1", "테스트 내용1", null, null, null, 0, null, null, null, null, null, null, null, 0, null, null));
 		
 		BoardUpdateRequestDto boardUpdateRequestDto = new BoardUpdateRequestDto();
 				
@@ -137,13 +135,11 @@ public class BoardControllerUnitTest {
 		BoardSaveRequestDto boardSaveRequestDto = new BoardSaveRequestDto();
 		boardSaveRequestDto.setTitle("테스트 제목");
 		boardSaveRequestDto.setContent("테스트 내용");
-		boardSaveRequestDto.setThumbnail("테스트 썸네일");
 		boardSaveRequestDto.setExpiredDate(new Date());
 		
 		BoardSaveRequestDto boardSaveRequestDto2 = new BoardSaveRequestDto();
 		boardSaveRequestDto2.setTitle("테스트 제목2");
 		boardSaveRequestDto2.setContent("테스트 내용2");
-		boardSaveRequestDto2.setThumbnail("테스트 썸네일2");
 		boardSaveRequestDto2.setExpiredDate(new Date());
 
 		

@@ -57,7 +57,6 @@ public class BoardControllerIntegreTest {
 			BoardSaveRequestDto boardSaveRequestDto = new BoardSaveRequestDto();
 			boardSaveRequestDto.setTitle("테스트 제목"+i);
 			boardSaveRequestDto.setContent("테스트 내용"+i);
-			boardSaveRequestDto.setThumbnail("테스트 썸네일"+i);
 			boardSaveRequestDto.setExpiredDate(new Date());
 			boardService.save(boardSaveRequestDto);
 		}
@@ -69,7 +68,6 @@ public class BoardControllerIntegreTest {
 		BoardSaveRequestDto dto =new BoardSaveRequestDto();
 		dto.setTitle("테스트 제목4");
 		dto.setContent("테스트 내용4");
-		dto.setThumbnail("테스트 썸네일4");
 		Board board = dto.dtoToEntity();
 		String content = new ObjectMapper().writeValueAsString(board);
 		

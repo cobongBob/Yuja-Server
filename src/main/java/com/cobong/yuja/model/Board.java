@@ -55,13 +55,16 @@ public class Board extends DateAudit{
 	private List<BoardAttach> attachments = new ArrayList<BoardAttach>();
 	
 	@OneToMany(mappedBy = "board",cascade = CascadeType.REMOVE)
+	private List<BoardLiked> liked = new ArrayList<BoardLiked>();
+	
+	@OneToMany(mappedBy = "board",cascade = CascadeType.REMOVE)
 	private List<BoardComment> comments = new ArrayList<BoardComment>();
 	
 	@Column(nullable = false)
 	private int hit; 
 	
-	@Column(nullable = false)
-	private String thumbnail;
+	@OneToMany(mappedBy = "board",cascade = CascadeType.REMOVE)
+	private List<Thumbnail> thumbnail = new ArrayList<Thumbnail>();
 
 	/*
 	 * 삭제 되는 시간을 일단위로 받음. 자동으로 새벽 3,4 시 쯤 확인하는 함수를 만들어 구현?
@@ -89,12 +92,11 @@ public class Board extends DateAudit{
 	
 	private String manager;
 
-	public Board modify(String title, String content, String thumbnail, String payType, String payAmount,
+	public Board modify(String title, String content, String payType, String payAmount,
 			String career, String tools, Date expiredDate) {
 		
 		this.title=title;
 		this.content=content;
-		this.thumbnail=thumbnail;
 		this.payType=payType;
 		this.payAmount=payAmount;
 		this.career=career;
@@ -103,8 +105,7 @@ public class Board extends DateAudit{
 		return this;
 	}
 
-	public Board createBoard(BoardType boardType, User user, String title, String content,
-			String thumbnail, Date expiredDate,
+	public Board createBoard(BoardType boardType, User user, String title, String content, Date expiredDate,
 			String payType, String payAmount, String career, String tools) {
 		Board board = new Board();
 		board.boardId = boardId;
@@ -112,7 +113,6 @@ public class Board extends DateAudit{
 		board.user = user;
 		board.title = title;
 		board.content = content;
-		board.thumbnail = thumbnail;
 		board.expiredDate = expiredDate;
 		board.payType = payType;
 		board.payAmount = payAmount;

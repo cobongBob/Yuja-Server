@@ -18,7 +18,6 @@ import lombok.NoArgsConstructor;
 public class BoardUpdateRequestDto {
 	private String title;
 	private String content;
-	private String thumbnail;
 	private String payType = "";
 	private String payAmount = "";
 	private String career = "";
@@ -37,7 +36,6 @@ public class BoardUpdateRequestDto {
 		return Board.builder()
 				.title(this.title)
 				.content(this.content)
-				.thumbnail(this.thumbnail)
 				.payType(this.payType)
 				.payAmount(this.payAmount)
 				.career(this.career)

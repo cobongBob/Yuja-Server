@@ -36,20 +36,20 @@ public class User extends DateAudit {
 	 * 디폴트 값을 General로 주는 방법 찾아보기
 	 * sts 가 주는 힌트는 @Builder.Default를 이용하라는 듯 하다.  
 	 * */
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
 	private List<UserRole> authorities;
 	
 	/* 현제 다대일 양방향으로 구현되어 있음. 양방향으로 할지, 단방향으로 할지 정하고 확인 후 커밋!!! 
 	 * 일반적으로는 접근의 용이함, 편리성 때문에 양방향을 선호하는 듯
 	 * 다만 양방향의 경우 발생하는 순환 참조를 해결해야 한다 ==> 
 	 * */
-	@OneToMany(mappedBy = "user")
+	@OneToMany(mappedBy = "user",cascade = CascadeType.REMOVE)
 	private List<Board> boards;
 	
 	@Column(nullable = false)
 	private String password;
 	
-	@Column(nullable = false, unique = true)
+	@Column(nullable = false)
 	private String nickname;
 	
 	@Column(nullable = false)
@@ -77,13 +77,16 @@ public class User extends DateAudit {
 	private String bsn;
 	
 	@Column(length = 1000, nullable = true)
-	private String youtubeImg;
+	private String youtubeImg;//보류
 	
 	@Column(nullable = false)
 	private String userIp;
 	
 	@Column(nullable = false)
 	private boolean isMarketingChecked;
+	
+	@Column(nullable = false)
+	private boolean deleted;
 
 	public void modify(String username2, String password2, String nickname2, String realName2, String bday2,
 			String providedId2, String provider2, String address2, String phone2, String bsn2, String youtubeImg2, String userIp2) {

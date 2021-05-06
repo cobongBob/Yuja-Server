@@ -20,7 +20,6 @@ public class BoardSaveRequestDto {
 	private String content;
 	private Long boardCode;
 	private Long userId;
-	private String thumbnail;
 	private String payType = "";
 	private String payAmount = "";
 	private String career = "";
@@ -38,7 +37,6 @@ public class BoardSaveRequestDto {
 		return Board.builder()
 				.title(this.title)
 				.content(this.content)
-				.thumbnail(this.thumbnail)
 				.payType(this.payType)
 				.payAmount(this.payAmount)
 				.career(this.career)

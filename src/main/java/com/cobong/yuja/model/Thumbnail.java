@@ -28,7 +28,7 @@ public class Thumbnail {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn
-	private User user;
+	private Board board;
 	
 	@Column(nullable = false)
 	private String uploadPath;
@@ -48,8 +48,8 @@ public class Thumbnail {
 	public void completelySave() {
 		this.flag = true;
 	}
-	public void addUser(User user) {
-		this.user = user;
+	public void addUser(Board board) {
+		this.board = board;
 	}
 	public void deleteByFlag() {
 		this.flag = false;

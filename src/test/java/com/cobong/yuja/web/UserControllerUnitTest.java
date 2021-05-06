@@ -153,7 +153,7 @@ public class UserControllerUnitTest {
 	@Test
 	public void modify_test() throws Exception {
 		//given
-		User resUser = new User(0L,"테스트 제목1",null,null,"테스트 내용12","테스트 썸네일","Real Name Test","1995-08-05",null,null,null,null,null,null,null,"165,849,949,466", false);
+		User resUser = new User(0L,"테스트 제목1",null,null,"테스트 내용12","Real Name Test","1995-08-05",null,null,null,null,null,null,null,"165,849,949,466", null, false, false);
 		
 		UserResponseDto resRes = new UserResponseDto().entityToDto(resUser);
 		

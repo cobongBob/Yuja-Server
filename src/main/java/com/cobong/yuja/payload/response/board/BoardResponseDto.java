@@ -18,7 +18,6 @@ public class BoardResponseDto {
 	private String title;
 	private String content;
 	private int hit; 
-	private String thumbnail;
 	private Date expiredDate;
 	private String payType;
 	private String payAmount;
@@ -41,7 +40,6 @@ public class BoardResponseDto {
 		this.title=entity.getTitle();
 		this.content=entity.getContent();
 		this.hit=entity.getHit();
-		this.thumbnail=entity.getThumbnail();
 		this.expiredDate=entity.getExpiredDate();
 		this.payType=entity.getPayType();
 		this.payAmount=entity.getPayAmount();

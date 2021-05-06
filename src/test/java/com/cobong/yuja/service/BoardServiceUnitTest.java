@@ -32,7 +32,6 @@ public class BoardServiceUnitTest {
 		BoardSaveRequestDto dto =new BoardSaveRequestDto();
 		dto.setTitle("테스트 내용1");
 		dto.setContent("테스트 내용1");
-		dto.setThumbnail("테스트 썸네일");
 		board = dto.dtoToEntity();
 		
 		//when
