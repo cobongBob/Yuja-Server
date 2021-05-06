@@ -88,6 +88,7 @@ public class DummyInsert {
 					.title("테스트 제목 "+i)
 					.content("테스트 내용 "+i)
 					.worker("편집자")
+					.yWhen("상시모집")
 					.hit(i)
 					.build();
 			boardRepository.save(board);
