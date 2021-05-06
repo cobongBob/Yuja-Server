@@ -1,5 +1,7 @@
 package com.cobong.yuja.payload.response.user;
 
+import java.util.List;
+
 import com.cobong.yuja.model.User;
 
 import lombok.Data;
@@ -11,6 +13,7 @@ public class UserResponseDto {
 	private String password;
 	private String nickname;
 	private String realName;
+	private List<?> authorities;
 	private String bday;
 	private String profilePic;
 	private String providedId;
@@ -20,13 +23,14 @@ public class UserResponseDto {
 	private String bsn;
 	private String youtubeImg;
 	private String userIp;
-
+	
 	public UserResponseDto entityToDto(User entity) {
 		this.id = entity.getUserId();
 		this.username = entity.getUsername();
 		this.password = entity.getPassword();
 		this.nickname = entity.getNickname();
 		this.realName = entity.getRealName();
+		this.authorities = entity.getAuthorities();
 		this.bday = entity.getBday();
 		this.providedId = entity.getProvidedId();
 		this.provider = entity.getProvider();

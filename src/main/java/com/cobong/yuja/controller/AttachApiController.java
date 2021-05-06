@@ -5,6 +5,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+import org.apache.catalina.connector.Response;
 import org.springframework.core.io.InputStreamResource;
 import org.springframework.core.io.Resource;
 import org.springframework.http.HttpHeaders;
@@ -20,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cobong.yuja.payload.request.board.BoardAttachDto;
 import com.cobong.yuja.service.board.BoardAttachService;
+import com.cobong.yuja.service.board.ThumbnailService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -27,6 +29,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AttachApiController {
 	private final BoardAttachService attachService;
+	private final ThumbnailService thumbnailService;
 
 	//@PostMapping("/api/{boardCode}/board/img/upload")  @PathVariable Long boardCode ==> add it on parameter
 	@PostMapping("/api/board/img/upload")
@@ -38,6 +41,10 @@ public class AttachApiController {
 	/***
 	 * 썸네일러 썸네일 
 	 */
+	@PostMapping("api/{boardCode}/thumbnail/upload")
+	public ResponseEntity<?> uploadThumbnail(@RequestParam("file") MultipartFile file){
+		return new ResponseEntity<>(thumbnailService.saveFile(file), HttpStatus.OK);
+	}
 	
 	//파일 다운로드를 위한 로직인데.. 필요한가?
 	@GetMapping("/api/board/img/download/{attachId}")

@@ -24,7 +24,7 @@ import lombok.ToString;
 public class Thumbnail {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long profilePicId;
+	private Long thumbnailId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn

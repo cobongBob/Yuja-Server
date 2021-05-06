@@ -1,4 +1,4 @@
-package com.cobong.yuja.service.user;
+package com.cobong.yuja.service.board;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -10,21 +10,21 @@ import javax.imageio.ImageIO;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.cobong.yuja.model.ProfilePicture;
-import com.cobong.yuja.payload.request.user.ProfilePictureDto;
-import com.cobong.yuja.repository.user.ProfilePictureRepository;
+import com.cobong.yuja.model.Thumbnail;
+import com.cobong.yuja.payload.request.board.ThumbnailDto;
+import com.cobong.yuja.repository.attach.ThumbnailRepository;
 
 import lombok.RequiredArgsConstructor;
 import net.coobird.thumbnailator.Thumbnailator;
 
 @Service
 @RequiredArgsConstructor
-public class ProfilePictureServiceImpl implements ProfilePictureService {
-	private final ProfilePictureRepository profilePictureRepository;
-	
+public class ThumbnailServiceImpl implements ThumbnailService{
+	private final ThumbnailRepository thumbnailRepository;
+
 	@Override
-	public ProfilePictureDto saveFile(MultipartFile file) {
-		ProfilePictureDto dto = new ProfilePictureDto();
+	public Object saveFile(MultipartFile file) {
+		ThumbnailDto dto = new ThumbnailDto();
 		try {
 			String origFilename = file.getOriginalFilename();
 			String fileType = origFilename.substring(origFilename.lastIndexOf("."));
@@ -45,11 +45,8 @@ public class ProfilePictureServiceImpl implements ProfilePictureService {
 			}
 			savePath += File.separator + filename;
 			
-			System.out.println("Height:  "+ImageIO.read(file.getInputStream()).getHeight()+"    Width:   "+ImageIO.read(file.getInputStream()).getWidth());
 			FileOutputStream res = new FileOutputStream(new File(savePath));
-			
-			/*
-			if(ImageIO.read(file.getInputStream()).getHeight() >= 160 || ImageIO.read(file.getInputStream()).getWidth() >= 160) {
+			if(ImageIO.read(file.getInputStream()).getHeight() >= 202 || ImageIO.read(file.getInputStream()).getWidth() >= 360) {
 				if(ImageIO.read(file.getInputStream()).getHeight() < ImageIO.read(file.getInputStream()).getWidth()) {
 					Thumbnailator.createThumbnail(file.getInputStream(), res, ImageIO.read(file.getInputStream()).getWidth(), 160);
 				} else {
@@ -58,8 +55,6 @@ public class ProfilePictureServiceImpl implements ProfilePictureService {
 			} else {
 				Thumbnailator.createThumbnail(file.getInputStream(), res, ImageIO.read(file.getInputStream()).getWidth(), ImageIO.read(file.getInputStream()).getHeight());
 			}
-			 * 
-			 * */
 			res.close();
 
 	        String uploadPath = System.getProperty("user.dir") + File.separator+"files" + File.separator + "profiles" + File.separator;
@@ -79,8 +74,8 @@ public class ProfilePictureServiceImpl implements ProfilePictureService {
 			dto.setFileName(filename);
 			dto.setTempPath(savePath);
 			
-			ProfilePicture profilePicture = profilePictureRepository.save(dto.toEntitiy());
-			dto.setProfilePicId(profilePicture.getProfilePicId());
+			Thumbnail thumbnail = thumbnailRepository.save(dto.toEntitiy());
+			dto.setThumbnailId(thumbnail.getThumbnailId());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
