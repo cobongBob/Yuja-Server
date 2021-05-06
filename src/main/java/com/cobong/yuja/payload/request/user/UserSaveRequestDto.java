@@ -1,5 +1,10 @@
 package com.cobong.yuja.payload.request.user;
 
+
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
+
 import com.cobong.yuja.model.User;
 
 import lombok.AllArgsConstructor;
@@ -10,10 +15,26 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserSaveRequestDto {
+	
+	@NotBlank
+	@Size(min=4, max = 100)
+	@Email
 	private String username;
+	
+	@NotBlank
+	@Size(min=4, max = 20)
 	private String password;
+	
+	@NotBlank
+	@Size(min=2, max = 20)
 	private String nickname;
+	
+	@NotBlank
+	@Size(min=2, max = 30)
 	private String realName;
+	
+	@NotBlank
+	@Size(min=6, max = 7)
 	private String bday;
 	private String providedId ="";
 	private String provider ="";

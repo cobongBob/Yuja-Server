@@ -1,5 +1,7 @@
 package com.cobong.yuja.controller;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -12,6 +14,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cobong.yuja.payload.request.user.UserSaveRequestDto;
 import com.cobong.yuja.payload.request.user.UserUpdateRequestDto;
+import com.cobong.yuja.payload.response.user.ApiResponse;
+import com.cobong.yuja.repository.user.UserRepository;
 import com.cobong.yuja.service.user.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -22,9 +26,14 @@ public class UserApiController {
 
 	private final UserService userService;
 	
+//	private final UserRepository userRepository;
+	
 	
 	@PostMapping(path = "/api/user")
-	public ResponseEntity<?> insertUser(@RequestBody UserSaveRequestDto dto) {
+	public ResponseEntity<?> insertUser(@Valid @RequestBody UserSaveRequestDto dto) {
+//		if(userRepository.existsByUsername(dto.getUsername())) {
+//            return new ResponseEntity(new ApiResponse(false, "Username is already taken!"), HttpStatus.BAD_REQUEST);
+//        }
 		return new ResponseEntity<>(userService.save(dto),HttpStatus.CREATED);
 	}
 	
