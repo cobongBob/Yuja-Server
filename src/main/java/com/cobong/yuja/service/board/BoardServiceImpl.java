@@ -207,20 +207,24 @@ public class BoardServiceImpl implements BoardService {
 		}
 		
 		for(String i: boardUpdateRequestDto.getBoardAttachToBeDeleted()) {
-			BoardAttach boardAttach = attachRepository.findByFileName(i);
-			boardAttach.deleteByFlag();
-			
-			File toDel = new File(boardAttach.getUploadPath());
-			if(toDel.exists()) {
-				toDel.delete();				
-			} else {
-				System.out.println("Such File does not exist!");
+			Optional<BoardAttach> optBoardAttach = attachRepository.findByFileName(i);
+			if(optBoardAttach.isPresent()) {
+				BoardAttach boardAttach = optBoardAttach.get();
+				boardAttach.deleteByFlag();
+				
+				File toDel = new File(boardAttach.getUploadPath());
+				if(toDel.exists()) {
+					toDel.delete();				
+				} else {
+					System.out.println("Such File does not exist!");
+				}
+				attachRepository.save(boardAttach);
+				
 			}
-			attachRepository.save(boardAttach);
 		}
-		
-		Thumbnail origThumbnail = thumbnailRepository.findByBoardBoardId(bno).orElseThrow(() -> new IllegalAccessError("썸네일이 존재하지 않음 " + bno));
-		if(origThumbnail != null) {
+		Optional<Thumbnail> origThumb = thumbnailRepository.findById(boardUpdateRequestDto.getThumbnailId());
+		if(origThumb.isPresent()) {
+			Thumbnail origThumbnail = origThumb.get();
 			if(boardUpdateRequestDto.getThumbnailId() != origThumbnail.getThumbnailId()) {
 				File thumbToDel = new File(origThumbnail.getUploadPath());
 				if(thumbToDel.exists()) {
@@ -240,7 +244,6 @@ public class BoardServiceImpl implements BoardService {
 				}
 				
 				if(boardUpdateRequestDto.getThumbnailId() != null && boardUpdateRequestDto.getThumbnailId() != 0L) {
-					
 					Optional<Thumbnail> newThumb = thumbnailRepository.findById(boardUpdateRequestDto.getThumbnailId());
 					if(newThumb.isPresent()) {
 						if(!newThumb.get().isFlag()) {
@@ -292,7 +295,6 @@ public class BoardServiceImpl implements BoardService {
 			}
 			curBoardResponseDto.add(dto);
 		}
-		System.out.println("=================================="+curBoardResponseDto);
 		return curBoardResponseDto;
 	}
 	
@@ -314,9 +316,10 @@ public class BoardServiceImpl implements BoardService {
 			dto.setLikesAndComments(likes, comments);
 			dto.setLiked(likedOrNot);
 			
-			Thumbnail thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId()).orElseThrow(() -> new IllegalAccessError("썸네일이 존재하지 않음 " + board.getBoardId()));
-			dto.setThumbnail(thumbnail.getOriginalFileDest());
-			
+			Optional<Thumbnail> thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId());
+			if(thumbnail.isPresent()) {
+				dto.setThumbnail(thumbnail.get().getUploadPath());
+			}
 			curBoardResponseDto.add(dto);
 		}
 		return curBoardResponseDto;
@@ -340,8 +343,10 @@ public class BoardServiceImpl implements BoardService {
 			dto.setLikesAndComments(likes, comments);
 			dto.setLiked(likedOrNot);
 			
-			Thumbnail thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId()).orElseThrow(() -> new IllegalAccessError("썸네일이 존재하지 않음 " + board.getBoardId()));
-			dto.setThumbnail(thumbnail.getOriginalFileDest());
+			Optional<Thumbnail> thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId());
+			if(thumbnail.isPresent()) {
+				dto.setThumbnail(thumbnail.get().getUploadPath());
+			}
 			
 			curBoardResponseDto.add(dto);
 		}
@@ -366,8 +371,10 @@ public class BoardServiceImpl implements BoardService {
 			dto.setLikesAndComments(likes, comments);
 			dto.setLiked(likedOrNot);
 			
-			Thumbnail thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId()).orElseThrow(() -> new IllegalAccessError("썸네일이 존재하지 않음 " + board.getBoardId()));
-			dto.setThumbnail(thumbnail.getOriginalFileDest());
+			Optional<Thumbnail> thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId());
+			if(thumbnail.isPresent()) {
+				dto.setThumbnail(thumbnail.get().getUploadPath());
+			}
 			
 			curBoardResponseDto.add(dto);
 		}

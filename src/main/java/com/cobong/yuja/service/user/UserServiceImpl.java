@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -86,8 +87,9 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
 		
-		ProfilePicture profilePicture = profilePictureRepository.findByUserUserId(id);
-		if(profilePicture != null) {
+		Optional<ProfilePicture> optProfilePicture = profilePictureRepository.findByUserUserId(id);
+		if(optProfilePicture.isPresent()) {
+			ProfilePicture profilePicture = optProfilePicture.get();
 			dto.setProfilePic(profilePicture.getUploadPath());			
 		} else {
 			dto.setProfilePic("");
@@ -114,8 +116,9 @@ public class UserServiceImpl implements UserService {
 		
 		for(User user: entityList) {
 			UserResponseDto dto = new UserResponseDto().entityToDto(user);
-			ProfilePicture profilePicture = profilePictureRepository.findByUserUserId(user.getUserId());
-			if(profilePicture != null) {
+			Optional<ProfilePicture> optProfilePicture = profilePictureRepository.findByUserUserId(user.getUserId());
+			if(optProfilePicture.isPresent()) {
+				ProfilePicture profilePicture = optProfilePicture.get();
 				dto.setProfilePic(profilePicture.getUploadPath());			
 			} else {
 				dto.setProfilePic("");
@@ -149,17 +152,19 @@ public class UserServiceImpl implements UserService {
 			if(profilePictureRepository.findByUserUserId(user.getUserId()) != null) {
 				//만약 유저가 이전에 프로필사진을 등록시켜 놓은 경우
 				
-				ProfilePicture originalProfilePicture = profilePictureRepository.findByUserUserId(user.getUserId());
+				Optional<ProfilePicture> optOriginalProfilePicture = profilePictureRepository.findByUserUserId(user.getUserId());
 				//원래 존재하던 프로필사진
-				
-				//원래 있던 프로필사진 삭제
-				File toDel = new File(originalProfilePicture.getUploadPath());
-				if(toDel.exists()) {
-					toDel.delete();				
-				} else {
-					System.out.println("Such File does not exist!");
+				if(optOriginalProfilePicture.isPresent()) {
+					//원래 있던 프로필사진 삭제
+					ProfilePicture originalProfilePicture = optOriginalProfilePicture.get();
+					File toDel = new File(originalProfilePicture.getUploadPath());
+					if(toDel.exists()) {
+						toDel.delete();				
+					} else {
+						System.out.println("Such File does not exist!");
+					}
+					profilePictureRepository.delete(originalProfilePicture);
 				}
-				profilePictureRepository.delete(originalProfilePicture);
 			}
 			// 새로추가된 프로필사진 이동후 저장.
 			if(!profilePicture.isFlag()) {
@@ -180,12 +185,18 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional
 	public String delete(Long bno) {
-		ProfilePicture originalProfilePicture = profilePictureRepository.findByUserUserId(bno);
-		File toDel = new File(originalProfilePicture.getUploadPath());
-		if(toDel.exists()) {
-			toDel.delete();				
-		} else {
-			System.out.println("Such File does not exist!");
+		Optional<ProfilePicture> optOriginalProfilePicture = profilePictureRepository.findByUserUserId(bno);
+		if(optOriginalProfilePicture.isPresent()) {
+			ProfilePicture originalProfilePicture = optOriginalProfilePicture.get();
+			File toDel = new File(originalProfilePicture.getUploadPath());
+			if(toDel.exists()) {
+				toDel.delete();				
+			} else {
+				System.out.println("Such File does not exist!");
+				/***
+				 * 예외 처리 작성시 선언 필요
+				 */
+			}
 		}
 		userRepository.deleteById(bno);
 		return "success";

@@ -1,6 +1,7 @@
 package com.cobong.yuja.repository.attach;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -10,7 +11,7 @@ import com.cobong.yuja.model.BoardAttach;
 
 public interface AttachRepository extends JpaRepository<BoardAttach, Long>, CustomAttachRepository {
 
-	BoardAttach findByFileName(String boardAttachName);	
+	Optional<BoardAttach> findByFileName(String boardAttachName);	
 	
 	@Query("SELECT B FROM BoardAttach B WHERE boardId = :boardId")
 	List<BoardAttach> findAllByBoardId(@Param("boardId") Long boardId);
