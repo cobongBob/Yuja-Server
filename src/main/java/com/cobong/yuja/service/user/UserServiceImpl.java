@@ -7,18 +7,29 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
+import javax.servlet.http.Cookie;
+
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cobong.yuja.config.jwt.CookieProvider;
+import com.cobong.yuja.config.jwt.JwtTokenProvider;
 import com.cobong.yuja.exception.AppException;
 import com.cobong.yuja.model.Authorities;
 import com.cobong.yuja.model.AuthorityNames;
 import com.cobong.yuja.model.ProfilePicture;
+import com.cobong.yuja.model.RefreshToken;
 import com.cobong.yuja.model.User;
+import com.cobong.yuja.payload.request.user.LoginRequest;
 import com.cobong.yuja.payload.request.user.UserSaveRequestDto;
 import com.cobong.yuja.payload.request.user.UserUpdateRequestDto;
 import com.cobong.yuja.payload.response.user.UserResponseDto;
+import com.cobong.yuja.repository.RefreshTokenRepository;
 import com.cobong.yuja.repository.user.AuthoritiesRepository;
 import com.cobong.yuja.repository.user.ProfilePictureRepository;
 import com.cobong.yuja.repository.user.UserRepository;
@@ -33,10 +44,18 @@ public class UserServiceImpl implements UserService {
 	private final ProfilePictureRepository profilePictureRepository;
 	private final PasswordEncoder passwordEncoder;
 	private final AuthoritiesRepository authoritiesRepository;
+	private final AuthenticationManager authenticationManager;
+	private final JwtTokenProvider jwtTokenProvider;
+	private final CookieProvider cookieProvider;
+    private final RefreshTokenRepository refreshTokenRepository;
 	
 	@Override
 	@Transactional
 	public UserResponseDto save(UserSaveRequestDto dto) {		
+		if(userRepository.existsByUsername(dto.getUsername())) {
+			throw new RuntimeException("이미 가입되어 있는 유저입니다");
+		}
+		
 		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 
 		Authorities authorities = authoritiesRepository.findByAuthority(AuthorityNames.GENERAL)
@@ -106,6 +125,22 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findByUsername(username).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
 		return dto;
+	}
+	
+	@Override
+	public Cookie[] signIn(LoginRequest loginRequest) {
+		User user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
+		UserResponseDto dto = new UserResponseDto().entityToDto(user);
+		Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		String token  = jwtTokenProvider.generateToken(authentication);
+		String refreshJwt  = jwtTokenProvider.generateRefreshToken(authentication);
+		Cookie accessToken = cookieProvider.createCookie(JwtTokenProvider.ACCESS_TOKEN_NAME, token);
+		Cookie refreshToken = cookieProvider.createCookie(JwtTokenProvider.REFRESH_TOKEN_NAME, refreshJwt);
+		RefreshToken refreshTokenEntity = new RefreshToken(dto.getId(),refreshJwt);
+		refreshTokenRepository.save(refreshTokenEntity);
+		return new Cookie[] {accessToken,refreshToken};
 	}
 	
 	@Override

@@ -26,17 +26,6 @@ public class UserApiController {
 
 	private final UserService userService;
 	
-//	private final UserRepository userRepository;
-	
-	
-	@PostMapping(path = "/api/user")
-	public ResponseEntity<?> insertUser(@Valid @RequestBody UserSaveRequestDto dto) {
-//		if(userRepository.existsByUsername(dto.getUsername())) {
-//            return new ResponseEntity(new ApiResponse(false, "Username is already taken!"), HttpStatus.BAD_REQUEST);
-//        }
-		return new ResponseEntity<>(userService.save(dto),HttpStatus.CREATED);
-	}
-	
 	@GetMapping("/api/user/{userId}")
 	public ResponseEntity<?> getOneUser(@PathVariable Long userId) {
 		return new ResponseEntity<>(userService.findById(userId),HttpStatus.OK);
