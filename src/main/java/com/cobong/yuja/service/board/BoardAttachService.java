@@ -118,4 +118,13 @@ public class BoardAttachService {
 				.origFilename(attachEntity.getOrigFilename())
 				.flag(attachEntity.isFlag()).build();
 	}
+	
+	@Transactional
+	public void deleteUnflagged() {
+		List<BoardAttach> attachesToDel = attachRepository.findAllByFlag();
+		
+		for(BoardAttach attach: attachesToDel) {
+			attachRepository.delete(attach);
+		}
+	}
 }

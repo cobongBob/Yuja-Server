@@ -8,6 +8,7 @@ import java.util.Date;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,6 +28,7 @@ public class ThumbnailServiceImpl implements ThumbnailService{
 	private final List<String> availableTypes = Arrays.asList(".jpg",".jpeg",".png",".gif");
 	
 	@Override
+	@Transactional
 	public Object saveFile(MultipartFile file) {
 		ThumbnailDto dto = new ThumbnailDto();
 		try {
@@ -98,5 +100,14 @@ public class ThumbnailServiceImpl implements ThumbnailService{
 			e.printStackTrace();
 		}
 		return dto;
+	}
+
+	@Override
+	public void deleteUnflagged() {
+		List<Thumbnail> thumbsToDel = thumbnailRepository.findAllByFlag();
+		
+		for(Thumbnail thumbnail: thumbsToDel) {
+			thumbnailRepository.delete(thumbnail);
+		}
 	}
 }

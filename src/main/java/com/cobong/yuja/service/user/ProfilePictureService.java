@@ -6,4 +6,6 @@ import com.cobong.yuja.payload.request.user.ProfilePictureDto;
 
 public interface ProfilePictureService {
 	ProfilePictureDto saveFile(MultipartFile file);
+
+	void deleteUnflagged();
 }

@@ -20,8 +20,7 @@ public class BoardAttachReposityTest {
 	
 	@Test
 	public void findByfileNameTest() {
-		//List<BoardAttach> boardAttach = attachRepository.findAllByBoardId(new Board(1L, null, null, null, null, null, null, 0, null, null, null, null, null, null, null, 0, null, null));
-		List<BoardAttach> boardAttach = attachRepository.findAllByBoardId(1L);
+		List<BoardAttach> boardAttach = attachRepository.findAllByFlag();
 		
 		log.info(boardAttach);
 	}

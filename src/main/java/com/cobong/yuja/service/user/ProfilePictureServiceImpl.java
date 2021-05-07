@@ -3,12 +3,12 @@ package com.cobong.yuja.service.user;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
 import javax.imageio.ImageIO;
+import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
@@ -28,6 +28,7 @@ public class ProfilePictureServiceImpl implements ProfilePictureService {
 	private final List<String> availableTypes = Arrays.asList(".jpg",".jpeg",".png",".gif");
 	
 	@Override
+	@Transactional
 	public ProfilePictureDto saveFile(MultipartFile file) {
 		ProfilePictureDto dto = new ProfilePictureDto();
 		try {
@@ -87,5 +88,15 @@ public class ProfilePictureServiceImpl implements ProfilePictureService {
 			e.printStackTrace();
 		}
 		return dto;
+	}
+
+	@Override
+	@Transactional
+	public void deleteUnflagged() {
+		List<ProfilePicture> profilesToDel = profilePictureRepository.findAllByFlag();
+		
+		for(ProfilePicture profilePicture: profilesToDel) {
+			profilePictureRepository.delete(profilePicture);
+		}
 	}
 }
