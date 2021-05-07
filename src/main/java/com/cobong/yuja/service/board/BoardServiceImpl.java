@@ -1,27 +1,25 @@
 package com.cobong.yuja.service.board;
 
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import java.io.File;
-import java.io.IOException;
-
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.multipart.MultipartFile;
 
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardAttach;
 import com.cobong.yuja.model.BoardType;
+import com.cobong.yuja.model.Thumbnail;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.board.BoardSaveRequestDto;
 import com.cobong.yuja.payload.request.board.BoardUpdateRequestDto;
 import com.cobong.yuja.payload.response.board.BoardResponseDto;
 import com.cobong.yuja.repository.BoardTypeRepository;
 import com.cobong.yuja.repository.attach.AttachRepository;
+import com.cobong.yuja.repository.attach.ThumbnailRepository;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 import com.google.common.io.Files;
@@ -35,6 +33,7 @@ public class BoardServiceImpl implements BoardService {
 	private final BoardTypeRepository boardTypeRepository;
 	private final UserRepository userRepository;
 	private final AttachRepository attachRepository;
+	private final ThumbnailRepository thumbnailRepository;
 	
 	@Override
 	@Transactional
@@ -64,8 +63,25 @@ public class BoardServiceImpl implements BoardService {
 				boardAttach.addBoard(board2);
 				attachRepository.save(boardAttach);
 			}
-		} else {
+		} 
 		
+		if(dto.getThumbnailId() != null && dto.getThumbnailId() != 0L) {
+			Thumbnail thumbnail = thumbnailRepository.findById(dto.getThumbnailId()).orElseThrow(() -> new IllegalAccessError("썸네일이 존재하지 않음 " + dto.getThumbnailId()));
+			if(!thumbnail.isFlag()) {
+				File temp = new File(thumbnail.getTempPath());
+				File dest = new File(thumbnail.getUploadPath());
+				File origTemp = new File(thumbnail.getOriginalFileTemp());
+				File origDest = new File(thumbnail.getOriginalFileDest());
+				try {
+					Files.move(temp, dest);
+					Files.move(origTemp, origDest);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				thumbnail.completelySave();
+			}
+			thumbnail.addBoard(board2);
+			thumbnailRepository.save(thumbnail);
 		}
 		return new BoardResponseDto().entityToDto(board2);
 	}
@@ -86,13 +102,23 @@ public class BoardServiceImpl implements BoardService {
 		for(BoardAttach boardAttach: attaches) {
 			boardAttachesToSend.add(boardAttach.getFileName());
 		}
+		Thumbnail thumbnail = thumbnailRepository.findByBoardBoardId(bno);
+		String thumbnailOrig = "";
+		if(thumbnail.getOriginalFileDest() != null && thumbnail.getOriginalFileDest().length() != 0) {
+			thumbnailOrig += thumbnail.getOriginalFileDest();
+		}
+		/***
+		 * findById일때는 썸네일 테이블에서 오리지널 파일을 보내준다
+		 */
 		
 		BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
 		dto.setLikesAndComments(likes, comments);
 		dto.setAttaches(boardAttachesToSend);
 		dto.setTools(tools);
+		dto.setThumbnail(thumbnailOrig);
 		return dto;
 	}
+	
 	@Override
 	@Transactional(readOnly = true)
 	public List<BoardResponseDto> findAll() {
@@ -111,9 +137,31 @@ public class BoardServiceImpl implements BoardService {
 				toDel.delete();				
 			} else {
 				System.out.println("Such File does not exist!");
+				/***
+				 * 파일 존재하지 않을시 예외처리 필요
+				 */
 			}
-			attachRepository.save(boardAttach);
 		}
+		
+		Thumbnail thumbnail = thumbnailRepository.findByBoardBoardId(bno);
+		File thumbToDel = new File(thumbnail.getUploadPath());
+		if(thumbToDel.exists()) {
+			thumbToDel.delete();
+		} else {
+			/***
+			 * 파일 존재하지 않을시 예외처리 필요
+			 */
+		}
+		
+		File origToDel = new File(thumbnail.getOriginalFileDest());
+		if(origToDel.exists()) {
+			origToDel.delete();
+		} else {
+			/***
+			 * 파일 존재하지 않을시 예외처리 필요
+			 */
+		}
+		
 		boardRepository.deleteById(bno);
 		return "success";
 	}
@@ -156,8 +204,48 @@ public class BoardServiceImpl implements BoardService {
 			} else {
 				System.out.println("Such File does not exist!");
 			}
-			
 			attachRepository.save(boardAttach);
+		}
+		
+		Thumbnail origThumbnail = thumbnailRepository.findByBoardBoardId(bno);
+		if(origThumbnail != null) {
+			if(boardUpdateRequestDto.getThumbnailId() != origThumbnail.getThumbnailId()) {
+				File thumbToDel = new File(origThumbnail.getUploadPath());
+				if(thumbToDel.exists()) {
+					thumbToDel.delete();
+				} else {
+					/***
+					 * 파일 존재하지 않을시 예외처리 필요
+					 */
+				}
+				File origToDel = new File(origThumbnail.getOriginalFileDest());
+				if(origToDel.exists()) {
+					origToDel.delete();
+				} else {
+					/***
+					 * 파일 존재하지 않을시 예외처리 필요
+					 */
+				}
+				
+				if(boardUpdateRequestDto.getThumbnailId() != null && boardUpdateRequestDto.getThumbnailId() != 0L) {
+					Thumbnail newThumb = thumbnailRepository.findById(boardUpdateRequestDto.getThumbnailId()).orElseThrow(() -> new IllegalAccessError("썸네일이 존재하지 않음 " + boardUpdateRequestDto.getThumbnailId()));
+					if(!newThumb.isFlag()) {
+						File temp = new File(newThumb.getTempPath());
+						File dest = new File(newThumb.getUploadPath());
+						File origTemp = new File(newThumb.getOriginalFileTemp());
+						File origDest = new File(newThumb.getOriginalFileDest());
+						try {
+							Files.move(temp, dest);
+							Files.move(origTemp, origDest);
+						} catch (IOException e) {
+							e.printStackTrace();
+						}
+						newThumb.completelySave();
+					}
+					newThumb.addBoard(board);
+					thumbnailRepository.save(newThumb);
+				}
+			}
 		}
 		return dto;
 	}
@@ -180,7 +268,13 @@ public class BoardServiceImpl implements BoardService {
 			/*
 			 * 유저 아이디 값을 받도록 바꾸어야 한다.
 			 * */
+			
+			Thumbnail thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId());
+			dto.setThumbnail(thumbnail.getUploadPath());
 			curBoardResponseDto.add(dto);
+			/***
+			 * boardsInBoardType 등 리스트를 뽑아 보낼때는 썸네일 테이블에서 리사이즈한 파일을 보내준다
+			 */ 
 		}
 		return curBoardResponseDto;
 	}
@@ -202,6 +296,10 @@ public class BoardServiceImpl implements BoardService {
 			dto.setTools(tools);
 			dto.setLikesAndComments(likes, comments);
 			dto.setLiked(likedOrNot);
+			
+			Thumbnail thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId());
+			dto.setThumbnail(thumbnail.getUploadPath());
+			
 			curBoardResponseDto.add(dto);
 		}
 		return curBoardResponseDto;
@@ -224,6 +322,10 @@ public class BoardServiceImpl implements BoardService {
 			dto.setTools(tools);
 			dto.setLikesAndComments(likes, comments);
 			dto.setLiked(likedOrNot);
+			
+			Thumbnail thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId());
+			dto.setThumbnail(thumbnail.getUploadPath());
+			
 			curBoardResponseDto.add(dto);
 		}
 		return curBoardResponseDto;
@@ -246,6 +348,10 @@ public class BoardServiceImpl implements BoardService {
 			dto.setTools(tools);
 			dto.setLikesAndComments(likes, comments);
 			dto.setLiked(likedOrNot);
+			
+			Thumbnail thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId());
+			dto.setThumbnail(thumbnail.getUploadPath());
+			
 			curBoardResponseDto.add(dto);
 		}
 		return curBoardResponseDto;

@@ -4,6 +4,7 @@ package com.cobong.yuja.service.board;
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -22,6 +23,8 @@ import lombok.RequiredArgsConstructor;
 public class BoardAttachService {
 	private final AttachRepository attachRepository;
 	
+	private final List<String> availableTypes = Arrays.asList(".jpg",".jpeg",".png",".gif");
+	
 	@Transactional
 	public List<BoardAttachDto> saveFile(MultipartFile[] files, Long boardCode) {
 		List<BoardAttachDto> boardAttachIds = new ArrayList<>();
@@ -32,6 +35,12 @@ public class BoardAttachService {
 				String fileType = origFilename.substring(origFilename.lastIndexOf("."));
 				String dateNow = new SimpleDateFormat("YYYYMMddHHmmssSSSSSS").format(new Date());
 				String filename = dateNow + fileType;
+				
+				if(!availableTypes.contains(fileType)) {
+					/***
+					 * 파일 형식이 ".jpg",".jpeg",".png",".gif" 중 하나가 아닐시 예외처리 필요
+					 */
+				};
 				
 				// 실행되는 위치의 'temp' 폴더에 파일이 저장
 				String savePath = System.getProperty("user.dir") + File.separator+"files" + File.separator +"temp";

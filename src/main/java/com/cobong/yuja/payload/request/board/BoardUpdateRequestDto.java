@@ -33,6 +33,7 @@ public class BoardUpdateRequestDto {
 	private List<String> boardAttachToBeDeleted;
 	private String worker = "";
 	private String yWhen = "";
+	private Long thumbnailId = 0L;
 	
 	public Board dtoToEntity() {
 		return Board.builder()

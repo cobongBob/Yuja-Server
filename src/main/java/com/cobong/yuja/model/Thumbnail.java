@@ -45,10 +45,16 @@ public class Thumbnail {
 	@Column(nullable = false)
 	private boolean flag;
 	
+	@Column(nullable = false)
+	private String originalFileTemp;
+	
+	@Column(nullable = false)
+	private String originalFileDest;
+	
 	public void completelySave() {
 		this.flag = true;
 	}
-	public void addUser(Board board) {
+	public void addBoard(Board board) {
 		this.board = board;
 	}
 	public void deleteByFlag() {

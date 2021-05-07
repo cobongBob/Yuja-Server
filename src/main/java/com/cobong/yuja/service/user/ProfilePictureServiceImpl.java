@@ -3,7 +3,10 @@ package com.cobong.yuja.service.user;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 
@@ -22,6 +25,8 @@ import net.coobird.thumbnailator.Thumbnailator;
 public class ProfilePictureServiceImpl implements ProfilePictureService {
 	private final ProfilePictureRepository profilePictureRepository;
 	
+	private final List<String> availableTypes = Arrays.asList(".jpg",".jpeg",".png",".gif");
+	
 	@Override
 	public ProfilePictureDto saveFile(MultipartFile file) {
 		ProfilePictureDto dto = new ProfilePictureDto();
@@ -30,6 +35,12 @@ public class ProfilePictureServiceImpl implements ProfilePictureService {
 			String fileType = origFilename.substring(origFilename.lastIndexOf("."));
 			String dateNow = new SimpleDateFormat("YYYYMMddHHmmssSSSSSS").format(new Date());
 			String filename = dateNow + fileType;
+			
+			if(!availableTypes.contains(fileType)) {
+				/***
+				 * 파일 형식이 ".jpg",".jpeg",".png",".gif" 중 하나가 아닐시 예외처리 필요
+				 */
+			};
 			
 			// 실행되는 위치의 'temp' 폴더에 파일이 저장
 			String savePath = System.getProperty("user.dir") + File.separator+"files" + File.separator +"temp";
@@ -45,24 +56,15 @@ public class ProfilePictureServiceImpl implements ProfilePictureService {
 			}
 			savePath += File.separator + filename;
 			
-			System.out.println("Height:  "+ImageIO.read(file.getInputStream()).getHeight()+"    Width:   "+ImageIO.read(file.getInputStream()).getWidth());
 			FileOutputStream res = new FileOutputStream(new File(savePath));
-			
-			/*
-			if(ImageIO.read(file.getInputStream()).getHeight() >= 160 || ImageIO.read(file.getInputStream()).getWidth() >= 160) {
-				if(ImageIO.read(file.getInputStream()).getHeight() < ImageIO.read(file.getInputStream()).getWidth()) {
-					Thumbnailator.createThumbnail(file.getInputStream(), res, ImageIO.read(file.getInputStream()).getWidth(), 160);
-				} else {
-					Thumbnailator.createThumbnail(file.getInputStream(), res, 160, ImageIO.read(file.getInputStream()).getHeight());	
-				}
+			if(ImageIO.read(file.getInputStream()).getHeight() < ImageIO.read(file.getInputStream()).getWidth()) {
+				Thumbnailator.createThumbnail(file.getInputStream(), res, 160, ImageIO.read(file.getInputStream()).getHeight());	
 			} else {
-				Thumbnailator.createThumbnail(file.getInputStream(), res, ImageIO.read(file.getInputStream()).getWidth(), ImageIO.read(file.getInputStream()).getHeight());
+				Thumbnailator.createThumbnail(file.getInputStream(), res, ImageIO.read(file.getInputStream()).getWidth(), 160);
 			}
-			 * 
-			 * */
 			res.close();
 
-	        String uploadPath = System.getProperty("user.dir") + File.separator+"files" + File.separator + "profiles" + File.separator;
+	        String uploadPath = System.getProperty("user.dir") + File.separator+"files" + File.separator + "profiles";
 			
 			if (!new File(uploadPath).exists()) {
 				try {

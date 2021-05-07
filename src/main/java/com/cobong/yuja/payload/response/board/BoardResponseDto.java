@@ -35,6 +35,7 @@ public class BoardResponseDto {
 	private String manager;
 	private String worker;
 	private String yWhen;
+	private String thumbnail;
 	
 	public BoardResponseDto entityToDto(Board entity) {
 		this.id=entity.getBoardId();

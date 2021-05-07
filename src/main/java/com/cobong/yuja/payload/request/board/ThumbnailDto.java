@@ -1,6 +1,5 @@
 package com.cobong.yuja.payload.request.board;
 
-import com.cobong.yuja.model.ProfilePicture;
 import com.cobong.yuja.model.Thumbnail;
 
 import lombok.Data;
@@ -14,6 +13,8 @@ public class ThumbnailDto {
 	private String fileName;
 	private String origFilename;
 	private boolean flag;
+	private String originalFileTemp;
+	private String originalFileDest;
 
 	public Thumbnail toEntitiy() {
 		return Thumbnail.builder()

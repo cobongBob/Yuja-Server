@@ -39,7 +39,7 @@ public class AttachApiController {
 	}
 	
 	/***
-	 * 썸네일러 썸네일 
+	 * 썸네일러 썸네일(대표 이미지) 지정시 받는 컨트롤러
 	 */
 	@PostMapping("api/{boardCode}/thumbnail/upload")
 	public ResponseEntity<?> uploadThumbnail(@RequestParam("file") MultipartFile file){
