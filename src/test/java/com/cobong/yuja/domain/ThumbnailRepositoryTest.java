@@ -17,7 +17,7 @@ public class ThumbnailRepositoryTest {
 	
 	@Test
 	public void test() {
-		Thumbnail t = tr.findByBoardBoardId(1L);
-		log.info(t);
+		//Thumbnail t = tr.findByBoardBoardId(1L);
+		//log.info(t);
 	}
 }

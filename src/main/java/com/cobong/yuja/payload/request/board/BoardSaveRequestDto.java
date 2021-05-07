@@ -34,7 +34,7 @@ public class BoardSaveRequestDto {
 	private List<Long> boardAttachIds;
 	private String worker = "";
 	private String yWhen = "";
-	private Long thumbnailId;
+	private Long thumbnailId = 0L;
 	
 	public Board dtoToEntity() {
 		return Board.builder()

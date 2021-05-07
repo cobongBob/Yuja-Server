@@ -33,7 +33,6 @@ public class UserServiceImpl implements UserService {
 	private final PasswordEncoder passwordEncoder;
 	private final AuthoritiesRepository authoritiesRepository;
 	
-	
 	@Override
 	@Transactional
 	public UserResponseDto save(UserSaveRequestDto dto) {		
@@ -98,6 +97,7 @@ public class UserServiceImpl implements UserService {
 		 */
 		return dto;
 	}
+	
 	@Override
 	@Transactional(readOnly = true)
 	public UserResponseDto findByUsername(String username) {
