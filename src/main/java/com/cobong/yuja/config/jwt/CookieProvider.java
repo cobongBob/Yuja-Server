@@ -20,7 +20,6 @@ public class CookieProvider {
 
     public Cookie getCookie(HttpServletRequest req, String cookieName){
         final Cookie[] cookies = req.getCookies();
-        System.out.println(cookies);
         if(cookies==null) return null;
         for(Cookie cookie : cookies){
             if(cookie.getName().equals(cookieName))

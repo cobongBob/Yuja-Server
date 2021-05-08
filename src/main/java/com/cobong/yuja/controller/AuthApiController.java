@@ -1,5 +1,7 @@
 package com.cobong.yuja.controller;
 
+import java.util.Map;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -27,6 +29,11 @@ public class AuthApiController {
 	@PostMapping("/signup")
 	public ResponseEntity<?> insertUser(@Valid @RequestBody UserSaveRequestDto dto) {
 		return new ResponseEntity<>(userService.save(dto),HttpStatus.CREATED);
+	}
+	
+	@PostMapping("/verify")
+	public ResponseEntity<?> verifyUser(@RequestBody Map<String, String> username) {
+		return new ResponseEntity<>(userService.verify(username.get("username")), HttpStatus.OK);
 	}
     
 	@PostMapping("/signin")

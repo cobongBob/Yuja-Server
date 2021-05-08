@@ -59,6 +59,10 @@ dependencies {
 
 	//Thumbnailator
 	implementation group: 'net.coobird', name: 'thumbnailator', version: '0.4.8'
+	
+	// Mail
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.4.5'
+	
 }
 
 test {

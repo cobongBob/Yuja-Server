@@ -6,9 +6,15 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
 
+import javax.mail.MessagingException;
+import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 
+import org.springframework.core.io.ClassPathResource;
+import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -48,6 +54,7 @@ public class UserServiceImpl implements UserService {
 	private final JwtTokenProvider jwtTokenProvider;
 	private final CookieProvider cookieProvider;
     private final RefreshTokenRepository refreshTokenRepository;
+    private final JavaMailSender javaMailSender;
 	
 	@Override
 	@Transactional
@@ -235,5 +242,48 @@ public class UserServiceImpl implements UserService {
 		}
 		userRepository.deleteById(bno);
 		return "success";
+	}
+
+	@Override
+	public String verify(String username) {
+		boolean isExist = userRepository.findByUsername(username).isPresent();
+		if(isExist) {
+			return "이미 가입된 이메일입니다.";
+		}
+		String verifyNum = "";
+		Random random = new Random();
+		for (int i = 0; i < 4; i++) {
+			verifyNum += (char) (random.nextInt(25) + 65); // A~Z까지 랜덤 알파벳 생성
+			verifyNum += random.nextInt(10);
+		}
+		StringBuffer content = new StringBuffer();
+		content.append("<!DOCTYPE html>");
+		content.append("<html>");
+		content.append("<head>");
+		content.append("</head>");
+		content.append("<body>");
+		content.append("<div style=\"width: 400px; height: 300px; border: 4px solid #ff9411; margin: 100px auto; padding: 30px 0; box-sizing: border-box;\">");
+		content.append("<div style=\"margin: 0; padding: 0 5px; font-size: 25px; font-weight: 400;\">");
+		content.append("<img width='77' src='cid:logo'>");
+		content.append("<span style=\"color: #ff9411;font-weight:bold; font-size: 44px;\">유</span>튜버와 <span style=\"color: #ff9411;font-weight:bold; font-size: 44px;\">자</span>유롭게</span><br />");
+		content.append("<span style=\"font-size: 17px;\">인증번호를 정확히 입력해주세요.</span></div>\n");
+		content.append("<p style=\"font-size: 15px; line-height: 25px; margin-top: 45px;text-align:center\"> 인증번호 : <span style=\"font-weight:bold\">" );
+		content.append(verifyNum);
+		content.append("</span></p></div>");
+		content.append("</body>");
+		content.append("</html>");
+		
+		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+		try {
+			MimeMessageHelper message = new MimeMessageHelper(mimeMessage,true, "utf-8");
+			message.setTo(username);
+			message.setSubject("유자 회원가입 인증번호 메일입니다.");
+			message.setText(content.toString(),true);
+			message.addInline("logo", new ClassPathResource("/static/imgs/yuzu05.png"));
+		} catch (MessagingException e) {
+			e.printStackTrace();
+		}
+		javaMailSender.send(mimeMessage);
+		return verifyNum;
 	}
 }
