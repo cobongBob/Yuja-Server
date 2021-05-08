@@ -91,7 +91,7 @@ public class Board extends DateAudit{
 	private String yWhen;
 
 	public Board modify(String title, String content, String payType, String payAmount,
-			String career, String tools, Date expiredDate, String worker, String yWhen) {
+			String career, String tools, Date expiredDate, String worker, String yWhen, String channelName, int recruitingNum,String receptionMethod,String manager ) {
 		
 		this.title=title;
 		this.content=content;
@@ -102,11 +102,15 @@ public class Board extends DateAudit{
 		this.expiredDate=expiredDate;
 		this.worker=worker;
 		this.yWhen = yWhen;
+		this.channelName = channelName;
+		this.recruitingNum = recruitingNum;
+		this.receptionMethod = receptionMethod;
+		this.manager = manager;
 		return this;
 	}
 
 	public Board createBoard(BoardType boardType, User user, String title, String content, Date expiredDate,
-			String payType, String payAmount, String career, String tools, String worker, String yWhen) {
+			String payType, String payAmount, String career, String tools, String worker, String yWhen, String channelName, int recruitingNum,String receptionMethod,String manager ) {
 		Board board = new Board();
 		board.boardId = boardId;
 		board.boardType = boardType;
@@ -119,6 +123,11 @@ public class Board extends DateAudit{
 		board.career = career;
 		board.tools = tools;
 		board.worker =worker;
+		board.yWhen = yWhen;
+		board.channelName = channelName;
+		board.recruitingNum = recruitingNum;
+		board.receptionMethod = receptionMethod;
+		board.manager = manager;
 		return board;
 	}
 	
