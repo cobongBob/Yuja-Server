@@ -15,7 +15,15 @@ public class CookieProvider {
         token.setPath("/"); // 요청이 온 path내 모든 경로에서 쿠키 사용가능
 //        token.setSecure(true); https를 써야한다.
         return token;
-       
+    }
+    
+    public Cookie logOutCookie(String cookieName, String value) {
+    	Cookie token = new Cookie(cookieName, value);
+    	token.setHttpOnly(true);
+    	token.setMaxAge(0);
+    	token.setPath("/");
+//    	token.setSecure(true);
+    	return token;
     }
 
     public Cookie getCookie(HttpServletRequest req, String cookieName){

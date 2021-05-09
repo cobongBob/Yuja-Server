@@ -38,9 +38,17 @@ public class AuthApiController {
     
 	@PostMapping("/signin")
 	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest,HttpServletResponse res) {
-		Cookie[] Cookies = userService.signIn(loginRequest);
-		res.addCookie(Cookies[0]);
-		res.addCookie(Cookies[1]);
-		return new ResponseEntity<>(Cookies[0].getValue(), HttpStatus.OK);
+		Cookie[] cookies = userService.signIn(loginRequest);
+		res.addCookie(cookies[0]);
+		res.addCookie(cookies[1]);
+		return new ResponseEntity<>(cookies[0].getValue(), HttpStatus.OK);
+	}
+	
+	@PostMapping("/signout")
+	public ResponseEntity<?> signOutUser(HttpServletResponse res) {
+		Cookie[] cookies = userService.signOut();
+		res.addCookie(cookies[0]);
+		res.addCookie(cookies[1]);
+		return new ResponseEntity<>("SignOut", HttpStatus.OK);
 	}
 }

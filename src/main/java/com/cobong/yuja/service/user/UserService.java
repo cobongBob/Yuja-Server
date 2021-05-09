@@ -27,4 +27,6 @@ public interface UserService {
 
 	String verify(String username);
 
+	Cookie[] signOut();
+
 }

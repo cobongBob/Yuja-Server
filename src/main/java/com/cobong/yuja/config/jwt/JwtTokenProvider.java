@@ -29,8 +29,8 @@ import io.jsonwebtoken.UnsupportedJwtException;
 // 로그인 한 후 JWT를 생성하고, JWT 유효성을 검사파트
 @Component
 public class JwtTokenProvider {
-	public final static long TOKEN_VALIDATION_SECOND = 1000L * 30 * 1;
-    public final static long REFRESH_TOKEN_VALIDATION_SECOND = 1000L * 60 * 60*24;
+	public final static long TOKEN_VALIDATION_SECOND = 1000L * 60 * 15;
+    public final static long REFRESH_TOKEN_VALIDATION_SECOND = 1000L * 60 * 60*2;
     private static final String AUTHORITIES_KEY = "auth";
 	private static final Logger logger = LoggerFactory.getLogger(JwtTokenProvider.class);
 	
