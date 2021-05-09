@@ -2,8 +2,10 @@ package com.cobong.yuja.service.user;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
@@ -242,6 +244,18 @@ public class UserServiceImpl implements UserService {
 		}
 		userRepository.deleteById(bno);
 		return "success";
+	}
+	
+	@Override
+	@Transactional
+	public void deleteUnflagged() {
+		List<RefreshToken> tokensToDel = refreshTokenRepository.findAll();
+		Instant now = Instant.now();
+		for(RefreshToken token: tokensToDel) {
+			if(token.getUpdatedDate().getNano() - now.getNano() < 0) {
+				refreshTokenRepository.delete(token);
+			}
+		}
 	}
 
 	@Override

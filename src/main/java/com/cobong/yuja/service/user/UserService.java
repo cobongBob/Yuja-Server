@@ -26,5 +26,6 @@ public interface UserService {
 	Cookie[] signIn(LoginRequest loginRequest);
 
 	String verify(String username);
-
+	
+	void deleteUnflagged();
 }

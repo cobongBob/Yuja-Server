@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.cobong.yuja.service.board.BoardAttachService;
 import com.cobong.yuja.service.board.ThumbnailService;
 import com.cobong.yuja.service.user.ProfilePictureService;
+import com.cobong.yuja.service.user.UserService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -18,8 +19,9 @@ public class AutomaticFileDeletion {
 	private final BoardAttachService boardAttachService;
 	private final ProfilePictureService profilePictureService;
 	private final ThumbnailService thumbnailService;
+	private final UserService userService;
 	
-	@Scheduled(cron = "0 43 17 * * *")
+	@Scheduled(cron = "0 12 19 * * *")
 	public void deleteAtFourAM() {
 		File tempToDel = Paths.get(System.getProperty("user.dir") + File.separator+"files" + File.separator +"temp").toFile();
 		File[] tempsToDel = tempToDel.listFiles();
@@ -31,5 +33,6 @@ public class AutomaticFileDeletion {
 		boardAttachService.deleteUnflagged();
 		profilePictureService.deleteUnflagged();
 		thumbnailService.deleteUnflagged();
+		userService.deleteUnflagged();
 	}
 }
