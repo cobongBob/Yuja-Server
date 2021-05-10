@@ -46,36 +46,31 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 				Cookie refreshToken = cookieProvider.getCookie(request, JwtTokenProvider.REFRESH_TOKEN_NAME);
 				if (refreshToken != null) {
 					refreshJwt = refreshToken.getValue();
+					if(refreshJwt != null){
+		            	refreshUserId = jwtTokenProvider.getUserIdFromJWT(refreshJwt);
+		            	RefreshToken refreshTokenFromDB = refreshTokenRepository.findByUserId(refreshUserId).orElseThrow(()->new IllegalArgumentException("존재하지않는 키"));
+		            	//jwt안에 있는 userId로 DB에 있는 refresh토큰을 찾는다.
+		            	
+		            	//db에 있는 토큰과 방금 받은 토큰이 같다면 해당 정보를 Authentication 을 가져와서 SecurityContext 에 저장
+		            	//그와 동시에 db에 updateDate를 갱신시켜주고 새 Access토큰을 발급해준다.
+		                if(refreshTokenFromDB.getRefreshToken().equals(refreshJwt)){
+		    				Authentication authentication = jwtTokenProvider.getAuthentication(refreshJwt);
+		    				SecurityContextHolder.getContext().setAuthentication(authentication);  
+		    				String newToken = jwtTokenProvider.generateToken(authentication);
+		    				refreshTokenFromDB.updateValue(refreshJwt);
+		    		        refreshTokenRepository.save(refreshTokenFromDB);
+		    				Cookie newAccessToken = cookieProvider.createCookie(JwtTokenProvider.ACCESS_TOKEN_NAME, newToken);
+		    				response.addCookie(newAccessToken);
+		    			}
+		            } else {
+		            	logger.error("존재하지 않는 토큰");
+		            }		
 				}
 			}
 		} catch (Exception e) {
 			logger.error("doFilterInternal에서 검증 실패" + e);
 		}
 		
-		//refresh토큰 검증시작
-		try{
-            if(refreshJwt != null){
-            	refreshUserId = jwtTokenProvider.getUserIdFromJWT(refreshJwt);
-            	RefreshToken refreshTokenFromDB = refreshTokenRepository.findByUserId(refreshUserId).orElseThrow(()->new IllegalArgumentException("존재하지않는 키"));
-            	//jwt안에 있는 userId로 DB에 있는 refresh토큰을 찾는다.
-            	
-            	//db에 있는 토큰과 방금 받은 토큰이 같다면 해당 정보를 Authentication 을 가져와서 SecurityContext 에 저장
-            	//그와 동시에 db에 updateDate를 갱신시켜주고 새 Access토큰을 발급해준다.
-                if(refreshTokenFromDB.getRefreshToken().equals(refreshJwt)){
-    				Authentication authentication = jwtTokenProvider.getAuthentication(refreshJwt);
-    				SecurityContextHolder.getContext().setAuthentication(authentication);  
-    				String newToken = jwtTokenProvider.generateToken(authentication);
-    				refreshTokenFromDB.updateValue(refreshJwt);
-    		        refreshTokenRepository.save(refreshTokenFromDB);
-    				Cookie newAccessToken = cookieProvider.createCookie(JwtTokenProvider.ACCESS_TOKEN_NAME, newToken);
-    				response.addCookie(newAccessToken);
-    			}
-            } else {
-            	logger.error("존재하지 않는 토큰");
-            }
-    	} catch (Exception e) {
-			logger.error("doFilterInternal에서 검증 실패"+e);
-    	}
 		filterChain.doFilter(request, response); // 스프링의 나머지 FilterChain들을 수행
 	}
 		

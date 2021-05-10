@@ -11,10 +11,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.cobong.yuja.payload.request.user.LoginRequest;
 import com.cobong.yuja.payload.request.user.UserSaveRequestDto;
+import com.cobong.yuja.service.user.ProfilePictureService;
 import com.cobong.yuja.service.user.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -25,6 +28,8 @@ import lombok.RequiredArgsConstructor;
 public class AuthApiController {
     
     private final UserService userService;
+    
+    private final ProfilePictureService profilePictureService;
 	
 	@PostMapping("/signup")
 	public ResponseEntity<?> insertUser(@Valid @RequestBody UserSaveRequestDto dto) {
@@ -50,5 +55,9 @@ public class AuthApiController {
 		res.addCookie(cookies[0]);
 		res.addCookie(cookies[1]);
 		return new ResponseEntity<>("SignOut", HttpStatus.OK);
+	}
+	@PostMapping("/profile")
+	public ResponseEntity<?> saveProfilePicture(@RequestParam("file") MultipartFile file){
+		return new ResponseEntity<>(profilePictureService.saveFile(file), HttpStatus.OK);
 	}
 }
