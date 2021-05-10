@@ -33,8 +33,6 @@ public class UserSaveRequestDto {
 	@Size(min=2, max = 30)
 	private String realName;
 	
-	@NotBlank
-	@Size(min=6, max = 7)
 	private String bday;
 	private String providedId ="";
 	private String provider ="";
