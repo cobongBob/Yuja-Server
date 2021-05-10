@@ -30,4 +30,8 @@ public interface UserService {
 	void deleteUnflagged();
 
 	Cookie[] signOut();
+
+	String checkId(String username);
+
+	String checkNickname(String username);
 }

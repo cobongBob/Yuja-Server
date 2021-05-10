@@ -317,4 +317,22 @@ public class UserServiceImpl implements UserService {
 		refreshTokenRepository.deleteByUserId(principalDetails.getUserId());
 		return new Cookie[] {accessToken,refreshToken};
 	}
+
+	@Override
+	@Transactional
+	public String checkId(String username) {
+		if(userRepository.existsByUsername(username)) {
+			throw new RuntimeException("이미 가입되어 있는 이메일입니다");
+		}
+		return "사용가능한 이메일 입니다";
+	}
+	
+	@Override
+	@Transactional
+	public String checkNickname(String username) {
+		if(userRepository.existsByNickname(username)) {
+			throw new RuntimeException("이미 가입되어 있는 닉네임입니다");
+		}
+		return "사용가능한 닉네임 입니다";
+	}
 }

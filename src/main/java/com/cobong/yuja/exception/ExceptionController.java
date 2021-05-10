@@ -23,16 +23,17 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(value = RuntimeException.class)
 	public ResponseEntity<?> asdas(Exception e) {
 		return new ResponseEntity<>(new ExceptionRestResponse(1500, e.getMessage()), HttpStatus.OK);
+		/**
+		 * 현재는 회원가입시 해당 유저 아이디의 유저가 존재할떄 발생
+		 */
 	}
 	
 	@ExceptionHandler(value = AuthenticationException.class)
-	public ResponseEntity<?> asdsas(Exception e) {
-		return new ResponseEntity<>(new ExceptionRestResponse(1200, e.getMessage()), HttpStatus.OK);
-	}
-	
-	@ExceptionHandler(value = BadRequestException.class)
-	public String error400(Exception e) {
-		return "Bad Request 400 " + e.getMessage();
+	public ResponseEntity<?> passwordError(Exception e) {
+		return new ResponseEntity<>(new ExceptionRestResponse(1200, e.getMessage()+" 비밀번호가 틀렸어요!"), HttpStatus.OK);
+		/***
+		 * 로그인시 이메일과 비번이 일치하지 않을 때 발생하는 에러.
+		 */
 	}
 	
 	@ExceptionHandler(value = Unauthorized.class)
@@ -41,7 +42,7 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 		System.out.println("==============> "+e.getMessage());
 		return "Access forbidden 401 " + e.getMessage();
 	}
-//	
+
 	@ExceptionHandler(value = Forbidden.class)
 	@ResponseStatus(HttpStatus.FORBIDDEN)
 	public ResponseEntity<?>  error403(Exception e) {
@@ -53,7 +54,10 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 //	public String error415(Exception e) {
 //		return "Unsupported Media Type Exception "+ e.getMessage();
 //	}
-	
+//		@ExceptionHandler(value = BadRequestException.class)
+//	public String error400(Exception e) {
+//		return "Bad Request 400 " + e.getMessage();
+//	}
 	@ExceptionHandler(value = TooManyRequests.class)
 	public String error429(Exception e) {
 		return "Too Many Requests " + e.getMessage();

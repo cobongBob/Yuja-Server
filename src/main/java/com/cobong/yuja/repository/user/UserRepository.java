@@ -8,6 +8,8 @@ import com.cobong.yuja.model.User;
 
 public interface UserRepository extends JpaRepository<User, Long>, CustomUserRepository {
 	Optional<User> findByUsername(String username);
+	
+	Boolean existsByNickname(String nickname);
 
 	Boolean existsByUsername(String username);
 }
