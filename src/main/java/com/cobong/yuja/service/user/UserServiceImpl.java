@@ -6,7 +6,9 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
 
@@ -15,6 +17,8 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -28,6 +32,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cobong.yuja.config.auth.PrincipalDetails;
 import com.cobong.yuja.config.jwt.CookieProvider;
 import com.cobong.yuja.config.jwt.JwtTokenProvider;
+import com.cobong.yuja.config.oauth.GoogleUser;
+import com.cobong.yuja.config.oauth.OAuthUserInfo;
 import com.cobong.yuja.exception.AppException;
 import com.cobong.yuja.model.Authorities;
 import com.cobong.yuja.model.AuthorityNames;
@@ -334,5 +340,26 @@ public class UserServiceImpl implements UserService {
 			throw new RuntimeException("이미 가입되어 있는 닉네임입니다");
 		}
 		return "사용가능한 닉네임 입니다";
+	}
+	
+	@Override
+	@Transactional
+	public GoogleUser googleOauthCheck(Map<String, Object> data) {
+		
+		Map<String, Object> profile = (Map<String, Object>) data.get("profileObj");
+		String username = (String) profile.get("email");
+		Boolean user = userRepository.existsByUsername(username);
+		GoogleUser googleUser = new GoogleUser();
+		googleUser.setPassword(passwordEncoder.encode("코봉밥"));
+		
+		System.out.println("username 존재여부 : "+ user);
+		// 201 -> 회원가입
+		if (user.equals(false)) {
+			googleUser.setFlag(true);
+		}
+		googleUser.setAttribute(profile);
+		
+		
+		return googleUser;
 	}
 }

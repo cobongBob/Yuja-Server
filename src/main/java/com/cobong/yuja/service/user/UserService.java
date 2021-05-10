@@ -1,9 +1,11 @@
 package com.cobong.yuja.service.user;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 
+import com.cobong.yuja.config.oauth.GoogleUser;
 import com.cobong.yuja.payload.request.user.LoginRequest;
 import com.cobong.yuja.payload.request.user.UserSaveRequestDto;
 import com.cobong.yuja.payload.request.user.UserUpdateRequestDto;
@@ -34,4 +36,6 @@ public interface UserService {
 	String checkId(String username);
 
 	String checkNickname(String username);
+	
+	GoogleUser googleOauthCheck(Map<String, Object> data);
 }
