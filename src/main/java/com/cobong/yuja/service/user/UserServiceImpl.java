@@ -315,7 +315,12 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public Cookie[] signOut() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+		PrincipalDetails principalDetails = null;
+		if(authentication.getPrincipal() instanceof PrincipalDetails) {
+			principalDetails = (PrincipalDetails) authentication.getPrincipal();
+		} else {
+			return null;
+		}
 		String token  = jwtTokenProvider.generateToken(authentication);
 		String refreshJwt  = jwtTokenProvider.generateRefreshToken(authentication);
 		Cookie accessToken = cookieProvider.logOutCookie(JwtTokenProvider.ACCESS_TOKEN_NAME, token);

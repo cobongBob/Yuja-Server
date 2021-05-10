@@ -2,12 +2,15 @@ package com.cobong.yuja.controller;
 
 import java.util.Map;
 
+import javax.servlet.ServletException;
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -60,11 +63,18 @@ public class AuthApiController {
 		return new ResponseEntity<>(cookies[0].getValue(), HttpStatus.OK);
 	}
 
-	@PostMapping("/signout")
-	public ResponseEntity<?> signOutUser(HttpServletResponse res) {
+	@GetMapping("/signout")
+	public ResponseEntity<?> signOutUser(HttpServletResponse res, HttpServletRequest req) {
 		Cookie[] cookies = userService.signOut();
-		res.addCookie(cookies[0]);
-		res.addCookie(cookies[1]);
+		if(cookies != null) {
+			res.addCookie(cookies[0]);
+			res.addCookie(cookies[1]);
+		}
+		try {
+			req.logout();
+		} catch (ServletException e) {
+			e.printStackTrace();
+		}
 		return new ResponseEntity<>("SignOut", HttpStatus.OK);
 	}
 

@@ -38,13 +38,13 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         
 		try {
 			// 정상 토큰이면 해당 토큰으로 Authentication 을 가져와서 SecurityContext 에 저장
-			if (jwtToken != null && jwtTokenProvider.validateToken(jwtToken.getValue())) {
+			if (jwtToken != null && jwtTokenProvider.validateToken(jwtToken.getValue()) && SecurityContextHolder.getContext().getAuthentication() == null) {
 				jwt = jwtToken.getValue();
 				Authentication authentication = jwtTokenProvider.getAuthentication(jwt);
 				SecurityContextHolder.getContext().setAuthentication(authentication);
 			} else { // 토큰이 정상이 아니라면 refresh토큰으로 검증시작
 				Cookie refreshToken = cookieProvider.getCookie(request, JwtTokenProvider.REFRESH_TOKEN_NAME);
-				if (refreshToken != null) {
+				if (refreshToken != null  && SecurityContextHolder.getContext().getAuthentication() == null) {
 					refreshJwt = refreshToken.getValue();
 					if(refreshJwt != null){
 		            	refreshUserId = jwtTokenProvider.getUserIdFromJWT(refreshJwt);
@@ -67,7 +67,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		            }		
 				}
 				else {
-	            	logger.error("존재하지 않는 토큰!!!!!!");
+	            	logger.error("토큰이 생성된적 없음");
 	            }		
 			}
 		} catch (Exception e) {
