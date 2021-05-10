@@ -25,6 +25,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cobong.yuja.config.auth.PrincipalDetails;
 import com.cobong.yuja.config.jwt.CookieProvider;
 import com.cobong.yuja.config.jwt.JwtTokenProvider;
 import com.cobong.yuja.exception.AppException;
@@ -128,29 +129,7 @@ public class UserServiceImpl implements UserService {
 		return dto;
 	}
 	
-	@Override
-	@Transactional(readOnly = true)
-	public UserResponseDto findByUsername(String username) {
-		User user = userRepository.findByUsername(username).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
-		UserResponseDto dto = new UserResponseDto().entityToDto(user);
-		return dto;
-	}
-	
-	@Override
-	public Cookie[] signIn(LoginRequest loginRequest) {
-		User user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
-		UserResponseDto dto = new UserResponseDto().entityToDto(user);
-		Authentication authentication = authenticationManager.authenticate(
-				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
-		SecurityContextHolder.getContext().setAuthentication(authentication);
-		String token  = jwtTokenProvider.generateToken(authentication);
-		String refreshJwt  = jwtTokenProvider.generateRefreshToken(authentication);
-		Cookie accessToken = cookieProvider.createCookie(JwtTokenProvider.ACCESS_TOKEN_NAME, token);
-		Cookie refreshToken = cookieProvider.createCookie(JwtTokenProvider.REFRESH_TOKEN_NAME, refreshJwt);
-		RefreshToken refreshTokenEntity = new RefreshToken(dto.getId(),refreshJwt);
-		refreshTokenRepository.save(refreshTokenEntity);
-		return new Cookie[] {accessToken,refreshToken};
-	}
+
 	
 	@Override
 	@Transactional(readOnly = true)
@@ -259,6 +238,31 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
+	@Transactional(readOnly = true)
+	public UserResponseDto findByUsername(String username) {
+		User user = userRepository.findByUsername(username).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
+		UserResponseDto dto = new UserResponseDto().entityToDto(user);
+		return dto;
+	}
+	
+	@Override
+	public Cookie[] signIn(LoginRequest loginRequest) {
+		User user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
+		UserResponseDto dto = new UserResponseDto().entityToDto(user);
+		Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+		String token  = jwtTokenProvider.generateToken(authentication);
+		String refreshJwt  = jwtTokenProvider.generateRefreshToken(authentication);
+		Cookie accessToken = cookieProvider.createCookie(JwtTokenProvider.ACCESS_TOKEN_NAME, token);
+		Cookie refreshToken = cookieProvider.createCookie(JwtTokenProvider.REFRESH_TOKEN_NAME, refreshJwt);
+		RefreshToken refreshTokenEntity = new RefreshToken(dto.getId(),refreshJwt);
+		refreshTokenRepository.save(refreshTokenEntity);
+		return new Cookie[] {accessToken,refreshToken};
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
 	public String verify(String username) {
 		boolean isExist = userRepository.findByUsername(username).isPresent();
 		if(isExist) {
@@ -299,5 +303,18 @@ public class UserServiceImpl implements UserService {
 		}
 		javaMailSender.send(mimeMessage);
 		return verifyNum;
+	}
+
+	@Override
+	@Transactional
+	public Cookie[] signOut() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		PrincipalDetails principalDetails = (PrincipalDetails) authentication.getPrincipal();
+		String token  = jwtTokenProvider.generateToken(authentication);
+		String refreshJwt  = jwtTokenProvider.generateRefreshToken(authentication);
+		Cookie accessToken = cookieProvider.logOutCookie(JwtTokenProvider.ACCESS_TOKEN_NAME, token);
+		Cookie refreshToken = cookieProvider.logOutCookie(JwtTokenProvider.REFRESH_TOKEN_NAME, refreshJwt);
+		refreshTokenRepository.deleteByUserId(principalDetails.getUserId());
+		return new Cookie[] {accessToken,refreshToken};
 	}
 }

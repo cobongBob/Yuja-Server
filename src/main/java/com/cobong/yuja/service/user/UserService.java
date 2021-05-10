@@ -28,4 +28,6 @@ public interface UserService {
 	String verify(String username);
 	
 	void deleteUnflagged();
+
+	Cookie[] signOut();
 }
