@@ -13,11 +13,13 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import com.cobong.yuja.config.auth.PrincipalDetailsService;
 import com.cobong.yuja.config.jwt.JwtAuthenticationEntryPoint;
 import com.cobong.yuja.config.jwt.JwtAuthenticationFilter;
+import com.cobong.yuja.exception.Forbidden403Exception;
 
 @Configuration
 @EnableWebSecurity
@@ -32,6 +34,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
+	
+	@Autowired
+	Forbidden403Exception unauthorizedException;
 	
 	// 유효성, 토큰관련 세부사항 로드
 	@Bean
@@ -67,17 +72,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.and()
 			.csrf()
 				.disable()
-			.exceptionHandling()
-				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
-				.and()
 			.sessionManagement()
 				.sessionCreationPolicy(SessionCreationPolicy.STATELESS) // https://www.inflearn.com/questions/34886
+				.and()
+			.exceptionHandling()
+				.accessDeniedHandler(unauthorizedException)
+				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
 				.and()
 			.authorizeRequests()
 //				.antMatchers()
 //					.permitAll()
 //				.antMatchers()
-//					.hasAuthority("ROLE_GENERAL")
+//					.hasAuthority("ROLE_GENERAL");
 //				.antMatchers()
 //					.hasAuthority("ROLE_YOUTUBER")
 //				.antMatchers()
@@ -94,6 +100,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 		
 		// 내 커스텀 필터를 추가하고 가장먼저 실행시킴
 		http
-			.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
+		.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}
 }

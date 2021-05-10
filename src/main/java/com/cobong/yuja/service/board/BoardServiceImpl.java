@@ -230,9 +230,7 @@ public class BoardServiceImpl implements BoardService {
 				if(thumbToDel.exists()) {
 					thumbToDel.delete();
 				} else {
-					/***
-					 * 파일 존재하지 않을시 예외처리 필요
-					 */
+					new IllegalAccessError("해당 썸네일 없음 "+ thumbToDel.getName());
 				}
 				File origToDel = new File(origThumbnail.getOriginalFileDest());
 				if(origToDel.exists()) {
@@ -241,6 +239,7 @@ public class BoardServiceImpl implements BoardService {
 					/***
 					 * 파일 존재하지 않을시 예외처리 필요
 					 */
+					new IllegalAccessError("해당 썸네일 없음 "+ origThumbnail.getOrigFilename());
 				}
 				
 				if(boardUpdateRequestDto.getThumbnailId() != null && boardUpdateRequestDto.getThumbnailId() != 0L) {

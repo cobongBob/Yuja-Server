@@ -66,6 +66,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		            	logger.error("존재하지 않는 토큰");
 		            }		
 				}
+				else {
+	            	logger.error("존재하지 않는 토큰!!!!!!");
+	            }		
 			}
 		} catch (Exception e) {
 			logger.error("doFilterInternal에서 검증 실패" + e);

@@ -28,7 +28,7 @@ public class BoardApiController {
 		return new ResponseEntity<>(boardService.save(dto),HttpStatus.CREATED);
 	}
 	
-	@Secured("ROLE_YOUTUBER")
+	@Secured("ROLE_GENERAL")
 	@GetMapping("/api/{boardCode}/board/{bno}")
 	public ResponseEntity<?> getOneBoard(@PathVariable Long boardCode, @PathVariable Long bno) {
 		return new ResponseEntity<>(boardService.findById(bno),HttpStatus.OK);

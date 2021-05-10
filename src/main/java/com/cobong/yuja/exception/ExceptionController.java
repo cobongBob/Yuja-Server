@@ -4,7 +4,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException.Forbidden;
 import org.springframework.web.client.HttpClientErrorException.TooManyRequests;
@@ -15,18 +14,26 @@ import lombok.Value;
 
 @RestControllerAdvice
 public class ExceptionController extends ResponseEntityExceptionHandler {
-	@ExceptionHandler(value = IllegalArgumentException.class)
-	public ResponseEntity<?> method1(IllegalArgumentException e) {
-		return new ResponseEntity<>(new ExceptionRestResponse(1200, e.getMessage()), HttpStatus.OK);
+	@ExceptionHandler(value = IllegalAccessError.class)
+	public ResponseEntity<?> illegalAccessController(IllegalAccessError e){
+		return new ResponseEntity<>(new ExceptionRestResponse(500, e.getMessage()), HttpStatus.OK);
 	}
 	
-	@ExceptionHandler(value = RuntimeException.class)
-	public ResponseEntity<?> asdas(Exception e) {
-		return new ResponseEntity<>(new ExceptionRestResponse(1500, e.getMessage()), HttpStatus.OK);
+	@ExceptionHandler(value = IllegalArgumentException.class)
+	public ResponseEntity<?> illegalStateException(IllegalArgumentException e) {
+		return new ResponseEntity<>(new ExceptionRestResponse(500, e.getMessage()), HttpStatus.OK);
+	}
+	
+	//@ExceptionHandler(value = RuntimeException.class)
+	//public ResponseEntity<?> runtimeException(Exception e) {
+		//return new ResponseEntity<>(new ExceptionRestResponse(1403, e.getLocalizedMessage()), HttpStatus.OK);
 		/**
 		 * 현재는 회원가입시 해당 유저 아이디의 유저가 존재할떄 발생
+		 * 현재 AccessDeniedException도 이 핸들러로 처리중.. AccessDeniedException 도 런타임으로 분류가 되는것인가.. 
+		 * 아님 그냥 서버 내에서 런타임 오류의 종휴가 발생했기에 그냥 이 쪽으로 보내는건지 모르겠다..
+		 * 
 		 */
-	}
+	//}
 	
 	@ExceptionHandler(value = AuthenticationException.class)
 	public ResponseEntity<?> passwordError(Exception e) {
@@ -36,36 +43,24 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 		 */
 	}
 	
-	@ExceptionHandler(value = Unauthorized.class)
-	@ResponseStatus(HttpStatus.UNAUTHORIZED)
-	public String error401(Exception e) {
-		System.out.println("==============> "+e.getMessage());
-		return "Access forbidden 401 " + e.getMessage();
+	@ExceptionHandler(Unauthorized.class)
+	public ResponseEntity<?> error401(Unauthorized e) {
+		return new ResponseEntity<>(new ExceptionRestResponse(401, e.getMessage()), HttpStatus.OK);
 	}
 
 	@ExceptionHandler(value = Forbidden.class)
-	@ResponseStatus(HttpStatus.FORBIDDEN)
 	public ResponseEntity<?>  error403(Exception e) {
-		System.out.println("==============> "+e.getMessage());
-		return new ResponseEntity<ExceptionRestResponse>(new ExceptionRestResponse(403, "Forbidden"),HttpStatus.FORBIDDEN);
+		return new ResponseEntity<ExceptionRestResponse>(new ExceptionRestResponse(403, "Forbidden"),HttpStatus.OK);
 	}
 	
-//	@ExceptionHandler(value = HttpMediaTypeNotSupportedException.class)
-//	public String error415(Exception e) {
-//		return "Unsupported Media Type Exception "+ e.getMessage();
-//	}
-//		@ExceptionHandler(value = BadRequestException.class)
-//	public String error400(Exception e) {
-//		return "Bad Request 400 " + e.getMessage();
-//	}
+	@ExceptionHandler(value = BadRequestException.class)
+	public String error400(Exception e) {
+		return "Bad Request 400 " + e.getMessage();
+	}
+	
 	@ExceptionHandler(value = TooManyRequests.class)
 	public String error429(Exception e) {
 		return "Too Many Requests " + e.getMessage();
-	}
-	
-	@ExceptionHandler(value = Exception.class)
-	public String allExceptions(Exception e) {
-		return "열로 잡아찌롱 "+e.getMessage();
 	}
 	
 	@Value
