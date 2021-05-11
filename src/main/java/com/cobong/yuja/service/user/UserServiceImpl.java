@@ -323,17 +323,24 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional(readOnly = true)
 	public String checkemail(String username) {
-		if(userRepository.existsByUsername(username)) {
-			return "이미 가입되어 있는 이메일입니다";
+		System.out.println("==================>"+username);
+		String pattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
+		if(Pattern.matches(pattern, username) == false) {
+			return "사용 불가능한 이메일 입니다";
 		}
-		return "사용가능한 이메일 입니다";
+		User user = userRepository.findByUsername(username).orElse(null);
+		if(user == null) {
+			return "사용가능한 이메일 입니다";
+		} else {
+			return "사용 불가능한 이메일 입니다";
+		}
 	}
 	
 	@Override
 	@Transactional(readOnly = true)
 	public String checkNickname(String username) {
 		if(userRepository.existsByNickname(username)) {
-			return "이미 가입되어 있는 이메일입니다";
+			return "사용 중인 닉네임 입니다";
 		}
 		return "사용가능한 닉네임 입니다";
 	}
@@ -363,11 +370,11 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findByUsername(username).orElse(null);
 		System.out.println(user);
 		if(user == null) {
-			throw new IllegalAccessError("존재하지 않는 회원입니다.");
+			return "존재하지 않는 회원입니다.";
 		} else {
 			String pattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
 			if(Pattern.matches(pattern, username) == false) {
-				throw new IllegalAccessError("올바른 이메일 형식이 아닙니다. ");
+				return "올바른 이메일 형식이 아닙니다. ";
 			}
 			String tempPassword = "";
 			Random random = new Random();

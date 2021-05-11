@@ -46,13 +46,17 @@ public class AuthApiController {
 	}
 
 	@PostMapping("/checkemail")
-	public ResponseEntity<?> checkid(@RequestBody String username) {
-		return new ResponseEntity<>(userService.checkemail(username), HttpStatus.OK);
+	public ResponseEntity<?> checkid(@RequestBody Map<String, String> username) {
+		if(username!= null) {
+			return new ResponseEntity<>(userService.checkemail(username.get("username")), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>("", HttpStatus.OK);
+		}
 	}
 
 	@PostMapping("/checknickname")
-	public ResponseEntity<?> checknickname(@RequestBody String nickname) {
-		return new ResponseEntity<>(userService.checkNickname(nickname), HttpStatus.OK);
+	public ResponseEntity<?> checknickname(@RequestBody Map<String, String> nickname) {
+		return new ResponseEntity<>(userService.checkNickname(nickname.get("nickname")), HttpStatus.OK);
 	}
 
 	@PostMapping("/signin")
