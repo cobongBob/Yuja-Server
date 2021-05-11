@@ -92,6 +92,7 @@ public class BoardAttachService {
 				boardAttachIds.add(attachDto);
 			} catch (Exception e) {
 				e.printStackTrace();
+				throw new IllegalAccessError("이미지 업로드 중 오류가 발생했습니다");
 			}
 		}
 		return boardAttachIds;

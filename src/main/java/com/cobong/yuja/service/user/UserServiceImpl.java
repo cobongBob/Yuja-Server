@@ -70,13 +70,12 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public UserResponseDto save(UserSaveRequestDto dto) {		
 		if(userRepository.existsByUsername(dto.getUsername())) {
-			throw new RuntimeException("이미 가입되어 있는 유저입니다");
+			throw new IllegalAccessError("이미 가입되어 있는 유저입니다");
 		}
 		
 		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 
-		Authorities authorities = authoritiesRepository.findByAuthority(AuthorityNames.GENERAL)
-				.orElseThrow(() -> new AppException("Authority(GENERAL) not set"));
+		Authorities authorities = authoritiesRepository.findByAuthority(AuthorityNames.GENERAL).get();
 
 		User entity = User.builder()
 		.username(dto.getUsername())
@@ -130,13 +129,8 @@ public class UserServiceImpl implements UserService {
 		} else {
 			dto.setProfilePic("");
 		} 
-		/***
-		 * 예외처리 완료시 else에 추가해야함
-		 */
 		return dto;
 	}
-	
-
 	
 	@Override
 	@Transactional(readOnly = true)
@@ -191,7 +185,7 @@ public class UserServiceImpl implements UserService {
 					if(toDel.exists()) {
 						toDel.delete();				
 					} else {
-						System.out.println("Such File does not exist!");
+						throw new IllegalAccessError("서버에 해당 이미지가 존재하지 않습니다");
 					}
 					profilePictureRepository.delete(originalProfilePicture);
 				}
