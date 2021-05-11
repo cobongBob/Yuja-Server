@@ -90,16 +90,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers(HttpMethod.DELETE,"/api/2/board/**","/api/3/board/**","/api/4/board/**","/api/5/board/**", "/api/board/liked","api/comment/**") 
 					.hasAnyAuthority("ROLE_GENERAL", "ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN" )// delete all
 				.antMatchers(HttpMethod.POST,"/api/1/board", "api/1/thumbnail/upload")
-					.hasAuthority("ROLE_YOUTUBER") // post youtuber
+					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_MANAGER","ROLE_ADMIN") // post youtuber
 				.antMatchers(HttpMethod.PUT,"/api/1/board/**")
-					.hasAuthority("ROLE_YOUTUBER") // put youtuber
+					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_MANAGER","ROLE_ADMIN") // put youtuber
 				.antMatchers(HttpMethod.DELETE,"/api/1/board/**")
-					.hasAuthority("ROLE_YOUTUBER") // delete youtuber
+					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_MANAGER","ROLE_ADMIN") // delete youtuber
 				.antMatchers(HttpMethod.DELETE,"/api/user/**")
 					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // manager admin  유저 삭제 +  ?
-					
 				.antMatchers(HttpMethod.GET,"/api/2/board")
-					.hasAuthority("ROLE_EDITOR") // 테스트요ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+					.hasAnyAuthority("ROLE_EDITOR","ROLE_MANAGER","ROLE_ADMIN") // 테스트요ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 //				.antMatchers() 
 //					.hasAuthority("ROLE_THUMBNAILOR") // 썸넬러
 //				.antMatchers()
