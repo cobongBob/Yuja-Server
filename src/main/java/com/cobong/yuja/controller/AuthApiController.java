@@ -27,7 +27,7 @@ import com.cobong.yuja.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/auth") // 설정해야댐
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class AuthApiController {
 

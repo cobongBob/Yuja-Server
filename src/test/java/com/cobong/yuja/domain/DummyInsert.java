@@ -1,7 +1,9 @@
 package com.cobong.yuja.domain;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
+import java.util.List;
 import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
@@ -61,7 +63,18 @@ public class DummyInsert {
 	
 	@Test
 	public void insertAuth() {
+		
 		Authorities authorities = new Authorities(1L,AuthorityNames.GENERAL);
+		authRepo.save(authorities);
+		authorities = new Authorities(2L,AuthorityNames.YOUTUBER);
+		authRepo.save(authorities);
+		authorities = new Authorities(3L,AuthorityNames.EDITOR);
+		authRepo.save(authorities);
+		authorities = new Authorities(4L,AuthorityNames.THUMBNAIOR);
+		authRepo.save(authorities);
+		authorities = new Authorities(5L,AuthorityNames.MANAGER);
+		authRepo.save(authorities);
+		authorities = new Authorities(6L,AuthorityNames.ADMIN);
 		authRepo.save(authorities);
 	}
 	
@@ -81,6 +94,7 @@ public class DummyInsert {
 			userRepository.save(user);
 		});
 	}
+	
 	
 	@Test
 	public void insertBoard() {

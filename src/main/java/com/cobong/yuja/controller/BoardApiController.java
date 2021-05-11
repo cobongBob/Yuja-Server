@@ -28,12 +28,13 @@ public class BoardApiController {
 		return new ResponseEntity<>(boardService.save(dto),HttpStatus.CREATED);
 	}
 	
-	@Secured("ROLE_GENERAL")
+//	@Secured("ROLE_GENERAL")
 	@GetMapping("/api/{boardCode}/board/{bno}")
 	public ResponseEntity<?> getOneBoard(@PathVariable Long boardCode, @PathVariable Long bno) {
 		return new ResponseEntity<>(boardService.findById(bno),HttpStatus.OK);
 	}
 	
+//	@Secured("ROLE_MANAGER")
 	@GetMapping("/api/board/allBoard")
 	public ResponseEntity<?> getAllBoard(){
 		return new ResponseEntity<>(boardService.findAll(),HttpStatus.OK);
