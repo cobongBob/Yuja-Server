@@ -1,7 +1,5 @@
 package com.cobong.yuja.payload.request.user;
 
-import javax.validation.constraints.NotBlank;
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

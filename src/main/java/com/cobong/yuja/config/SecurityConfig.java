@@ -3,6 +3,7 @@ package com.cobong.yuja.config;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -80,25 +81,33 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
 				.and()
 			.authorizeRequests()
-//				.antMatchers()
-//					.permitAll()
-//				.antMatchers()
-//					.hasAuthority("ROLE_GENERAL");
-//				.antMatchers()
-//					.hasAuthority("ROLE_YOUTUBER")
-//				.antMatchers()
-//					.hasAuthority("ROLE_EDITOR")
-//				.antMatchers()
-//					.hasAuthority("ROLE_THUMBNAILOR")
+				.antMatchers("/api/auth/**") // 로그인 회원가입
+					.permitAll() //  all methods all authorities
+				.antMatchers(HttpMethod.POST,"/api/2/board", "/api/3/board", "/api/4/board","/api/5/board", "/api/board/liked","/api/comment","/api/board/img/upload", "api/2/thumbnail/upload", "api/3/thumbnail/upload") 
+					.hasAnyAuthority("ROLE_GENERAL", "ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN" )// post  all
+				.antMatchers(HttpMethod.PUT,"/api/2/board/**","/api/3/board/**","/api/4/board/**","/api/5/board/**","/api/comment/**", "/api/user/**" ) 
+					.hasAnyAuthority("ROLE_GENERAL", "ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN" )// put all
+				.antMatchers(HttpMethod.DELETE,"/api/2/board/**","/api/3/board/**","/api/4/board/**","/api/5/board/**", "/api/board/liked","api/comment/**") 
+					.hasAnyAuthority("ROLE_GENERAL", "ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN" )// delete all
+				.antMatchers(HttpMethod.POST,"/api/1/board", "api/1/thumbnail/upload")
+					.hasAuthority("ROLE_YOUTUBER") // post youtuber
+				.antMatchers(HttpMethod.PUT,"/api/1/board/**")
+					.hasAuthority("ROLE_YOUTUBER") // put youtuber
+				.antMatchers(HttpMethod.DELETE,"/api/1/board/**")
+					.hasAuthority("ROLE_YOUTUBER") // delete youtuber
+				.antMatchers(HttpMethod.DELETE,"/api/user/**")
+					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // manager admin  유저 삭제 +  ?
+					
+				.antMatchers(HttpMethod.GET,"/api/2/board")
+					.hasAuthority("ROLE_EDITOR") // 테스트요ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+//				.antMatchers() 
+//					.hasAuthority("ROLE_THUMBNAILOR") // 썸넬러
 //				.antMatchers()
 //					.hasAuthority("ROLE_ADMIN")
-//				.antMatchers()
-//					.hasAuthority("ROLE_MANAGER")
 				.anyRequest()
 					.permitAll(); // 임시
 //					.authenticated();
 		
-		// 내 커스텀 필터를 추가하고 가장먼저 실행시킴
 		http
 		.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);
 	}

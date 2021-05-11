@@ -35,15 +35,15 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 	
 	@ExceptionHandler(value = AuthenticationException.class)
 	public ResponseEntity<?> passwordError(Exception e) {
-		return new ResponseEntity<>(new ExceptionRestResponse(1200, "이메일이나 비밀호가 일치하지 않습니다"), HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(new ExceptionRestResponse(1200, "이메일이나 비밀번호가 일치하지 않습니다"), HttpStatus.INTERNAL_SERVER_ERROR);
 		/***
 		 * 로그인시 이메일과 비번이 일치하지 않을 때 발생하는 에러.
 		 */
 	}
 	
 	@ExceptionHandler(value = BadRequestException.class)
-	public String error400(Exception e) {
-		return "Bad Request 400 " + e.getMessage();
+	public ResponseEntity<?> error400(Exception e) {
+		return new ResponseEntity<>(new ExceptionRestResponse(400, "Bad Request 400 " + e.getMessage()), HttpStatus.BAD_REQUEST);
 	}
 	
 	@ExceptionHandler(value = TooManyRequests.class)
