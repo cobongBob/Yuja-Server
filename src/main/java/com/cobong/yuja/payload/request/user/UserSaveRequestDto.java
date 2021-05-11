@@ -43,6 +43,7 @@ public class UserSaveRequestDto {
 	private String userIp;
 	private boolean isMarketingChecked;
 	private Long profilePicId = 0L;
+	private String youtubeUrl = "";
 	
 	public void setIsMarketingChecked(boolean isMarketingChecked) {
 		this.isMarketingChecked = isMarketingChecked;
@@ -67,6 +68,7 @@ public class UserSaveRequestDto {
 				.youtubeImg(this.youtubeImg)
 				.userIp(this.userIp)
 				.isMarketingChecked(this.isMarketingChecked)
+				.youtubeUrl(this.youtubeUrl)
 				.build();
 	}
 }

@@ -86,6 +86,7 @@ public class UserServiceImpl implements UserService {
 		.youtubeImg(dto.getYoutubeImg())
 		.userIp(dto.getUserIp())
 		.isMarketingChecked(dto.getIsMarketingChecked())
+		.youtubeUrl(dto.getYoutubeUrl())
 		.build();
 
 		User user = userRepository.save(entity);
@@ -157,7 +158,7 @@ public class UserServiceImpl implements UserService {
 				userUpdateRequestDto.getBday(),userUpdateRequestDto.getProvidedId(), 
 				userUpdateRequestDto.getProvider(), userUpdateRequestDto.getUserIp(),
 				userUpdateRequestDto.getAddress(), userUpdateRequestDto.getPhone(),
-				userUpdateRequestDto.getBsn(), userUpdateRequestDto.getYoutubeImg());
+				userUpdateRequestDto.getBsn(), userUpdateRequestDto.getYoutubeImg(), userUpdateRequestDto.getYoututubeUrl());
 		
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
 

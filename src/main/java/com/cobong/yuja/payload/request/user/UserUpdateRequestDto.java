@@ -23,6 +23,7 @@ public class UserUpdateRequestDto {
 	private String bsn;
 	private String youtubeImg;
 	private String userIp;
+	private String yoututubeUrl;
 	
 	public User dtoToEntity() {
 		return User.builder()
@@ -38,6 +39,7 @@ public class UserUpdateRequestDto {
 				.bsn(this.bsn)
 				.youtubeImg(this.youtubeImg)
 				.userIp(this.userIp)
+				.youtubeUrl(this.yoututubeUrl)
 				.build();
 	}
 }

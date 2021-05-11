@@ -89,9 +89,15 @@ public class Board extends DateAudit{
 	private String worker;
 	
 	private String yWhen;
-
-	public Board modify(String title, String content, String payType, String payAmount,
-			String career, String tools, Date expiredDate, String worker, String yWhen, String channelName, int recruitingNum,String receptionMethod,String manager ) {
+	
+	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
+	private List<ReportedBoards> reportedBoards;
+	
+	private boolean isPrivate;
+	
+	public Board modify(String title, String content, String payType, String payAmount,	String career, String tools, 
+			Date expiredDate, String worker, String yWhen, String channelName, int recruitingNum,String receptionMethod,
+			String manager, boolean hidden) {
 		
 		this.title=title;
 		this.content=content;
@@ -106,11 +112,13 @@ public class Board extends DateAudit{
 		this.recruitingNum = recruitingNum;
 		this.receptionMethod = receptionMethod;
 		this.manager = manager;
+		this.isPrivate = hidden;
 		return this;
 	}
 
-	public Board createBoard(BoardType boardType, User user, String title, String content, Date expiredDate,
-			String payType, String payAmount, String career, String tools, String worker, String yWhen, String channelName, int recruitingNum,String receptionMethod,String manager ) {
+	public Board createBoard(BoardType boardType, User user, String title, String content, Date expiredDate, String payType,
+			String payAmount, String career, String tools, String worker, String yWhen, String channelName, int recruitingNum,
+			String receptionMethod,String manager, boolean hidden) {
 		Board board = new Board();
 		board.boardId = boardId;
 		board.boardType = boardType;
@@ -128,6 +136,7 @@ public class Board extends DateAudit{
 		board.recruitingNum = recruitingNum;
 		board.receptionMethod = receptionMethod;
 		board.manager = manager;
+		board.isPrivate = hidden;
 		return board;
 	}
 	

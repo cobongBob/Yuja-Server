@@ -35,6 +35,7 @@ public class BoardSaveRequestDto {
 	private String worker = "";
 	private String yWhen = "";
 	private Long thumbnailId = 0L;
+	private boolean isPrivate;
 	
 	public Board dtoToEntity() {
 		return Board.builder()
@@ -51,6 +52,15 @@ public class BoardSaveRequestDto {
 				.manager(this.manager)
 				.worker(this.worker)
 				.yWhen(this.yWhen)
+				.isPrivate(this.isPrivate)
 				.build();
+	}
+	
+	public void setIsPrivate(boolean isPrivate) {
+		this.isPrivate = isPrivate;
+	}
+	
+	public boolean getIsPrivate() {
+		return this.isPrivate;
 	}
 }
