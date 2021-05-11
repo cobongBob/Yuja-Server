@@ -38,6 +38,7 @@ import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.user.LoginRequest;
 import com.cobong.yuja.payload.request.user.UserSaveRequestDto;
 import com.cobong.yuja.payload.request.user.UserUpdateRequestDto;
+import com.cobong.yuja.payload.response.user.UserForClientResponseDto;
 import com.cobong.yuja.payload.response.user.UserResponseDto;
 import com.cobong.yuja.repository.RefreshTokenRepository;
 import com.cobong.yuja.repository.user.AuthoritiesRepository;
@@ -236,6 +237,13 @@ public class UserServiceImpl implements UserService {
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
 		return dto;
 	}
+	@Override
+	@Transactional(readOnly = true)
+	public UserForClientResponseDto findByUsernameForClient(String username) {
+		User user = userRepository.findByUsername(username).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
+		UserForClientResponseDto dto = new UserForClientResponseDto().entityToDto(user);
+		return dto;
+	}
 	
 	@Override
 	public Cookie[] signIn(LoginRequest loginRequest) {
@@ -311,7 +319,9 @@ public class UserServiceImpl implements UserService {
 		if(authentication.getPrincipal() instanceof PrincipalDetails) {
 			principalDetails = (PrincipalDetails) authentication.getPrincipal();
 		} else {
-			return null;
+			Cookie accessToken = cookieProvider.logOutCookie(JwtTokenProvider.ACCESS_TOKEN_NAME, null);
+			Cookie refreshToken = cookieProvider.logOutCookie(JwtTokenProvider.REFRESH_TOKEN_NAME, null);
+			return new Cookie[] {accessToken,refreshToken};
 		}
 		String token  = jwtTokenProvider.generateToken(authentication);
 		String refreshJwt  = jwtTokenProvider.generateRefreshToken(authentication);

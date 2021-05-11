@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cobong.yuja.config.oauth.GoogleUser;
 import com.cobong.yuja.payload.request.user.LoginRequest;
 import com.cobong.yuja.payload.request.user.UserSaveRequestDto;
+import com.cobong.yuja.payload.response.user.UserResponseDto;
 import com.cobong.yuja.service.user.ProfilePictureService;
 import com.cobong.yuja.service.user.UserService;
 
@@ -64,7 +65,7 @@ public class AuthApiController {
 		Cookie[] cookies = userService.signIn(loginRequest);
 		res.addCookie(cookies[0]);
 		res.addCookie(cookies[1]);
-		return new ResponseEntity<>(cookies[0].getValue(), HttpStatus.OK);
+		return new ResponseEntity<>(userService.findByUsernameForClient(loginRequest.getUsername()), HttpStatus.OK);
 	}
 
 	@GetMapping("/signout")

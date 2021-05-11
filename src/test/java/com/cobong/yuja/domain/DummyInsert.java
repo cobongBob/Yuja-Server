@@ -80,8 +80,8 @@ public class DummyInsert {
 	
 	@Test
 	public void insertUser() {
-		Authorities auth = authRepo.findById(1L).orElseThrow(()->new IllegalArgumentException("ghi"));
-		IntStream.rangeClosed(1, 10).forEach(i -> {
+		Authorities auth1 = authRepo.findById(1L).orElseThrow(()->new IllegalArgumentException("없는 권한"));
+		IntStream.rangeClosed(1, 25).forEach(i -> {
 			User user = User.builder()
 					.username("user "+i)
 					.password(passwordEncoder.encode("1111"))
@@ -89,7 +89,47 @@ public class DummyInsert {
 					.realName("tester "+i)
 					.bday("2000-01-"+i)
 					.userIp("111.111.111.111")
-					.authorities(Collections.singletonList(auth))
+					.authorities(Collections.singletonList(auth1))
+					.build();
+			userRepository.save(user);
+		});
+		Authorities auth2 = authRepo.findById(2L).orElseThrow(()->new IllegalArgumentException("없는 권한"));
+		IntStream.rangeClosed(26, 50).forEach(i -> {
+			User user = User.builder()
+					.username("user "+i)
+					.password(passwordEncoder.encode("1111"))
+					.nickname("nickname "+i)
+					.realName("tester "+i)
+					.bday("2000-01-"+i)
+					.userIp("111.111.111.111")
+					.youtubeUrl("https://www.youtube.com/channel/UCVrhnbfe78ODeQglXtT1Elw")
+					.authorities(Collections.singletonList(auth2))
+					.build();
+			userRepository.save(user);
+		});
+		IntStream.rangeClosed(51, 75).forEach(i -> {
+			User user = User.builder()
+					.username("user "+i)
+					.password(passwordEncoder.encode("1111"))
+					.nickname("nickname "+i)
+					.realName("tester "+i)
+					.bday("2000-01-"+i)
+					.userIp("111.111.111.111")
+					.youtubeUrl("https://www.youtube.com/channel/UCfpaSruWW3S4dibonKXENjA")
+					.authorities(Collections.singletonList(auth2))
+					.build();
+			userRepository.save(user);
+		});
+		Authorities auth3 = authRepo.findById(6L).orElseThrow(()->new IllegalArgumentException("없는 권한"));
+		IntStream.rangeClosed(76, 102).forEach(i -> {
+			User user = User.builder()
+					.username("admin "+i)
+					.password(passwordEncoder.encode("1111"))
+					.nickname("Admin "+i)
+					.realName("Admin "+i)
+					.bday("2000-01-"+i)
+					.userIp("111.111.111.111")
+					.authorities(Collections.singletonList(auth3))
 					.build();
 			userRepository.save(user);
 		});
@@ -97,10 +137,59 @@ public class DummyInsert {
 	
 	
 	@Test
-	public void insertBoard() {
-		IntStream.rangeClosed(1, 10).forEach(i -> {
+	public void insertYBoard() {
+		IntStream.rangeClosed(26, 50).forEach(i -> {
 			User user = User.builder().userId(Long.valueOf(i)).build();
 			BoardType boardType = boardTypeRepository.findById(1L).orElseThrow(()-> new IllegalArgumentException("존재하지 x"));
+			Board board = Board.builder()
+					.boardType(boardType)
+					.user(user)
+					.career("신입")
+					.channelName("데어프로그래밍 "+i)
+					.expiredDate(new Date())
+					.manager("테스트매니저 "+i)
+					.payAmount("100,000")
+					.payType("건당")
+					.receptionMethod("비대면")
+					.recruitingNum(i)
+					.tools("프리미어 프로,파이널,베가스")
+					.title("테스트 데어 "+i)
+					.content("테스트 데어 "+i)
+					.worker("편집자")
+					.yWhen("상시모집")
+					.hit(i)
+					.build();
+			boardRepository.save(board);
+		});
+		IntStream.rangeClosed(51, 75).forEach(i -> {
+			User user = User.builder().userId(Long.valueOf(i)).build();
+			BoardType boardType = boardTypeRepository.findById(1L).orElseThrow(()-> new IllegalArgumentException("존재하지 x"));
+			Board board = Board.builder()
+					.boardType(boardType)
+					.user(user)
+					.career("신입")
+					.channelName("쯔양 "+i)
+					.expiredDate(new Date())
+					.manager("테스트매니저 "+i)
+					.payAmount("100,000")
+					.payType("건당")
+					.receptionMethod("비대면")
+					.recruitingNum(i)
+					.tools("프리미어 프로,파이널,베가스")
+					.title("테스트 쯔양 "+i)
+					.content("테스트 쯔양 "+i)
+					.worker("편집자")
+					.yWhen("상시모집")
+					.hit(i)
+					.build();
+			boardRepository.save(board);
+		});
+	}
+	@Test
+	public void insertEBoard() {
+		IntStream.rangeClosed(1, 102).forEach(i -> {
+			User user = User.builder().userId(Long.valueOf(i)).build();
+			BoardType boardType = boardTypeRepository.findById(2L).orElseThrow(()-> new IllegalArgumentException("존재하지 x"));
 			Board board = Board.builder()
 					.boardType(boardType)
 					.user(user)
