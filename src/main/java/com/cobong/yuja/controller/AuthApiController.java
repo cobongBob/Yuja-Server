@@ -95,4 +95,9 @@ public class AuthApiController {
 		return new ResponseEntity<>(userService.googleOauthCheck(data), HttpStatus.OK);
 		}
 	}
+	
+	@PostMapping("/resetPassword")
+	public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> username) {
+		return new ResponseEntity<>(userService.resetPassword(username.get("username")), HttpStatus.OK);
+	}
 }
