@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -18,8 +16,6 @@ import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,8 +30,6 @@ import com.cobong.yuja.config.auth.PrincipalDetails;
 import com.cobong.yuja.config.jwt.CookieProvider;
 import com.cobong.yuja.config.jwt.JwtTokenProvider;
 import com.cobong.yuja.config.oauth.GoogleUser;
-import com.cobong.yuja.config.oauth.OAuthUserInfo;
-import com.cobong.yuja.exception.AppException;
 import com.cobong.yuja.model.Authorities;
 import com.cobong.yuja.model.AuthorityNames;
 import com.cobong.yuja.model.ProfilePicture;
@@ -192,12 +186,13 @@ public class UserServiceImpl implements UserService {
 			}
 			// 새로추가된 프로필사진 이동후 저장.
 			if(!profilePicture.isFlag()) {
-				File temp = new File(profilePicture.getTempPath());
-				File dest = new File(profilePicture.getUploadPath());
 				try {
+					File temp = new File(profilePicture.getTempPath());
+					File dest = new File(profilePicture.getUploadPath());
 					Files.move(temp, dest);
 				} catch (IOException e) {
 					e.printStackTrace();
+					throw new IllegalAccessError("서버에 해당 이미지가 존재하지 않습니다");
 				}
 				profilePicture.completelySave();
 				profilePicture.addUser(user);
@@ -215,12 +210,7 @@ public class UserServiceImpl implements UserService {
 			File toDel = new File(originalProfilePicture.getUploadPath());
 			if(toDel.exists()) {
 				toDel.delete();				
-			} else {
-				System.out.println("Such File does not exist!");
-				/***
-				 * 예외 처리 작성시 선언 필요
-				 */
-			}
+			} 
 		}
 		userRepository.deleteById(bno);
 		return "success";
@@ -267,11 +257,11 @@ public class UserServiceImpl implements UserService {
 	public String verify(String username) {
 		User user = userRepository.findByUsername(username).orElse(null);
 		if(user != null) {
-			return "이미 가입된 이메일입니다.";
+			throw new IllegalAccessError("이미 가입된 이메일입니다.");
 		}
 		String pattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
 		if(Pattern.matches(pattern, username) == false) {
-			return "올바른 이메일 형식이 아닙니다. ";
+			throw new IllegalAccessError("올바른 이메일 형식이 아닙니다. ");
 		}
 
 		String verifyNum = "";
@@ -306,6 +296,7 @@ public class UserServiceImpl implements UserService {
 			message.addInline("logo", new ClassPathResource("/static/imgs/yuzu05.png"));
 		} catch (MessagingException e) {
 			e.printStackTrace();
+			throw new IllegalAccessError("서버 오류로 인한 메일 발송 실패");
 		}
 		javaMailSender.send(mimeMessage);
 		return verifyNum;
@@ -333,7 +324,7 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public String checkId(String username) {
 		if(userRepository.existsByUsername(username)) {
-			throw new RuntimeException("이미 가입되어 있는 이메일입니다");
+			throw new IllegalAccessError("이미 가입되어 있는 이메일입니다");
 		}
 		return "사용가능한 이메일 입니다";
 	}
@@ -342,7 +333,7 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public String checkNickname(String username) {
 		if(userRepository.existsByNickname(username)) {
-			throw new RuntimeException("이미 가입되어 있는 닉네임입니다");
+			throw new IllegalAccessError("이미 가입되어 있는 이메일입니다");
 		}
 		return "사용가능한 닉네임 입니다";
 	}
@@ -372,11 +363,11 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findByUsername(username).orElse(null);
 		System.out.println(user);
 		if(user == null) {
-			return "존재하지 않는 회원입니다.";
+			throw new IllegalAccessError("존재하지 않는 회원입니다.");
 		} else {
 			String pattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
 			if(Pattern.matches(pattern, username) == false) {
-				return "올바른 이메일 형식이 아닙니다. ";
+				throw new IllegalAccessError("올바른 이메일 형식이 아닙니다. ");
 			}
 			String tempPassword = "";
 			Random random = new Random();
@@ -410,7 +401,7 @@ public class UserServiceImpl implements UserService {
 				message.addInline("logo", new ClassPathResource("/static/imgs/yuzu05.png"));
 			} catch (MessagingException e) {
 				e.printStackTrace();
-				return "서버 오류로 인한 메일 발송 실패";
+				throw new IllegalAccessError("서버 오류로 인한 메일 발송 실패");
 			}
 			javaMailSender.send(mimeMessage);
 			user.resetPasword(passwordEncoder.encode(tempPassword));
