@@ -31,7 +31,7 @@ public class BoardSaveRequestDto {
 	private int recruitingNum = 0;
 	private String receptionMethod = "";
 	private String manager = "";
-	private List<Long> boardAttachIds;
+	private List<String> boardAttachNames;
 	private String worker = "";
 	private String yWhen = "";
 	private Long thumbnailId = 0L;

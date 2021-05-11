@@ -9,6 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.stereotype.Component;
@@ -27,6 +28,7 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException, ServletException {
 		logger.error("예외처리 메시지 내용 -> {}", authException.getMessage());
+		response.setStatus(HttpStatus.UNAUTHORIZED.value());
 		ExceptionResponseDto dto = new ExceptionResponseDto(401, "Unauthorized error: god damn mother fucking Exception... give me a damn mercy");
 		OutputStream out = response.getOutputStream();
 		ObjectMapper om = new ObjectMapper();

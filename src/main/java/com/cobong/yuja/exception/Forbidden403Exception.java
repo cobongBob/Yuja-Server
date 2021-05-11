@@ -14,7 +14,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.stereotype.Component;
 
-import com.cobong.yuja.exception.ExceptionController.ExceptionRestResponse;
 import com.cobong.yuja.exception.dto.ExceptionResponseDto;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -27,12 +26,12 @@ public class Forbidden403Exception implements AccessDeniedHandler {
 	@Override
 	public void handle(HttpServletRequest request, HttpServletResponse response,
 			AccessDeniedException accessDeniedException) throws IOException, ServletException {
-		logger.error("\n=================   에러발생!!   =================\n");
-		
+		response.setStatus(HttpStatus.FORBIDDEN.value());
 		ExceptionResponseDto dto = new ExceptionResponseDto(403, "Fobidden error: god damn mother fucking Exception... give me a damn mercy");
 		OutputStream out = response.getOutputStream();
 		ObjectMapper om = new ObjectMapper();
 		om.writeValue(out, dto);
 		out.flush();
+		logger.error("\n=================   에러발생!!   =================\n");
 	}
 }

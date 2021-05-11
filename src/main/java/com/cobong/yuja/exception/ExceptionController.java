@@ -43,16 +43,6 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 		 */
 	}
 	
-	@ExceptionHandler(Unauthorized.class)
-	public ResponseEntity<?> error401(Unauthorized e) {
-		return new ResponseEntity<>(new ExceptionRestResponse(401, e.getMessage()), HttpStatus.OK);
-	}
-
-	@ExceptionHandler(value = Forbidden.class)
-	public ResponseEntity<?>  error403(Exception e) {
-		return new ResponseEntity<ExceptionRestResponse>(new ExceptionRestResponse(403, "Forbidden"),HttpStatus.OK);
-	}
-	
 	@ExceptionHandler(value = BadRequestException.class)
 	public String error400(Exception e) {
 		return "Bad Request 400 " + e.getMessage();
