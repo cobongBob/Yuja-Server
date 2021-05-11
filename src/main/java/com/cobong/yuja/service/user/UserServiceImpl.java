@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -270,10 +271,15 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional(readOnly = true)
 	public String verify(String username) {
-		boolean isExist = userRepository.findByUsername(username).isPresent();
-		if(isExist) {
+		User user = userRepository.findByUsername(username).orElse(null);
+		if(user != null) {
 			return "이미 가입된 이메일입니다.";
 		}
+		String pattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
+		if(Pattern.matches(pattern, username) == false) {
+			return "올바른 이메일 형식이 아닙니다. ";
+		}
+
 		String verifyNum = "";
 		Random random = new Random();
 		for (int i = 0; i < 4; i++) {
@@ -355,7 +361,7 @@ public class UserServiceImpl implements UserService {
 		String username = (String) profile.get("email");
 		Boolean user = userRepository.existsByUsername(username);
 		GoogleUser googleUser = new GoogleUser();
-		googleUser.setPassword(passwordEncoder.encode("코봉밥"));
+		googleUser.setPassword("코봉밥");
 		
 		System.out.println("username 존재여부 : "+ user);
 		// 201 -> 회원가입
@@ -363,8 +369,58 @@ public class UserServiceImpl implements UserService {
 			googleUser.setFlag(true);
 		}
 		googleUser.setAttribute(profile);
-		
-		
 		return googleUser;
+	}
+
+	@Override
+	@Transactional
+	public String resetPassword(String username) {
+		User user = userRepository.findByUsername(username).orElse(null);
+		System.out.println(user);
+		if(user == null) {
+			return "존재하지 않는 회원입니다.";
+		} else {
+			String pattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
+			if(Pattern.matches(pattern, username) == false) {
+				return "올바른 이메일 형식이 아닙니다. ";
+			}
+			String tempPassword = "";
+			Random random = new Random();
+			for (int i = 0; i < 4; i++) {
+				tempPassword += (char) (random.nextInt(25) + 97); // a~z까지 랜덤 알파벳 생성
+				tempPassword += random.nextInt(10);
+			}
+			StringBuffer content = new StringBuffer();
+			content.append("<!DOCTYPE html>");
+			content.append("<html>");
+			content.append("<head>");
+			content.append("</head>");
+			content.append("<body>");
+			content.append("<div style=\"width: 400px; height: 300px; border: 4px solid #ff9411; margin: 100px auto; padding: 30px 0; box-sizing: border-box;\">");
+			content.append("<div style=\"margin: 0; padding: 0 5px; font-size: 25px; font-weight: 400;\">");
+			content.append("<img width='77' src='cid:logo'>");
+			content.append("<span style=\"color: #ff9411;font-weight:bold; font-size: 44px;\">유</span>튜버와 <span style=\"color: #ff9411;font-weight:bold; font-size: 44px;\">자</span>유롭게</span><br />");
+			content.append("<span style=\"font-size: 17px;\">임시 비밀번호입니다. 로그인 후 비밀번호를 바꿔주세요.</span></div>\n");
+			content.append("<p style=\"font-size: 15px; line-height: 25px; margin-top: 45px;text-align:center\"> 임시 비밀번호 : <span style=\"font-weight:bold\">" );
+			content.append(tempPassword);
+			content.append("</span></p></div>");
+			content.append("</body>");
+			content.append("</html>");
+			
+			MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+			try {
+				MimeMessageHelper message = new MimeMessageHelper(mimeMessage,true, "utf-8");
+				message.setTo(username);
+				message.setSubject("유자 임시 비밀번호 메일입니다.");
+				message.setText(content.toString(),true);
+				message.addInline("logo", new ClassPathResource("/static/imgs/yuzu05.png"));
+			} catch (MessagingException e) {
+				e.printStackTrace();
+				return "서버 오류로 인한 메일 발송 실패";
+			}
+			javaMailSender.send(mimeMessage);
+			user.resetPasword(passwordEncoder.encode(tempPassword));
+		}
+		return "임시비밀번호 메일 발송완료";
 	}
 }

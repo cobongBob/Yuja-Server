@@ -38,4 +38,6 @@ public interface UserService {
 	String checkNickname(String username);
 	
 	GoogleUser googleOauthCheck(Map<String, Object> data);
+
+	String resetPassword(String string);
 }

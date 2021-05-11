@@ -16,7 +16,7 @@ import lombok.Value;
 public class ExceptionController extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(value = IllegalAccessError.class)
 	public ResponseEntity<?> illegalAccessController(IllegalAccessError e){
-		return new ResponseEntity<>(new ExceptionRestResponse(500, e.getMessage()), HttpStatus.OK);
+		return new ResponseEntity<>(new ExceptionRestResponse(500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@ExceptionHandler(value = IllegalArgumentException.class)

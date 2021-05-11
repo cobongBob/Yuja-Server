@@ -107,4 +107,8 @@ public class User extends DateAudit {
 		this.youtubeImg = youtubeImg2;
 		this.userIp = userIp2;
 	}
+	
+	public void resetPasword(String password) {
+		this.password = password;
+	}
 }
