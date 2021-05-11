@@ -45,9 +45,9 @@ public class AuthApiController {
 		return new ResponseEntity<>(userService.verify(username.get("username")), HttpStatus.OK);
 	}
 
-	@PostMapping("/checkid")
+	@PostMapping("/checkemail")
 	public ResponseEntity<?> checkid(@RequestBody String username) {
-		return new ResponseEntity<>(userService.checkId(username), HttpStatus.OK);
+		return new ResponseEntity<>(userService.checkemail(username), HttpStatus.OK);
 	}
 
 	@PostMapping("/checknickname")

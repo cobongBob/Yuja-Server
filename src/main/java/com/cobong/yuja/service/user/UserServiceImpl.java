@@ -238,7 +238,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public Cookie[] signIn(LoginRequest loginRequest) {
-		User user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
+		User user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow(()-> new IllegalArgumentException("이메일이나 비밀번호가 일치하지 않습니다."));
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -321,19 +321,19 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	@Transactional
-	public String checkId(String username) {
+	@Transactional(readOnly = true)
+	public String checkemail(String username) {
 		if(userRepository.existsByUsername(username)) {
-			throw new IllegalAccessError("이미 가입되어 있는 이메일입니다");
+			return "이미 가입되어 있는 이메일입니다";
 		}
 		return "사용가능한 이메일 입니다";
 	}
 	
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public String checkNickname(String username) {
 		if(userRepository.existsByNickname(username)) {
-			throw new IllegalAccessError("이미 가입되어 있는 이메일입니다");
+			return "이미 가입되어 있는 이메일입니다";
 		}
 		return "사용가능한 닉네임 입니다";
 	}

@@ -5,9 +5,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
-import org.springframework.web.client.HttpClientErrorException.Forbidden;
 import org.springframework.web.client.HttpClientErrorException.TooManyRequests;
-import org.springframework.web.client.HttpClientErrorException.Unauthorized;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import lombok.Value;
@@ -21,7 +19,7 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 	
 	@ExceptionHandler(value = IllegalArgumentException.class)
 	public ResponseEntity<?> illegalStateException(IllegalArgumentException e) {
-		return new ResponseEntity<>(new ExceptionRestResponse(500, e.getMessage()), HttpStatus.OK);
+		return new ResponseEntity<>(new ExceptionRestResponse(500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	//@ExceptionHandler(value = RuntimeException.class)
@@ -37,7 +35,7 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 	
 	@ExceptionHandler(value = AuthenticationException.class)
 	public ResponseEntity<?> passwordError(Exception e) {
-		return new ResponseEntity<>(new ExceptionRestResponse(1200, e.getMessage()+" 비밀번호가 틀렸어요!"), HttpStatus.OK);
+		return new ResponseEntity<>(new ExceptionRestResponse(1200, "이메일이나 비밀호가 일치하지 않습니다"), HttpStatus.INTERNAL_SERVER_ERROR);
 		/***
 		 * 로그인시 이메일과 비번이 일치하지 않을 때 발생하는 에러.
 		 */
@@ -49,8 +47,8 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 	}
 	
 	@ExceptionHandler(value = TooManyRequests.class)
-	public String error429(Exception e) {
-		return "Too Many Requests " + e.getMessage();
+	public ResponseEntity<?> error429(Exception e) {
+		return new ResponseEntity<>(new ExceptionRestResponse(429, "Too Many Requests " + e.getMessage()), HttpStatus.TOO_MANY_REQUESTS);
 	}
 	
 	@Value

@@ -33,7 +33,7 @@ public interface UserService {
 
 	Cookie[] signOut();
 
-	String checkId(String username);
+	String checkemail(String username);
 
 	String checkNickname(String username);
 	
