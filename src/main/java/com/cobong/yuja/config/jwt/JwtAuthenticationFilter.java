@@ -62,18 +62,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		    				Cookie newAccessToken = cookieProvider.createCookie(JwtTokenProvider.ACCESS_TOKEN_NAME, newToken);
 		    				response.addCookie(newAccessToken);
 		    			}
-		            } else {
-		            	logger.error("존재하지 않는 토큰");
-		            }		
+		            } 	
 				}
-				else {
-	            	logger.error("토큰이 생성된적 없음");
-	            }		
 			}
 		} catch (Exception e) {
 			logger.error("doFilterInternal에서 검증 실패" + e);
 		}
-		
 		filterChain.doFilter(request, response); // 스프링의 나머지 FilterChain들을 수행
 	}
 		

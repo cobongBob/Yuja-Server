@@ -10,7 +10,6 @@ import lombok.Data;
 public class UserResponseDto {
 	private Long id;
 	private String username;
-	private String password;
 	private String nickname;
 	private String realName;
 	private List<?> authorities;
@@ -23,11 +22,11 @@ public class UserResponseDto {
 	private String bsn;
 	private String youtubeImg;
 	private String userIp;
+	private String youtubeUrl;
 	
 	public UserResponseDto entityToDto(User entity) {
 		this.id = entity.getUserId();
 		this.username = entity.getUsername();
-		this.password = entity.getPassword();
 		this.nickname = entity.getNickname();
 		this.realName = entity.getRealName();
 		this.authorities = entity.getAuthorities();
@@ -39,6 +38,7 @@ public class UserResponseDto {
 		this.bsn = entity.getBsn();
 		this.youtubeImg = entity.getYoutubeImg();
 		this.userIp = entity.getUserIp();
+		this.youtubeUrl = entity.getYoutubeUrl();
 		return this;
 	}
 	

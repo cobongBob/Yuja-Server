@@ -81,7 +81,7 @@ public class DummyInsert {
 	@Test
 	public void insertUser() {
 		Authorities auth = authRepo.findById(1L).orElseThrow(()->new IllegalArgumentException("ghi"));
-		IntStream.rangeClosed(1, 102).forEach(i -> {
+		IntStream.rangeClosed(1, 10).forEach(i -> {
 			User user = User.builder()
 					.username("user "+i)
 					.password(passwordEncoder.encode("1111"))
@@ -112,7 +112,7 @@ public class DummyInsert {
 
 	@Test
 	public void insertBoard() {
-		IntStream.rangeClosed(1, 102).forEach(i -> {
+		IntStream.rangeClosed(1, 10).forEach(i -> {
 			User user = User.builder().userId(Long.valueOf(i)).build();
 			BoardType boardType = boardTypeRepository.findById(1L).orElseThrow(()-> new IllegalArgumentException("존재하지 x"));
 			Board board = Board.builder()

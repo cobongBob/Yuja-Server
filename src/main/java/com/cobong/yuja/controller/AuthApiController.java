@@ -45,14 +45,18 @@ public class AuthApiController {
 		return new ResponseEntity<>(userService.verify(username.get("username")), HttpStatus.OK);
 	}
 
-	@PostMapping("/checkid")
-	public ResponseEntity<?> checkid(@RequestBody String username) {
-		return new ResponseEntity<>(userService.checkId(username), HttpStatus.OK);
+	@PostMapping("/checkemail")
+	public ResponseEntity<?> checkid(@RequestBody Map<String, String> username) {
+		if(username!= null) {
+			return new ResponseEntity<>(userService.checkemail(username.get("username")), HttpStatus.OK);
+		} else {
+			return new ResponseEntity<>("", HttpStatus.OK);
+		}
 	}
 
 	@PostMapping("/checknickname")
-	public ResponseEntity<?> checknickname(@RequestBody String nickname) {
-		return new ResponseEntity<>(userService.checkNickname(nickname), HttpStatus.OK);
+	public ResponseEntity<?> checknickname(@RequestBody Map<String, String> nickname) {
+		return new ResponseEntity<>(userService.checkNickname(nickname.get("nickname")), HttpStatus.OK);
 	}
 
 	@PostMapping("/signin")
@@ -94,5 +98,10 @@ public class AuthApiController {
 		// 200 -> 로그인
 		return new ResponseEntity<>(userService.googleOauthCheck(data), HttpStatus.OK);
 		}
+	}
+	
+	@PostMapping("/resetPassword")
+	public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> username) {
+		return new ResponseEntity<>(userService.resetPassword(username.get("username")), HttpStatus.OK);
 	}
 }

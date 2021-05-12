@@ -33,9 +33,11 @@ public interface UserService {
 
 	Cookie[] signOut();
 
-	String checkId(String username);
+	String checkemail(String username);
 
 	String checkNickname(String username);
 	
 	GoogleUser googleOauthCheck(Map<String, Object> data);
+
+	String resetPassword(String string);
 }

@@ -41,6 +41,7 @@ public class ProfilePictureServiceImpl implements ProfilePictureService {
 				/***
 				 * 파일 형식이 ".jpg",".jpeg",".png",".gif" 중 하나가 아닐시 예외처리 필요
 				 */
+				throw new IllegalAccessError("파일형식은 jpg, jpeg, png, gif 중 하나여야 합니다!");
 			};
 			
 			// 실행되는 위치의 'temp' 폴더에 파일이 저장

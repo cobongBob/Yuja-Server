@@ -41,6 +41,7 @@ public class ThumbnailServiceImpl implements ThumbnailService{
 				/***
 				 * 파일 형식이 ".jpg",".jpeg",".png",".gif" 중 하나가 아닐시 예외처리 필요
 				 */
+				throw new IllegalAccessError("파일형식은 jpg, jpeg, png, gif 중 하나여야 합니다!");
 			};
 			
 			// 실행되는 위치의 'temp' 폴더에 파일이 저장
@@ -98,6 +99,7 @@ public class ThumbnailServiceImpl implements ThumbnailService{
 			dto.setThumbnailId(thumbnail.getThumbnailId());
 		} catch (Exception e) {
 			e.printStackTrace();
+			throw new IllegalAccessError("이미지 업로드 중 오류가 발생했습니다");
 		}
 		return dto;
 	}

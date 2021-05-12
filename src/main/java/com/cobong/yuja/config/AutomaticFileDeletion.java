@@ -21,7 +21,7 @@ public class AutomaticFileDeletion {
 	private final ThumbnailService thumbnailService;
 	private final UserService userService;
 	
-	@Scheduled(cron = "0 12 19 * * *")
+	@Scheduled(cron = "0 0 4 * * *")
 	public void deleteAtFourAM() {
 		File tempToDel = Paths.get(System.getProperty("user.dir") + File.separator+"files" + File.separator +"temp").toFile();
 		File[] tempsToDel = tempToDel.listFiles();

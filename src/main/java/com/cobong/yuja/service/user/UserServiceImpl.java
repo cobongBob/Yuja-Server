@@ -5,20 +5,17 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Random;
+import java.util.regex.Pattern;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -33,8 +30,6 @@ import com.cobong.yuja.config.auth.PrincipalDetails;
 import com.cobong.yuja.config.jwt.CookieProvider;
 import com.cobong.yuja.config.jwt.JwtTokenProvider;
 import com.cobong.yuja.config.oauth.GoogleUser;
-import com.cobong.yuja.config.oauth.OAuthUserInfo;
-import com.cobong.yuja.exception.AppException;
 import com.cobong.yuja.model.Authorities;
 import com.cobong.yuja.model.AuthorityNames;
 import com.cobong.yuja.model.ProfilePicture;
@@ -69,13 +64,12 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public UserResponseDto save(UserSaveRequestDto dto) {		
 		if(userRepository.existsByUsername(dto.getUsername())) {
-			throw new RuntimeException("이미 가입되어 있는 유저입니다");
+			throw new IllegalAccessError("이미 가입되어 있는 유저입니다");
 		}
 		
 		dto.setPassword(passwordEncoder.encode(dto.getPassword()));
 
-		Authorities authorities = authoritiesRepository.findByAuthority(AuthorityNames.GENERAL)
-				.orElseThrow(() -> new AppException("Authority(GENERAL) not set"));
+		Authorities authorities = authoritiesRepository.findByAuthority(AuthorityNames.GENERAL).get();
 
 		User entity = User.builder()
 		.username(dto.getUsername())
@@ -92,6 +86,7 @@ public class UserServiceImpl implements UserService {
 		.youtubeImg(dto.getYoutubeImg())
 		.userIp(dto.getUserIp())
 		.isMarketingChecked(dto.getIsMarketingChecked())
+		.youtubeUrl(dto.getYoutubeUrl())
 		.build();
 
 		User user = userRepository.save(entity);
@@ -129,13 +124,8 @@ public class UserServiceImpl implements UserService {
 		} else {
 			dto.setProfilePic("");
 		} 
-		/***
-		 * 예외처리 완료시 else에 추가해야함
-		 */
 		return dto;
 	}
-	
-
 	
 	@Override
 	@Transactional(readOnly = true)
@@ -168,7 +158,7 @@ public class UserServiceImpl implements UserService {
 				userUpdateRequestDto.getBday(),userUpdateRequestDto.getProvidedId(), 
 				userUpdateRequestDto.getProvider(), userUpdateRequestDto.getUserIp(),
 				userUpdateRequestDto.getAddress(), userUpdateRequestDto.getPhone(),
-				userUpdateRequestDto.getBsn(), userUpdateRequestDto.getYoutubeImg());
+				userUpdateRequestDto.getBsn(), userUpdateRequestDto.getYoutubeImg(), userUpdateRequestDto.getYoututubeUrl());
 		
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
 
@@ -190,19 +180,20 @@ public class UserServiceImpl implements UserService {
 					if(toDel.exists()) {
 						toDel.delete();				
 					} else {
-						System.out.println("Such File does not exist!");
+						throw new IllegalAccessError("서버에 해당 이미지가 존재하지 않습니다");
 					}
 					profilePictureRepository.delete(originalProfilePicture);
 				}
 			}
 			// 새로추가된 프로필사진 이동후 저장.
 			if(!profilePicture.isFlag()) {
-				File temp = new File(profilePicture.getTempPath());
-				File dest = new File(profilePicture.getUploadPath());
 				try {
+					File temp = new File(profilePicture.getTempPath());
+					File dest = new File(profilePicture.getUploadPath());
 					Files.move(temp, dest);
 				} catch (IOException e) {
 					e.printStackTrace();
+					throw new IllegalAccessError("서버에 해당 이미지가 존재하지 않습니다");
 				}
 				profilePicture.completelySave();
 				profilePicture.addUser(user);
@@ -220,12 +211,7 @@ public class UserServiceImpl implements UserService {
 			File toDel = new File(originalProfilePicture.getUploadPath());
 			if(toDel.exists()) {
 				toDel.delete();				
-			} else {
-				System.out.println("Such File does not exist!");
-				/***
-				 * 예외 처리 작성시 선언 필요
-				 */
-			}
+			} 
 		}
 		userRepository.deleteById(bno);
 		return "success";
@@ -253,7 +239,7 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	public Cookie[] signIn(LoginRequest loginRequest) {
-		User user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
+		User user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow(()-> new IllegalArgumentException("이메일이나 비밀번호가 일치하지 않습니다."));
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -270,10 +256,15 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional(readOnly = true)
 	public String verify(String username) {
-		boolean isExist = userRepository.findByUsername(username).isPresent();
-		if(isExist) {
-			return "이미 가입된 이메일입니다.";
+		User user = userRepository.findByUsername(username).orElse(null);
+		if(user != null) {
+			throw new IllegalAccessError("이미 가입된 이메일입니다.");
 		}
+		String pattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
+		if(Pattern.matches(pattern, username) == false) {
+			throw new IllegalAccessError("올바른 이메일 형식이 아닙니다. ");
+		}
+
 		String verifyNum = "";
 		Random random = new Random();
 		for (int i = 0; i < 4; i++) {
@@ -306,6 +297,7 @@ public class UserServiceImpl implements UserService {
 			message.addInline("logo", new ClassPathResource("/static/imgs/yuzu05.png"));
 		} catch (MessagingException e) {
 			e.printStackTrace();
+			throw new IllegalAccessError("서버 오류로 인한 메일 발송 실패");
 		}
 		javaMailSender.send(mimeMessage);
 		return verifyNum;
@@ -330,19 +322,26 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	@Transactional
-	public String checkId(String username) {
-		if(userRepository.existsByUsername(username)) {
-			throw new RuntimeException("이미 가입되어 있는 이메일입니다");
+	@Transactional(readOnly = true)
+	public String checkemail(String username) {
+		System.out.println("==================>"+username);
+		String pattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
+		if(Pattern.matches(pattern, username) == false) {
+			return "사용 불가능한 이메일 입니다";
 		}
-		return "사용가능한 이메일 입니다";
+		User user = userRepository.findByUsername(username).orElse(null);
+		if(user == null) {
+			return "사용가능한 이메일 입니다";
+		} else {
+			return "사용 불가능한 이메일 입니다";
+		}
 	}
 	
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public String checkNickname(String username) {
 		if(userRepository.existsByNickname(username)) {
-			throw new RuntimeException("이미 가입되어 있는 닉네임입니다");
+			return "사용 중인 닉네임 입니다";
 		}
 		return "사용가능한 닉네임 입니다";
 	}
@@ -355,7 +354,7 @@ public class UserServiceImpl implements UserService {
 		String username = (String) profile.get("email");
 		Boolean user = userRepository.existsByUsername(username);
 		GoogleUser googleUser = new GoogleUser();
-		googleUser.setPassword(passwordEncoder.encode("코봉밥"));
+		googleUser.setPassword("코봉밥");
 		
 		System.out.println("username 존재여부 : "+ user);
 		// 201 -> 회원가입
@@ -363,8 +362,58 @@ public class UserServiceImpl implements UserService {
 			googleUser.setFlag(true);
 		}
 		googleUser.setAttribute(profile);
-		
-		
 		return googleUser;
+	}
+
+	@Override
+	@Transactional
+	public String resetPassword(String username) {
+		User user = userRepository.findByUsername(username).orElse(null);
+		System.out.println(user);
+		if(user == null) {
+			return "존재하지 않는 회원입니다.";
+		} else {
+			String pattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
+			if(Pattern.matches(pattern, username) == false) {
+				return "올바른 이메일 형식이 아닙니다. ";
+			}
+			String tempPassword = "";
+			Random random = new Random();
+			for (int i = 0; i < 4; i++) {
+				tempPassword += (char) (random.nextInt(25) + 97); // a~z까지 랜덤 알파벳 생성
+				tempPassword += random.nextInt(10);
+			}
+			StringBuffer content = new StringBuffer();
+			content.append("<!DOCTYPE html>");
+			content.append("<html>");
+			content.append("<head>");
+			content.append("</head>");
+			content.append("<body>");
+			content.append("<div style=\"width: 400px; height: 300px; border: 4px solid #ff9411; margin: 100px auto; padding: 30px 0; box-sizing: border-box;\">");
+			content.append("<div style=\"margin: 0; padding: 0 5px; font-size: 25px; font-weight: 400;\">");
+			content.append("<img width='77' src='cid:logo'>");
+			content.append("<span style=\"color: #ff9411;font-weight:bold; font-size: 44px;\">유</span>튜버와 <span style=\"color: #ff9411;font-weight:bold; font-size: 44px;\">자</span>유롭게</span><br />");
+			content.append("<span style=\"font-size: 17px;\">임시 비밀번호입니다. 로그인 후 비밀번호를 바꿔주세요.</span></div>\n");
+			content.append("<p style=\"font-size: 15px; line-height: 25px; margin-top: 45px;text-align:center\"> 임시 비밀번호 : <span style=\"font-weight:bold\">" );
+			content.append(tempPassword);
+			content.append("</span></p></div>");
+			content.append("</body>");
+			content.append("</html>");
+			
+			MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+			try {
+				MimeMessageHelper message = new MimeMessageHelper(mimeMessage,true, "utf-8");
+				message.setTo(username);
+				message.setSubject("유자 임시 비밀번호 메일입니다.");
+				message.setText(content.toString(),true);
+				message.addInline("logo", new ClassPathResource("/static/imgs/yuzu05.png"));
+			} catch (MessagingException e) {
+				e.printStackTrace();
+				throw new IllegalAccessError("서버 오류로 인한 메일 발송 실패");
+			}
+			javaMailSender.send(mimeMessage);
+			user.resetPasword(passwordEncoder.encode(tempPassword));
+		}
+		return "임시비밀번호 메일 발송완료";
 	}
 }

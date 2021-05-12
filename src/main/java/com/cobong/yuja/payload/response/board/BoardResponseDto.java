@@ -36,6 +36,7 @@ public class BoardResponseDto {
 	private String worker;
 	private String yWhen;
 	private String thumbnail;
+	private boolean isPrivate;
 	
 	public BoardResponseDto entityToDto(Board entity) {
 		this.id=entity.getBoardId();
@@ -54,6 +55,7 @@ public class BoardResponseDto {
 		this.manager = entity.getManager();
 		this.worker = entity.getWorker();
 		this.yWhen = entity.getYWhen();
+		this.isPrivate = entity.isPrivate();
 		return this;
 	}
 	
@@ -64,5 +66,13 @@ public class BoardResponseDto {
 	
 	public void setAttaches(List<String> attaches) {
 		this.boardAttachFileNames = attaches;
+	}
+	
+	public void setIsPrivate(boolean isPrivate) {
+		this.isPrivate = isPrivate;
+	}
+	
+	public boolean getIsPrivate() {
+		return this.isPrivate;
 	}
 }

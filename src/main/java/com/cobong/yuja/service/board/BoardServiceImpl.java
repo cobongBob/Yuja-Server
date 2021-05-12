@@ -45,41 +45,48 @@ public class BoardServiceImpl implements BoardService {
 		String toolsCombined = String.join(",", dto.getTools());
 		
 		Board board = new Board().createBoard(boardType, user, dto.getTitle(), dto.getContent(), dto.getExpiredDate(),
-				dto.getPayType(), dto.getPayAmount(), dto.getCareer(), toolsCombined, dto.getWorker(), dto.getYWhen(),dto.getChannelName(),dto.getRecruitingNum(),dto.getReceptionMethod(),dto.getManager());
+				dto.getPayType(), dto.getPayAmount(), dto.getCareer(), toolsCombined, dto.getWorker(), dto.getYWhen(),
+				dto.getChannelName(),dto.getRecruitingNum(),dto.getReceptionMethod(),dto.getManager(), dto.getIsPrivate());
 		Board board2 = boardRepository.save(board);
 		//null일경우 처리 필요
-		if(dto.getBoardAttachIds() != null) {
-			for(Long i: dto.getBoardAttachIds()) {
-				BoardAttach boardAttach = attachRepository.findById(i).orElseThrow(() -> new IllegalAccessError("해당 이미지 없음 "+i));
-				if(!boardAttach.isFlag()) {
-					File temp = new File(boardAttach.getTempPath());
-					File dest = new File(boardAttach.getUploadPath());
-					try {
-						Files.move(temp, dest);
-					} catch (IOException e) {
-						e.printStackTrace();
+		if(dto.getBoardAttachNames() != null) {
+			for(String i: dto.getBoardAttachNames()) {
+				if(attachRepository.findByFileName(i).isPresent()) {
+					BoardAttach boardAttach = attachRepository.findByFileName(i).get();
+					if(!boardAttach.isFlag()) {
+						try {
+							File temp = new File(boardAttach.getTempPath());
+							File dest = new File(boardAttach.getUploadPath());
+							Files.move(temp, dest);
+						} catch (IOException e) {
+							e.printStackTrace();
+							throw new IllegalAccessError("다시 시도해 주세요");
+						}
+						boardAttach.completelySave();
 					}
-					boardAttach.completelySave();
+					boardAttach.addBoard(board2);
+					attachRepository.save(boardAttach);					
+				} else {
+					throw new IllegalAccessError("해당 이미지가 서버에 존재하지 않습니다");
 				}
-				boardAttach.addBoard(board2);
-				attachRepository.save(boardAttach);
 			}
-		} 
+		}
 		
 		if(dto.getThumbnailId() != null && dto.getThumbnailId() != 0L) {
 			Optional<Thumbnail> thumbnailtodel = thumbnailRepository.findById(dto.getThumbnailId());
 			if(thumbnailtodel.isPresent()) {
 				Thumbnail thumbnail = thumbnailtodel.get();
 				if(!thumbnail.isFlag()) {
-					File temp = new File(thumbnail.getTempPath());
-					File dest = new File(thumbnail.getUploadPath());
-					File origTemp = new File(thumbnail.getOriginalFileTemp());
-					File origDest = new File(thumbnail.getOriginalFileDest());
 					try {
+						File temp = new File(thumbnail.getTempPath());
+						File dest = new File(thumbnail.getUploadPath());
+						File origTemp = new File(thumbnail.getOriginalFileTemp());
+						File origDest = new File(thumbnail.getOriginalFileDest());
 						Files.move(temp, dest);
 						Files.move(origTemp, origDest);
 					} catch (IOException e) {
 						e.printStackTrace();
+						throw new IllegalAccessError("다시 시도해 주세요");
 					}
 					thumbnail.completelySave();
 				}
@@ -96,7 +103,7 @@ public class BoardServiceImpl implements BoardService {
 		List<String> tools = new ArrayList<>();
 		if(board.getTools() != null) {
 			tools = Arrays.asList(board.getTools().split(","));
-		}
+		} 
 		
 		int likes = Long.valueOf(boardRepository.likedReceived(board.getBoardId())).intValue();
 		int comments = Long.valueOf(boardRepository.commentsReceived(board.getBoardId())).intValue();
@@ -105,7 +112,7 @@ public class BoardServiceImpl implements BoardService {
 		List<BoardAttach> attaches = attachRepository.findAllByBoardId(bno);
 		for(BoardAttach boardAttach: attaches) {
 			boardAttachesToSend.add(boardAttach.getFileName());
-		}
+		}			
 		
 		Optional<Thumbnail> thumbnailtodel = thumbnailRepository.findByBoardBoardId(bno);
 		String thumbnailOrig = "";
@@ -140,17 +147,15 @@ public class BoardServiceImpl implements BoardService {
 	public String delete(Long bno) {
 		List<BoardAttach> attaches = attachRepository.findAllByBoardId(bno);
 		for(BoardAttach boardAttach: attaches) {
-			File toDel = new File(boardAttach.getUploadPath());
-			if(toDel.exists()) {
-				toDel.delete();				
-			} else {
-				System.out.println("Such File does not exist!");
-				/***
-				 * 파일 존재하지 않을시 예외처리 필요
-				 */
+			try {
+				File toDel = new File(boardAttach.getUploadPath());
+				if(toDel.exists()) {
+					toDel.delete();				
+				}
+			} catch (Exception e) {
+				throw new IllegalAccessError("해당 이미지가 서버에 존재하지 않습니다");
 			}
 		}
-		
 		
 		Optional<Thumbnail> thumbnailtodel = thumbnailRepository.findByBoardBoardId(bno);
 		if(thumbnailtodel.isPresent()) {
@@ -158,20 +163,12 @@ public class BoardServiceImpl implements BoardService {
 			File thumbToDel = new File(thumbnail.getUploadPath());
 			if(thumbToDel.exists()) {
 				thumbToDel.delete();
-			} else {
-				/***
-				 * 파일 존재하지 않을시 예외처리 필요
-				 */
 			}
 			
 			File origToDel = new File(thumbnail.getOriginalFileDest());
 			if(origToDel.exists()) {
 				origToDel.delete();
-			} else {
-				/***
-				 * 파일 존재하지 않을시 예외처리 필요
-				 */
-			}			
+			} 
 		}
 		
 		boardRepository.deleteById(bno);
@@ -187,7 +184,10 @@ public class BoardServiceImpl implements BoardService {
 		board.modify(boardUpdateRequestDto.getTitle(), boardUpdateRequestDto.getContent(), 
 				boardUpdateRequestDto.getPayType(),
 				boardUpdateRequestDto.getPayAmount(), boardUpdateRequestDto.getCareer(),
-				toolsCombined, boardUpdateRequestDto.getExpiredDate(),boardUpdateRequestDto.getWorker(), boardUpdateRequestDto.getYWhen(),boardUpdateRequestDto.getChannelName(),boardUpdateRequestDto.getRecruitingNum(),boardUpdateRequestDto.getReceptionMethod(),boardUpdateRequestDto.getManager());
+				toolsCombined, boardUpdateRequestDto.getExpiredDate(),boardUpdateRequestDto.getWorker(), 
+				boardUpdateRequestDto.getYWhen(),boardUpdateRequestDto.getChannelName(),
+				boardUpdateRequestDto.getRecruitingNum(),boardUpdateRequestDto.getReceptionMethod(),
+				boardUpdateRequestDto.getManager(), boardUpdateRequestDto.getIsPrivate());
 		BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
 		
 		for(Long i: boardUpdateRequestDto.getBoardAttachIds()) {
@@ -198,7 +198,7 @@ public class BoardServiceImpl implements BoardService {
 				try {
 					Files.move(temp, dest);
 				} catch (IOException e) {
-					e.printStackTrace();
+					throw new IllegalAccessError("해당 이미지가 서버에 존재하지 않습니다");
 				}
 				boardAttach.completelySave();
 			}
@@ -211,35 +211,33 @@ public class BoardServiceImpl implements BoardService {
 			if(optBoardAttach.isPresent()) {
 				BoardAttach boardAttach = optBoardAttach.get();
 				boardAttach.deleteByFlag();
-				
-				File toDel = new File(boardAttach.getUploadPath());
-				if(toDel.exists()) {
-					toDel.delete();				
-				} else {
-					System.out.println("Such File does not exist!");
+				try {
+					File toDel = new File(boardAttach.getUploadPath());
+					if(toDel.exists()) {
+						toDel.delete();				
+					}
+				} catch (Exception e) {
+					throw new IllegalAccessError("해당 이미지가 서버에 존재하지 않습니다");
 				}
 				attachRepository.save(boardAttach);
-				
 			}
 		}
+		
 		Optional<Thumbnail> origThumb = thumbnailRepository.findById(boardUpdateRequestDto.getThumbnailId());
 		if(origThumb.isPresent()) {
 			Thumbnail origThumbnail = origThumb.get();
 			if(boardUpdateRequestDto.getThumbnailId() != origThumbnail.getThumbnailId()) {
-				File thumbToDel = new File(origThumbnail.getUploadPath());
-				if(thumbToDel.exists()) {
-					thumbToDel.delete();
-				} else {
-					new IllegalAccessError("해당 썸네일 없음 "+ thumbToDel.getName());
-				}
-				File origToDel = new File(origThumbnail.getOriginalFileDest());
-				if(origToDel.exists()) {
-					origToDel.delete();
-				} else {
-					/***
-					 * 파일 존재하지 않을시 예외처리 필요
-					 */
-					new IllegalAccessError("해당 썸네일 없음 "+ origThumbnail.getOrigFilename());
+				try {
+					File thumbToDel = new File(origThumbnail.getUploadPath());
+					if(thumbToDel.exists()) {
+						thumbToDel.delete();
+					}
+					File origToDel = new File(origThumbnail.getOriginalFileDest());
+					if(origToDel.exists()) {
+						origToDel.delete();
+					}					
+				} catch (Exception e) {
+					throw new IllegalAccessError("");
 				}
 				
 				if(boardUpdateRequestDto.getThumbnailId() != null && boardUpdateRequestDto.getThumbnailId() != 0L) {
@@ -346,7 +344,6 @@ public class BoardServiceImpl implements BoardService {
 			if(thumbnail.isPresent()) {
 				dto.setThumbnail(thumbnail.get().getUploadPath());
 			}
-			
 			curBoardResponseDto.add(dto);
 		}
 		return curBoardResponseDto;

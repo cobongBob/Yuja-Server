@@ -54,7 +54,7 @@ public class BoardControllerUnitTest {
 		dto.setExpiredDate(new Date());
 		Board board = dto.dtoToEntity();
 		
-				Board a = new Board(0L, null, null, "테스트 제목1", "테스트 내용1", null, null, null, 0, null, null, null, null, null, null, null, 0, null, null, null, null);
+				Board a = new Board(0L, null, null, "테스트 제목1", "테스트 내용1", null, null, null, 0, null, null, null, null, null, null, null, 0, null, null, null, null, null, false);
 				BoardResponseDto resultBoard = new BoardResponseDto().entityToDto(a);
 		String content = new ObjectMapper().writeValueAsString(board);
 
@@ -81,7 +81,7 @@ public class BoardControllerUnitTest {
 		boardSaveRequestDto.setExpiredDate(new Date());
 		BoardResponseDto boardResponseDto = new BoardResponseDto().entityToDto(boardSaveRequestDto.dtoToEntity());
 
-		BoardResponseDto resultBoard = new BoardResponseDto().entityToDto(new Board(0L, null, null, "테스트 제목1", "테스트 내용1", null, null, null, 0, null, null, null, null, null, null, null, 0, null, null, null, null));
+		BoardResponseDto resultBoard = new BoardResponseDto().entityToDto(new Board(0L, null, null, "테스트 제목1", "테스트 내용1", null, null, null, 0, null, null, null, null, null, null, null, 0, null, null, null, null, null, false));
 		boardService.save(boardSaveRequestDto);
 		when(boardService.findById(1L)).thenReturn(resultBoard);
 		//when
@@ -98,7 +98,7 @@ public class BoardControllerUnitTest {
 	@Test
     public void modify_test() throws Exception {
 
-		BoardResponseDto board = new BoardResponseDto().entityToDto(new Board(0L, null, null, "테스트 제목1", "테스트 내용1", null, null, null, 0, null, null, null, null, null, null, null, 0, null, null, null, null));
+		BoardResponseDto board = new BoardResponseDto().entityToDto(new Board(0L, null, null, "테스트 제목1", "테스트 내용1", null, null, null, 0, null, null, null, null, null, null, null, 0, null, null, null, null, null, false));
 		
 		BoardUpdateRequestDto boardUpdateRequestDto = new BoardUpdateRequestDto();
 				
