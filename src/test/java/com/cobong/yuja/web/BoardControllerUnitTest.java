@@ -83,7 +83,7 @@ public class BoardControllerUnitTest {
 
 		BoardResponseDto resultBoard = new BoardResponseDto().entityToDto(new Board(0L, null, null, "테스트 제목1", "테스트 내용1", null, null, null, 0, null, null, null, null, null, null, null, 0, null, null, null, null, null, false));
 		boardService.save(boardSaveRequestDto);
-		when(boardService.findById(1L)).thenReturn(resultBoard);
+//		when(boardService.findById(1L)).thenReturn(resultBoard);
 		//when
 		Long id = 1L;
 		this.mockMvc.perform(get("/{bno}", id)
