@@ -97,8 +97,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_MANAGER","ROLE_ADMIN") // delete youtuber
 				.antMatchers(HttpMethod.DELETE,"/api/user/**")
 					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // manager admin  유저 삭제 +  ?
-				.antMatchers(HttpMethod.GET,"/api/2/board")
-					.hasAnyAuthority("ROLE_EDITOR","ROLE_MANAGER","ROLE_ADMIN") // 테스트요ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+				.antMatchers(HttpMethod.GET,"/api/1/board")
+					.hasAnyAuthority("ROLE_ADMIN") // 테스트요ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
 //				.antMatchers() 
 //					.hasAuthority("ROLE_THUMBNAILOR") // 썸넬러
 //				.antMatchers()
