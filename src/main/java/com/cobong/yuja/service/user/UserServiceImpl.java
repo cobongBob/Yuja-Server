@@ -35,6 +35,7 @@ import com.cobong.yuja.model.AuthorityNames;
 import com.cobong.yuja.model.ProfilePicture;
 import com.cobong.yuja.model.RefreshToken;
 import com.cobong.yuja.model.User;
+import com.cobong.yuja.model.YoutubeConfirm;
 import com.cobong.yuja.payload.request.user.LoginRequest;
 import com.cobong.yuja.payload.request.user.UserSaveRequestDto;
 import com.cobong.yuja.payload.request.user.UserUpdateRequestDto;
@@ -44,6 +45,7 @@ import com.cobong.yuja.repository.RefreshTokenRepository;
 import com.cobong.yuja.repository.user.AuthoritiesRepository;
 import com.cobong.yuja.repository.user.ProfilePictureRepository;
 import com.cobong.yuja.repository.user.UserRepository;
+import com.cobong.yuja.repository.user.YoutubeConfirmRepository;
 import com.google.common.io.Files;
 
 import lombok.RequiredArgsConstructor;
@@ -60,6 +62,7 @@ public class UserServiceImpl implements UserService {
 	private final CookieProvider cookieProvider;
     private final RefreshTokenRepository refreshTokenRepository;
     private final JavaMailSender javaMailSender;
+    private final YoutubeConfirmRepository youtubeConfirmRepository;
 	
 	@Override
 	@Transactional
@@ -84,7 +87,6 @@ public class UserServiceImpl implements UserService {
 		.address(dto.getAddress())
 		.phone(dto.getPhone())
 		.bsn(dto.getBsn())
-		.youtubeImg(dto.getYoutubeImg())
 		.userIp(dto.getUserIp())
 		.isMarketingChecked(dto.getIsMarketingChecked())
 		.youtubeUrl(dto.getYoutubeUrl())
@@ -106,6 +108,22 @@ public class UserServiceImpl implements UserService {
 				}
 				profilePicture.completelySave();
 				profilePicture.addUser(user);
+			}
+		}
+		
+		if (dto.getYoutubeImgId() != 0) {
+			YoutubeConfirm youtubeConfirm = youtubeConfirmRepository.findById(dto.getYoutubeImgId())
+					.orElseThrow(() -> new IllegalArgumentException("해당 유튜브 인증 이미지를 찾을수 없습니다."));
+			if (!youtubeConfirm.isFlag()) {
+				File temp = new File(youtubeConfirm.getTempPath());
+				File dest = new File(youtubeConfirm.getUploadPath());
+				try {
+					Files.move(temp, dest);
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+				youtubeConfirm.completelySave();
+				youtubeConfirm.addUser(user);
 			}
 		}
 		UserResponseDto userResponseDto = new UserResponseDto().entityToDto(user);
@@ -159,7 +177,7 @@ public class UserServiceImpl implements UserService {
 				userUpdateRequestDto.getBday(),userUpdateRequestDto.getProvidedId(), 
 				userUpdateRequestDto.getProvider(), userUpdateRequestDto.getUserIp(),
 				userUpdateRequestDto.getAddress(), userUpdateRequestDto.getPhone(),
-				userUpdateRequestDto.getBsn(), userUpdateRequestDto.getYoutubeImg(), userUpdateRequestDto.getYoututubeUrl());
+				userUpdateRequestDto.getBsn(), userUpdateRequestDto.getYoututubeUrl());
 		
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
 
