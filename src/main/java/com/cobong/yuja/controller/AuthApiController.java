@@ -70,6 +70,11 @@ public class AuthApiController {
 
 	@GetMapping("/signout")
 	public ResponseEntity<?> signOutUser(HttpServletResponse res, HttpServletRequest req) {
+		String ip = req.getRemoteAddr();
+		/**
+		 * ip address detector
+		 */
+		
 		Cookie[] cookies = userService.signOut();
 		if(cookies != null) {
 			res.addCookie(cookies[0]);

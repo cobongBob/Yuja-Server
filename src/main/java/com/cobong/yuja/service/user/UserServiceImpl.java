@@ -334,9 +334,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional(readOnly = true)
 	public String checkemail(String username) {
-		System.out.println("==================>"+username);
 		String pattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
-		if(Pattern.matches(pattern, username) == false) {
+		if(username == null || username == "") {
+			return "";
+		}else if(Pattern.matches(pattern, username) == false) {
 			return "사용 불가능한 이메일 입니다";
 		}
 		User user = userRepository.findByUsername(username).orElse(null);
@@ -350,6 +351,9 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional(readOnly = true)
 	public String checkNickname(String username) {
+		if(username == null || username == "") {
+			return "";
+		}
 		if(userRepository.existsByNickname(username)) {
 			return "사용 중인 닉네임 입니다";
 		}
