@@ -1,9 +1,7 @@
 package com.cobong.yuja.domain;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
-import java.util.List;
 import java.util.stream.IntStream;
 
 import org.junit.jupiter.api.Test;
@@ -53,11 +51,17 @@ public class DummyInsert {
 //		1. Youtube
 //		2. Editor
 //		3. Thumb
+//		4. Winwin
+//		5. CustomService
 		BoardType boardType = new BoardType(null,"YoutuberBoard",null);
 		boardTypeRepository.save(boardType);
 		boardType = new BoardType(null,"EditorBoard",null);
 		boardTypeRepository.save(boardType);
 		boardType = new BoardType(null,"ThumbBoard",null);
+		boardTypeRepository.save(boardType);
+		boardType = new BoardType(null,"WinwinBoard",null);
+		boardTypeRepository.save(boardType);
+		boardType = new BoardType(null,"CustomServiceBoard",null);
 		boardTypeRepository.save(boardType);
 	}
 	
@@ -135,7 +139,21 @@ public class DummyInsert {
 		});
 	}
 	
-	
+	@Test
+	public void insertAdmin() {
+		Authorities auth = authRepo.findById(6L).orElseThrow(()->new IllegalArgumentException("insertAdminElseThrow"));
+			User user = User.builder()
+					.username("admin@admin ")
+					.password(passwordEncoder.encode("1111"))
+					.nickname("admin ")
+					.realName("tester ")
+					.bday("2000-01-")
+					.userIp("111.111.111.111")
+					.authorities(Collections.singletonList(auth))
+					.build();
+			userRepository.save(user);
+	}
+
 	@Test
 	public void insertYBoard() {
 		IntStream.rangeClosed(26, 50).forEach(i -> {
