@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import com.cobong.yuja.model.ReportedBoards;
 import com.cobong.yuja.payload.request.board.ReportedBoardsRequestDto;
-import com.cobong.yuja.payload.response.board.BoardResponseDto;
 import com.cobong.yuja.payload.response.board.ReportedBoardsResponseDto;
 import com.cobong.yuja.repository.ReportedRepository;
 import com.cobong.yuja.repository.board.BoardRepository;
@@ -24,9 +23,10 @@ public class ReportedBoardsServiceImpl implements ReportedBoardsService {
 	private final BoardRepository boardRepository;
 	private final UserRepository userRepository;
 
+	// 다른 서비스랑 형식 맞추기!!
 	@Override
 	@Transactional
-	public String reported(ReportedBoardsRequestDto dto) {
+	public ReportedBoardsResponseDto reported(ReportedBoardsRequestDto dto) {
 		ReportedBoards reported = ReportedBoards.builder()
 				.user(userRepository.findById(dto.getUserId())
 						.orElseThrow(() -> new IllegalArgumentException("해당 유저 없음")))
@@ -34,8 +34,7 @@ public class ReportedBoardsServiceImpl implements ReportedBoardsService {
 						.orElseThrow(() -> new IllegalArgumentException("해당 글 없음")))
 				.reportedReason(dto.getReportedReason()).build();
 		reportedRepository.save(reported);
-		return "####Success#####";
-		// 다른 서비스랑 맞추기
+		return new ReportedBoardsResponseDto().entitytoDto(reported);
 	}
 
 	@Override
@@ -50,6 +49,10 @@ public class ReportedBoardsServiceImpl implements ReportedBoardsService {
 		return reportedboards;
 	}
 
-	// delete
-
+	@Override
+	@Transactional
+	public String delete(Long bno) {
+		reportedRepository.deleteById(bno);
+		return "success";
+	}
 }

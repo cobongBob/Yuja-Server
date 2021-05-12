@@ -96,9 +96,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers(HttpMethod.DELETE,"/api/1/board/**")
 					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_MANAGER","ROLE_ADMIN") // delete youtuber
 				.antMatchers(HttpMethod.DELETE,"/api/user/**")
-					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // manager admin  유저 삭제 +  ?
-				.antMatchers(HttpMethod.GET,"/api/1/board")
-					.hasAnyAuthority("ROLE_ADMIN") // 테스트요ㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡㅡ
+					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") 
+				.antMatchers(HttpMethod.DELETE,"/api/user/**","/api/repoarted/{bno}") // 유저 삭제, 신고리스트 삭제 
+					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // manager admin  
+				.antMatchers(HttpMethod.POST,"/api/user/**","/api/reported") 
+					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // manager admin 
+				.antMatchers(HttpMethod.GET,"/api/1/board","/api/reported")
+					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // manager admin 
 //				.antMatchers() 
 //					.hasAuthority("ROLE_THUMBNAILOR") // 썸넬러
 //				.antMatchers()
