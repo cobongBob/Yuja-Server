@@ -11,7 +11,7 @@ public interface BoardService {
 	
 	BoardResponseDto save(BoardSaveRequestDto dto);
 	
-	BoardResponseDto findById(Long bno);
+	BoardResponseDto findById(Long bno, Long userId);
 	
 	List<BoardResponseDto> findAll();
 	
@@ -19,7 +19,7 @@ public interface BoardService {
 	
 	String delete(Long bno);
 	
-	List<BoardResponseDto> boardsInBoardType(Long boardCode);
+	List<BoardResponseDto> boardsInBoardType(Long boardCode, Long userId);
 	
 	List<BoardResponseDto> boardsUserWrote(Long userId);
 	

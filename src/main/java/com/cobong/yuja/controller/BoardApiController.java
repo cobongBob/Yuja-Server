@@ -27,9 +27,9 @@ public class BoardApiController {
 		return new ResponseEntity<>(boardService.save(dto),HttpStatus.CREATED);
 	}
 	
-	@GetMapping("/api/{boardCode}/board/{bno}")
-	public ResponseEntity<?> getOneBoard(@PathVariable Long boardCode, @PathVariable Long bno) {
-		return new ResponseEntity<>(boardService.findById(bno),HttpStatus.OK);
+	@GetMapping("/api/{boardCode}/board/{bno}/{userId}")
+	public ResponseEntity<?> getOneBoard(@PathVariable Long boardCode, @PathVariable Long bno, @PathVariable Long userId) {
+		return new ResponseEntity<>(boardService.findById(bno,userId),HttpStatus.OK);
 	}
 	
 	@GetMapping("/api/board/allBoard")
@@ -47,15 +47,15 @@ public class BoardApiController {
 		return new ResponseEntity<>(boardService.delete(bno),HttpStatus.OK);
 	}
 	
-	@GetMapping("/api/{boardCode}/board")
-	public ResponseEntity<?> boardsInBoardType(@PathVariable Long boardCode){
+	@GetMapping("/api/{boardCode}/board/{userId}")
+	public ResponseEntity<?> boardsInBoardType(@PathVariable Long boardCode, @PathVariable Long userId){
 		/***
 		 * 선택한 게시판(유튜버,편집자, 썸네일러)의 글을 다 떙겨오는 컨트롤러
 		 * 이름이 좀 어색하당.. 좋은 이름 있음 바꿔주심 좋을 듯 
 		 * Security 완성후 유저아이디를 쿠키/로컬스토리지에서 받아오는 방식으로 유저아이디를 받아와야한다
 		 * 로그인한 유저가 좋아요를 눌렀는지 아닌지를 확인하기 위해
 		 */
-		return new ResponseEntity<>(boardService.boardsInBoardType(boardCode), HttpStatus.OK);
+		return new ResponseEntity<>(boardService.boardsInBoardType(boardCode,userId), HttpStatus.OK);
 	}
 	
 	@GetMapping("/api/user/board/{userId}")
