@@ -1,17 +1,13 @@
 package com.cobong.yuja.service.user;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
-import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
@@ -19,20 +15,17 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cobong.yuja.model.Authorities;
 import com.cobong.yuja.model.AuthorityNames;
-import com.cobong.yuja.model.ProfilePicture;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.model.YoutubeConfirm;
-import com.cobong.yuja.payload.request.user.ProfilePictureDto;
+import com.cobong.yuja.payload.request.user.YoutubeConfirmFIleSaveDto;
 import com.cobong.yuja.payload.request.user.YoutubeConfirmRequestDto;
 import com.cobong.yuja.payload.response.user.YoutubeConfirmResponseDto;
-import com.cobong.yuja.payload.request.user.YoutubeConfirmFIleSaveDto;
 import com.cobong.yuja.repository.user.AuthoritiesRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 import com.cobong.yuja.repository.user.YoutubeConfirmRepository;
 import com.google.common.io.Files;
 
 import lombok.RequiredArgsConstructor;
-import net.coobird.thumbnailator.Thumbnailator;
 
 @Service
 @RequiredArgsConstructor

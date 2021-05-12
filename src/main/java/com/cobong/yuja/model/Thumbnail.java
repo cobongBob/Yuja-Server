@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@ToString(exclude = {"user"})
+@ToString(exclude = {"board"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
