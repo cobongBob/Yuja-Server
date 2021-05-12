@@ -98,8 +98,15 @@ public class BoardServiceImpl implements BoardService {
 	}
 	@Override
 	@Transactional(readOnly = true)
-	public BoardResponseDto findById(Long bno) {
+	public BoardResponseDto findById(Long bno, Long userId) {
 		Board board = boardRepository.findById(bno).orElseThrow(() -> new IllegalAccessError("해당글 없음" + bno));
+		/*
+		if(userId != board.getUser().getUserId()) {
+			board = Board.builder();
+		}
+		조회수 추가 하는 부분. Board에서 함수를 만들어 처리하면 좋을듯.
+		 * 
+		 * */
 		List<String> tools = new ArrayList<>();
 		if(board.getTools() != null) {
 			tools = Arrays.asList(board.getTools().split(","));
@@ -107,6 +114,7 @@ public class BoardServiceImpl implements BoardService {
 		
 		int likes = Long.valueOf(boardRepository.likedReceived(board.getBoardId())).intValue();
 		int comments = Long.valueOf(boardRepository.commentsReceived(board.getBoardId())).intValue();
+		boolean likedOrNot = boardRepository.likedOrNot(board.getBoardId(), userId);
 		
 		List<String> boardAttachesToSend = new ArrayList<String>();
 		List<BoardAttach> attaches = attachRepository.findAllByBoardId(bno);
@@ -122,14 +130,12 @@ public class BoardServiceImpl implements BoardService {
 				thumbnailOrig += thumbnail.getOriginalFileDest();
 			}
 		}
-		/***
-		 * findById일때는 썸네일 테이블에서 오리지널 파일을 보내준다
-		 */
 		
 		BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
 		dto.setLikesAndComments(likes, comments);
 		dto.setAttaches(boardAttachesToSend);
 		dto.setTools(tools);
+		dto.setLiked(likedOrNot);
 		dto.setThumbnail(thumbnailOrig);
 		return dto;
 	}
@@ -267,10 +273,11 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<BoardResponseDto> boardsInBoardType(Long boardCode){
+	public List<BoardResponseDto> boardsInBoardType(Long boardCode,Long userId){
 		List<Board> curBoard = boardRepository.boardsInBoardType(boardCode);
 		List<BoardResponseDto> curBoardResponseDto = new ArrayList<BoardResponseDto>();
 		for(Board board: curBoard) {
+			boolean likedOrNot = boardRepository.likedOrNot(board.getBoardId(), userId);
 			int likes = Long.valueOf(boardRepository.likedReceived(board.getBoardId())).intValue();
 			int comments = Long.valueOf(boardRepository.commentsReceived(board.getBoardId())).intValue();
 			BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
@@ -280,15 +287,10 @@ public class BoardServiceImpl implements BoardService {
 			}
 			dto.setTools(tools);
 			dto.setLikesAndComments(likes, comments);
-			/*
-			 * 유저 아이디 값을 받도록 바꾸어야 한다.
-			 * */
+			dto.setLiked(likedOrNot);
 			Optional<Thumbnail> thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId());
 			if(thumbnail.isPresent()) {
-				dto.setThumbnail(thumbnail.get().getUploadPath());
-				/***
-				 * boardsInBoardType 등 리스트를 뽑아 보낼때는 썸네일 테이블에서 리사이즈한 파일을 보내준다
-				 */ 				
+				dto.setThumbnail(thumbnail.get().getUploadPath());		
 			}
 			curBoardResponseDto.add(dto);
 		}

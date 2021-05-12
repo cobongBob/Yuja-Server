@@ -9,6 +9,7 @@ import com.cobong.yuja.config.oauth.GoogleUser;
 import com.cobong.yuja.payload.request.user.LoginRequest;
 import com.cobong.yuja.payload.request.user.UserSaveRequestDto;
 import com.cobong.yuja.payload.request.user.UserUpdateRequestDto;
+import com.cobong.yuja.payload.response.user.UserForClientResponseDto;
 import com.cobong.yuja.payload.response.user.UserResponseDto;
 
 public interface UserService {
@@ -40,4 +41,6 @@ public interface UserService {
 	GoogleUser googleOauthCheck(Map<String, Object> data);
 
 	String resetPassword(String string);
+
+	UserForClientResponseDto findByUsernameForClient(String username);
 }

@@ -21,8 +21,10 @@ import org.springframework.web.multipart.MultipartFile;
 import com.cobong.yuja.config.oauth.GoogleUser;
 import com.cobong.yuja.payload.request.user.LoginRequest;
 import com.cobong.yuja.payload.request.user.UserSaveRequestDto;
+import com.cobong.yuja.payload.request.user.YoutubeConfirmRequestDto;
 import com.cobong.yuja.service.user.ProfilePictureService;
 import com.cobong.yuja.service.user.UserService;
+import com.cobong.yuja.service.user.YoutubeConfirmService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -34,9 +36,16 @@ public class AuthApiController {
 	private final UserService userService;
 
 	private final ProfilePictureService profilePictureService;
+	
+	private final YoutubeConfirmService youtubeConfirmService;
 
 	@PostMapping("/signup")
-	public ResponseEntity<?> insertUser(@Valid @RequestBody UserSaveRequestDto dto) {
+	public ResponseEntity<?> insertUser(@Valid @RequestBody UserSaveRequestDto dto, HttpServletRequest req) {
+		String ip = req.getRemoteAddr();
+		/**
+		 * ip address detector
+		 */
+		dto.setUserIp(ip);
 		return new ResponseEntity<>(userService.save(dto), HttpStatus.CREATED);
 	}
 
@@ -64,7 +73,7 @@ public class AuthApiController {
 		Cookie[] cookies = userService.signIn(loginRequest);
 		res.addCookie(cookies[0]);
 		res.addCookie(cookies[1]);
-		return new ResponseEntity<>(cookies[0].getValue(), HttpStatus.OK);
+		return new ResponseEntity<>(userService.findByUsernameForClient(loginRequest.getUsername()), HttpStatus.OK);
 	}
 
 	@GetMapping("/signout")
@@ -86,7 +95,7 @@ public class AuthApiController {
 	public ResponseEntity<?> saveProfilePicture(@RequestParam("file") MultipartFile file) {
 		return new ResponseEntity<>(profilePictureService.saveFile(file), HttpStatus.OK);
 	}
-
+	
 	@PostMapping("/oauth/google")
 	public ResponseEntity<?> googleOauth(@RequestBody Map<String, Object> data) {
 		GoogleUser googleUser = userService.googleOauthCheck(data);
@@ -103,5 +112,18 @@ public class AuthApiController {
 	@PostMapping("/resetPassword")
 	public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> username) {
 		return new ResponseEntity<>(userService.resetPassword(username.get("username")), HttpStatus.OK);
+	}
+	
+	@PostMapping("/youtubeconfirm")
+	public ResponseEntity<?> saveYoutubeConfirm(@RequestParam("file") MultipartFile file) {
+		return new ResponseEntity<>(youtubeConfirmService.saveFile(file), HttpStatus.OK);
+	}
+	
+	/**
+	 * 회원가입을 하고 그 이후에 유튜버로 전향하고 싶은 유저가 신청할때 불리는 컨트롤러
+	 */
+	@PostMapping("/applyyoutuber")
+	public ResponseEntity<?> applyYoutuber(@RequestBody YoutubeConfirmRequestDto dto){
+		return new ResponseEntity<>(youtubeConfirmService.apply(dto), HttpStatus.OK);
 	}
 }

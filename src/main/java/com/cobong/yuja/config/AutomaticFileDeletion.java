@@ -10,6 +10,7 @@ import com.cobong.yuja.service.board.BoardAttachService;
 import com.cobong.yuja.service.board.ThumbnailService;
 import com.cobong.yuja.service.user.ProfilePictureService;
 import com.cobong.yuja.service.user.UserService;
+import com.cobong.yuja.service.user.YoutubeConfirmService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,6 +21,7 @@ public class AutomaticFileDeletion {
 	private final ProfilePictureService profilePictureService;
 	private final ThumbnailService thumbnailService;
 	private final UserService userService;
+	private final YoutubeConfirmService youtuberConfirmService;
 	
 	@Scheduled(cron = "0 0 4 * * *")
 	public void deleteAtFourAM() {
@@ -34,5 +36,6 @@ public class AutomaticFileDeletion {
 		profilePictureService.deleteUnflagged();
 		thumbnailService.deleteUnflagged();
 		userService.deleteUnflagged();
+		youtuberConfirmService.deleteUnflagged();
 	}
 }
