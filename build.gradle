@@ -63,6 +63,9 @@ dependencies {
 	// Mail
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.4.5'
 	
+	//Websocket for chatting
+	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '2.4.5'
+	
 }
 
 test {
