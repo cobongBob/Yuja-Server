@@ -138,21 +138,6 @@ public class DummyInsert {
 			userRepository.save(user);
 		});
 	}
-	
-	@Test
-	public void insertAdmin() {
-		Authorities auth = authRepo.findById(6L).orElseThrow(()->new IllegalArgumentException("insertAdminElseThrow"));
-			User user = User.builder()
-					.username("admin@admin ")
-					.password(passwordEncoder.encode("1111"))
-					.nickname("admin ")
-					.realName("tester ")
-					.bday("2000-01-")
-					.userIp("111.111.111.111")
-					.authorities(Collections.singletonList(auth))
-					.build();
-			userRepository.save(user);
-	}
 
 	@Test
 	public void insertYBoard() {

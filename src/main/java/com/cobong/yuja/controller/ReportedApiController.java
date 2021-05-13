@@ -36,4 +36,8 @@ public class ReportedApiController {
 		return new ResponseEntity<>(reportedBoardsService.delete(bno), HttpStatus.OK);
 	}
 
+	// 유저에있는 ban true 바꾸는 컨트롤러 
+	// 헤제 기능(?)
+	// 필터만들고
+	// securityconfig에 configure 추가
 }

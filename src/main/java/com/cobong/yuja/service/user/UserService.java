@@ -43,4 +43,8 @@ public interface UserService {
 	String resetPassword(String string);
 
 	UserForClientResponseDto findByUsernameForClient(String username);
+	
+	UserResponseDto banned(Long bno, UserUpdateRequestDto userUpdateRequestDto);
+
+	List<String> findAllByBanned();
 }

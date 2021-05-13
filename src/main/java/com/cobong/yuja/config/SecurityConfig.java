@@ -107,7 +107,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 //				.antMatchers()
 //					.hasAuthority("ROLE_ADMIN")
 				.anyRequest()
-					.permitAll(); // 임시
+					.permitAll();// 임시
 //					.authenticated();
 		
 		http

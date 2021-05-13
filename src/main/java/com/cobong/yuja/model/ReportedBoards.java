@@ -40,4 +40,7 @@ public class ReportedBoards extends DateAudit{
 	
 	@Column(nullable = false, length=1000)
 	private String reportedReason;
+	
+	@Column
+	private String banIp;
 }

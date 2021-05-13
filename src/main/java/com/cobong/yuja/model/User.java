@@ -94,9 +94,12 @@ public class User extends DateAudit {
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<ReportedBoards> reportedBoards;
+	
+	@Column(nullable = false)
+	private boolean banned;
 
 	public void modify(String username2, String password2, String nickname2, String realName2, String bday2,
-			String providedId2, String provider2, String address2, String phone2, String bsn2,String userIp2, String youtubeUrl) {
+			String providedId2, String provider2, String address2, String phone2, String bsn2,String userIp2, String youtubeUrl, boolean banned) {
 		this.username = username2;
 		this.password = password2;
 		this.nickname = nickname2;
@@ -108,6 +111,7 @@ public class User extends DateAudit {
 		this.bsn = bsn2;
 		this.userIp = userIp2;
 		this.youtubeUrl = youtubeUrl;
+		this.banned=banned;
 	}
 	
 	public void resetPasword(String password) {
