@@ -356,26 +356,29 @@ public class UserServiceImpl implements UserService {
 		if(username == null || username == "") {
 			return "";
 		}else if(Pattern.matches(pattern, username) == false) {
-			return "사용 불가능한 이메일 입니다";
+			return "사용 불가능한 이메일 형식 입니다.";
 		}
 		User user = userRepository.findByUsername(username).orElse(null);
 		if(user == null) {
-			return "사용가능한 이메일 입니다";
+			return "";
 		} else {
-			return "사용 불가능한 이메일 입니다";
+			return "이미 가입 된 이메일 입니다.";
 		}
 	}
 	
 	@Override
 	@Transactional(readOnly = true)
 	public String checkNickname(String username) {
+		String pattern = "^[a-zA-Z0-9가-힣ㄱ-ㅎ ]{2,20}$";
 		if(username == null || username == "") {
 			return "";
+		}else if(Pattern.matches(pattern, username) == false) {
+			return "닉네임은 2자 이상의 영문, 한글, 숫자만 사용 가능합니다.";
 		}
 		if(userRepository.existsByNickname(username)) {
-			return "사용 중인 닉네임 입니다";
+			return "사용 중인 닉네임 입니다.";
 		}
-		return "사용가능한 닉네임 입니다";
+		return "";
 	}
 	
 	@Override
