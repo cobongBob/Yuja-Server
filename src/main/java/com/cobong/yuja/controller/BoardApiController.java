@@ -2,6 +2,7 @@ package com.cobong.yuja.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cobong.yuja.config.auth.PrincipalDetails;
 import com.cobong.yuja.payload.request.board.BoardSaveRequestDto;
 import com.cobong.yuja.payload.request.board.BoardUpdateRequestDto;
 import com.cobong.yuja.service.board.BoardService;
@@ -39,11 +41,23 @@ public class BoardApiController {
 	
 	@PutMapping("/api/{boardCode}/board/{bno}")
 	public ResponseEntity<?> modifyBoard(@PathVariable Long boardCode, @PathVariable Long bno, @RequestBody BoardUpdateRequestDto boardUpdateRequestDto){
+		PrincipalDetails principalDetails = null;
+    	Long userId = 0L;
+    	if (SecurityContextHolder.getContext().getAuthentication() instanceof PrincipalDetails) {
+			principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication();
+			userId = principalDetails.getUserId();
+		}
 		return new ResponseEntity<>(boardService.modify(bno,boardUpdateRequestDto),HttpStatus.OK);
 	}
 	
     @DeleteMapping("/api/{boardCode}/board/{bno}")
 	public ResponseEntity<?> deleteBoard(@PathVariable Long boardCode, @PathVariable Long bno){
+    	PrincipalDetails principalDetails = null;
+    	Long userId = 0L;
+    	if (SecurityContextHolder.getContext().getAuthentication() instanceof PrincipalDetails) {
+			principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication();
+			userId = principalDetails.getUserId();
+		}
 		return new ResponseEntity<>(boardService.delete(bno),HttpStatus.OK);
 	}
 	
