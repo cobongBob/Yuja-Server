@@ -52,7 +52,8 @@ public class DummyInsert {
 //		2. Editor
 //		3. Thumb
 //		4. Winwin
-//		5. CustomService
+//		5. Colabo
+//		6. CustomService
 		BoardType boardType = new BoardType(null,"YoutuberBoard",null);
 		boardTypeRepository.save(boardType);
 		boardType = new BoardType(null,"EditorBoard",null);
@@ -60,6 +61,8 @@ public class DummyInsert {
 		boardType = new BoardType(null,"ThumbBoard",null);
 		boardTypeRepository.save(boardType);
 		boardType = new BoardType(null,"WinwinBoard",null);
+		boardTypeRepository.save(boardType);
+		boardType = new BoardType(null,"ColaboBoard",null);
 		boardTypeRepository.save(boardType);
 		boardType = new BoardType(null,"CustomServiceBoard",null);
 		boardTypeRepository.save(boardType);
@@ -139,7 +142,7 @@ public class DummyInsert {
 		});
 	}
 
-	@Test
+	@Test // 유튜버 게시글 더미
 	public void insertYBoard() {
 		IntStream.rangeClosed(26, 50).forEach(i -> {
 			User user = User.builder().userId(Long.valueOf(i)).build();
@@ -188,7 +191,7 @@ public class DummyInsert {
 			boardRepository.save(board);
 		});
 	}
-	@Test
+	@Test // winwin게시판 더미
 	public void insertWBoard() {
 		IntStream.rangeClosed(1, 102).forEach(i -> {
 			User user = User.builder().userId(Long.valueOf(i)).build();
@@ -203,11 +206,56 @@ public class DummyInsert {
 			boardRepository.save(board);
 		});
 	}
+	@Test //콜라보게시판 더미
+	public void insertCBoard() {
+		IntStream.rangeClosed(1, 102).forEach(i -> {
+			User user = User.builder().userId(Long.valueOf(i)).build();
+			BoardType boardType = boardTypeRepository.findById(5L).orElseThrow(()-> new IllegalArgumentException("존재하지 x"));
+			Board board = Board.builder()
+					.boardType(boardType)
+					.user(user)
+					.title("테스트 제목 "+i)
+					.content("테스트 내용 "+i)
+					.hit(i)
+					.build();
+			boardRepository.save(board);
+		});
+	}
+	@Test //편집자 게시글 번호
+	public void insertEBoard() {
+		IntStream.rangeClosed(1, 102).forEach(i -> {
+			User user = User.builder().userId(Long.valueOf(i)).build();
+			BoardType boardType = boardTypeRepository.findById(2L).orElseThrow(()-> new IllegalArgumentException("존재하지 x"));
+			Board board = Board.builder()
+					.boardType(boardType)
+					.user(user)
+					.title("테스트 제목 "+i)
+					.content("테스트 내용 "+i)
+					.hit(i)
+					.build();
+			boardRepository.save(board);
+		});
+	}
+	@Test //썸네일러 게시글 번호
+	public void insertTBoard() {
+		IntStream.rangeClosed(1, 102).forEach(i -> {
+			User user = User.builder().userId(Long.valueOf(i)).build();
+			BoardType boardType = boardTypeRepository.findById(3L).orElseThrow(()-> new IllegalArgumentException("존재하지 x"));
+			Board board = Board.builder()
+					.boardType(boardType)
+					.user(user)
+					.title("테스트 제목 "+i)
+					.content("테스트 내용 "+i)
+					.hit(i)
+					.build();
+			boardRepository.save(board);
+		});
+	}
 	
 	@Test
 	public void insertLikes() {
-		IntStream.range(1, 102).forEach(i -> {
-			long bno = (long) (Math.random() * 102) + 1;
+		IntStream.range(1, 458).forEach(i -> {
+			long bno = (long) (Math.random() * 458) + 1;
 			long uno = (long) (Math.random() * 102) + 1;
 			Board board = Board.builder().boardId(bno).build();
 			User user = User.builder().userId(uno).build();
@@ -221,8 +269,8 @@ public class DummyInsert {
 	
 	@Test
 	public void insertComment() {
-		IntStream.range(1, 102).forEach(i -> {
-			long bno = (long) (Math.random() * 102) + 1;
+		IntStream.range(1, 458).forEach(i -> {
+			long bno = (long) (Math.random() * 458) + 1;
 			long uno = (long) (Math.random() * 102) + 1;
 			Board board = Board.builder().boardId(bno).build();
 			User user = User.builder().userId(uno).build();

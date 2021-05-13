@@ -16,6 +16,6 @@ public interface UserRepository extends JpaRepository<User, Long>, CustomUserRep
 	Boolean existsByUsername(String username);
 	
 	// banned 1 userIp list 가져오기
-	@Query("SELECT U.userip FROM USER U WHERE banned = 1")
-	List<User> findAllByBanned();
+	@Query("SELECT u.userIp FROM User u WHERE u.banned = 1")
+	List<String> findAllByBanned();
 }

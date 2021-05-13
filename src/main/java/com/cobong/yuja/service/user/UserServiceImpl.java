@@ -497,8 +497,8 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public List<String> findAllByBanned() {
 		List<String> banned = new ArrayList<String>();
-		List<User> bannedList = userRepository.findAllByBanned();
-		for (User u : bannedList) {
+		List<String> bannedList = userRepository.findAllByBanned();
+		for (String u : bannedList) {
 
 		}
 		return banned;
