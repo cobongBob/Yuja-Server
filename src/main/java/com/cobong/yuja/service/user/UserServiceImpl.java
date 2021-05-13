@@ -310,7 +310,7 @@ public class UserServiceImpl implements UserService {
 		if(user != null) {
 			throw new IllegalAccessError("이미 가입된 이메일입니다.");
 		}
-		String pattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
+		String pattern = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$";
 		if(Pattern.matches(pattern, username) == false) {
 			throw new IllegalAccessError("올바른 이메일 형식이 아닙니다. ");
 		}
@@ -376,7 +376,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional(readOnly = true)
 	public String checkemail(String username) {
-		String pattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
+		String pattern = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$";
 		if(username == null || username == "") {
 			return "";
 		}else if(Pattern.matches(pattern, username) == false) {
@@ -432,7 +432,7 @@ public class UserServiceImpl implements UserService {
 		if(user == null) {
 			return "존재하지 않는 회원입니다.";
 		} else {
-			String pattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
+			String pattern = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$";
 			if(Pattern.matches(pattern, username) == false) {
 				return "올바른 이메일 형식이 아닙니다. ";
 			}
