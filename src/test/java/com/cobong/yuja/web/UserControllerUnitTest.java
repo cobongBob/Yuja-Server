@@ -163,7 +163,7 @@ public class UserControllerUnitTest {
 		
 		String content = new ObjectMapper().writeValueAsString(testUser);
 		
-		when(userService.modify(1L, testUser)).thenReturn(resRes);
+		when(userService.modify(1L, testUser, null)).thenReturn(resRes);
 		
 		//when
 		Long id = 1L;
@@ -180,7 +180,7 @@ public class UserControllerUnitTest {
 	public void delete_test() throws Exception {
 		//given
 				
-		when(userService.delete(1L)).thenReturn("success");
+		when(userService.delete(1L, null)).thenReturn("success");
 		
 		//when
 		Long id = 1L;

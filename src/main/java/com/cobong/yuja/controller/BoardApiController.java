@@ -43,22 +43,22 @@ public class BoardApiController {
 	public ResponseEntity<?> modifyBoard(@PathVariable Long boardCode, @PathVariable Long bno, @RequestBody BoardUpdateRequestDto boardUpdateRequestDto){
 		PrincipalDetails principalDetails = null;
     	Long userId = 0L;
-    	if (SecurityContextHolder.getContext().getAuthentication() instanceof PrincipalDetails) {
-			principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication();
+    	if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PrincipalDetails) {
+    		principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			userId = principalDetails.getUserId();
 		}
-		return new ResponseEntity<>(boardService.modify(bno,boardUpdateRequestDto),HttpStatus.OK);
+		return new ResponseEntity<>(boardService.modify(bno,boardUpdateRequestDto, userId),HttpStatus.OK);
 	}
 	
     @DeleteMapping("/api/{boardCode}/board/{bno}")
 	public ResponseEntity<?> deleteBoard(@PathVariable Long boardCode, @PathVariable Long bno){
     	PrincipalDetails principalDetails = null;
     	Long userId = 0L;
-    	if (SecurityContextHolder.getContext().getAuthentication() instanceof PrincipalDetails) {
-			principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication();
+    	if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PrincipalDetails) {
+    		principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			userId = principalDetails.getUserId();
 		}
-		return new ResponseEntity<>(boardService.delete(bno),HttpStatus.OK);
+		return new ResponseEntity<>(boardService.delete(bno, userId),HttpStatus.OK);
 	}
 	
 	@GetMapping("/api/{boardCode}/board/{userId}")

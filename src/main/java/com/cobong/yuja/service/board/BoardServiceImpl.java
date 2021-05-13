@@ -10,6 +10,9 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cobong.yuja.exception.Forbidden403Exception;
+import com.cobong.yuja.model.Authorities;
+import com.cobong.yuja.model.AuthorityNames;
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardAttach;
 import com.cobong.yuja.model.BoardType;
@@ -150,7 +153,22 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	@Transactional
-	public String delete(Long bno) {
+	public String delete(Long bno, Long userId) {
+		Board board = boardRepository.findById(bno)
+				.orElseThrow(() -> new IllegalAccessError("해당글 없음" + bno));
+		User attemptingUser = userRepository.findById(userId).orElseThrow(() -> new IllegalAccessError("해당 유저가 없습니다."));
+		List<Authorities> roles = attemptingUser.getAuthorities(); 
+		boolean isAdminOrManager = false;
+		for(Authorities auth: roles) {
+			if(auth.getAuthority() == AuthorityNames.ADMIN || auth.getAuthority() == AuthorityNames.MANAGER) {
+				isAdminOrManager = true;
+				break;
+			}
+		}
+		if(board.getUser().getUserId() != userId && !isAdminOrManager) {
+			throw new IllegalAccessError("관리자가 아니므로 해당 유저의 정보를 삭제할 수 없습니다");
+		}
+		
 		List<BoardAttach> attaches = attachRepository.findAllByBoardId(bno);
 		for(BoardAttach boardAttach: attaches) {
 			try {
@@ -183,9 +201,22 @@ public class BoardServiceImpl implements BoardService {
 
 	@Override
 	@Transactional
-	public BoardResponseDto modify(Long bno, BoardUpdateRequestDto boardUpdateRequestDto) {
+	public BoardResponseDto modify(Long bno, BoardUpdateRequestDto boardUpdateRequestDto, Long userId) {
 		Board board = boardRepository.findById(bno)
 				.orElseThrow(() -> new IllegalAccessError("해당글 없음" + bno));
+		User attemptingUser = userRepository.findById(userId).orElseThrow(() -> new IllegalAccessError("해당 유저가 없습니다."));
+		List<Authorities> roles = attemptingUser.getAuthorities(); 
+		boolean isAdminOrManager = false;
+		for(Authorities auth: roles) {
+			if(auth.getAuthority() == AuthorityNames.ADMIN || auth.getAuthority() == AuthorityNames.MANAGER) {
+				isAdminOrManager = true;
+				break;
+			}
+		}
+		if(board.getUser().getUserId() != userId && !isAdminOrManager) {
+			throw new IllegalAccessError("관리자가 아니므로 해당 유저의 정보를 삭제할 수 없습니다");
+		}
+		
 		String toolsCombined = String.join(",", boardUpdateRequestDto.getTools());
 		board.modify(boardUpdateRequestDto.getTitle(), boardUpdateRequestDto.getContent(), 
 				boardUpdateRequestDto.getPayType(),

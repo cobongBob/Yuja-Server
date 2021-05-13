@@ -168,7 +168,19 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public UserResponseDto modify(Long bno, UserUpdateRequestDto userUpdateRequestDto) {
+	public UserResponseDto modify(Long bno, UserUpdateRequestDto userUpdateRequestDto, Long userId) {
+		User attemptingUser = userRepository.findById(userId).orElseThrow(() -> new IllegalAccessError("해당 유저가 없습니다."));
+		List<Authorities> roles = attemptingUser.getAuthorities(); 
+		boolean isAdminOrManager = false;
+		for(Authorities auth: roles) {
+			if(auth.getAuthority() == AuthorityNames.ADMIN || auth.getAuthority() == AuthorityNames.MANAGER) {
+				isAdminOrManager = true;
+			}
+		}
+		if(bno != userId && !isAdminOrManager) {
+			throw new IllegalAccessError("관리자가 아니므로 해당 유저의 정보를 삭제할 수 없습니다");
+		}
+		
 		User user = userRepository.findById(bno)
 				.orElseThrow(() -> new IllegalAccessError("해당유저 없음" + bno));
 		
@@ -223,7 +235,19 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public String delete(Long bno) {
+	public String delete(Long bno, Long userId) {
+		User attemptingUser = userRepository.findById(userId).orElseThrow(() -> new IllegalAccessError("해당 유저가 없습니다."));
+		List<Authorities> roles = attemptingUser.getAuthorities(); 
+		boolean isAdminOrManager = false;
+		for(Authorities auth: roles) {
+			if(auth.getAuthority() == AuthorityNames.ADMIN || auth.getAuthority() == AuthorityNames.MANAGER) {
+				isAdminOrManager = true;
+			}
+		}
+		if(bno != userId && !isAdminOrManager) {
+			throw new IllegalAccessError("관리자가 아니므로 해당 유저의 정보를 삭제할 수 없습니다");
+		}
+		
 		Optional<ProfilePicture> optOriginalProfilePicture = profilePictureRepository.findByUserUserId(bno);
 		if(optOriginalProfilePicture.isPresent()) {
 			ProfilePicture originalProfilePicture = optOriginalProfilePicture.get();
