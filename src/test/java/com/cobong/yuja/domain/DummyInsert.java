@@ -189,26 +189,15 @@ public class DummyInsert {
 		});
 	}
 	@Test
-	public void insertEBoard() {
+	public void insertWBoard() {
 		IntStream.rangeClosed(1, 102).forEach(i -> {
 			User user = User.builder().userId(Long.valueOf(i)).build();
-			BoardType boardType = boardTypeRepository.findById(2L).orElseThrow(()-> new IllegalArgumentException("존재하지 x"));
+			BoardType boardType = boardTypeRepository.findById(4L).orElseThrow(()-> new IllegalArgumentException("존재하지 x"));
 			Board board = Board.builder()
 					.boardType(boardType)
 					.user(user)
-					.career("신입")
-					.channelName("테스트채널 "+i)
-					.expiredDate(new Date())
-					.manager("테스트매니저 "+i)
-					.payAmount("100,000")
-					.payType("건당")
-					.receptionMethod("비대면")
-					.recruitingNum(i)
-					.tools("프리미어 프로,파이널,베가스")
 					.title("테스트 제목 "+i)
 					.content("테스트 내용 "+i)
-					.worker("편집자")
-					.yWhen("상시모집")
 					.hit(i)
 					.build();
 			boardRepository.save(board);

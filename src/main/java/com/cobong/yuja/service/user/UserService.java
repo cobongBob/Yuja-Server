@@ -20,9 +20,9 @@ public interface UserService {
 
 	List<UserResponseDto> findAll();
 
-	UserResponseDto modify(Long bno, UserUpdateRequestDto userUpdateRequestDto);
+	UserResponseDto modify(Long bno, UserUpdateRequestDto userUpdateRequestDto, Long userId);
 
-	String delete(Long bno);
+	String delete(Long bno, Long userId);
 
 	UserResponseDto findByUsername(String username);
 	

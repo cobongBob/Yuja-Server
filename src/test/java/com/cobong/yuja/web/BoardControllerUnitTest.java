@@ -104,7 +104,7 @@ public class BoardControllerUnitTest {
 				
 		String boardList = new ObjectMapper().writeValueAsString(boardUpdateRequestDto);
 		
-		when(boardService.modify(1L, boardUpdateRequestDto)).thenReturn(board);
+		when(boardService.modify(1L, boardUpdateRequestDto, null)).thenReturn(board);
 
 		this.mockMvc.perform(put("/{bno}", 1L)
 				.contentType(MediaType.APPLICATION_JSON)
@@ -118,7 +118,7 @@ public class BoardControllerUnitTest {
 	@Test
 	public void delete_test() throws Exception {
 		
-		when(boardService.delete(1L)).thenReturn("success");
+		when(boardService.delete(1L, null)).thenReturn("success");
 		
 		Long id = 1L;
 		ResultActions resultAction = this.mockMvc.perform(delete("/{bno}",id)

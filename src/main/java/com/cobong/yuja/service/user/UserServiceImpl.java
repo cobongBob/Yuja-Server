@@ -168,7 +168,19 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public UserResponseDto modify(Long bno, UserUpdateRequestDto userUpdateRequestDto) {
+	public UserResponseDto modify(Long bno, UserUpdateRequestDto userUpdateRequestDto, Long userId) {
+		User attemptingUser = userRepository.findById(userId).orElseThrow(() -> new IllegalAccessError("해당 유저가 없습니다."));
+		List<Authorities> roles = attemptingUser.getAuthorities(); 
+		boolean isAdminOrManager = false;
+		for(Authorities auth: roles) {
+			if(auth.getAuthority() == AuthorityNames.ADMIN || auth.getAuthority() == AuthorityNames.MANAGER) {
+				isAdminOrManager = true;
+			}
+		}
+		if(bno != userId && !isAdminOrManager) {
+			throw new IllegalAccessError("관리자가 아니므로 해당 유저의 정보를 삭제할 수 없습니다");
+		}
+		
 		User user = userRepository.findById(bno)
 				.orElseThrow(() -> new IllegalAccessError("해당유저 없음" + bno));
 		
@@ -177,7 +189,7 @@ public class UserServiceImpl implements UserService {
 				userUpdateRequestDto.getBday(),userUpdateRequestDto.getProvidedId(), 
 				userUpdateRequestDto.getProvider(), userUpdateRequestDto.getUserIp(),
 				userUpdateRequestDto.getAddress(), userUpdateRequestDto.getPhone(),
-				userUpdateRequestDto.getBsn(), userUpdateRequestDto.getYoututubeUrl());
+				userUpdateRequestDto.getBsn(), userUpdateRequestDto.getYoututubeUrl(), false);
 		
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
 
@@ -223,7 +235,19 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public String delete(Long bno) {
+	public String delete(Long bno, Long userId) {
+		User attemptingUser = userRepository.findById(userId).orElseThrow(() -> new IllegalAccessError("해당 유저가 없습니다."));
+		List<Authorities> roles = attemptingUser.getAuthorities(); 
+		boolean isAdminOrManager = false;
+		for(Authorities auth: roles) {
+			if(auth.getAuthority() == AuthorityNames.ADMIN || auth.getAuthority() == AuthorityNames.MANAGER) {
+				isAdminOrManager = true;
+			}
+		}
+		if(bno != userId && !isAdminOrManager) {
+			throw new IllegalAccessError("관리자가 아니므로 해당 유저의 정보를 삭제할 수 없습니다");
+		}
+		
 		Optional<ProfilePicture> optOriginalProfilePicture = profilePictureRepository.findByUserUserId(bno);
 		if(optOriginalProfilePicture.isPresent()) {
 			ProfilePicture originalProfilePicture = optOriginalProfilePicture.get();
@@ -286,7 +310,7 @@ public class UserServiceImpl implements UserService {
 		if(user != null) {
 			throw new IllegalAccessError("이미 가입된 이메일입니다.");
 		}
-		String pattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
+		String pattern = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$";
 		if(Pattern.matches(pattern, username) == false) {
 			throw new IllegalAccessError("올바른 이메일 형식이 아닙니다. ");
 		}
@@ -352,7 +376,7 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional(readOnly = true)
 	public String checkemail(String username) {
-		String pattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
+		String pattern = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$";
 		if(username == null || username == "") {
 			return "";
 		}else if(Pattern.matches(pattern, username) == false) {
@@ -408,7 +432,7 @@ public class UserServiceImpl implements UserService {
 		if(user == null) {
 			return "존재하지 않는 회원입니다.";
 		} else {
-			String pattern = "^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$";
+			String pattern = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$";
 			if(Pattern.matches(pattern, username) == false) {
 				return "올바른 이메일 형식이 아닙니다. ";
 			}
@@ -450,5 +474,33 @@ public class UserServiceImpl implements UserService {
 			user.resetPasword(passwordEncoder.encode(tempPassword));
 		}
 		return "임시비밀번호 메일 발송완료";
+	}
+
+	@Override
+	@Transactional
+	public UserResponseDto banned(Long bno, UserUpdateRequestDto userUpdateRequestDto) {
+		User user = userRepository.findById(bno)
+				.orElseThrow(()-> new IllegalAccessError("해당유저 없음 " +bno));
+		
+		user.modify(userUpdateRequestDto.getUsername(), userUpdateRequestDto.getPassword(), 
+				userUpdateRequestDto.getNickname(),userUpdateRequestDto.getRealName(),
+				userUpdateRequestDto.getBday(),userUpdateRequestDto.getProvidedId(), 
+				userUpdateRequestDto.getProvider(), userUpdateRequestDto.getUserIp(),
+				userUpdateRequestDto.getAddress(), userUpdateRequestDto.getPhone(),
+				userUpdateRequestDto.getBsn(), userUpdateRequestDto.getYoututubeUrl(), true);
+		
+		UserResponseDto dto = new UserResponseDto().entityToDto(user);
+		return dto;
+	}
+
+	@Override
+	@Transactional
+	public List<String> findAllByBanned() {
+		List<String> banned = new ArrayList<String>();
+		List<User> bannedList = userRepository.findAllByBanned();
+		for (User u : bannedList) {
+
+		}
+		return banned;
 	}
 }

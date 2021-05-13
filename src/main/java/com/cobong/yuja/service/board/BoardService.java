@@ -14,9 +14,9 @@ public interface BoardService {
 	
 	List<BoardResponseDto> findAll();
 	
-	BoardResponseDto modify(Long bno, BoardUpdateRequestDto boardUpdateRequestDto);
+	BoardResponseDto modify(Long bno, BoardUpdateRequestDto boardUpdateRequestDto, Long userId);
 	
-	String delete(Long bno);
+	String delete(Long bno, Long userId);
 	
 	List<BoardResponseDto> boardsInBoardType(Long boardCode, Long userId);
 	
