@@ -81,9 +81,6 @@ public class User extends DateAudit {
 	@Column(nullable = true)
 	private String bsn;
 	
-	@Column(nullable = false)
-	private String userIp;
-	
 	@Column(nullable = false, columnDefinition = "TINYINT(1)")
 	private boolean isMarketingChecked;
 	
@@ -99,7 +96,7 @@ public class User extends DateAudit {
 	private boolean banned;
 
 	public void modify(String username2, String password2, String nickname2, String realName2, String bday2,
-			String providedId2, String provider2, String address2, String phone2, String bsn2,String userIp2, String youtubeUrl, boolean banned) {
+			String providedId2, String provider2, String address2, String phone2, String bsn2, String youtubeUrl, boolean banned) {
 		this.username = username2;
 		this.password = password2;
 		this.nickname = nickname2;
@@ -109,7 +106,6 @@ public class User extends DateAudit {
 		this.address = address2;
 		this.phone = phone2;
 		this.bsn = bsn2;
-		this.userIp = userIp2;
 		this.youtubeUrl = youtubeUrl;
 		this.banned=banned;
 	}

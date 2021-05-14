@@ -87,7 +87,6 @@ public class UserServiceImpl implements UserService {
 		.address(dto.getAddress())
 		.phone(dto.getPhone())
 		.bsn(dto.getBsn())
-		.userIp(dto.getUserIp())
 		.isMarketingChecked(dto.getIsMarketingChecked())
 		.youtubeUrl(dto.getYoutubeUrl())
 		.build();
@@ -187,9 +186,9 @@ public class UserServiceImpl implements UserService {
 		user.modify(userUpdateRequestDto.getUsername(), userUpdateRequestDto.getPassword(), 
 				userUpdateRequestDto.getNickname(),userUpdateRequestDto.getRealName(),
 				userUpdateRequestDto.getBday(),userUpdateRequestDto.getProvidedId(), 
-				userUpdateRequestDto.getProvider(), userUpdateRequestDto.getUserIp(),
-				userUpdateRequestDto.getAddress(), userUpdateRequestDto.getPhone(),
-				userUpdateRequestDto.getBsn(), userUpdateRequestDto.getYoututubeUrl(), false);
+				userUpdateRequestDto.getProvider(), userUpdateRequestDto.getAddress(), 
+				userUpdateRequestDto.getPhone(), userUpdateRequestDto.getBsn(), 
+				userUpdateRequestDto.getYoututubeUrl(), false);
 		
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
 
@@ -489,19 +488,11 @@ public class UserServiceImpl implements UserService {
 		user.modify(userUpdateRequestDto.getUsername(), userUpdateRequestDto.getPassword(), 
 				userUpdateRequestDto.getNickname(),userUpdateRequestDto.getRealName(),
 				userUpdateRequestDto.getBday(),userUpdateRequestDto.getProvidedId(), 
-				userUpdateRequestDto.getProvider(), userUpdateRequestDto.getUserIp(),
-				userUpdateRequestDto.getAddress(), userUpdateRequestDto.getPhone(),
-				userUpdateRequestDto.getBsn(), userUpdateRequestDto.getYoututubeUrl(), true);
+				userUpdateRequestDto.getProvider(), userUpdateRequestDto.getAddress(), 
+				userUpdateRequestDto.getPhone(),userUpdateRequestDto.getBsn(), 
+				userUpdateRequestDto.getYoututubeUrl(), true);
 		
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
 		return dto;
-	}
-
-	@Override
-	@Transactional
-	public List<String> findAllBannedIp() {
-		List<String> bannedList = userRepository.findAllByBanned();
-
-		return bannedList;
 	}
 }

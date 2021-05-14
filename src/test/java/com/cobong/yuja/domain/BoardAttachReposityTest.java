@@ -6,7 +6,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardAttach;
 import com.cobong.yuja.repository.attach.AttachRepository;
 import com.cobong.yuja.repository.user.UserRepository;

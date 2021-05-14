@@ -1,11 +1,8 @@
 package com.cobong.yuja.domain;
 
-import java.util.List;
-
 import javax.persistence.EntityManager;
 
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
@@ -29,10 +26,5 @@ public class UserRepositoryUnitTest {
 	public void init() {
 		entityManager.createNativeQuery("ALTER TABLE user AUTO_INCREMENT=1").executeUpdate();
 	}
-	
-	@Test
-	public void testbannedall() {
-	List<String> bannedList = userRepository.findAllByBanned();
-	log.info(bannedList);
-	}
+
 }

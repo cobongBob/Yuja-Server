@@ -52,7 +52,6 @@ public class UserControllerUnitTest {
 		dto.setNickname("테스트 썸네일");
 		dto.setRealName("Real Name Test");
 		dto.setBday("1995-08-05");
-		dto.setUserIp("165,849,949,466");
 		User user = dto.dtoToEntity();
 		
 		UserResponseDto resUser = new UserResponseDto();
@@ -85,7 +84,6 @@ public class UserControllerUnitTest {
 		resUser.setNickname("테스트 썸네일");
 		resUser.setRealName("Real Name Test");
 		resUser.setBday("1995-08-05");
-		resUser.setUserIp("165,849,949,466");
 		UserResponseDto reres = new UserResponseDto().entityToDto(resUser.dtoToEntity());
 		
 		userService.save(resUser);
@@ -108,7 +106,6 @@ public class UserControllerUnitTest {
 		resUser.setNickname("테스트 썸네일");
 		resUser.setRealName("Real Name Test");
 		resUser.setBday("1995-08-05");
-		resUser.setUserIp("165,849,949,466");
 		
 		UserSaveRequestDto resUser1 = new UserSaveRequestDto();
 		resUser.setUsername("테스트 제목11");
@@ -116,7 +113,6 @@ public class UserControllerUnitTest {
 		resUser.setNickname("테스트 썸네일1");
 		resUser.setRealName("Real Name Test1");
 		resUser.setBday("1995-08-051");
-		resUser.setUserIp("165,849,949,4661");
 		
 		UserSaveRequestDto resUser2 = new UserSaveRequestDto();
 		resUser.setUsername("테스트 제목12");
@@ -124,7 +120,6 @@ public class UserControllerUnitTest {
 		resUser.setNickname("테스트 썸네일2");
 		resUser.setRealName("Real Name Test2");
 		resUser.setBday("1995-08-052");
-		resUser.setUserIp("165,849,949,4662");
 		
 		UserResponseDto reres = new UserResponseDto().entityToDto(resUser.dtoToEntity());
 		UserResponseDto reres1 = new UserResponseDto().entityToDto(resUser1.dtoToEntity());
@@ -153,7 +148,7 @@ public class UserControllerUnitTest {
 	@Test
 	public void modify_test() throws Exception {
 		//given
-		User resUser = new User(0L,"테스트 제목1",null,null,"테스트 내용12","Real Name Test","1995-08-05",null,null,null,null,null,null,null,"165,849,949,466", false, false, null, null, false);
+		User resUser = new User(0L,"테스트 제목1",null,null,"테스트 내용12","Real Name Test","1995-08-05",null,null,null,null,null,null,null, false, false, null, null, false);
 		
 		UserResponseDto resRes = new UserResponseDto().entityToDto(resUser);
 		
