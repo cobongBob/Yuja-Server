@@ -103,13 +103,13 @@ public class BoardServiceImpl implements BoardService {
 	@Transactional(readOnly = true)
 	public BoardResponseDto findById(Long bno, Long userId) {
 		Board board = boardRepository.findById(bno).orElseThrow(() -> new IllegalAccessError("해당글 없음" + bno));
-		/*
+		
 		if(userId != board.getUser().getUserId()) {
-			board = Board.builder();
+			board.modify(board.getTitle(), board.getContent(), board.getPayType(), board.getPayAmount(),
+					board.getCareer(), board.getTools(), board.getExpiredDate(), board.getWorker(), board.getYWhen(), 
+					board.getChannelName(), board.getHit() + 1, board.getReceptionMethod(), board.getManager(), board.isPrivate());
 		}
-		조회수 추가 하는 부분. Board에서 함수를 만들어 처리하면 좋을듯.
-		 * 
-		 * */
+		
 		List<String> tools = new ArrayList<>();
 		if(board.getTools() != null) {
 			tools = Arrays.asList(board.getTools().split(","));

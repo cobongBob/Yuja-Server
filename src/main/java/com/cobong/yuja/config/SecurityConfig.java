@@ -100,7 +100,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN", "ROLE_GENERAL") // manager admin  
 				.antMatchers(HttpMethod.POST,"/api/user/**","/api/reported") 
 					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // manager admin 
-				.antMatchers(HttpMethod.GET,"/api/reported", "/api/1/board")
+				.antMatchers(HttpMethod.GET,"/api/reported")
 					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // manager admin 
 //				.antMatchers() 
 //					.hasAuthority("ROLE_THUMBNAILOR") // 썸넬러
