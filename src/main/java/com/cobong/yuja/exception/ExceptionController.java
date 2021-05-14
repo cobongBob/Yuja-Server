@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException.BadRequest;
 import org.springframework.web.client.HttpClientErrorException.TooManyRequests;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import lombok.Value;
@@ -49,6 +50,21 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(value = TooManyRequests.class)
 	public ResponseEntity<?> error429(Exception e) {
 		return new ResponseEntity<>(new ExceptionRestResponse(429, "한번만 눌러도 충분히 작동합니다!"), HttpStatus.TOO_MANY_REQUESTS);
+	}
+	
+	@ExceptionHandler(value = MethodArgumentTypeMismatchException.class)
+	public ResponseEntity<?> error400ArgType(){
+		return new ResponseEntity<>(new ExceptionRestResponse(400, "잘못된 요청입니다."), HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(value=NumberFormatException.class)
+	public ResponseEntity<?> numbFormatError(){
+		return new ResponseEntity<>(new ExceptionRestResponse(400, "잘못된 요청입니다."), HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(value = RuntimeException.class)
+	public ResponseEntity<?> allothers(){
+		return new ResponseEntity<>(new ExceptionRestResponse(99999, "내도 몰러유"), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@Value
