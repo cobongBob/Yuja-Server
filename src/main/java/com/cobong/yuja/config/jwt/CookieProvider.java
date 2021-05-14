@@ -12,9 +12,9 @@ public class CookieProvider {
         Cookie token = new Cookie(cookieName,value);
         token.setHttpOnly(true); //http로만 쿠키사용가능(js로 접근 x)
         if(cookieName.equals(JwtTokenProvider.ACCESS_TOKEN_NAME)) {
-        	token.setMaxAge((int)JwtTokenProvider.TOKEN_VALIDATION_SECOND); //쿠키 만료
+        	token.setMaxAge((int)JwtTokenProvider.TOKEN_VALIDATION_SECOND/1000); //쿠키 만료
         } else {
-        	token.setMaxAge((int)JwtTokenProvider.REFRESH_TOKEN_VALIDATION_SECOND); //쿠키 만료
+        	token.setMaxAge((int)JwtTokenProvider.REFRESH_TOKEN_VALIDATION_SECOND/1000); //쿠키 만료
         }
         token.setPath("/"); // 요청이 온 path내 모든 경로에서 쿠키 사용가능
 //        token.setSecure(true); https를 써야한다.
@@ -39,5 +39,11 @@ public class CookieProvider {
         }
         return null;
     }
-
+    public Cookie createHitCookie(String cookieName, Long userId) {
+    	Cookie token = new Cookie(cookieName,String.valueOf(userId));
+        token.setPath("/");
+        token.setMaxAge(66);
+//      token.setSecure(true);
+        return token;
+    }
 }

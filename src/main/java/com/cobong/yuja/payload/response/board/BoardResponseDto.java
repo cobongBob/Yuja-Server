@@ -1,6 +1,9 @@
 package com.cobong.yuja.payload.response.board;
 
 import java.time.Instant;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -26,8 +29,8 @@ public class BoardResponseDto {
 	private int likes;
 	private int comments;
 	private boolean liked;
-	private Instant createDate;
-	private Instant updatedDate;
+	private ZonedDateTime createDate;
+	private ZonedDateTime updatedDate;
 	private List<String> boardAttachFileNames;
 	private String channelName;
 	private int recruitingNum;
@@ -49,7 +52,7 @@ public class BoardResponseDto {
 		this.payType=entity.getPayType();
 		this.payAmount=entity.getPayAmount();
 		this.career=entity.getCareer();
-		this.updatedDate = entity.getUpdatedDate();
+		this.updatedDate = entity.getUpdatedDate().atZone(ZoneId.of("Asia/Seoul"));
 		this.channelName = entity.getChannelName();
 		this.recruitingNum = entity.getRecruitingNum();
 		this.receptionMethod = entity.getReceptionMethod();
@@ -57,7 +60,7 @@ public class BoardResponseDto {
 		this.worker = entity.getWorker();
 		this.yWhen = entity.getYWhen();
 		this.isPrivate = entity.isPrivate();
-		this.createDate = entity.getCreatedDate();
+		this.createDate = entity.getCreatedDate().atZone(ZoneId.of("Asia/Seoul"));
 		return this;
 	}
 	
