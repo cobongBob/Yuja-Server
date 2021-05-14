@@ -2,6 +2,7 @@ package com.cobong.yuja.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.handler.annotation.support.MethodArgumentTypeMismatchException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -49,6 +50,11 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(value = TooManyRequests.class)
 	public ResponseEntity<?> error429(Exception e) {
 		return new ResponseEntity<>(new ExceptionRestResponse(429, "한번만 눌러도 충분히 작동합니다!"), HttpStatus.TOO_MANY_REQUESTS);
+	}
+	
+	@ExceptionHandler(value = MethodArgumentTypeMismatchException.class)
+	public ResponseEntity<?> error400ArgType(){
+		return new ResponseEntity<>(new ExceptionRestResponse(400, "잘못된 요청입니다."), HttpStatus.BAD_REQUEST);
 	}
 	
 	@Value
