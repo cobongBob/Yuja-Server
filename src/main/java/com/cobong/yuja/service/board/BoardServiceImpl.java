@@ -99,16 +99,11 @@ public class BoardServiceImpl implements BoardService {
 		}
 		return new BoardResponseDto().entityToDto(board2);
 	}
+	
 	@Override
 	@Transactional(readOnly = true)
 	public BoardResponseDto findById(Long bno, Long userId) {
 		Board board = boardRepository.findById(bno).orElseThrow(() -> new IllegalAccessError("해당글 없음" + bno));
-		
-		if(userId != board.getUser().getUserId()) {
-			board.modify(board.getTitle(), board.getContent(), board.getPayType(), board.getPayAmount(),
-					board.getCareer(), board.getTools(), board.getExpiredDate(), board.getWorker(), board.getYWhen(), 
-					board.getChannelName(), board.getHit() + 1, board.getReceptionMethod(), board.getManager(), board.isPrivate());
-		}
 		
 		List<String> tools = new ArrayList<>();
 		if(board.getTools() != null) {
@@ -408,5 +403,16 @@ public class BoardServiceImpl implements BoardService {
 			curBoardResponseDto.add(dto);
 		}
 		return curBoardResponseDto;
+	}
+
+	@Override
+	@Transactional
+	public String addHit(Long bno, Long userId) {
+		Board board = boardRepository.findById(userId).orElseThrow(() -> new IllegalAccessError("게시글이 존재하지 않습니다."));
+		if(userId == board.getUser().getUserId()) {
+			board.addHit();
+			return "조회수가 1 늘었습니다.";
+		} 
+		return "본인이 들어왔습니다.";
 	}
 }
