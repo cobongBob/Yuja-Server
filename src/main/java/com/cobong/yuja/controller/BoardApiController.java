@@ -104,16 +104,4 @@ public class BoardApiController {
 	public ResponseEntity<?> boardsUserCommented(@PathVariable Long userId){
 		return new ResponseEntity<>(boardService.boardsUserCommented(userId), HttpStatus.OK);
 	}
-	
-	//조회수 추가해주는 컨트롤러
-	@PostMapping("/api/board/hit/{bno}")
-	public ResponseEntity<?> insertLike(@PathVariable Long bno){
-		PrincipalDetails principalDetails = null;
-    	Long userId = 0L;
-    	if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PrincipalDetails) {
-    		principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			userId = principalDetails.getUserId();
-		}
-		return new ResponseEntity<>(boardService.addHit(bno, userId), HttpStatus.CREATED);
-	}
 }

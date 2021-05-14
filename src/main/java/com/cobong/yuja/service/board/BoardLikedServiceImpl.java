@@ -5,7 +5,6 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import com.cobong.yuja.model.BoardLiked;
-import com.cobong.yuja.payload.request.board.BoardLikedRequestDto;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.boardLiked.BoardLikedRepository;
 import com.cobong.yuja.repository.user.UserRepository;
@@ -21,18 +20,18 @@ public class BoardLikedServiceImpl implements BoardLikedService{
 
 	@Override
 	@Transactional
-	public String liked(BoardLikedRequestDto dto) {
+	public String liked(Long bno, Long userId) {
 		BoardLiked liked = BoardLiked.builder()
-				.user(userRepository.findById(dto.getUserId()).orElseThrow(()->new IllegalArgumentException("존재하지않는 유저")))
-				.board(boardRepository.findById(dto.getBoardId()).orElseThrow(()->new IllegalArgumentException("존재하지않는 글"))).build();
+				.user(userRepository.findById(userId).orElseThrow(()->new IllegalArgumentException("존재하지않는 유저")))
+				.board(boardRepository.findById(bno).orElseThrow(()->new IllegalArgumentException("존재하지않는 글"))).build();
 		boardLikedRepository.save(liked);
 		return "Success!!";
 	}
 
 	@Override
 	@Transactional
-	public String disLiked(BoardLikedRequestDto dto) {
-		boardLikedRepository.deleteByUserIdAndBoardId(dto.getUserId(), dto.getBoardId());
+	public String disLiked(Long bno, Long userId) {
+		boardLikedRepository.deleteByUserIdAndBoardId(userId, bno);
 		return "Success!";
 	}
 }

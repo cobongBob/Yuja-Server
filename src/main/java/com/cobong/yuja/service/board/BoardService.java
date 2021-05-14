@@ -25,6 +25,4 @@ public interface BoardService {
 	List<BoardResponseDto> boardsUserLiked(Long userId);
 	
 	List<BoardResponseDto> boardsUserCommented(Long userId);
-
-	String addHit(Long bno, Long userId);
 }
