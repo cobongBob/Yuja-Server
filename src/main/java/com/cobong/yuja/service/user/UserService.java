@@ -46,5 +46,5 @@ public interface UserService {
 	
 	UserResponseDto banned(Long bno, UserUpdateRequestDto userUpdateRequestDto);
 
-	List<String> findAllByBanned();
+	List<String> findAllBannedIp();
 }

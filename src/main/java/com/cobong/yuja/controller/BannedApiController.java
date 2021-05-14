@@ -21,10 +21,10 @@ public class BannedApiController {
 	
 	@GetMapping("/api/banned")
 	public ResponseEntity<?> getAllbannedIp(){
-		return new ResponseEntity<>(userService.findAllByBanned(),HttpStatus.OK);
+		return new ResponseEntity<>(userService.findAllBannedIp(),HttpStatus.OK);
 	}
 	
-	@PutMapping("/api/banned")
+	@PutMapping("/api/banned/{bno}")
 	public ResponseEntity<?> setBanned(@PathVariable Long bno, @RequestBody UserUpdateRequestDto userUpdateRequestDto){
 		return new ResponseEntity<>(userService.banned(bno,userUpdateRequestDto),HttpStatus.OK);
 	}

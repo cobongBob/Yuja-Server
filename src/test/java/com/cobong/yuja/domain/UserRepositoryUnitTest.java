@@ -1,5 +1,8 @@
 package com.cobong.yuja.domain;
 
+import java.util.List;
+
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
@@ -17,4 +20,11 @@ import lombok.extern.log4j.Log4j2;
 public class UserRepositoryUnitTest {
 	@Autowired
 	private UserRepository userRepository;
+	
+	
+	@Test
+	public void testbannedall() {
+	List<String> bannedList = userRepository.findAllByBanned();
+	log.info(bannedList);
+	}
 }

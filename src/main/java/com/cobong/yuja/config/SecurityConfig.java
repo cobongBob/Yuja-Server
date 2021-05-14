@@ -38,6 +38,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Autowired
 	Forbidden403Exception unauthorizedException;
 	
+	@Autowired
+	CustomIpAuthenticationProvider customIpAuthenticationProvider;
+	
 	// 유효성, 토큰관련 세부사항 로드
 	@Bean
 	public JwtAuthenticationFilter jwtAuthenticationFilter() {
@@ -48,6 +51,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	@Override
 	protected void configure(AuthenticationManagerBuilder authenticationManagerBuilder) throws Exception {
 		authenticationManagerBuilder
+		.authenticationProvider(customIpAuthenticationProvider)
 		.userDetailsService(principalDetailsService)
 		.passwordEncoder(passwordEncoder());
 	}
