@@ -29,7 +29,7 @@ public class BoardLikedApiController {
 		return new ResponseEntity<>(boardLikedService.liked(bno,userId), HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping("/api/board/liked")
+	@DeleteMapping("/api/board/liked/{bno}")
 	public ResponseEntity<?> deleteLike(@PathVariable Long bno){
 		PrincipalDetails principalDetails = null;
     	Long userId = 0L;

@@ -10,7 +10,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cobong.yuja.exception.Forbidden403Exception;
 import com.cobong.yuja.model.Authorities;
 import com.cobong.yuja.model.AuthorityNames;
 import com.cobong.yuja.model.Board;
@@ -101,10 +100,12 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	@Transactional(readOnly = true)
+	@Transactional
 	public BoardResponseDto findById(Long bno, Long userId) {
 		Board board = boardRepository.findById(bno).orElseThrow(() -> new IllegalAccessError("해당글 없음" + bno));
-		
+		if(userId != board.getUser().getUserId()) {
+			board.addHit();
+		} 
 		List<String> tools = new ArrayList<>();
 		if(board.getTools() != null) {
 			tools = Arrays.asList(board.getTools().split(","));
@@ -403,16 +404,5 @@ public class BoardServiceImpl implements BoardService {
 			curBoardResponseDto.add(dto);
 		}
 		return curBoardResponseDto;
-	}
-
-	@Override
-	@Transactional
-	public String addHit(Long bno, Long userId) {
-		Board board = boardRepository.findById(userId).orElseThrow(() -> new IllegalAccessError("게시글이 존재하지 않습니다."));
-		if(userId == board.getUser().getUserId()) {
-			board.addHit();
-			return "조회수가 1 늘었습니다.";
-		} 
-		return "본인이 들어왔습니다.";
 	}
 }
