@@ -1,31 +1,31 @@
 package com.cobong.yuja.controller;
 
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
-import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.cobong.yuja.config.websocket.SocketMessage;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
 public class ChatApiController {
-	private final SimpMessagingTemplate websocket;
+	private final SimpMessagingTemplate webSocket;
 	
-	@MessageMapping("/chat/sendmessage")
-	@SendTo("/topic/yuja")
-	public SocketMessage sendMsg(@Payload SocketMessage msg) {
-		return msg;
-	}
+	@MessageMapping("/sendTo") 
+	@SendTo("/topics/sendTo") 
+	public String SendToMessage() throws Exception { 
+		return "SendTo"; 
+	} 
 	
-	@MessageMapping("/chat/enter")
-	@SendTo("/topic/yuja")
-	public SocketMessage userEnter(@Payload SocketMessage msg, SimpMessageHeaderAccessor headerAccessor) {
-		headerAccessor.getSessionAttributes().put("username", msg);
-		return msg;
+	@MessageMapping("/Template") 
+	public void SendTemplateMessage() { 
+		webSocket.convertAndSend("/topics/template" , "Template"); 
+	} 
+	
+	@RequestMapping(value="/api") 
+	public void SendAPI() { 
+		webSocket.convertAndSend("/topics/api" , "API"); 
 	}
 }

@@ -55,6 +55,8 @@ public class YoutubeConfirmService {
 			// 실행되는 위치의 'temp' 폴더에 파일이 저장
 			String savePath = System.getProperty("user.dir") + File.separator+"files" + File.separator +"temp";
 			
+			file.transferTo(new File(savePath));
+			
 			// 파일이 저장되는 폴더가 없으면 폴더를 생성
 			if (!new File(savePath).exists()) {
 				try {

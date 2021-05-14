@@ -139,6 +139,10 @@ public class Board extends DateAudit{
 		board.isPrivate = hidden;
 		return board;
 	}
+
+	public void addHit() {
+		this.hit = this.hit+1;
+	}
 	
 	
 }
