@@ -84,10 +84,10 @@ public class User extends DateAudit {
 	@Column(nullable = false)
 	private String userIp;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "TINYINT(1)")
 	private boolean isMarketingChecked;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "TINYINT(1)")
 	private boolean deleted;
 	
 	private String youtubeUrl;
@@ -95,7 +95,7 @@ public class User extends DateAudit {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<ReportedBoards> reportedBoards;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "TINYINT(1)")
 	private boolean banned;
 
 	public void modify(String username2, String password2, String nickname2, String realName2, String bday2,

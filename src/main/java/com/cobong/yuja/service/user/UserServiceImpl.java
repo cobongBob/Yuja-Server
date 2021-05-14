@@ -290,6 +290,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Cookie[] signIn(LoginRequest loginRequest) {
 		User user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow(()-> new IllegalArgumentException("이메일이나 비밀번호가 일치하지 않습니다."));
+		System.out.println("/////////////////////////////////////////"+user.isBanned());
+		if(user.isBanned()) {
+			throw new IllegalAccessError("경고등의 이유로 이용이 정지된 아이디 입니다");
+		}
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
