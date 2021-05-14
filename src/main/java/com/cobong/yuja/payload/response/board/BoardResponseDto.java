@@ -26,6 +26,7 @@ public class BoardResponseDto {
 	private int likes;
 	private int comments;
 	private boolean liked;
+	private Instant createDate;
 	private Instant updatedDate;
 	private List<String> boardAttachFileNames;
 	private String channelName;
@@ -56,6 +57,7 @@ public class BoardResponseDto {
 		this.worker = entity.getWorker();
 		this.yWhen = entity.getYWhen();
 		this.isPrivate = entity.isPrivate();
+		this.createDate = entity.getCreatedDate();
 		return this;
 	}
 	
