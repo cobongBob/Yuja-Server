@@ -17,15 +17,15 @@ public class ChatApiController {
 	private final SimpMessagingTemplate websocket;
 	
 	@MessageMapping("/chat/sendmessage")
-	@SendTo("/topic/yuja")
+	@SendTo("/topic/cobong")
 	public SocketMessage sendMsg(@Payload SocketMessage msg) {
 		return msg;
 	}
 	
 	@MessageMapping("/chat/enter")
-	@SendTo("/topic/yuja")
+	@SendTo("/topic/cobong")
 	public SocketMessage userEnter(@Payload SocketMessage msg, SimpMessageHeaderAccessor headerAccessor) {
-		headerAccessor.getSessionAttributes().put("username", msg);
+		headerAccessor.getSessionAttributes().put("username", msg.getSender());
 		return msg;
 	}
 }
