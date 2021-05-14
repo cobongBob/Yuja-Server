@@ -2,12 +2,12 @@ package com.cobong.yuja.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.messaging.handler.annotation.support.MethodArgumentTypeMismatchException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException.BadRequest;
 import org.springframework.web.client.HttpClientErrorException.TooManyRequests;
+import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import lombok.Value;
@@ -55,6 +55,16 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 	@ExceptionHandler(value = MethodArgumentTypeMismatchException.class)
 	public ResponseEntity<?> error400ArgType(){
 		return new ResponseEntity<>(new ExceptionRestResponse(400, "잘못된 요청입니다."), HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(value=NumberFormatException.class)
+	public ResponseEntity<?> numbFormatError(){
+		return new ResponseEntity<>(new ExceptionRestResponse(400, "잘못된 요청입니다."), HttpStatus.BAD_REQUEST);
+	}
+	
+	@ExceptionHandler(value = RuntimeException.class)
+	public ResponseEntity<?> allothers(){
+		return new ResponseEntity<>(new ExceptionRestResponse(99999, "내도 몰러유"), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@Value
