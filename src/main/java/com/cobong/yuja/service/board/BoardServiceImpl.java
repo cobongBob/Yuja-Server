@@ -101,9 +101,9 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
 	@Transactional
-	public BoardResponseDto findById(Long bno, Long userId) {
+	public BoardResponseDto findById(Long bno, Long userId,boolean ishit) {
 		Board board = boardRepository.findById(bno).orElseThrow(() -> new IllegalAccessError("해당글 없음" + bno));
-		if(userId != board.getUser().getUserId()) {
+		if(ishit == false&&userId != board.getUser().getUserId()) {
 			board.addHit();
 		} 
 		List<String> tools = new ArrayList<>();
