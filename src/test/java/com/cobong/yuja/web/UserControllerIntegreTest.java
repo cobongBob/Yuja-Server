@@ -70,7 +70,6 @@ public class UserControllerIntegreTest {
 			resUser.setNickname("테스트 썸네일"+i);
 			resUser.setRealName("Real Name Test"+i);
 			resUser.setBday("1995-08-0"+i);
-			resUser.setUserIp("165,849,949,4"+i);
 			userService.save(resUser);
 		}
 	}
@@ -84,7 +83,6 @@ public class UserControllerIntegreTest {
 		dto.setNickname("테스트 썸네일123");
 		dto.setRealName("Real Name Test123");
 		dto.setBday("1995-08-123");
-		dto.setUserIp("165,849,949,123");
 		User user = dto.dtoToEntity();
 		
 		String content = new ObjectMapper().writeValueAsString(user);

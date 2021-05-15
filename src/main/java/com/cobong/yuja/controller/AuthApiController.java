@@ -41,11 +41,6 @@ public class AuthApiController {
 
 	@PostMapping("/signup")
 	public ResponseEntity<?> insertUser(@Valid @RequestBody UserSaveRequestDto dto, HttpServletRequest req) {
-		String ip = req.getRemoteAddr();
-		/**
-		 * ip address detector
-		 */
-		dto.setUserIp(ip);
 		return new ResponseEntity<>(userService.save(dto), HttpStatus.CREATED);
 	}
 

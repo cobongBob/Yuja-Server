@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	Forbidden403Exception unauthorizedException;
-	
+		
 	// 유효성, 토큰관련 세부사항 로드
 	@Bean
 	public JwtAuthenticationFilter jwtAuthenticationFilter() {

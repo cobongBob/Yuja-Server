@@ -20,7 +20,6 @@ public class UserResponseDto {
 	private String address;
 	private String phone;
 	private String bsn;
-	private String userIp;
 	private String youtubeUrl;
 	
 	public UserResponseDto entityToDto(User entity) {
@@ -35,7 +34,6 @@ public class UserResponseDto {
 		this.address = entity.getAddress();
 		this.phone = entity.getPhone();
 		this.bsn = entity.getBsn();
-		this.userIp = entity.getUserIp();
 		this.youtubeUrl = entity.getYoutubeUrl();
 		return this;
 	}

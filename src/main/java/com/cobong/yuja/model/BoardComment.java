@@ -46,7 +46,7 @@ public class BoardComment extends DateAudit{
 	@Column(nullable = false, length = 2000)
 	private String content;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "TINYINT(1)")
 	private boolean deleted;
 	
 	public BoardComment createComment(String content, Board board, User user, BoardComment parent) {

@@ -1,10 +1,12 @@
 package com.cobong.yuja.domain;
 
+import javax.persistence.EntityManager;
+
+import org.junit.jupiter.api.BeforeEach;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.transaction.annotation.Transactional;
 
 import com.cobong.yuja.repository.user.UserRepository;
 
@@ -17,4 +19,12 @@ import lombok.extern.log4j.Log4j2;
 public class UserRepositoryUnitTest {
 	@Autowired
 	private UserRepository userRepository;
+	
+	@Autowired EntityManager entityManager;
+	
+	@BeforeEach
+	public void init() {
+		entityManager.createNativeQuery("ALTER TABLE user AUTO_INCREMENT=1").executeUpdate();
+	}
+
 }

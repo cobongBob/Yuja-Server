@@ -87,7 +87,6 @@ public class UserServiceImpl implements UserService {
 		.address(dto.getAddress())
 		.phone(dto.getPhone())
 		.bsn(dto.getBsn())
-		.userIp(dto.getUserIp())
 		.isMarketingChecked(dto.getIsMarketingChecked())
 		.youtubeUrl(dto.getYoutubeUrl())
 		.build();
@@ -187,9 +186,9 @@ public class UserServiceImpl implements UserService {
 		user.modify(userUpdateRequestDto.getUsername(), userUpdateRequestDto.getPassword(), 
 				userUpdateRequestDto.getNickname(),userUpdateRequestDto.getRealName(),
 				userUpdateRequestDto.getBday(),userUpdateRequestDto.getProvidedId(), 
-				userUpdateRequestDto.getProvider(), userUpdateRequestDto.getUserIp(),
-				userUpdateRequestDto.getAddress(), userUpdateRequestDto.getPhone(),
-				userUpdateRequestDto.getBsn(), userUpdateRequestDto.getYoututubeUrl(), false);
+				userUpdateRequestDto.getProvider(), userUpdateRequestDto.getAddress(), 
+				userUpdateRequestDto.getPhone(), userUpdateRequestDto.getBsn(), 
+				userUpdateRequestDto.getYoututubeUrl(), false);
 		
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
 
@@ -290,6 +289,10 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Cookie[] signIn(LoginRequest loginRequest) {
 		User user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow(()-> new IllegalArgumentException("이메일이나 비밀번호가 일치하지 않습니다."));
+		System.out.println("/////////////////////////////////////////"+user.isBanned());
+		if(user.isBanned()) {
+			throw new IllegalAccessError("경고등의 이유로 이용이 정지된 아이디 입니다");
+		}
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -485,22 +488,11 @@ public class UserServiceImpl implements UserService {
 		user.modify(userUpdateRequestDto.getUsername(), userUpdateRequestDto.getPassword(), 
 				userUpdateRequestDto.getNickname(),userUpdateRequestDto.getRealName(),
 				userUpdateRequestDto.getBday(),userUpdateRequestDto.getProvidedId(), 
-				userUpdateRequestDto.getProvider(), userUpdateRequestDto.getUserIp(),
-				userUpdateRequestDto.getAddress(), userUpdateRequestDto.getPhone(),
-				userUpdateRequestDto.getBsn(), userUpdateRequestDto.getYoututubeUrl(), true);
+				userUpdateRequestDto.getProvider(), userUpdateRequestDto.getAddress(), 
+				userUpdateRequestDto.getPhone(),userUpdateRequestDto.getBsn(), 
+				userUpdateRequestDto.getYoututubeUrl(), true);
 		
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
 		return dto;
-	}
-
-	@Override
-	@Transactional
-	public List<String> findAllByBanned() {
-		List<String> banned = new ArrayList<String>();
-		List<String> bannedList = userRepository.findAllByBanned();
-		for (String u : bannedList) {
-
-		}
-		return banned;
 	}
 }

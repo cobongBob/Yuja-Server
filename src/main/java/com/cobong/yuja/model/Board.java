@@ -93,6 +93,7 @@ public class Board extends DateAudit{
 	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
 	private List<ReportedBoards> reportedBoards;
 	
+	@Column(nullable = false, columnDefinition = "TINYINT(1)")
 	private boolean isPrivate;
 	
 	public Board modify(String title, String content, String payType, String payAmount,	String career, String tools, 

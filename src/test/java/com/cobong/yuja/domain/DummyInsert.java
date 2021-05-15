@@ -95,7 +95,6 @@ public class DummyInsert {
 					.nickname("nickname "+i)
 					.realName("tester "+i)
 					.bday("2000-01-"+i)
-					.userIp("111.111.111.111")
 					.authorities(Collections.singletonList(auth1))
 					.build();
 			userRepository.save(user);
@@ -108,7 +107,6 @@ public class DummyInsert {
 					.nickname("nickname "+i)
 					.realName("tester "+i)
 					.bday("2000-01-"+i)
-					.userIp("111.111.111.111")
 					.youtubeUrl("https://www.youtube.com/channel/UCVrhnbfe78ODeQglXtT1Elw")
 					.authorities(Collections.singletonList(auth2))
 					.build();
@@ -121,7 +119,6 @@ public class DummyInsert {
 					.nickname("nickname "+i)
 					.realName("tester "+i)
 					.bday("2000-01-"+i)
-					.userIp("111.111.111.111")
 					.youtubeUrl("https://www.youtube.com/channel/UCfpaSruWW3S4dibonKXENjA")
 					.authorities(Collections.singletonList(auth2))
 					.build();
@@ -135,7 +132,6 @@ public class DummyInsert {
 					.nickname("Admin "+i)
 					.realName("Admin "+i)
 					.bday("2000-01-"+i)
-					.userIp("111.111.111.111")
 					.authorities(Collections.singletonList(auth3))
 					.build();
 			userRepository.save(user);
