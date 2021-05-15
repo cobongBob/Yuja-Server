@@ -79,8 +79,12 @@ public class CommentServiceImpl implements CommentService {
 	public String deleteById(Long commentId) {
 		BoardComment boardComment = commentRepository.findById(commentId).orElseThrow(()->new IllegalArgumentException("존재하지 않는 댓글"));
 		//select후 영속화
-		boardComment.deleteComment();
-		//안의 deleted가 true로 바뀐다.
+		if(boardComment.getParent() != null) {
+			boardComment.deleteComment();
+		} else {
+			commentRepository.deleteById(commentId);
+		}
+		//대댓글이있으면 안의 deleted가 true로 바뀌고 아니면 삭제.
 		return "deleted";
 	}
 	
