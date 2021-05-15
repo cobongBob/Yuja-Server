@@ -30,14 +30,12 @@ public class ReportedApiController {
 		return new ResponseEntity<>(reportedBoardsService.findAll(), HttpStatus.OK);
 	}
 
-	// 신고받은 리스트 목록에서 처리후(?) 삭제
+	// 신고받은 리스트 목록에서 삭제
 	@DeleteMapping("/api/repoarted/{bno}")
 	public ResponseEntity<?> deleteReport(@PathVariable Long bno) {
 		return new ResponseEntity<>(reportedBoardsService.delete(bno), HttpStatus.OK);
+		
 	}
+	
 
-	// 유저에있는 ban true 바꾸는 컨트롤러 
-	// 헤제 기능(?)
-	// 필터만들고
-	// securityconfig에 configure 추가
 }
