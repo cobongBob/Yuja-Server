@@ -1,12 +1,12 @@
 package com.cobong.yuja.controller;
 
 import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -36,7 +36,8 @@ public class BoardApiController {
 	}
 	
 	@GetMapping("/api/{boardCode}/board/{bno}")
-	public ResponseEntity<?> getOneBoard(@PathVariable Long boardCode, @PathVariable Long bno,HttpServletResponse res,HttpServletRequest req) {
+	public ResponseEntity<?> getOneBoard(@PathVariable Long boardCode, @PathVariable Long bno,
+			HttpServletResponse res,@CookieValue(name="hitCookieBno") String cookieBno) {
 		PrincipalDetails principalDetails = null;
     	Long userId = 0L;
     	boolean ishit = false;
@@ -44,17 +45,9 @@ public class BoardApiController {
     		principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			userId = principalDetails.getUserId();
 		}
-    	Cookie cookieUser = cookieProvider.getCookie(req, "hitCookieUser");
-    	Cookie cookieBno = cookieProvider.getCookie(req, "hitCookieBno");
-    	if(cookieUser != null &&cookieBno != null &&
-    		cookieUser.getValue().equals(String.valueOf(userId))&&
-    		cookieBno.getValue().equals(String.valueOf(bno))) 
-    	{ishit = true;}
-    	cookieUser = cookieProvider.createHitCookie("hitCookieUser", userId);
-    	cookieBno = cookieProvider.createHitCookie("hitCookieBno", bno);
-    	res.addCookie(cookieUser);
-    	res.addCookie(cookieBno);
-    	
+    	if(cookieBno.equals(String.valueOf(bno))) ishit = true;
+    	Cookie hitCookie = cookieProvider.createHitCookie("hitCookieBno", bno);
+    	res.addCookie(hitCookie);
 		return new ResponseEntity<>(boardService.findById(bno,userId,ishit),HttpStatus.OK);
 	}
 	
