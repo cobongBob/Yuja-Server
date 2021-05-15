@@ -110,7 +110,11 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 		
-		if (dto.getYoutubeImgId() != 0) {
+		System.out.println("/n==============================  Visited  ==============================\n");
+		System.out.println("\n dto.getYoutube:  "+ dto.getYoutubeImgId()+"            /////////////// \n");
+		
+		if (dto.getYoutubeImgId() != 0L) {
+			System.out.println("/n==============================  Visited  ==============================\n");
 			YoutubeConfirm youtubeConfirm = youtubeConfirmRepository.findById(dto.getYoutubeImgId())
 					.orElseThrow(() -> new IllegalArgumentException("해당 유튜브 인증 이미지를 찾을수 없습니다."));
 			if (!youtubeConfirm.isFlag()) {
