@@ -78,8 +78,13 @@ public class CommentServiceImpl implements CommentService {
 	@Override
 	public String deleteById(Long commentId) {
 		BoardComment boardComment = commentRepository.findById(commentId).orElseThrow(()->new IllegalArgumentException("존재하지 않는 댓글"));
+		List<BoardComment> childComments = commentRepository.findByIdParentId(boardComment.getCommentId()).orElse(null);
 		//select후 영속화
-		if(boardComment.getParent() != null) {
+		if(childComments != null && childComments.size() > 0) {
+			//가지고온 댓글을 확인.
+			//select * from boardComment where parentId = boardComment.commentId(해당댓글)
+			//해당 댓글을 부모로 가진 댓글들을 가지고 온다.
+			//null이 아니면 deleted로 바꾼다.
 			boardComment.deleteComment();
 		} else {
 			commentRepository.deleteById(commentId);
