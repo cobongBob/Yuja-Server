@@ -19,6 +19,7 @@ public class UserUpdateRequestDto {
 	private String providedId;
 	private String provider;
 	private String address;
+	private String detailAddress;
 	private String phone;
 	private String bsn;
 	private Long youtubeImgId;
