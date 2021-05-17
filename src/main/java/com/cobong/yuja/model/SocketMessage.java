@@ -1,4 +1,4 @@
-package com.cobong.yuja.config.websocket;
+package com.cobong.yuja.model;
 
 import lombok.Getter;
 import lombok.Setter;
