@@ -18,7 +18,7 @@ public class UserResponseDto {
 	private String providedId;
 	private String provider;
 	private String address;
-	private String detailAddr;
+	private String detailAddress;
 	private String phone;
 	private String bsn;
 	private String youtubeUrl;

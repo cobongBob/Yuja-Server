@@ -142,7 +142,7 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
 		dto.setAddress(user.getAddress().substring(0,user.getAddress().indexOf(" # ")));
-		dto.setDetailAddr(user.getAddress().substring(user.getAddress().indexOf(" # ")));
+		dto.setDetailAddress(user.getAddress().substring(user.getAddress().indexOf(" # ")));
 		
 		Optional<ProfilePicture> optProfilePicture = profilePictureRepository.findByUserUserId(id);
 		if(optProfilePicture.isPresent()) {
@@ -189,7 +189,7 @@ public class UserServiceImpl implements UserService {
 			throw new IllegalAccessError("관리자가 아니므로 해당 유저의 정보를 삭제할 수 없습니다");
 		}
 		
-		String wholeAddr = userUpdateRequestDto.getAddress() +" # "+ userUpdateRequestDto.getDetailAddr();
+		String wholeAddr = userUpdateRequestDto.getAddress() +" # "+ userUpdateRequestDto.getDetailAddress();
 		
 		User user = userRepository.findById(bno)
 				.orElseThrow(() -> new IllegalAccessError("해당유저 없음" + bno));
@@ -288,7 +288,7 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findByUsername(username).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
 		dto.setAddress(user.getAddress().substring(0,user.getAddress().indexOf(" # ")));
-		dto.setDetailAddr(user.getAddress().substring(user.getAddress().indexOf(" # ")));
+		dto.setDetailAddress(user.getAddress().substring(user.getAddress().indexOf(" # ")));
 		return dto;
 	}
 	@Override
