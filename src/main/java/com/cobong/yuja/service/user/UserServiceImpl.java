@@ -422,7 +422,7 @@ public class UserServiceImpl implements UserService {
 		GoogleUser googleUser = new GoogleUser();
 		googleUser.setPassword("코봉밥");
 		
-		System.out.println("username 존재여부 : "+ user);
+//		System.out.println("username 존재여부 : "+ user);
 		// 201 -> 회원가입
 		if (user.equals(false)) {
 			googleUser.setFlag(true);
