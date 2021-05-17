@@ -40,7 +40,6 @@ public class UserSaveRequestDto {
 	private String phone ="";
 	private String bsn ="";
 	private Long youtubeImgId = 0L;
-	private String userIp;
 	private boolean isMarketingChecked;
 	private Long profilePicId = 0L;
 	private String youtubeUrl = "";
@@ -65,7 +64,6 @@ public class UserSaveRequestDto {
 				.address(this.address)
 				.phone(this.phone)
 				.bsn(this.bsn)
-				.userIp(this.userIp)
 				.isMarketingChecked(this.isMarketingChecked)
 				.youtubeUrl(this.youtubeUrl)
 				.build();

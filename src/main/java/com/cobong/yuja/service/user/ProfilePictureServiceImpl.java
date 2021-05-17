@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cobong.yuja.model.ProfilePicture;
-import com.cobong.yuja.payload.request.user.ProfilePictureDto;
+import com.cobong.yuja.payload.response.user.ProfilePictureDto;
 import com.cobong.yuja.repository.user.ProfilePictureRepository;
 
 import lombok.RequiredArgsConstructor;

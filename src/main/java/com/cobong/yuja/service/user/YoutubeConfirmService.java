@@ -55,6 +55,7 @@ public class YoutubeConfirmService {
 			// 실행되는 위치의 'temp' 폴더에 파일이 저장
 			String savePath = System.getProperty("user.dir") + File.separator+"files" + File.separator +"temp";
 			
+			
 			// 파일이 저장되는 폴더가 없으면 폴더를 생성
 			if (!new File(savePath).exists()) {
 				try {
@@ -68,6 +69,8 @@ public class YoutubeConfirmService {
 			
 			file.transferTo(new File(savePath));
 
+			file.transferTo(new File(savePath));
+			
 	        String uploadPath = System.getProperty("user.dir") + File.separator+"files" + File.separator + "youtubeConfirm";
 			
 			if (!new File(uploadPath).exists()) {
@@ -107,7 +110,7 @@ public class YoutubeConfirmService {
 		User user = userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("존재하지 않는 유저입니다"));
 		user.modify(user.getUsername(), user.getPassword(), user.getNickname(), user.getRealName(), 
 				user.getBday(), user.getProvidedId(), user.getProvider(), user.getAddress(), 
-				user.getPhone(), dto.getBsn(), user.getUserIp(), dto.getYoutubeUrl(), false);
+				user.getPhone(), dto.getBsn(), dto.getYoutubeUrl(), false);
 		userRepository.save(user);
 		
 		if (dto.getYoutubeConfirmId() != 0) {

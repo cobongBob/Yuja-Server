@@ -22,7 +22,6 @@ public class UserUpdateRequestDto {
 	private String phone;
 	private String bsn;
 	private Long youtubeImgId;
-	private String userIp;
 	private String yoututubeUrl;
 	
 	public User dtoToEntity() {
@@ -37,7 +36,6 @@ public class UserUpdateRequestDto {
 				.address(this.address)
 				.phone(this.phone)
 				.bsn(this.bsn)
-				.userIp(this.userIp)
 				.youtubeUrl(this.yoututubeUrl)
 				.build();
 	}

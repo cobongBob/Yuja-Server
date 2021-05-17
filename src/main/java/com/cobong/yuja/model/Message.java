@@ -15,6 +15,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Data
 @EqualsAndHashCode(callSuper = false)
@@ -22,6 +23,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Builder
 @Entity
+@ToString(exclude = {"sender", "recipient"})
 public class Message extends DateAudit{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

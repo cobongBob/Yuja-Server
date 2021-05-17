@@ -10,7 +10,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cobong.yuja.exception.Forbidden403Exception;
 import com.cobong.yuja.model.Authorities;
 import com.cobong.yuja.model.AuthorityNames;
 import com.cobong.yuja.model.Board;
@@ -99,17 +98,14 @@ public class BoardServiceImpl implements BoardService {
 		}
 		return new BoardResponseDto().entityToDto(board2);
 	}
+	
 	@Override
-	@Transactional(readOnly = true)
-	public BoardResponseDto findById(Long bno, Long userId) {
+	@Transactional
+	public BoardResponseDto findById(Long bno, Long userId,boolean ishit) {
 		Board board = boardRepository.findById(bno).orElseThrow(() -> new IllegalAccessError("해당글 없음" + bno));
-		/*
-		if(userId != board.getUser().getUserId()) {
-			board = Board.builder();
-		}
-		조회수 추가 하는 부분. Board에서 함수를 만들어 처리하면 좋을듯.
-		 * 
-		 * */
+		if(ishit == false&&userId != board.getUser().getUserId()) {
+			board.addHit();
+		} 
 		List<String> tools = new ArrayList<>();
 		if(board.getTools() != null) {
 			tools = Arrays.asList(board.getTools().split(","));

@@ -37,7 +37,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 	
 	@Autowired
 	Forbidden403Exception unauthorizedException;
-	
+		
 	// 유효성, 토큰관련 세부사항 로드
 	@Bean
 	public JwtAuthenticationFilter jwtAuthenticationFilter() {
@@ -100,7 +100,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN", "ROLE_GENERAL") // manager admin  
 				.antMatchers(HttpMethod.POST,"/api/user/**","/api/reported") 
 					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // manager admin 
-				.antMatchers(HttpMethod.GET,"/api/reported", "/api/1/board")
+				.antMatchers(HttpMethod.GET,"/api/reported")
+					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // manager admin 
+				.antMatchers(HttpMethod.PUT,"/api/banned/**")
 					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // manager admin 
 //				.antMatchers() 
 //					.hasAuthority("ROLE_THUMBNAILOR") // 썸넬러

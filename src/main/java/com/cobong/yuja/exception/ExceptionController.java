@@ -64,7 +64,7 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 	
 	@ExceptionHandler(value = RuntimeException.class)
 	public ResponseEntity<?> allothers(){
-		return new ResponseEntity<>(new ExceptionRestResponse(99999, "내도 몰러유"), HttpStatus.INTERNAL_SERVER_ERROR);
+		return new ResponseEntity<>(new ExceptionRestResponse(99999, "잘못된 요청입니다. 다시 확인해주세요"), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
 	
 	@Value

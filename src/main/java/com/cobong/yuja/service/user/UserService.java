@@ -45,6 +45,4 @@ public interface UserService {
 	UserForClientResponseDto findByUsernameForClient(String username);
 	
 	UserResponseDto banned(Long bno, UserUpdateRequestDto userUpdateRequestDto);
-
-	List<String> findAllByBanned();
 }

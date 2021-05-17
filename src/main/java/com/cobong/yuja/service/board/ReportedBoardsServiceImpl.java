@@ -55,4 +55,6 @@ public class ReportedBoardsServiceImpl implements ReportedBoardsService {
 		reportedRepository.deleteById(bno);
 		return "success";
 	}
+	
+	
 }

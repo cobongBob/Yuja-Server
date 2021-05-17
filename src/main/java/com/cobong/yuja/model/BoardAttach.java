@@ -42,7 +42,7 @@ public class BoardAttach {
 	@Column(nullable = false)
 	private String fileName;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "TINYINT(1)")
 	private boolean flag;
 	//파일이 업로드되어 있는지 아닌지를 알려주는 불리언 변수
 	

@@ -10,7 +10,7 @@ public interface BoardService {
 	
 	BoardResponseDto save(BoardSaveRequestDto dto);
 	
-	BoardResponseDto findById(Long bno, Long userId);
+	BoardResponseDto findById(Long bno, Long userId, boolean ishit);
 	
 	List<BoardResponseDto> findAll();
 	

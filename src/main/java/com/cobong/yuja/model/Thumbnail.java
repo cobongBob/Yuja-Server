@@ -42,7 +42,7 @@ public class Thumbnail {
 	@Column(nullable = false)
 	private String fileName;
 	
-	@Column(nullable = false)
+	@Column(nullable = false, columnDefinition = "TINYINT(1)")
 	private boolean flag;
 	
 	@Column(nullable = false)
