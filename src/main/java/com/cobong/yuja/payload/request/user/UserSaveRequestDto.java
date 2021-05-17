@@ -37,6 +37,7 @@ public class UserSaveRequestDto {
 	private String providedId ="";
 	private String provider ="";
 	private String address ="";
+	private String detailAddress = "";
 	private String phone ="";
 	private String bsn ="";
 	private Long youtubeImgId = 0L;
@@ -61,7 +62,6 @@ public class UserSaveRequestDto {
 				.bday(this.bday)
 				.providedId(this.providedId)
 				.provider(this.provider)
-				.address(this.address)
 				.phone(this.phone)
 				.bsn(this.bsn)
 				.isMarketingChecked(this.isMarketingChecked)
