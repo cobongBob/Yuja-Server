@@ -18,6 +18,7 @@ public class UserResponseDto {
 	private String providedId;
 	private String provider;
 	private String address;
+	private String detailAddress;
 	private String phone;
 	private String bsn;
 	private String youtubeUrl;
@@ -31,7 +32,6 @@ public class UserResponseDto {
 		this.bday = entity.getBday();
 		this.providedId = entity.getProvidedId();
 		this.provider = entity.getProvider();
-		this.address = entity.getAddress();
 		this.phone = entity.getPhone();
 		this.bsn = entity.getBsn();
 		this.youtubeUrl = entity.getYoutubeUrl();

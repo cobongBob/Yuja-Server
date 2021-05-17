@@ -75,6 +75,8 @@ public class UserServiceImpl implements UserService {
 
 		Authorities authorities = authoritiesRepository.findByAuthority(AuthorityNames.GENERAL).get();
 
+		String wholeAddr = dto.getAddress() + " # " + dto.getDetailAddress();
+		
 		User entity = User.builder()
 		.username(dto.getUsername())
 		.password(dto.getPassword())
@@ -83,6 +85,7 @@ public class UserServiceImpl implements UserService {
 		.authorities(Collections.singletonList((authorities)))
 		.bday(dto.getBday())
 		.providedId(dto.getProvidedId())
+		.address(wholeAddr)
 		.provider(dto.getProvider())
 		.address(dto.getAddress())
 		.phone(dto.getPhone())
@@ -138,6 +141,8 @@ public class UserServiceImpl implements UserService {
 	public UserResponseDto findById(Long id) {
 		User user = userRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
+		dto.setAddress(user.getAddress().substring(0,user.getAddress().indexOf(" # ")));
+		dto.setDetailAddress(user.getAddress().substring(user.getAddress().indexOf(" # ")));
 		
 		Optional<ProfilePicture> optProfilePicture = profilePictureRepository.findByUserUserId(id);
 		if(optProfilePicture.isPresent()) {
@@ -184,13 +189,15 @@ public class UserServiceImpl implements UserService {
 			throw new IllegalAccessError("관리자가 아니므로 해당 유저의 정보를 삭제할 수 없습니다");
 		}
 		
+		String wholeAddr = userUpdateRequestDto.getAddress() +" # "+ userUpdateRequestDto.getDetailAddress();
+		
 		User user = userRepository.findById(bno)
 				.orElseThrow(() -> new IllegalAccessError("해당유저 없음" + bno));
 		
 		user.modify(userUpdateRequestDto.getUsername(), userUpdateRequestDto.getPassword(), 
 				userUpdateRequestDto.getNickname(),userUpdateRequestDto.getRealName(),
 				userUpdateRequestDto.getBday(),userUpdateRequestDto.getProvidedId(), 
-				userUpdateRequestDto.getProvider(), userUpdateRequestDto.getAddress(), 
+				userUpdateRequestDto.getProvider(), wholeAddr, 
 				userUpdateRequestDto.getPhone(), userUpdateRequestDto.getBsn(), 
 				userUpdateRequestDto.getYoututubeUrl(), false);
 		
@@ -280,6 +287,8 @@ public class UserServiceImpl implements UserService {
 	public UserResponseDto findByUsername(String username) {
 		User user = userRepository.findByUsername(username).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
+		dto.setAddress(user.getAddress().substring(0,user.getAddress().indexOf(" # ")));
+		dto.setDetailAddress(user.getAddress().substring(user.getAddress().indexOf(" # ")));
 		return dto;
 	}
 	@Override
