@@ -116,6 +116,7 @@ public class AuthApiController {
 	
 	@PostMapping("/youtubeconfirm")
 	public ResponseEntity<?> saveYoutubeConfirm(@RequestParam("file") MultipartFile file) {
+		System.out.println("===============\n   ============================");
 		return new ResponseEntity<>(youtubeConfirmService.saveFile(file), HttpStatus.OK);
 	}
 	

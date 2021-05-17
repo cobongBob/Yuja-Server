@@ -65,6 +65,8 @@ public class YoutubeConfirmService {
 				}
 			}
 			savePath += File.separator + filename;
+			
+			file.transferTo(new File(savePath));
 
 	        String uploadPath = System.getProperty("user.dir") + File.separator+"files" + File.separator + "youtubeConfirm";
 			
