@@ -66,6 +66,8 @@ public class DummyInsert {
 		boardTypeRepository.save(boardType);
 		boardType = new BoardType(null,"CustomServiceBoard",null);
 		boardTypeRepository.save(boardType);
+		boardType = new BoardType(null,"FreeBoard",null);
+		boardTypeRepository.save(boardType);
 	}
 	
 	@Test
@@ -237,6 +239,36 @@ public class DummyInsert {
 		IntStream.rangeClosed(1, 102).forEach(i -> {
 			User user = User.builder().userId(Long.valueOf(i)).build();
 			BoardType boardType = boardTypeRepository.findById(3L).orElseThrow(()-> new IllegalArgumentException("존재하지 x"));
+			Board board = Board.builder()
+					.boardType(boardType)
+					.user(user)
+					.title("테스트 제목 "+i)
+					.content("테스트 내용 "+i)
+					.hit(i)
+					.build();
+			boardRepository.save(board);
+		});
+	}
+	@Test //썸네일러 게시글 번호
+	public void insertCusBoard() {
+		IntStream.rangeClosed(1, 102).forEach(i -> {
+			User user = User.builder().userId(Long.valueOf(i)).build();
+			BoardType boardType = boardTypeRepository.findById(6L).orElseThrow(()-> new IllegalArgumentException("존재하지 x"));
+			Board board = Board.builder()
+					.boardType(boardType)
+					.user(user)
+					.title("테스트 제목 "+i)
+					.content("테스트 내용 "+i)
+					.hit(i)
+					.build();
+			boardRepository.save(board);
+		});
+	}
+	@Test //썸네일러 게시글 번호
+	public void insertFreeBoard() {
+		IntStream.rangeClosed(1, 102).forEach(i -> {
+			User user = User.builder().userId(Long.valueOf(i)).build();
+			BoardType boardType = boardTypeRepository.findById(7L).orElseThrow(()-> new IllegalArgumentException("존재하지 x"));
 			Board board = Board.builder()
 					.boardType(boardType)
 					.user(user)
