@@ -39,6 +39,7 @@ public class BoardResponseDto {
 	private String yWhen;
 	private String thumbnail;
 	private boolean isPrivate;
+	private String previewImage;
 	
 	public BoardResponseDto entityToDto(Board entity) {
 		this.id=entity.getBoardId();
@@ -59,6 +60,7 @@ public class BoardResponseDto {
 		this.yWhen = entity.getYWhen();
 		this.isPrivate = entity.isPrivate();
 		this.createDate = entity.getCreatedDate().atZone(ZoneId.of("Asia/Seoul"));
+		this.previewImage = entity.getPreviewImage();
 		return this;
 	}
 	
