@@ -49,7 +49,7 @@ public class BoardServiceImpl implements BoardService {
 		
 		Board board = new Board().createBoard(boardType, user, dto.getTitle(), dto.getContent(), dto.getExpiredDate(),
 				dto.getPayType(), dto.getPayAmount(), dto.getCareer(), toolsCombined, dto.getWorker(), dto.getYWhen(),
-				dto.getChannelName(),dto.getRecruitingNum(),dto.getReceptionMethod(),dto.getManager(), dto.getIsPrivate());
+				dto.getChannelName(),dto.getRecruitingNum(),dto.getReceptionMethod(),dto.getManager(), dto.getIsPrivate(), dto.getPreviewImage());
 		Board board2 = boardRepository.save(board);
 		//null일경우 처리 필요
 		if(dto.getBoardAttachNames() != null) {
@@ -221,7 +221,7 @@ public class BoardServiceImpl implements BoardService {
 				toolsCombined, boardUpdateRequestDto.getExpiredDate(),boardUpdateRequestDto.getWorker(), 
 				boardUpdateRequestDto.getYWhen(),boardUpdateRequestDto.getChannelName(),
 				boardUpdateRequestDto.getRecruitingNum(),boardUpdateRequestDto.getReceptionMethod(),
-				boardUpdateRequestDto.getManager(), boardUpdateRequestDto.getIsPrivate());
+				boardUpdateRequestDto.getManager(), boardUpdateRequestDto.getIsPrivate(), boardUpdateRequestDto.getPreviewImage());
 		BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
 		
 		for(Long i: boardUpdateRequestDto.getBoardAttachIds()) {
