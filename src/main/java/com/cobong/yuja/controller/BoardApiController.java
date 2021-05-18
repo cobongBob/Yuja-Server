@@ -116,4 +116,9 @@ public class BoardApiController {
 	public ResponseEntity<?> boardsUserCommented(@PathVariable Long userId){
 		return new ResponseEntity<>(boardService.boardsUserCommented(userId), HttpStatus.OK);
 	}
+	
+	@GetMapping("/api/main/board")
+	public ResponseEntity<?> getOderLiked() {
+		return new ResponseEntity<>(boardService.getMainBoardData(), HttpStatus.OK);
+	}
 }

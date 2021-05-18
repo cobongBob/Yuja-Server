@@ -3,6 +3,7 @@ const chatPage = document.querySelector('#chat-page');
 const messageForm = document.querySelector('#messageForm');
 const messageInput = document.querySelector('#message');
 const chatLogs = document.querySelector('#chatLogs');
+
 //const username = sessionStorage.userData.nickname;
 const username = "user";
 
@@ -13,6 +14,18 @@ stomp.connect({}, onConnected, onError);
 
 function onConnected(){
 	stomp.subscribe("/topic/cobong", onMessageReceived);
+	
+	/*
+	to make the socket connection private to two users who are interested in each,
+	stomp provides a method subscribe. yet not perfectly suer if this will be executable
+	with our codes.. since we need some help.
+	Still need to check if the sessionStorage thing works or not.
+	
+	stomp.subscribe(
+		"/user/"+currentUser.id + "/topic/cobong",
+		onMessageReceived
+	);
+	 */
 
 	stomp.send(
 		"/app/chat/join",
@@ -51,11 +64,9 @@ function onMessageReceived(payload){
 	chatLogs.append(msg.sender +" : "+msg.content)
 }
 
-function disconnection(){
-	if(stomp !== null){
-		stomp.disconnect();
-	}
-	console.log("Disconnected!");
+function disconnect(){
+	stomp.disconnect();
 }
 
 messageForm.addEventListener('submit', sendMsg, true)
+messageForm.addEventListener('button', disconnect, true)

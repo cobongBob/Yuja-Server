@@ -94,13 +94,12 @@ public class AuthApiController {
 	@PostMapping("/oauth/google")
 	public ResponseEntity<?> googleOauth(@RequestBody Map<String, Object> data) {
 		GoogleUser googleUser = userService.googleOauthCheck(data);
-		
 		// 201 -> 회원가입
 		if(googleUser.getFlag()) {
-			return new ResponseEntity<>(userService.googleOauthCheck(data), HttpStatus.CREATED);
+			return new ResponseEntity<>(googleUser, HttpStatus.CREATED);
 		}else {
 		// 200 -> 로그인
-		return new ResponseEntity<>(userService.googleOauthCheck(data), HttpStatus.OK);
+		return new ResponseEntity<>(googleUser, HttpStatus.OK);
 		}
 	}
 	
