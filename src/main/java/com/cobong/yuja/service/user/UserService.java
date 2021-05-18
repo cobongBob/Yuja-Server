@@ -40,9 +40,11 @@ public interface UserService {
 	
 	GoogleUser googleOauthCheck(Map<String, Object> data);
 
-	String resetPassword(String string);
+	String resetPassword(Map<String, String> userData);
 
 	UserForClientResponseDto findByUsernameForClient(String username);
 	
 	UserResponseDto banned(Long bno, UserUpdateRequestDto userUpdateRequestDto);
+
+	String findPassword(String string);
 }
