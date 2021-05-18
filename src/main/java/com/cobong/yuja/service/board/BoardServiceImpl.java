@@ -414,36 +414,36 @@ public class BoardServiceImpl implements BoardService {
 		// 유튜버(1) 최신순(updatedDate) 
 		List<Board> board =boardRepository.orderYouLatest();
 		MainboardsResponseDto mainboardsResponseDto = new MainboardsResponseDto();
-		BoardResponseDto resDto = new BoardResponseDto();
 		List<BoardResponseDto> result = new ArrayList<BoardResponseDto>();
 		for (int i = 0; i < board.size(); i++) {
+			BoardResponseDto resDto = new BoardResponseDto();
 			result.add(resDto.entityToDto(board.get(i)));
 		}
 		mainboardsResponseDto.setYouUpdatedOrder4(result);
 		
 		// 에디터(2) 최신순(updatedDate)
 		board =boardRepository.orderEditLatest();
-		resDto = new BoardResponseDto();
 		result = new ArrayList<BoardResponseDto>();
 		for (int i = 0; i < board.size(); i++) {
+			BoardResponseDto resDto = new BoardResponseDto();
 			result.add(resDto.entityToDto(board.get(i)));
 		}
 		mainboardsResponseDto.setEditUpdatedOrder4(result);
 		
 		// 썸넬러(3) 최신순(updatedDate)
 		board =boardRepository.orderThumLatest();
-		resDto = new BoardResponseDto();
 		result = new ArrayList<BoardResponseDto>();
 		for (int i = 0; i < board.size(); i++) {
+			BoardResponseDto resDto = new BoardResponseDto();
 			result.add(resDto.entityToDto(board.get(i)));
 		}
 		mainboardsResponseDto.setThumUpdatedOrder4(result);
 
 		// 윈윈(4) 최신순(createdDate) 5개
 		board =boardRepository.orderWinLatest();
-		resDto = new BoardResponseDto();
 		result = new ArrayList<BoardResponseDto>();
 		for (int i = 0; i < board.size(); i++) {
+			BoardResponseDto resDto = new BoardResponseDto();
 			result.add(resDto.entityToDto(board.get(i)));
 		}
 		mainboardsResponseDto.setWincreatedOrder5(result);
@@ -451,9 +451,9 @@ public class BoardServiceImpl implements BoardService {
 		
 		// 콜라보(5) 최신순(createdDate) 5개
 		board =boardRepository.orderColLatest();
-		resDto = new BoardResponseDto();
 		result = new ArrayList<BoardResponseDto>();
 		for (int i = 0; i < board.size(); i++) {
+			BoardResponseDto resDto = new BoardResponseDto();
 			result.add(resDto.entityToDto(board.get(i)));
 		}
 		mainboardsResponseDto.setColcreatedOrder5(result);
@@ -461,18 +461,18 @@ public class BoardServiceImpl implements BoardService {
 		
 		// 에디터(2) 좋아요순(likes) 12개 
 		board =boardRepository.orderEditLiked();
-		resDto = new BoardResponseDto();
 		result = new ArrayList<BoardResponseDto>();
 		for (int i = 0; i < board.size(); i++) {
+			BoardResponseDto resDto = new BoardResponseDto();
 			result.add(resDto.entityToDto(board.get(i)));
 		}
 		mainboardsResponseDto.setEditLikes12(result);
 		
 		// 썸넬러(3) 좋아요순(likes) 12개 
 		board =boardRepository.orderThumLiked();
-		resDto = new BoardResponseDto();
 		result = new ArrayList<BoardResponseDto>();
 		for (int i = 0; i < board.size(); i++) {
+			BoardResponseDto resDto = new BoardResponseDto();
 			result.add(resDto.entityToDto(board.get(i)));
 		}
 		mainboardsResponseDto.setThumbLikes12(result);
