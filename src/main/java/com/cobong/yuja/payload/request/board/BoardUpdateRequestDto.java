@@ -35,6 +35,7 @@ public class BoardUpdateRequestDto {
 	private String yWhen = "";
 	private Long thumbnailId = 0L;
 	private boolean isPrivate;
+	private String previewImage;
 	
 	public Board dtoToEntity() {
 		return Board.builder()
@@ -52,6 +53,7 @@ public class BoardUpdateRequestDto {
 				.worker(this.worker)
 				.yWhen(this.yWhen)
 				.isPrivate(this.isPrivate)
+				.previewImage(this.previewImage)
 				.build();
 	}
 	

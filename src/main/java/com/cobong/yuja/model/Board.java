@@ -96,9 +96,11 @@ public class Board extends DateAudit{
 	@Column(nullable = false, columnDefinition = "TINYINT(1)")
 	private boolean isPrivate;
 	
+	private String previewImage;
+	
 	public Board modify(String title, String content, String payType, String payAmount,	String career, String tools, 
 			Date expiredDate, String worker, String yWhen, String channelName, int recruitingNum,String receptionMethod,
-			String manager, boolean hidden) {
+			String manager, boolean hidden, String previewImage) {
 		
 		this.title=title;
 		this.content=content;
@@ -114,12 +116,13 @@ public class Board extends DateAudit{
 		this.receptionMethod = receptionMethod;
 		this.manager = manager;
 		this.isPrivate = hidden;
+		this.previewImage=previewImage;
 		return this;
 	}
 
 	public Board createBoard(BoardType boardType, User user, String title, String content, Date expiredDate, String payType,
 			String payAmount, String career, String tools, String worker, String yWhen, String channelName, int recruitingNum,
-			String receptionMethod,String manager, boolean hidden) {
+			String receptionMethod,String manager, boolean hidden, String previewImage) {
 		Board board = new Board();
 		board.boardId = boardId;
 		board.boardType = boardType;
@@ -138,6 +141,7 @@ public class Board extends DateAudit{
 		board.receptionMethod = receptionMethod;
 		board.manager = manager;
 		board.isPrivate = hidden;
+		board.previewImage=previewImage;
 		return board;
 	}
 
