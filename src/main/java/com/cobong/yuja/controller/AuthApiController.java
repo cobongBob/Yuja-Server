@@ -103,9 +103,17 @@ public class AuthApiController {
 		}
 	}
 	
+	
+	//비밀번호 찾기 인증메일전송
+	@PostMapping("/findPassword")
+	public ResponseEntity<?> findPassword(@RequestBody Map<String, String> username) {
+		return new ResponseEntity<>(userService.findPassword(username.get("username")), HttpStatus.OK);
+	}
+	
+	//비밀번호 리셋 받는값은 {username :"" , password:""}
 	@PostMapping("/resetPassword")
-	public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> username) {
-		return new ResponseEntity<>(userService.resetPassword(username.get("username")), HttpStatus.OK);
+	public ResponseEntity<?> resetPassword(@RequestBody Map<String, String> userData) {
+		return new ResponseEntity<>(userService.resetPassword(userData), HttpStatus.OK);
 	}
 	
 	@PostMapping("/youtubeconfirm")
