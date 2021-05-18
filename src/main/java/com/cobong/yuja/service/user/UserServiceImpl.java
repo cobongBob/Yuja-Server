@@ -465,11 +465,14 @@ public class UserServiceImpl implements UserService {
 	public String findPassword(String username) {
 		User user = userRepository.findByUsername(username).orElse(null);
 		if(user == null) {
-			throw new IllegalAccessError("존재하지 않는 회원입니다.");
+			throw new IllegalAccessError("이메일을 확인해 주세요.");
 		}
 		String pattern = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$";
 		if(Pattern.matches(pattern, username) == false) {
-			throw new IllegalAccessError("올바른 이메일 형식이 아닙니다. ");
+			throw new IllegalAccessError("이메일을 확인해 주세요.");
+		}
+		if(user.getProvider().equals("google")) {
+			throw new IllegalAccessError("구글로 가입한 계정입니다.");
 		}
 
 		String verifyNum = "";
