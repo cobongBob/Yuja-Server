@@ -45,11 +45,23 @@ public class BoardServiceImpl implements BoardService {
 		User user = userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("해당유저 없음 "+dto.getUserId()));
 		BoardType boardType = boardTypeRepository.findById(dto.getBoardCode()).orElseThrow(() -> new IllegalAccessError("해당글 타입 없음" + dto.getBoardCode()));
 		
+		
+		
+		String receivelink = dto.getPreviewImage();
+		String target = "https://www.youtube.com/watch?v=";
+		
+		if(receivelink.startsWith(target)) {
+			String code = receivelink.substring(target.length(), target.length()+11);
+			String previewImage = "img.youtube.com/vi/" + code + "/hqdefault.jpg";
+			dto.setPreviewImage(previewImage);
+		}
+		
 		String toolsCombined = String.join(",", dto.getTools());
 		
 		Board board = new Board().createBoard(boardType, user, dto.getTitle(), dto.getContent(), dto.getExpiredDate(),
 				dto.getPayType(), dto.getPayAmount(), dto.getCareer(), toolsCombined, dto.getWorker(), dto.getYWhen(),
-				dto.getChannelName(),dto.getRecruitingNum(),dto.getReceptionMethod(),dto.getManager(), dto.getIsPrivate(), dto.getPreviewImage());
+				dto.getChannelName(),dto.getRecruitingNum(),dto.getReceptionMethod(),dto.getManager(), dto.getIsPrivate(), 
+				dto.getPreviewImage());
 		Board board2 = boardRepository.save(board);
 		//null일경우 처리 필요
 		if(dto.getBoardAttachNames() != null) {

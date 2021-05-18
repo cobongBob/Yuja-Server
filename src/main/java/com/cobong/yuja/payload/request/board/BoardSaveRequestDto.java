@@ -36,7 +36,7 @@ public class BoardSaveRequestDto {
 	private String yWhen = "";
 	private Long thumbnailId = 0L;
 	private boolean isPrivate;
-	private String previewImage;
+	private String previewImage = "";
 	
 	public Board dtoToEntity() {
 		return Board.builder()
