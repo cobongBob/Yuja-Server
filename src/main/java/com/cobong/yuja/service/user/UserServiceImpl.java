@@ -87,7 +87,6 @@ public class UserServiceImpl implements UserService {
 		.providedId(dto.getProvidedId())
 		.address(wholeAddr)
 		.provider(dto.getProvider())
-		.address(dto.getAddress())
 		.phone(dto.getPhone())
 		.bsn(dto.getBsn())
 		.isMarketingChecked(dto.getIsMarketingChecked())
@@ -429,12 +428,14 @@ public class UserServiceImpl implements UserService {
 		String username = (String) profile.get("email");
 		Boolean user = userRepository.existsByUsername(username);
 		GoogleUser googleUser = new GoogleUser();
-		googleUser.setPassword("코봉밥");
+		googleUser.setPassword("cobongbob");
 		
 		System.out.println("username 존재여부 : "+ user);
 		// 201 -> 회원가입
 		if (user.equals(false)) {
 			googleUser.setFlag(true);
+		} else {
+			googleUser.setFlag(false);
 		}
 		googleUser.setAttribute(profile);
 		return googleUser;

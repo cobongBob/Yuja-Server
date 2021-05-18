@@ -66,8 +66,6 @@ public class YoutubeConfirmService {
 				}
 			}
 			savePath += File.separator + filename;
-			
-			file.transferTo(new File(savePath));
 
 			file.transferTo(new File(savePath));
 			
