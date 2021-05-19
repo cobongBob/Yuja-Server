@@ -9,7 +9,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cobong.yuja.controller.ChatRoomRepository;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.repository.user.UserRepository;
 
@@ -36,7 +35,7 @@ public class SocketMessageService {
 	}
 	
 	@Transactional
-	public List<SocketMessageSendDto> getAllMsgs(Long chatRoomId){
+	public List<SocketMessageSendDto> getAllMsgs(Long chatRoomId, Long userId){
 		if(!chatRoomRepository.findByRoomId(chatRoomId).isPresent()) {
 			throw new IllegalAccessError("접근하려는 채팅방이 존재하지 않습니다.");
 		}
@@ -48,9 +47,14 @@ public class SocketMessageService {
 		List<SocketMessageSendDto> dtoList = new ArrayList<SocketMessageSendDto>();
 		for(SocketMessage msgs : entityList) {
 			SocketMessageSendDto dto = new SocketMessageSendDto().entityToDto(msgs);
+			if(msgs.getUser().getUserId() != userId) {
+				dto.setOwnerOrNot(false);
+			} else {
+				dto.setOwnerOrNot(true);
+			}
 			dtoList.add(dto);
 		}
-		
+		Collections.reverse(dtoList);
 		return dtoList;
 	}
 }

@@ -1,11 +1,13 @@
 
+let stompClient = null;
+connect();
 
 function connect(){
-	const socket = new SockJS("/yuja");
+	let socket = new SockJS("/yuja");
 	stompClient = Stomp.over(socket);
 	stompClient.connect({}, function(){
-		stompClient.subscribe("/topic/cobong/"+nickname, function(e){
-			showMessage(JSON.parse(e.body));
+		stompClient.subscribe("/topic/cobong/"+username, function(e){
+			showMessageReceived(JSON.parse(e.body));
 		});
 	});
 }
@@ -17,17 +19,25 @@ function disconnect(){
 }
 
 function send() {
-    data = {'chatRoomId': roomId, 'sender' :nickname, 'receiver': receiver,'message': $("#message").val()};
+	message = document.getElementById("message").value;
+    data = {'chatRoomId': roomId, 'sender' :username, 'receiver': receiver,'message': message};
     stompClient.send("/app/chat/send", {}, JSON.stringify(data));
-    showMessage(data);
+    showMessageSend(data);
     $("#message").val('');
 }
+let msgArea = document.getElementById("chatlogs");
+function showMessageReceived(e){
+	msgArea.innerHTML += "<div style='text-align:left; border-style:solid'><h3>"+e.sender+
+					"</h3><br><h5>"+e.message+"</h5></div>";
+}
 
-function showMessage(e){
-	msgArea = document.getElementById("msgArea");
-	msgArea.innerHTML = "<div class='row'> <div class='col-lg-12'> <div class='media'> <div class='media-body'> <h4 class='media-heading'>" +
-		e.sender + "</h4><h4 class='small pull-right'>방금</h4> </div> <p>" +
-		e.message + "</p> </div> </div> </div> <hr>" + space.innerHTML;
+function showMessageSend(e){
+	msgArea.innerHTML += "<div style='text-align:right; border-style:solid'><h3>"+e.sender+
+					"</h3><br><h5>"+e.message+"</h5></div>";
+}
+
+function showMessageRight(e){
+
 }
 
 window.onbeforeunload = function(e){

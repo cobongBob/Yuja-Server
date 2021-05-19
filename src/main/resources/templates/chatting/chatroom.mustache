@@ -5,18 +5,36 @@
 <title>Insert title here</title>
 </head>
 <body>
-<h1>하하하하하</h1>
-<form id ="messageForm" name="messageForm">
-	<input type="text" id="message" placeholder="Type a message..." autocomplete="off" class="form-control"/>
-	<button type="submit">보내기</button>
-	<input type="text" id="user" placeholder="who are you" autocomplete="off" class="form-control"/>
-	<input type="text" id="receiver" placeholder="to whom do you want to send this?" autocomplete="off" class="form-control"/>
-	<button type="button">나가기</button>
-	<textarea name="chatLogs" id="chatLogs" cols="30" rows="10"></textarea>
-</form>
-<button type="button" id="connect">입장</button>
+<h1>{{receiver}}와 체팅</h1>
+	<div id="chatlogs">
+		{{#messages}}
+			{{#ownerOrNot}}
+				<div style='text-align:right; border-style:solid'>
+					<h3>{{sender}}</h3><br>
+					<h5>{{content}}</h5>
+				</div>
+			{{/ownerOrNot}}
+			{{^ownerOrNot}}
+				<div style='text-align:left; border-style:solid'>
+					<h3>{{sender}}</h3><br>
+					<h5>{{content}}</h5>
+				</div>
+			{{/ownerOrNot}}
+		{{/messages}}
+	</div>
+	
+	<div>
+		<input type="text" id="message" placeholder="메세지를 입력해 주세요" autocomplete="off"/>
+		<button type="button" onClick="send()">보내기</button>
+	</div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<script src="/js/chat/chat.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script>
+const receiver = "{{{receiver}}}";
+const username = "{{{username}}}";
+const roomId = "{{{roomId}}}";
+</script>
+<script src="/js/chat/chat_ver2.js"></script>
 </html>

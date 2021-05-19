@@ -6,13 +6,17 @@
 </head>
 <body>
 <h2>{{nickname}} 님의 채팅방 리스트</h2>
-<div>
-    {{#chatRooms}}
-        <h3>{{writer}}</h3>
-        <h3>{{lastMsg}}</h3>
-        <a href="/socket/chat/{{chatRoomId}}">입장</a>   
-    {{/chatRooms}}
-</div>
+    <div>
+        <table>
+            {{#chatRooms}}
+            <tr> 
+                <td><h3>{{writer}}</h3></td> 
+                <td><h3>{{lastMsg}}</h3></td> 
+                <td><a href="/socket/chat/{{chatRoomId}}">입장</a></td> 
+            </tr>
+            {{/chatRooms}}
+        </table>
+    </div>
 <div>
     <form action="/socket/room" method="POST">
         <input type="text" id="receiver" name="receiver" placeholder="상대방 이름을 입력하세요" maxlength="20" required>
@@ -21,7 +25,4 @@
     </form>
 </div>
 </body>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-<script src="/js/chat/chat_ver2.js"></script>
 </html>
