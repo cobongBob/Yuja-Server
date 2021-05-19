@@ -33,10 +33,14 @@ function showMessageReceived(e){
 	if(now.getHours() > 12){
 		msgArea.innerHTML += "<div style='text-align:left; border-style:solid'><h3>"+e.sender+
 					"</h3><br><h5>"+e.message+"</h5><br><h6>오후 "+now.getHours()%12+":"+now.getMinutes() +"<h6></div>";
+	}else if(now.getHours() === 12){
+		msgArea.innerHTML += "<div style='text-align:left; border-style:solid'><h3>"+e.sender+
+					"</h3><br><h5>"+e.message+"</h5><br><h6>오후 "+now.getHours()+":"+now.getMinutes() +"<h6></div>";
 	}else{
 		msgArea.innerHTML += "<div style='text-align:left; border-style:solid'><h3>"+e.sender+
 					"</h3><br><h5>"+e.message+"</h5><br><h6>오전 "+now.getHours()+":"+now.getMinutes() +"<h6></div>";
 	}
+	window.scrollTo(0,document.body.scrollHeight);
 }
 
 function showMessageSend(e){
@@ -44,13 +48,14 @@ function showMessageSend(e){
 	if(now.getHours() > 12){
 		msgArea.innerHTML += "<div style='text-align:right; border-style:solid'><h3>"+e.sender+
 						"</h3><br><h5>"+e.message+"</h5><br><h6>오후 "+now.getHours()%12+":"+now.getMinutes() +"<h6></div>";
-	} else if(now.getHours() == 12){
+	} else if(now.getHours() === 12){
 		msgArea.innerHTML += "<div style='text-align:right; border-style:solid'><h3>"+e.sender+
 						"</h3><br><h5>"+e.message+"</h5><br><h6>오후 "+now.getHours()+":"+now.getMinutes() +"<h6></div>";
 	}else{
 		msgArea.innerHTML += "<div style='text-align:right; border-style:solid'><h3>"+e.sender+
 						"</h3><br><h5>"+e.message+"</h5><br><h6>오전 "+now.getHours()+":"+now.getMinutes() +"<h6></div>";
 	}
+	window.scrollTo(0,document.body.scrollHeight);
 }
 
 window.onbeforeunload = function(e){

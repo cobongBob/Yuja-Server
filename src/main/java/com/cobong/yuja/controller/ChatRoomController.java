@@ -14,11 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cobong.yuja.config.auth.PrincipalDetails;
-import com.cobong.yuja.config.websocket.ChatRoomDto;
-import com.cobong.yuja.config.websocket.ChatRoomJoinService;
-import com.cobong.yuja.config.websocket.ChatRoomService;
-import com.cobong.yuja.config.websocket.SocketMessageSendDto;
-import com.cobong.yuja.config.websocket.SocketMessageService;
+import com.cobong.yuja.payload.request.chat.ChatRoomDto;
+import com.cobong.yuja.payload.response.chat.SocketMessageSendDto;
+import com.cobong.yuja.service.chat.ChatRoomJoinService;
+import com.cobong.yuja.service.chat.ChatRoomService;
+import com.cobong.yuja.service.chat.SocketMessageService;
 
 import lombok.RequiredArgsConstructor;
 

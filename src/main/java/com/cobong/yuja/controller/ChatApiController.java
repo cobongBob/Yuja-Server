@@ -4,8 +4,8 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
-import com.cobong.yuja.config.websocket.SocketMessageReceiveDto;
-import com.cobong.yuja.config.websocket.SocketMessageService;
+import com.cobong.yuja.payload.request.chat.SocketMessageReceiveDto;
+import com.cobong.yuja.service.chat.SocketMessageService;
 
 import lombok.RequiredArgsConstructor;
 

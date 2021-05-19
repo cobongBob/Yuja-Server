@@ -1,4 +1,4 @@
-package com.cobong.yuja.config.websocket;
+package com.cobong.yuja.service.chat;
 
 import java.nio.channels.IllegalChannelGroupException;
 import java.text.SimpleDateFormat;
@@ -17,7 +17,13 @@ import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cobong.yuja.model.ChatRoom;
+import com.cobong.yuja.model.SocketMessage;
 import com.cobong.yuja.model.User;
+import com.cobong.yuja.payload.request.chat.SocketMessageReceiveDto;
+import com.cobong.yuja.payload.response.chat.SocketMessageSendDto;
+import com.cobong.yuja.repository.chat.ChatRoomRepository;
+import com.cobong.yuja.repository.chat.SocketMessageRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -59,14 +65,18 @@ public class SocketMessageService {
 			LocalDateTime msgTime = LocalDateTime.ofInstant(msgs.getCreatedDate(), ZoneId.systemDefault());
 			
 			if(msgTime.getDayOfYear() != now.getDayOfYear()) {
-				if(msgTime.getHour() >= 12) {
+				if(msgTime.getHour() > 12) {
 					dto.setCreatedDate(msgTime.getYear()+"-"+msgTime.getMonthValue()+"-"+msgTime.getDayOfMonth()+"\n오후 "+(msgTime.getHour()%12)+" : "+msgTime.getMinute());					
+				} else if(msgTime.getHour() == 12) {
+					dto.setCreatedDate(msgTime.getYear()+"-"+msgTime.getMonthValue()+"-"+msgTime.getDayOfMonth()+"\n오후 "+(msgTime.getHour())+" : "+msgTime.getMinute());
 				} else {
 					dto.setCreatedDate(msgTime.getYear()+"-"+msgTime.getMonthValue()+"-"+msgTime.getDayOfMonth()+"\n오전 "+msgTime.getHour()+" : "+msgTime.getMinute());
 				}
 			} else {
-				if(msgTime.getHour() >= 12) {
+				if(msgTime.getHour() > 12) {
 					dto.setCreatedDate("오후 "+msgTime.getHour()%12+" : "+msgTime.getMinute());					
+				}else if(msgTime.getHour() == 12){
+					dto.setCreatedDate("오후 "+msgTime.getHour()+" : "+msgTime.getMinute());
 				}else {
 					dto.setCreatedDate("오전 "+msgTime.getHour()+" : "+msgTime.getMinute());
 				}

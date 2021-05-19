@@ -1,4 +1,4 @@
-package com.cobong.yuja.config.websocket;
+package com.cobong.yuja.model;
 
 import java.util.ArrayList;
 import java.util.List;
