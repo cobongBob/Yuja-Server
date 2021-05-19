@@ -118,7 +118,7 @@ public class BoardApiController {
 	}
 	
 	@GetMapping("/api/main/board")
-	public ResponseEntity<?> getOderLiked() {
+	public ResponseEntity<?> getMainBoardData() {
 		return new ResponseEntity<>(boardService.getMainBoardData(), HttpStatus.OK);
 	}
 }

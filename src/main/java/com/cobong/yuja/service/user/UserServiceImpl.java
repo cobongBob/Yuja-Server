@@ -15,6 +15,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -63,7 +64,8 @@ public class UserServiceImpl implements UserService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final JavaMailSender javaMailSender;
     private final YoutubeConfirmRepository youtubeConfirmRepository;
-	
+    @Value("${app.oauthSecret}")
+	private String oauthSecret;
 	@Override
 	@Transactional
 	public UserResponseDto save(UserSaveRequestDto dto) {		
@@ -346,7 +348,7 @@ public class UserServiceImpl implements UserService {
 		content.append("<div style=\"width: 400px; height: 300px; border: 4px solid #ff9411; margin: 100px auto; padding: 30px 0; box-sizing: border-box;\">");
 		content.append("<div style=\"margin: 0; padding: 0 5px; font-size: 25px; font-weight: 400;\">");
 		content.append("<img width='77' src='cid:logo'>");
-		content.append("<span style=\"color: #ff9411;font-weight:bold; font-size: 44px;\">유</span>튜버와 <span style=\"color: #ff9411;font-weight:bold; font-size: 44px;\">자</span>유롭게</span><br />");
+		content.append("<span style=\"color: #ff9411;font-weight:bold; font-size: 44px;\">유</span>튜브와 <span style=\"color: #ff9411;font-weight:bold; font-size: 44px;\">자</span>유롭게</span><br />");
 		content.append("<span style=\"font-size: 17px;\">인증번호를 정확히 입력해주세요.</span></div>\n");
 		content.append("<p style=\"font-size: 15px; line-height: 25px; margin-top: 45px;text-align:center\"> 인증번호 : <span style=\"font-weight:bold\">" );
 		content.append(verifyNum);
@@ -429,7 +431,7 @@ public class UserServiceImpl implements UserService {
 		String username = (String) profile.get("email");
 		Boolean user = userRepository.existsByUsername(username);
 		GoogleUser googleUser = new GoogleUser();
-		googleUser.setPassword("cobongbob");
+		googleUser.setPassword(oauthSecret);
 		
 //		System.out.println("username 존재여부 : "+ user);
 		// 201 -> 회원가입
@@ -445,54 +447,72 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public String resetPassword(String username) {
-		User user = userRepository.findByUsername(username).orElse(null);
-		System.out.println(user);
+	public String resetPassword(Map<String, String> userData) {
+		User user = userRepository.findByUsername(userData.get("username")).orElse(null);
 		if(user == null) {
-			return "존재하지 않는 회원입니다.";
+			throw new IllegalAccessError("존재하지 않는 회원입니다.");
 		} else {
 			String pattern = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$";
-			if(Pattern.matches(pattern, username) == false) {
-				return "올바른 이메일 형식이 아닙니다. ";
+			if(Pattern.matches(pattern, userData.get("username")) == false) {
+				throw new IllegalAccessError("올바른 이메일 형식이 아닙니다. ");
 			}
-			String tempPassword = "";
-			Random random = new Random();
-			for (int i = 0; i < 4; i++) {
-				tempPassword += (char) (random.nextInt(25) + 97); // a~z까지 랜덤 알파벳 생성
-				tempPassword += random.nextInt(10);
-			}
-			StringBuffer content = new StringBuffer();
-			content.append("<!DOCTYPE html>");
-			content.append("<html>");
-			content.append("<head>");
-			content.append("</head>");
-			content.append("<body>");
-			content.append("<div style=\"width: 400px; height: 300px; border: 4px solid #ff9411; margin: 100px auto; padding: 30px 0; box-sizing: border-box;\">");
-			content.append("<div style=\"margin: 0; padding: 0 5px; font-size: 25px; font-weight: 400;\">");
-			content.append("<img width='77' src='cid:logo'>");
-			content.append("<span style=\"color: #ff9411;font-weight:bold; font-size: 44px;\">유</span>튜버와 <span style=\"color: #ff9411;font-weight:bold; font-size: 44px;\">자</span>유롭게</span><br />");
-			content.append("<span style=\"font-size: 17px;\">임시 비밀번호입니다. 로그인 후 비밀번호를 바꿔주세요.</span></div>\n");
-			content.append("<p style=\"font-size: 15px; line-height: 25px; margin-top: 45px;text-align:center\"> 임시 비밀번호 : <span style=\"font-weight:bold\">" );
-			content.append(tempPassword);
-			content.append("</span></p></div>");
-			content.append("</body>");
-			content.append("</html>");
 			
-			MimeMessage mimeMessage = javaMailSender.createMimeMessage();
-			try {
-				MimeMessageHelper message = new MimeMessageHelper(mimeMessage,true, "utf-8");
-				message.setTo(username);
-				message.setSubject("유자 임시 비밀번호 메일입니다.");
-				message.setText(content.toString(),true);
-				message.addInline("logo", new ClassPathResource("/static/imgs/yuzu05.png"));
-			} catch (MessagingException e) {
-				e.printStackTrace();
-				throw new IllegalAccessError("서버 오류로 인한 메일 발송 실패");
-			}
-			javaMailSender.send(mimeMessage);
-			user.resetPasword(passwordEncoder.encode(tempPassword));
+			user.resetPasword(passwordEncoder.encode(userData.get("password")));
 		}
-		return "임시비밀번호 메일 발송완료";
+		return "비밀번호 변경 완료";
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public String findPassword(String username) {
+		User user = userRepository.findByUsername(username).orElse(null);
+		if(user == null) {
+			throw new IllegalAccessError("이메일을 확인해 주세요.");
+		}
+		String pattern = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$";
+		if(Pattern.matches(pattern, username) == false) {
+			throw new IllegalAccessError("이메일을 확인해 주세요.");
+		}
+		if(user.getProvider().equals("google")) {
+			throw new IllegalAccessError("구글로 가입한 계정입니다.");
+		}
+
+		String verifyNum = "";
+		Random random = new Random();
+		for (int i = 0; i < 4; i++) {
+			verifyNum += (char) (random.nextInt(25) + 65); // A~Z까지 랜덤 알파벳 생성
+			verifyNum += random.nextInt(10);
+		}
+		StringBuffer content = new StringBuffer();
+		content.append("<!DOCTYPE html>");
+		content.append("<html>");
+		content.append("<head>");
+		content.append("</head>");
+		content.append("<body>");
+		content.append("<div style=\"width: 400px; height: 300px; border: 4px solid #ff9411; margin: 100px auto; padding: 30px 0; box-sizing: border-box;\">");
+		content.append("<div style=\"margin: 0; padding: 0 5px; font-size: 25px; font-weight: 400;\">");
+		content.append("<img width='77' src='cid:logo'>");
+		content.append("<span style=\"color: #ff9411;font-weight:bold; font-size: 44px;\">유</span>튜브와 <span style=\"color: #ff9411;font-weight:bold; font-size: 44px;\">자</span>유롭게</span><br />");
+		content.append("<span style=\"font-size: 17px;\">인증번호를 정확히 입력해주세요.</span></div>\n");
+		content.append("<p style=\"font-size: 15px; line-height: 25px; margin-top: 45px;text-align:center\"> 인증번호 : <span style=\"font-weight:bold\">" );
+		content.append(verifyNum);
+		content.append("</span></p></div>");
+		content.append("</body>");
+		content.append("</html>");
+		
+		MimeMessage mimeMessage = javaMailSender.createMimeMessage();
+		try {
+			MimeMessageHelper message = new MimeMessageHelper(mimeMessage,true, "utf-8");
+			message.setTo(username);
+			message.setSubject("유자 회원찾기 인증번호 메일입니다.");
+			message.setText(content.toString(),true);
+			message.addInline("logo", new ClassPathResource("/static/imgs/yuzu05.png"));
+		} catch (MessagingException e) {
+			e.printStackTrace();
+			throw new IllegalAccessError("서버 오류로 인한 메일 발송 실패");
+		}
+		javaMailSender.send(mimeMessage);
+		return verifyNum;
 	}
 
 	@Override

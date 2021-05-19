@@ -1,21 +1,19 @@
 package com.cobong.yuja.config.websocket;
 
-import java.util.HashSet;
-import java.util.Set;
-
-import org.springframework.web.socket.WebSocketSession;
-
 import lombok.Data;
 
 @Data
 public class ChatRoomDto {
-	private int chatRoomId;
-	private Set<WebSocketSession> sessions = new HashSet<WebSocketSession>();
+	private Long chatRoomId;
+	private String writer;
+	private String lastMsg;
+	//private Date createdDate;
 	
-	public static ChatRoomDto create() {
+	public ChatRoomDto create(Long chatRoomId, String writer, String lastMsg) {
 		ChatRoomDto room = new ChatRoomDto();
-		room.setChatRoomId(1);
-		
+		room.setChatRoomId(chatRoomId);
+		room.setWriter(writer);
+		room.setLastMsg(lastMsg);
 		return room;
 	}
 }
