@@ -1,6 +1,7 @@
 package com.cobong.yuja.model;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,11 +25,11 @@ public class ChatRoomJoin {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long roomJoinId;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "userId")
 	private User user;
 	
-	@ManyToOne
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "roomId")
 	private ChatRoom chatRoom; 
 }

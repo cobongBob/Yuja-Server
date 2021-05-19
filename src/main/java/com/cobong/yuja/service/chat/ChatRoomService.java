@@ -40,7 +40,7 @@ public class ChatRoomService {
 		
 		return chatRoom.getRoomId();
 	}
-	
+	@Transactional(readOnly = true)
 	public List<ChatRoomDto> findRooms(Long userId) {
 		List<ChatRoomDto> dtoList = new ArrayList<ChatRoomDto>();
 		List<ChatRoomJoin> joins = chatroomjoinrepository.findByUserUserId(userId);
@@ -54,5 +54,20 @@ public class ChatRoomService {
 			dtoList.add(dto);
 		}
 		return dtoList;
+	}
+
+	@Transactional
+	public void deleteEmptyRooms() {
+		List<ChatRoom> rooms = chatRoomRepository.findAll();
+		
+		for(ChatRoom room : rooms) {
+			if(room.getMessages().size() == 0) {
+				List<ChatRoomJoin> joins = chatroomjoinrepository.findByChatRoomRoomId(room.getRoomId());
+				for(ChatRoomJoin join: joins) {
+					chatroomjoinrepository.delete(join);
+				}
+				chatRoomRepository.delete(room);
+			}
+		}
 	}	
 }
