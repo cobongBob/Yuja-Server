@@ -52,16 +52,6 @@ public class ChatRoomController {
 		return "chatting/roomlist";
 	}
 	
-	@GetMapping("/socket/chat")
-	public String index() {
-		return "chatting/chatroom";
-	}
-	
-	@GetMapping("/socket/chat/ex")
-	public String exFromWeb() {
-		return "chatting/exs";
-	}
-	
 	@PostMapping("/socket/room")      //senderId의 경우 HttpServletRequest req로 받아서 현재 로그인 해있는 유저로 받아야한다.
 	public String newRoom(@RequestParam("receiver") Long user1id, @RequestParam("sender") Long user2id) {
 		Long chatRoomId = chatRoomService.newRoom(user1id, user2id);

@@ -1,5 +1,8 @@
-
 let stompClient = null;
+let msgArea = document.getElementById("chatlogs");
+let now = null;
+let hour = 0;
+let min = 0;
 connect();
 
 function connect(){
@@ -25,19 +28,29 @@ function send() {
     showMessageSend(data);
     $("#message").val('');
 }
-let msgArea = document.getElementById("chatlogs");
 function showMessageReceived(e){
-	msgArea.innerHTML += "<div style='text-align:left; border-style:solid'><h3>"+e.sender+
-					"</h3><br><h5>"+e.message+"</h5></div>";
+	now = new Date();
+	if(now.getHours() > 12){
+		msgArea.innerHTML += "<div style='text-align:left; border-style:solid'><h3>"+e.sender+
+					"</h3><br><h5>"+e.message+"</h5><br><h6>오후 "+now.getHours()%12+":"+now.getMinutes() +"<h6></div>";
+	}else{
+		msgArea.innerHTML += "<div style='text-align:left; border-style:solid'><h3>"+e.sender+
+					"</h3><br><h5>"+e.message+"</h5><br><h6>오전 "+now.getHours()+":"+now.getMinutes() +"<h6></div>";
+	}
 }
 
 function showMessageSend(e){
-	msgArea.innerHTML += "<div style='text-align:right; border-style:solid'><h3>"+e.sender+
-					"</h3><br><h5>"+e.message+"</h5></div>";
-}
-
-function showMessageRight(e){
-
+	now = new Date();
+	if(now.getHours() > 12){
+		msgArea.innerHTML += "<div style='text-align:right; border-style:solid'><h3>"+e.sender+
+						"</h3><br><h5>"+e.message+"</h5><br><h6>오후 "+now.getHours()%12+":"+now.getMinutes() +"<h6></div>";
+	} else if(now.getHours() == 12){
+		msgArea.innerHTML += "<div style='text-align:right; border-style:solid'><h3>"+e.sender+
+						"</h3><br><h5>"+e.message+"</h5><br><h6>오후 "+now.getHours()+":"+now.getMinutes() +"<h6></div>";
+	}else{
+		msgArea.innerHTML += "<div style='text-align:right; border-style:solid'><h3>"+e.sender+
+						"</h3><br><h5>"+e.message+"</h5><br><h6>오전 "+now.getHours()+":"+now.getMinutes() +"<h6></div>";
+	}
 }
 
 window.onbeforeunload = function(e){
