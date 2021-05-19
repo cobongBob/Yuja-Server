@@ -40,6 +40,7 @@ function showMessageReceived(e){
 		msgArea.innerHTML += "<div style='text-align:left; border-style:solid'><h3>"+e.sender+
 					"</h3><br><h5>"+e.message+"</h5><br><h6>오전 "+now.getHours()+":"+now.getMinutes() +"<h6></div>";
 	}
+	window.scrollTo(0,document.body.scrollHeight);
 }
 
 function showMessageSend(e){
@@ -54,6 +55,7 @@ function showMessageSend(e){
 		msgArea.innerHTML += "<div style='text-align:right; border-style:solid'><h3>"+e.sender+
 						"</h3><br><h5>"+e.message+"</h5><br><h6>오전 "+now.getHours()+":"+now.getMinutes() +"<h6></div>";
 	}
+	window.scrollTo(0,document.body.scrollHeight);
 }
 
 window.onbeforeunload = function(e){

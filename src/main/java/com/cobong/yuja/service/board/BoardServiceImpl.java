@@ -45,8 +45,6 @@ public class BoardServiceImpl implements BoardService {
 		User user = userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("해당유저 없음 "+dto.getUserId()));
 		BoardType boardType = boardTypeRepository.findById(dto.getBoardCode()).orElseThrow(() -> new IllegalAccessError("해당글 타입 없음" + dto.getBoardCode()));
 		
-		
-		
 		String receivelink = dto.getPreviewImage();
 		String target = "https://www.youtube.com/watch?v=";
 		
@@ -135,11 +133,11 @@ public class BoardServiceImpl implements BoardService {
 		}			
 		
 		Optional<Thumbnail> thumbnailtodel = thumbnailRepository.findByBoardBoardId(bno);
-		String thumbnailOrig = "";
+		String thumbnailOrig = "original";
 		if(thumbnailtodel.isPresent()) {
 			Thumbnail thumbnail = thumbnailtodel.get();
 			if(thumbnail.getOriginalFileDest() != null && thumbnail.getOriginalFileDest().length() != 0) {
-				thumbnailOrig += thumbnail.getOriginalFileDest();
+				thumbnailOrig += thumbnail.getFileName();
 			}
 		}
 		
