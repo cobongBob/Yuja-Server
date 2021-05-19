@@ -13,6 +13,7 @@ function connect(){
 			showMessageReceived(JSON.parse(e.body));
 		});
 	});
+	window.scrollTo(0,document.body.scrollHeight);
 }
 
 function disconnect(){
