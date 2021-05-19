@@ -52,7 +52,7 @@ public class BoardServiceImpl implements BoardService {
 		
 		if(receivelink.startsWith(target)) {
 			String code = receivelink.substring(target.length(), target.length()+11);
-			String previewImage = "img.youtube.com/vi/" + code + "/hqdefault.jpg";
+			String previewImage = "https://img.youtube.com/vi/" + code + "/hqdefault.jpg";
 			dto.setPreviewImage(previewImage);
 		}
 		
