@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import com.cobong.yuja.config.auth.PrincipalDetails;
 import com.cobong.yuja.config.websocket.ChatRoomDto;
 import com.cobong.yuja.config.websocket.ChatRoomJoinService;
+import com.cobong.yuja.config.websocket.ChatRoomService;
 import com.cobong.yuja.config.websocket.SocketMessageSendDto;
 import com.cobong.yuja.config.websocket.SocketMessageService;
 
@@ -45,12 +46,6 @@ public class ChatRoomController {
 		 * getting current user done
 		 */
 		List<ChatRoomDto> chatRooms = chatRoomService.findRooms(userId);
-		
-		System.out.println("/////////////////////////////////////////////////");
-		for(ChatRoomDto dto : chatRooms) {
-			System.out.println(dto);
-		}
-		System.out.println("/////////////////////////////////////////////////");
 		
 		model.addAttribute("chatRooms", chatRooms);
 		
@@ -85,7 +80,7 @@ public class ChatRoomController {
     		throw new IllegalAccessError("채팅을 시도하려는 유저가 존재하지 않거나 유저의 로그인 세션이 끝났습니다.");
     	}
 		String userNickname = principalDetails.getNickname();
-    	List<SocketMessageSendDto> messages = socketMessageService.getAllMsgs(chatRoomId);
+    	List<SocketMessageSendDto> messages = socketMessageService.getAllMsgs(chatRoomId, userId);
 		String receiver = chatRoomJoinService.findReceiver(chatRoomId, userId);
 		
 		model.addAttribute("receiver", receiver);

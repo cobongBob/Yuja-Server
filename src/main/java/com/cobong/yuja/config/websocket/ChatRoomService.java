@@ -1,4 +1,4 @@
-package com.cobong.yuja.controller;
+package com.cobong.yuja.config.websocket;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,13 +7,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cobong.yuja.config.websocket.ChatRoom;
-import com.cobong.yuja.config.websocket.ChatRoomDto;
-import com.cobong.yuja.config.websocket.ChatRoomJoin;
-import com.cobong.yuja.config.websocket.ChatRoomJoinRepository;
-import com.cobong.yuja.config.websocket.ChatRoomJoinService;
-import com.cobong.yuja.config.websocket.SocketMessageReceiveDto;
-import com.cobong.yuja.config.websocket.SocketMessageSendDto;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.repository.user.UserRepository;
 
@@ -48,15 +41,11 @@ public class ChatRoomService {
 		List<ChatRoomJoin> joins = chatroomjoinrepository.findByUserUserId(userId);
 		
 		for(ChatRoomJoin join: joins) {
-			System.out.println("/////////////////////// join //////////////////////////");
-			System.out.println(join.getChatRoom().getRoomId()+"   "+ join.getUser().getNickname());
-			System.out.println("/////////////////////////////////////////////////");
-			
 			ChatRoom curRoom = join.getChatRoom();
 			String receiver = chatRoomJoinService.findReceiver(curRoom.getRoomId(), userId);
-			ChatRoomDto dto = new ChatRoomDto().create(curRoom.getRoomId(), receiver, "성공이다 씨바아아아아아아아알");
+			ChatRoomDto dto = new ChatRoomDto().create(curRoom.getRoomId(), receiver, "성공이다!!!!!");
 			
-				//curRoom.getMessages().get(curRoom.getMessages().size()-1).getMessage()
+			//if문 안에  curRoom.getMessages().get(curRoom.getMessages().size()-1).getMessage()
 			dtoList.add(dto);
 		}
 		return dtoList;
