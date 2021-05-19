@@ -9,7 +9,7 @@ public class SocketMessageSendDto {
 	private String sender;
 	private String content;
 	private boolean ownerOrNot;
-	//private Date createdDate; 일단 기초를 구현 후 보낸 시간까지 구현해 보도록 하자.
+	private String createdDate; 
 	
 	public SocketMessageSendDto entityToDto(SocketMessage entity) {
 		SocketMessageSendDto dto = new SocketMessageSendDto();

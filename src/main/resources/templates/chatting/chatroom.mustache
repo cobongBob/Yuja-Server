@@ -2,22 +2,25 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>Yuja Chat</title>
 </head>
 <body>
 <h1>{{receiver}}와 체팅</h1>
+<a href="/rooms">채팅방 나가기</a>
 	<div id="chatlogs">
 		{{#messages}}
 			{{#ownerOrNot}}
 				<div style='text-align:right; border-style:solid'>
 					<h3>{{sender}}</h3><br>
-					<h5>{{content}}</h5>
+					<h5>{{content}}</h5><br>
+					<h6>{{createdDate}}</h6>
 				</div>
 			{{/ownerOrNot}}
 			{{^ownerOrNot}}
 				<div style='text-align:left; border-style:solid'>
 					<h3>{{sender}}</h3><br>
-					<h5>{{content}}</h5>
+					<h5>{{content}}</h5><br>
+					<h6>{{createdDate}}</h6>
 				</div>
 			{{/ownerOrNot}}
 		{{/messages}}

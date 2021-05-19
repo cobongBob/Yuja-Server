@@ -1,6 +1,8 @@
 package com.cobong.yuja.service.board;
 
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -58,8 +60,6 @@ public class ThumbnailServiceImpl implements ThumbnailService{
 			}
 			String originalImg = savePath + File.separator +"original"+ filename;
 			
-			file.transferTo(new File(originalImg));
-			
 			savePath += File.separator + filename;
 			
 			FileOutputStream res = new FileOutputStream(new File(savePath));
@@ -73,6 +73,8 @@ public class ThumbnailServiceImpl implements ThumbnailService{
 				Thumbnailator.createThumbnail(file.getInputStream(), res, ImageIO.read(file.getInputStream()).getWidth(), ImageIO.read(file.getInputStream()).getHeight());
 			}
 			res.close();
+			
+			file.transferTo(new File(originalImg));
 
 	        String uploadPath = System.getProperty("user.dir") + File.separator+"files" + File.separator + "thumbnail";
 			
@@ -84,9 +86,20 @@ public class ThumbnailServiceImpl implements ThumbnailService{
 					e.getStackTrace();
 				}
 			}
-			uploadPath += File.separator + filename;
 			
-			String originalUplaodPath = uploadPath + File.separator +"original"+ filename;
+			String originalUplaodPath = uploadPath + File.separator +"original";
+			
+			if (!new File(originalUplaodPath).exists()) {
+				try {
+					new File(originalUplaodPath).mkdirs();
+					System.out.println(originalUplaodPath);
+				} catch (Exception e) {
+					e.getStackTrace();
+				}
+			}
+			
+			uploadPath += File.separator + filename;
+			originalUplaodPath += File.separator +"original"+ filename;
 			
 			dto.setOrigFilename(origFilename);
 			dto.setUploadPath(uploadPath);

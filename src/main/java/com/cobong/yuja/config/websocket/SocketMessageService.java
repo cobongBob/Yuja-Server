@@ -1,11 +1,19 @@
 package com.cobong.yuja.config.websocket;
 
 import java.nio.channels.IllegalChannelGroupException;
+import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -42,11 +50,28 @@ public class SocketMessageService {
 		
 		ChatRoom curRoom = chatRoomRepository.findByRoomId(chatRoomId).get();
 		List<SocketMessage> entityList = curRoom.getMessages();
-		Collections.reverse(entityList);
+		
+		LocalDateTime now = LocalDateTime.now();
 		
 		List<SocketMessageSendDto> dtoList = new ArrayList<SocketMessageSendDto>();
 		for(SocketMessage msgs : entityList) {
 			SocketMessageSendDto dto = new SocketMessageSendDto().entityToDto(msgs);
+			LocalDateTime msgTime = LocalDateTime.ofInstant(msgs.getCreatedDate(), ZoneId.systemDefault());
+			
+			if(msgTime.getDayOfYear() != now.getDayOfYear()) {
+				if(msgTime.getHour() >= 12) {
+					dto.setCreatedDate(msgTime.getYear()+"-"+msgTime.getMonthValue()+"-"+msgTime.getDayOfMonth()+"\n오후 "+(msgTime.getHour()%12)+" : "+msgTime.getMinute());					
+				} else {
+					dto.setCreatedDate(msgTime.getYear()+"-"+msgTime.getMonthValue()+"-"+msgTime.getDayOfMonth()+"\n오전 "+msgTime.getHour()+" : "+msgTime.getMinute());
+				}
+			} else {
+				if(msgTime.getHour() >= 12) {
+					dto.setCreatedDate("오후 "+msgTime.getHour()%12+" : "+msgTime.getMinute());					
+				}else {
+					dto.setCreatedDate("오전 "+msgTime.getHour()+" : "+msgTime.getMinute());
+				}
+			}
+			
 			if(msgs.getUser().getUserId() != userId) {
 				dto.setOwnerOrNot(false);
 			} else {
@@ -54,7 +79,6 @@ public class SocketMessageService {
 			}
 			dtoList.add(dto);
 		}
-		Collections.reverse(dtoList);
 		return dtoList;
 	}
 }
