@@ -20,6 +20,7 @@ import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.board.BoardSaveRequestDto;
 import com.cobong.yuja.payload.request.board.BoardUpdateRequestDto;
 import com.cobong.yuja.payload.response.board.BoardResponseDto;
+import com.cobong.yuja.payload.response.board.MainboardsResponseDto;
 import com.cobong.yuja.repository.BoardTypeRepository;
 import com.cobong.yuja.repository.attach.AttachRepository;
 import com.cobong.yuja.repository.attach.ThumbnailRepository;
@@ -44,11 +45,23 @@ public class BoardServiceImpl implements BoardService {
 		User user = userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("해당유저 없음 "+dto.getUserId()));
 		BoardType boardType = boardTypeRepository.findById(dto.getBoardCode()).orElseThrow(() -> new IllegalAccessError("해당글 타입 없음" + dto.getBoardCode()));
 		
+		
+		
+		String receivelink = dto.getPreviewImage();
+		String target = "https://www.youtube.com/watch?v=";
+		
+		if(receivelink.startsWith(target)) {
+			String code = receivelink.substring(target.length(), target.length()+11);
+			String previewImage = "https://img.youtube.com/vi/" + code + "/hqdefault.jpg";
+			dto.setPreviewImage(previewImage);
+		}
+		
 		String toolsCombined = String.join(",", dto.getTools());
 		
 		Board board = new Board().createBoard(boardType, user, dto.getTitle(), dto.getContent(), dto.getExpiredDate(),
 				dto.getPayType(), dto.getPayAmount(), dto.getCareer(), toolsCombined, dto.getWorker(), dto.getYWhen(),
-				dto.getChannelName(),dto.getRecruitingNum(),dto.getReceptionMethod(),dto.getManager(), dto.getIsPrivate());
+				dto.getChannelName(),dto.getRecruitingNum(),dto.getReceptionMethod(),dto.getManager(), dto.getIsPrivate(), 
+				dto.getPreviewImage());
 		Board board2 = boardRepository.save(board);
 		//null일경우 처리 필요
 		if(dto.getBoardAttachNames() != null) {
@@ -220,7 +233,7 @@ public class BoardServiceImpl implements BoardService {
 				toolsCombined, boardUpdateRequestDto.getExpiredDate(),boardUpdateRequestDto.getWorker(), 
 				boardUpdateRequestDto.getYWhen(),boardUpdateRequestDto.getChannelName(),
 				boardUpdateRequestDto.getRecruitingNum(),boardUpdateRequestDto.getReceptionMethod(),
-				boardUpdateRequestDto.getManager(), boardUpdateRequestDto.getIsPrivate());
+				boardUpdateRequestDto.getManager(), boardUpdateRequestDto.getIsPrivate(), boardUpdateRequestDto.getPreviewImage());
 		BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
 		
 		for(Long i: boardUpdateRequestDto.getBoardAttachIds()) {
@@ -404,5 +417,78 @@ public class BoardServiceImpl implements BoardService {
 			curBoardResponseDto.add(dto);
 		}
 		return curBoardResponseDto;
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public MainboardsResponseDto getMainBoardData() {
+		
+		// 유튜버(1) 최신순(updatedDate) 
+		List<Board> board =boardRepository.orderYouLatest();
+		MainboardsResponseDto mainboardsResponseDto = new MainboardsResponseDto();
+		BoardResponseDto resDto = new BoardResponseDto();
+		List<BoardResponseDto> result = new ArrayList<BoardResponseDto>();
+		for (int i = 0; i < board.size(); i++) {
+			result.add(resDto.entityToDto(board.get(i)));
+		}
+		mainboardsResponseDto.setYouUpdatedOrder4(result);
+		
+		// 에디터(2) 최신순(updatedDate)
+		board =boardRepository.orderEditLatest();
+		resDto = new BoardResponseDto();
+		result = new ArrayList<BoardResponseDto>();
+		for (int i = 0; i < board.size(); i++) {
+			result.add(resDto.entityToDto(board.get(i)));
+		}
+		mainboardsResponseDto.setEditUpdatedOrder4(result);
+		
+		// 썸넬러(3) 최신순(updatedDate)
+		board =boardRepository.orderThumLatest();
+		resDto = new BoardResponseDto();
+		result = new ArrayList<BoardResponseDto>();
+		for (int i = 0; i < board.size(); i++) {
+			result.add(resDto.entityToDto(board.get(i)));
+		}
+		mainboardsResponseDto.setThumUpdatedOrder4(result);
+
+		// 윈윈(4) 최신순(createdDate) 5개
+		board =boardRepository.orderWinLatest();
+		resDto = new BoardResponseDto();
+		result = new ArrayList<BoardResponseDto>();
+		for (int i = 0; i < board.size(); i++) {
+			result.add(resDto.entityToDto(board.get(i)));
+		}
+		mainboardsResponseDto.setWincreatedOrder5(result);
+		
+		
+		// 콜라보(5) 최신순(createdDate) 5개
+		board =boardRepository.orderColLatest();
+		resDto = new BoardResponseDto();
+		result = new ArrayList<BoardResponseDto>();
+		for (int i = 0; i < board.size(); i++) {
+			result.add(resDto.entityToDto(board.get(i)));
+		}
+		mainboardsResponseDto.setColcreatedOrder5(result);
+		
+		
+		// 에디터(2) 좋아요순(likes) 12개 
+		board =boardRepository.orderEditLiked();
+		resDto = new BoardResponseDto();
+		result = new ArrayList<BoardResponseDto>();
+		for (int i = 0; i < board.size(); i++) {
+			result.add(resDto.entityToDto(board.get(i)));
+		}
+		mainboardsResponseDto.setEditLikes12(result);
+		
+		// 썸넬러(3) 좋아요순(likes) 12개 
+		board =boardRepository.orderThumLiked();
+		resDto = new BoardResponseDto();
+		result = new ArrayList<BoardResponseDto>();
+		for (int i = 0; i < board.size(); i++) {
+			result.add(resDto.entityToDto(board.get(i)));
+		}
+		mainboardsResponseDto.setThumbLikes12(result);
+		
+		return mainboardsResponseDto;
 	}
 }

@@ -62,14 +62,25 @@ public class BoardAttachService {
 				
 				switch (Long.valueOf(boardCode).intValue()) {
 				case 1:
-					boardType += "YoutuberBoard";
+					boardType += "Youtuber";
 					break;
 				case 2:
-					boardType += "EditorBoard";
+					boardType += "Editor";
 					break;
 				case 3:
-					boardType += "ThumbBoard";
+					boardType += "Thumb";
 					break;
+				case 4:
+					boardType += "Winwin";
+					break;
+				case 5:
+					boardType += "Collabo";
+					break;
+				case 6:
+					boardType +="Notice";
+					break;
+				default:
+					throw new IllegalAccessError("해당 게시판이 존재하지 않습니다.");
 				}
 				String uploadPath = System.getProperty("user.dir") + File.separator+"files" + File.separator +boardType;
 				if (!new File(uploadPath).exists()) {

@@ -4,35 +4,39 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.cobong.yuja.payload.request.user.MessageRequestDto;
+import com.cobong.yuja.service.user.MessageService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/message")
 @RequiredArgsConstructor
 public class MessageApiController {
-
+	private final MessageService messageservice;
 	
-	@PostMapping("/send")
-	public ResponseEntity<?> postMessage() {
-		return new ResponseEntity<>(HttpStatus.CREATED);
+	@PostMapping("/api/message")
+	public ResponseEntity<?> postMessage(@RequestBody MessageRequestDto dto) {
+		return new ResponseEntity<>(messageservice.send(dto),HttpStatus.CREATED);
 	}
 	
-	@GetMapping("/")
-	public ResponseEntity<?> getOneMessage() {
-		return new ResponseEntity<>(HttpStatus.OK);
-	}
-	
-	@GetMapping("/")
+	@GetMapping("/api/message")
 	public ResponseEntity<?> getAllMessage() {
-		return new ResponseEntity<>(HttpStatus.OK);
+		return new ResponseEntity<>(messageservice.findAll(),HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/")
-	public ResponseEntity<?> deleteMessage() {
-		return new ResponseEntity<>(HttpStatus.OK);
+	@GetMapping("/api/message/{bno}")
+	public ResponseEntity<?> getOneMessage(@PathVariable Long bno) {
+		return new ResponseEntity<>(messageservice.findById(bno),HttpStatus.OK);
+	}
+	
+	
+	@DeleteMapping("/api/message/{bno}")
+	public ResponseEntity<?> deleteMessage(@PathVariable Long bno) {
+		return new ResponseEntity<>(messageservice.delete(bno),HttpStatus.OK);
 	}
 }

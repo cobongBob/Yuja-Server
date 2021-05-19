@@ -31,9 +31,8 @@ public class AttachApiController {
 	private final ThumbnailService thumbnailService;
 
 	//@PostMapping("/api/{boardCode}/board/img/upload")  @PathVariable Long boardCode ==> add it on parameter
-	@PostMapping("/api/board/img/upload")
-	public ResponseEntity<?> write(@RequestParam("file") MultipartFile[] files) {
-		Long boardCode = 1L; //테스트용 보드 코드
+	@PostMapping("/api/{boardCode}/board/img/upload")
+	public ResponseEntity<?> write(@RequestParam("file") MultipartFile[] files, @PathVariable Long boardCode) {
 		return new ResponseEntity<>(attachService.saveFile(files, boardCode), HttpStatus.OK);
 	}
 	

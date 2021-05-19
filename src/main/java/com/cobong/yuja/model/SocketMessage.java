@@ -1,6 +1,4 @@
-package com.cobong.yuja.config.websocket;
-
-import java.util.Date;
+package com.cobong.yuja.model;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -10,7 +8,6 @@ import lombok.Setter;
 public class SocketMessage {
 	private String sender;
 	private String content;
-	private Date date;
 	private MessageType type;
 	
 	public enum MessageType{

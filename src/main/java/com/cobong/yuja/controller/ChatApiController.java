@@ -4,56 +4,35 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessageHeaderAccessor;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
-import com.cobong.yuja.config.websocket.SocketMessage;
+import com.cobong.yuja.model.SocketMessage;
+
+import lombok.RequiredArgsConstructor;
 
 @Controller
+@RequiredArgsConstructor
 public class ChatApiController {
+	private final SimpMessagingTemplate msgTemplate;
+	
+//	@MessageMapping("/chat/createRoom")
+//	public void createRoom(@Payload SocketMessage msg) {
+//		msgTemplate.convertAndSendToUser(msg.getRecipient(), "/topic/cobong", msg.getContent());
+//	}
+	
 	@MessageMapping("/chat/send")
-	@SendTo("topic/cobong")
-	public SocketMessage sendMsg(@Payload SocketMessage msg) {
-		return msg;
+	@SendTo("/topic/cobong")
+	public void sendMsg(@Payload SocketMessage msg) {
+		msgTemplate.convertAndSend("/topic/cobong", msg);
 	}
 	
 	@MessageMapping("/chat/join")
-	@SendTo("topic/cobong")
+	@SendTo("/topic/cobong")
 	public SocketMessage join(@Payload SocketMessage msg, SimpMessageHeaderAccessor smha) {
 		smha.getSessionAttributes().put("username", "Sender");
 		return msg;
 	}
-	
-	/***
-	 * 어빌리티 참조
-	 */
-//	private SimpMessagingTemplate socket;
-//	
-//	public void send(SocketMessage msg){
-//		msg.setDate(new Date());
-//		socket.convertAndSend("/topic/cobong",msg); 
-//	} 
-//	
-//	public void enter(SocketMessage msg) {
-//		msg.setDate(new Date());
-//		socket.convertAndSend("/topic/cobong",msg);
-//	}
-//	
-//	public void exit(SocketMessage msg) {
-//		msg.setDate(new Date());
-//		socket.convertAndSend("/topic/cobong",msg);
-//	}
-//	
-//	Set<String> connectedUsers = Collections.newSetFromMap(new ConcurrentHashMap<String, Boolean>());
-//	
-//	@EventListener
-//	private void onSessionConn(SessionConnectedEvent evnt) {
-//		StompHeaderAccessor stmp = StompHeaderAccessor.wrap(evnt.getMessage());
-//		connectedUsers.add(stmp.getSessionId());
-//	}
-//	
-//	@EventListener
-//	private void onSessionDisconn(SessionDisconnectEvent evnt) {
-//		StompHeaderAccessor stmp = StompHeaderAccessor.wrap(evnt.getMessage());
-//		connectedUsers.add(stmp.getSessionId());
-//	}
+
+
 }

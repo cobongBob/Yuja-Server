@@ -12,14 +12,14 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class MessageResponseDto {
 	private Long messageId;
-	private User senderId;
-	private User resipeintId;
+	private User sender;
+	private User resipeint;
 	private String contents;
 	
 	public MessageResponseDto entityToDto(Message entity) {
 		this.messageId = entity.getMessageId();
-		this.senderId= entity.getSender();
-		this.resipeintId= entity.getRecipient();
+		this.sender= entity.getSender();
+		this.resipeint= entity.getRecipient();
 		this.contents = entity.getContents();
 		return this;
 	}

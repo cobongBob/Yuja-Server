@@ -5,8 +5,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 @Controller
 public class ChatController {
-	@GetMapping("/")
+	@GetMapping("/socket/chat")
 	public String index() {
-		return "chatting/NewFile";
+		return "chatting/chatroom";
+	}
+	
+	@GetMapping("/socket/chat/ex")
+	public String exFromWeb() {
+		return "chatting/exs";
 	}
 }

@@ -13,5 +13,6 @@ public interface CustomBoardRepository {
 	Long likedReceived(Long boardId); // 좋아요 수 구하는 함수
 	Long commentsReceived(Long boardId); // 댓글 갯수 구하는 함수
 	
+	
 	boolean likedOrNot(Long userId, Long boardId);
 }

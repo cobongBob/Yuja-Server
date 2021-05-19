@@ -5,6 +5,7 @@ import java.util.List;
 import com.cobong.yuja.payload.request.board.BoardSaveRequestDto;
 import com.cobong.yuja.payload.request.board.BoardUpdateRequestDto;
 import com.cobong.yuja.payload.response.board.BoardResponseDto;
+import com.cobong.yuja.payload.response.board.MainboardsResponseDto;
 
 public interface BoardService {
 	
@@ -25,4 +26,6 @@ public interface BoardService {
 	List<BoardResponseDto> boardsUserLiked(Long userId);
 	
 	List<BoardResponseDto> boardsUserCommented(Long userId);
+	
+	MainboardsResponseDto getMainBoardData();
 }
