@@ -1,4 +1,4 @@
-package com.cobong.yuja.config.websocket;
+package com.cobong.yuja.service.chat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -7,7 +7,12 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cobong.yuja.model.ChatRoom;
+import com.cobong.yuja.model.ChatRoomJoin;
 import com.cobong.yuja.model.User;
+import com.cobong.yuja.payload.request.chat.ChatRoomDto;
+import com.cobong.yuja.repository.chat.ChatRoomJoinRepository;
+import com.cobong.yuja.repository.chat.ChatRoomRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;

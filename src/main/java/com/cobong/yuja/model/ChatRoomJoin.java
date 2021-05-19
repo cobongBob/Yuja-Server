@@ -1,4 +1,4 @@
-package com.cobong.yuja.config.websocket;
+package com.cobong.yuja.model;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -6,8 +6,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
-
-import com.cobong.yuja.model.User;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

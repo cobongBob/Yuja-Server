@@ -1,4 +1,4 @@
-package com.cobong.yuja.config.websocket;
+package com.cobong.yuja.payload.request.chat;
 
 import lombok.Data;
 
