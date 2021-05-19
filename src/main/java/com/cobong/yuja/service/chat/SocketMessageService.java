@@ -91,4 +91,16 @@ public class SocketMessageService {
 		}
 		return dtoList;
 	}
+
+	public void delete2weeksOld() {
+		List<SocketMessage> msgList = socketMessageRepository.findAll();
+		LocalDateTime now = LocalDateTime.now();
+		
+		for(SocketMessage msg: msgList) {
+			LocalDateTime msgTime = LocalDateTime.ofInstant(msg.getCreatedDate(), ZoneId.systemDefault());
+			if(now.getDayOfYear()-msgTime.getDayOfYear()>14) {
+				socketMessageRepository.delete(msg);
+			}
+		}
+	}
 }

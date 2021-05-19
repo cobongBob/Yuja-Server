@@ -328,7 +328,7 @@ public class BoardServiceImpl implements BoardService {
 			dto.setLiked(likedOrNot);
 			Optional<Thumbnail> thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId());
 			if(thumbnail.isPresent()) {
-				dto.setThumbnail(thumbnail.get().getUploadPath());		
+				dto.setThumbnail(thumbnail.get().getFileName());		
 			}
 			curBoardResponseDto.add(dto);
 		}
@@ -355,7 +355,7 @@ public class BoardServiceImpl implements BoardService {
 			
 			Optional<Thumbnail> thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId());
 			if(thumbnail.isPresent()) {
-				dto.setThumbnail(thumbnail.get().getUploadPath());
+				dto.setThumbnail(thumbnail.get().getFileName());
 			}
 			curBoardResponseDto.add(dto);
 		}
@@ -382,7 +382,7 @@ public class BoardServiceImpl implements BoardService {
 			
 			Optional<Thumbnail> thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId());
 			if(thumbnail.isPresent()) {
-				dto.setThumbnail(thumbnail.get().getUploadPath());
+				dto.setThumbnail(thumbnail.get().getFileName());
 			}
 			curBoardResponseDto.add(dto);
 		}
@@ -409,7 +409,7 @@ public class BoardServiceImpl implements BoardService {
 			
 			Optional<Thumbnail> thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId());
 			if(thumbnail.isPresent()) {
-				dto.setThumbnail(thumbnail.get().getUploadPath());
+				dto.setThumbnail(thumbnail.get().getFileName());
 			}
 			
 			curBoardResponseDto.add(dto);
