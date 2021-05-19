@@ -15,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
 import com.cobong.yuja.config.auth.PrincipalDetailsService;
 import com.cobong.yuja.config.jwt.JwtAuthenticationEntryPoint;
@@ -78,6 +79,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.exceptionHandling()
 				.accessDeniedHandler(unauthorizedException)
 				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
+				.and()
+			.headers().frameOptions().disable()
+				.addHeaderWriter(new StaticHeadersWriter("X-FRAME-OPTIONS", "ALLOW-FROM " + "http://localhost:3000"))
 				.and()
 			.authorizeRequests()
 				.antMatchers("/api/auth/**") // 로그인 회원가입
