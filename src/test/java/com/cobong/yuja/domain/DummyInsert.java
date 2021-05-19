@@ -175,8 +175,8 @@ public class DummyInsert {
 					.channelName("쯔양 "+i)
 					.expiredDate(new Date())
 					.manager("테스트매니저 "+i)
-					.payAmount("100,000")
-					.payType("건당")
+					.payAmount("2,100,000")
+					.payType("연봉")
 					.receptionMethod("비대면")
 					.recruitingNum(i)
 					.tools("프리미어 프로,파이널,베가스")
@@ -229,6 +229,9 @@ public class DummyInsert {
 					.user(user)
 					.title("테스트 제목 "+i)
 					.content("테스트 내용 "+i)
+					.tools("프리미어 프로,파이널,베가스")
+					.payAmount("100,000")
+					.payType("건당")
 					.hit(i)
 					.build();
 			boardRepository.save(board);
@@ -244,12 +247,15 @@ public class DummyInsert {
 					.user(user)
 					.title("테스트 제목 "+i)
 					.content("테스트 내용 "+i)
+					.tools("포토샵")
+					.payAmount("50,000")
+					.payType("건당")
 					.hit(i)
 					.build();
 			boardRepository.save(board);
 		});
 	}
-	@Test //썸네일러 게시글 번호
+	@Test //건의 게시글 번호
 	public void insertCusBoard() {
 		IntStream.rangeClosed(1, 102).forEach(i -> {
 			User user = User.builder().userId(Long.valueOf(i)).build();
@@ -264,7 +270,7 @@ public class DummyInsert {
 			boardRepository.save(board);
 		});
 	}
-	@Test //썸네일러 게시글 번호
+	@Test //자유 게시글 번호
 	public void insertFreeBoard() {
 		IntStream.rangeClosed(1, 102).forEach(i -> {
 			User user = User.builder().userId(Long.valueOf(i)).build();
@@ -282,8 +288,8 @@ public class DummyInsert {
 	
 	@Test
 	public void insertLikes() {
-		IntStream.range(1, 458).forEach(i -> {
-			long bno = (long) (Math.random() * 458) + 1;
+		IntStream.range(1, 658).forEach(i -> {
+			long bno = (long) (Math.random() * 650) + 1;
 			long uno = (long) (Math.random() * 102) + 1;
 			Board board = Board.builder().boardId(bno).build();
 			User user = User.builder().userId(uno).build();
@@ -298,7 +304,7 @@ public class DummyInsert {
 	@Test
 	public void insertComment() {
 		IntStream.range(1, 458).forEach(i -> {
-			long bno = (long) (Math.random() * 458) + 1;
+			long bno = (long) (Math.random() * 650) + 1;
 			long uno = (long) (Math.random() * 102) + 1;
 			Board board = Board.builder().boardId(bno).build();
 			User user = User.builder().userId(uno).build();

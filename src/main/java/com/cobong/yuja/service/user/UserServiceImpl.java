@@ -15,6 +15,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -63,7 +64,8 @@ public class UserServiceImpl implements UserService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final JavaMailSender javaMailSender;
     private final YoutubeConfirmRepository youtubeConfirmRepository;
-	
+    @Value("${app.oauthSecret}")
+	private String oauthSecret;
 	@Override
 	@Transactional
 	public UserResponseDto save(UserSaveRequestDto dto) {		
@@ -429,7 +431,7 @@ public class UserServiceImpl implements UserService {
 		String username = (String) profile.get("email");
 		Boolean user = userRepository.existsByUsername(username);
 		GoogleUser googleUser = new GoogleUser();
-		googleUser.setPassword("cobongbob");
+		googleUser.setPassword(oauthSecret);
 		
 //		System.out.println("username 존재여부 : "+ user);
 		// 201 -> 회원가입
