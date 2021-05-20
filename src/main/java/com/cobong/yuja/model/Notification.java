@@ -37,7 +37,7 @@ public class Notification extends DateAudit{
 	// 알림을 받는 유저 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="userId")
-	private Board user;
+	private User user;
 	
 	// 알림 종류 댓글, 좋아요, 채팅
 	private String type;
