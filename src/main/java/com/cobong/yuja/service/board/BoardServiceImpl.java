@@ -25,6 +25,7 @@ import com.cobong.yuja.repository.BoardTypeRepository;
 import com.cobong.yuja.repository.attach.AttachRepository;
 import com.cobong.yuja.repository.attach.ThumbnailRepository;
 import com.cobong.yuja.repository.board.BoardRepository;
+import com.cobong.yuja.repository.user.AuthoritiesRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 import com.google.common.io.Files;
 
@@ -38,6 +39,7 @@ public class BoardServiceImpl implements BoardService {
 	private final UserRepository userRepository;
 	private final AttachRepository attachRepository;
 	private final ThumbnailRepository thumbnailRepository;
+	private final AuthoritiesRepository authoritiesRepository;
 	
 	@Override
 	@Transactional
@@ -107,9 +109,19 @@ public class BoardServiceImpl implements BoardService {
 				thumbnailRepository.save(thumbnail);
 			}
 		}
-		
+		BoardResponseDto boardDto = new BoardResponseDto().entityToDto(board2);
 		if(dto.getBoardCode() == 2L) {
-			
+			Authorities editor = authoritiesRepository.findByAuthority(AuthorityNames.EDITOR).get();
+			if(!user.getAuthorities().contains(editor)) {
+				user.getAuthorities().add(editor);
+				boardDto.setFirstOrNot(true);
+			}
+		} else if(dto.getBoardCode() == 3L) {
+			Authorities thumb = authoritiesRepository.findByAuthority(AuthorityNames.THUMBNAIOR).get();
+			if(!user.getAuthorities().contains(thumb)) {
+				user.getAuthorities().add(thumb);
+				boardDto.setFirstOrNot(true);
+			}
 		}
 		
 		return new BoardResponseDto().entityToDto(board2);

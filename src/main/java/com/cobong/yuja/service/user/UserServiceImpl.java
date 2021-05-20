@@ -190,7 +190,7 @@ public class UserServiceImpl implements UserService {
 		if(bno != userId && !isAdminOrManager) {
 			throw new IllegalAccessError("관리자가 아니므로 해당 유저의 정보를 삭제할 수 없습니다");
 		}
-		
+		System.out.println("+++++++++++++++++++++++\n"+attemptingUser.getAuthorities()+"\n+++++++++++++++++++++++++++");
 		String wholeAddr = userUpdateRequestDto.getAddress() +" # "+ userUpdateRequestDto.getDetailAddress();
 		
 		User user = userRepository.findById(bno)

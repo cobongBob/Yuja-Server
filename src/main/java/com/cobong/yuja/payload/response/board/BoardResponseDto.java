@@ -40,6 +40,7 @@ public class BoardResponseDto {
 	private String thumbnail;
 	private boolean isPrivate;
 	private String previewImage;
+	private boolean firstOrNot = false;
 	
 	public BoardResponseDto entityToDto(Board entity) {
 		this.id=entity.getBoardId();

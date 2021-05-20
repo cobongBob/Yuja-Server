@@ -13,6 +13,7 @@
 </div>
 <a href="/rooms">채팅방 나가기</a>
    <div id="ChatLogsWrapper">
+   	<div id="chatLog">
       {{#messages}}
          {{#ownerOrNot}}
          <div class="ChatSenderBigWrapper">
@@ -33,6 +34,7 @@
             </div>
          {{/ownerOrNot}}
       {{/messages}}
+      </div>
    <div>
       <input type="text" id="message" placeholder="메세지를 입력해 주세요" autocomplete="off"/>
       <button type="button" onClick="send()">보내기</button>

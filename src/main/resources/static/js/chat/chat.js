@@ -1,5 +1,5 @@
 let stompClient = null;
-let msgArea = document.getElementById('chatlogs');
+let msgArea = document.getElementById('chatLog');
 let now = null;
 let hour = 0;
 let min = 0;
