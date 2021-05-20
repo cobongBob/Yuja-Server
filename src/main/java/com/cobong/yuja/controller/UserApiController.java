@@ -1,7 +1,10 @@
 package com.cobong.yuja.controller;
 
+import java.util.stream.Collectors;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -52,5 +55,22 @@ public class UserApiController {
 			userId = principalDetails.getUserId();
 		}
 		return new ResponseEntity<>(userService.delete(bno, userId),HttpStatus.OK);
+	}
+	
+	@PutMapping("/api/banned/{uno}")
+	public ResponseEntity<?> setBanned(@PathVariable Long uno){
+		PrincipalDetails principalDetails = null;
+    	String authorities = null;
+    	if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PrincipalDetails) {
+    		principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    		authorities = principalDetails.getAuthorities().stream()
+	                .map(GrantedAuthority::getAuthority)
+	                .collect(Collectors.joining(","));
+		}
+    	if(authorities.contains("ADMIN")) {
+    		return new ResponseEntity<>(userService.banned(uno),HttpStatus.OK);
+    	} else {
+    		return new ResponseEntity<>("권한이 없습니다.",HttpStatus.OK);
+    	}
 	}
 }

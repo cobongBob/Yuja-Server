@@ -16,7 +16,7 @@ import com.cobong.yuja.service.user.YoutubeConfirmService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("api/admin/promote")
+@RequestMapping("/api/admin/promote")
 @RequiredArgsConstructor
 public class YoutuberPromotionApiController {
 	private final YoutubeConfirmService youtuberConfirmService;

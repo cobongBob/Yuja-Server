@@ -6,14 +6,13 @@ import lombok.Data;
 public class ChatRoomDto {
 	private Long chatRoomId;
 	private String writer;
-	private String lastMsg;
-	//private Date createdDate;
+	private String profilePic;
 	
 	public ChatRoomDto create(Long chatRoomId, String writer, String lastMsg) {
 		ChatRoomDto room = new ChatRoomDto();
 		room.setChatRoomId(chatRoomId);
 		room.setWriter(writer);
-		room.setLastMsg(lastMsg);
+		room.setProfilePic(lastMsg);
 		return room;
 	}
 }

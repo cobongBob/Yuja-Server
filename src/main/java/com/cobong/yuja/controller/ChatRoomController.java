@@ -1,6 +1,7 @@
 package com.cobong.yuja.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -10,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -19,6 +21,7 @@ import com.cobong.yuja.payload.response.chat.SocketMessageSendDto;
 import com.cobong.yuja.service.chat.ChatRoomJoinService;
 import com.cobong.yuja.service.chat.ChatRoomService;
 import com.cobong.yuja.service.chat.SocketMessageService;
+import com.cobong.yuja.service.user.ProfilePictureService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -28,6 +31,7 @@ public class ChatRoomController {
 	private final ChatRoomService chatRoomService;
 	private final SocketMessageService socketMessageService;
 	private final ChatRoomJoinService chatRoomJoinService;
+	private final ProfilePictureService profileService;
 	
 	@GetMapping("/rooms")
 	public String rooms(HttpServletRequest req, Model model) {
@@ -52,9 +56,27 @@ public class ChatRoomController {
 		return "chatting/roomlist";
 	}
 	
-	@PostMapping("/socket/room")      //senderId의 경우 HttpServletRequest req로 받아서 현재 로그인 해있는 유저로 받아야한다.
-	public String newRoom(@RequestParam("receiver") Long user1id, @RequestParam("sender") Long user2id) {
-		Long chatRoomId = chatRoomService.newRoom(user1id, user2id);
+	@PostMapping("/socket/room/client")
+	public String newRoomFromReact(@RequestBody Map<String, String> receiver) {
+		PrincipalDetails principalDetails = null;
+    	Long user2Id = 0L;
+    	if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PrincipalDetails) {
+    		principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			user2Id = principalDetails.getUserId();
+		}
+		Long chatRoomId = chatRoomService.newRoom(receiver.get("receiver"), user2Id);
+		return "redirect:/socket/chat/"+chatRoomId;
+	}
+	
+	@PostMapping("/socket/room")
+	public String newRoom(@RequestParam("receiver") String receiver) {
+		PrincipalDetails principalDetails = null;
+    	Long user2Id = 0L;
+    	if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PrincipalDetails) {
+    		principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			user2Id = principalDetails.getUserId();
+		}
+		Long chatRoomId = chatRoomService.newRoom(receiver, user2Id);
 		return "redirect:/socket/chat/"+chatRoomId;
 	}
 	
@@ -72,12 +94,15 @@ public class ChatRoomController {
 		String userNickname = principalDetails.getNickname();
     	List<SocketMessageSendDto> messages = socketMessageService.getAllMsgs(chatRoomId, userId);
 		String receiver = chatRoomJoinService.findReceiver(chatRoomId, userId);
+		String senderPic = profileService.getProfileByName(userNickname);
+		String receiverPic = profileService.getProfileByName(receiver);
 		
 		model.addAttribute("receiver", receiver);
 		model.addAttribute("username", userNickname);
 		model.addAttribute("messages", messages);
 		model.addAttribute("roomId", chatRoomId);
-		
+		model.addAttribute("senderPic", senderPic);
+		model.addAttribute("receiverPic", receiverPic);
 		return "chatting/chatroom";
 	}
 }

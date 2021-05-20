@@ -60,7 +60,6 @@ public class YoutubeConfirmService {
 			if (!new File(savePath).exists()) {
 				try {
 					new File(savePath).mkdirs(); //mkdirs는 폴더안에 폴더를 찾는데 그 상위폴더 조차 존재치 않으면 만들어준다.
-					System.out.println(savePath);
 				} catch (Exception e) {
 					e.getStackTrace();
 				}
@@ -106,7 +105,7 @@ public class YoutubeConfirmService {
 	@Transactional
 	public YoutubeConfirmRequestDto apply(YoutubeConfirmRequestDto dto) {
 		User user = userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("존재하지 않는 유저입니다"));
-		user.modify(user.getUsername(), user.getPassword(), user.getNickname(), user.getRealName(), 
+		user.modify(user.getUsername(), user.getNickname(), user.getRealName(), 
 				user.getBday(), user.getProvidedId(), user.getProvider(), user.getAddress(), 
 				user.getPhone(), dto.getBsn(), dto.getYoutubeUrl(), false);
 		userRepository.save(user);

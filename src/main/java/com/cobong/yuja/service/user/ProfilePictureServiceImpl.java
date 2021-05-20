@@ -8,9 +8,9 @@ import java.util.Date;
 import java.util.List;
 
 import javax.imageio.ImageIO;
-import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cobong.yuja.model.ProfilePicture;
@@ -99,5 +99,17 @@ public class ProfilePictureServiceImpl implements ProfilePictureService {
 		for(ProfilePicture profilePicture: profilesToDel) {
 			profilePictureRepository.delete(profilePicture);
 		}
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public String getProfileByName(String userNickname) {
+		String psa = "";
+		if(profilePictureRepository.findByUserNickname(userNickname).isPresent()) {
+			psa += profilePictureRepository.findByUserNickname(userNickname).get().getFileName();
+		} else {
+			psa += "yuju05.png";
+		}
+		return psa;
 	}
 }

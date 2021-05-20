@@ -13,6 +13,7 @@ import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.chat.ChatRoomDto;
 import com.cobong.yuja.repository.chat.ChatRoomJoinRepository;
 import com.cobong.yuja.repository.chat.ChatRoomRepository;
+import com.cobong.yuja.repository.user.ProfilePictureRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -23,20 +24,26 @@ public class ChatRoomService {
 	private final ChatRoomRepository chatRoomRepository;
 	private final ChatRoomJoinService chatRoomJoinService;
 	private final ChatRoomJoinRepository chatroomjoinrepository;
+	private final UserRepository userRepository;
+	private final ProfilePictureRepository profileRepository;
 	
 	@Transactional
-	public Long newRoom(Long receiver, Long sender) {
-		if(receiver == sender) {
+	public Long newRoom(String receiver, Long sender) {
+		Optional<User> receiverEntity = userRepository.findByNickname(receiver);
+		if(!receiverEntity.isPresent()) {
+			throw new IllegalAccessError("해당 닉네임을 가진 유저가 없거나 잘못된 닉네임 입니다.");
+		}
+		if(receiverEntity.get().getUserId() == sender) {
 			throw new IllegalAccessError("자기자신과는 채팅할수 없습니다.");
 		}
-		Long roomId = chatRoomJoinService.checkForRoom(receiver, sender);
+		Long roomId = chatRoomJoinService.checkForRoom(receiverEntity.get().getUserId(), sender);
 		if(roomId != 0L) {
 			return roomId;
 		}
 		ChatRoom save = new ChatRoom();
 		ChatRoom chatRoom = chatRoomRepository.save(save);
 		
-		chatRoomJoinService.createRoomJoins(receiver,sender, chatRoom);
+		chatRoomJoinService.createRoomJoins(receiverEntity.get().getUserId(),sender, chatRoom);
 		
 		return chatRoom.getRoomId();
 	}
@@ -47,10 +54,12 @@ public class ChatRoomService {
 		
 		for(ChatRoomJoin join: joins) {
 			ChatRoom curRoom = join.getChatRoom();
-			String receiver = chatRoomJoinService.findReceiver(curRoom.getRoomId(), userId);
+			String receiver = chatRoomJoinService.findReceiver(curRoom.getRoomId(), userId);			
 			ChatRoomDto dto = new ChatRoomDto().create(curRoom.getRoomId(), receiver, "성공이다!!!!!");
 			
-			//if문 안에  curRoom.getMessages().get(curRoom.getMessages().size()-1).getMessage()
+			if(profileRepository.findByUserNickname(receiver).isPresent()) {
+				dto.setProfilePic(profileRepository.findByUserNickname(receiver).get().getFileName());
+			} 
 			dtoList.add(dto);
 		}
 		return dtoList;
