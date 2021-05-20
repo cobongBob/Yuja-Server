@@ -2,24 +2,29 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="/chat_css/chat.css" />
 <title>Insert title here</title>
 </head>
+
+{{! 채팅방 처음에 들어가기전 채팅방 리스트 }}
 <body>
-<h2>{{nickname}} 님의 채팅방 리스트</h2>
-	<div>
-	    <form action="/socket/room" method="POST">
-	        <input type="text" id="receiver" name="receiver" placeholder="상대방 이름을 입력하세요" maxlength="20" required>
-	        <input type="submit" value="채팅방 생성">
-	    </form>
-	</div>
+<div class="ChatListTitle">
+   <h2>{{nickname}} 님의 채팅방 리스트</h2>
+</div>
+   <div>
+       <form class="ChatForm" action="/socket/room" method="POST">
+           <input class="ChatSearch" type="text" id="receiver" name="receiver" placeholder="상대방 닉네임을 입력하세요" maxlength="20" required>
+           <input class="ChatSubmit" type="submit" value="채팅방 생성">
+       </form>
+   </div>
     <div>
         <table>
             {{#chatRooms}}
-	            <tr> 
-	                <td><a href="/socket/chat/{{chatRoomId}}"><h3>{{writer}}</h3></a></td>
-	                <td><a href="/socket/chat/{{chatRoomId}}"><img src="../files/profiles/{{profilePic}}" alt="ProfilePicture" height="50px" width="50px"/></a></td>
-	                <td><a href="/socket/chat/{{chatRoomId}}">삭제</a></td> 
-	            </tr>
+               <tr> 
+                   <td><img src="../files/profiles/{{profilePic}}" alt="ProfilePicture" height="30px" width="30"/></td>
+                   <td><h3>{{writer}}</h3></td>
+                   <td><a href="/socket/chat/{{chatRoomId}}">삭제</a></td> 
+               </tr>
             {{/chatRooms}}
         </table>
     </div>

@@ -2,41 +2,46 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<link rel="stylesheet" href="/chat_css/chat.css" />
 <title>Yuja Chat</title>
 </head>
+
+{{! 채팅방 들어갈때 -> 채팅 기록 남은거 보여주는 div }}
 <body>
-<img src="{{receiverPic}}" alt="why..?" />
-<h1>{{receiver}}와 체팅</h1>
+<div class="ChatWho">
+   <h1>{{receiver}}와 채팅</h1>
+</div>
 <a href="/rooms">채팅방 나가기</a>
-	<div id="chatlogs">
-		{{#messages}}
-			{{#ownerOrNot}}
-				<div style='text-align:right; border-style:solid'>
-					<img src="../files/profiles/{{senderPic}}" alt="" />
-					<h3>{{sender}}</h3><br>
-					<h5>{{content}}</h5><br>
-					<h6>{{createdDate}}</h6>
-				</div>
-			{{/ownerOrNot}}
-			{{^ownerOrNot}}
-				<div style='text-align:left; border-style:solid'>
-					<img src="../files/profiles/{{receiverPic}}" alt="" />
-					<h3>{{sender}}</h3><br>
-					<h5>{{content}}</h5><br>
-					<h6>{{createdDate}}</h6>
-				</div>
-			{{/ownerOrNot}}
-		{{/messages}}
-	</div>
-	
-	<div>
-		<textarea>{{receiverPic}}</textarea>
-		<input type="text" id="message" placeholder="메세지를 입력해 주세요" autocomplete="off"/>
-		<button type="button" onClick="send()">보내기</button>
-	</div>
+   <div id="chatlogs">
+      {{#messages}}
+         {{#ownerOrNot}}
+            <div style='text-align:right; border-style:solid'>
+            	<img src="/files/profiles/{{senderPic}}" alt="" />
+               <h3>{{sender}}</h3><br>
+               <h5>{{content}}</h5><br>
+               <h6>{{createdDate}}</h6>
+            </div>
+         {{/ownerOrNot}}
+         {{^ownerOrNot}}
+            <div style='text-align:left; border-style:solid'>
+            	<img src="/files/profiles/{{receiverPic}}" alt="" />
+               <h3>{{sender}}</h3><br>
+               <h5>{{content}}</h5><br>
+               <h6>{{createdDate}}</h6>
+            </div>
+         {{/ownerOrNot}}
+      {{/messages}}
+   </div>
+   
+   <div>
+      <input type="text" id="message" placeholder="메세지를 입력해 주세요" autocomplete="off"/>
+      <button type="button" onClick="send()">보내기</button>
+   </div>
+
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
 <script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
 <script>
 const receiver = "{{{receiver}}}";
@@ -46,4 +51,5 @@ const senderPic = "{{{senderPic}}}";
 const receiverPic = "{{{receiverPic}}}";
 </script>
 <script src="/js/chat/chat.js"></script>
+
 </html>
