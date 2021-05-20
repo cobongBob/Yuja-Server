@@ -1,72 +1,66 @@
-let stomp = null;
-const chatPage = document.querySelector('#chat-page');
-const messageForm = document.querySelector('#messageForm');
-const messageInput = document.querySelector('#message');
-const chatLogs = document.querySelector('#chatLogs');
+let stompClient = null;
+let msgArea = document.getElementById("chatlogs");
+let now = null;
+let hour = 0;
+let min = 0;
+connect();
 
-//const username = sessionStorage.userData.nickname;
-const username = "user";
-
-let socket = new SockJS("/yuja");
-stomp = Stomp.over(socket);
-
-stomp.connect({}, onConnected, onError);
-
-function onConnected(){
-	stomp.subscribe("/topic/cobong", onMessageReceived);
-	
-	/*
-	to make the socket connection private to two users who are interested in each,
-	stomp provides a method subscribe. yet not perfectly suer if this will be executable
-	with our codes.. since we need some help.
-	Still need to check if the sessionStorage thing works or not.
-	
-	stomp.subscribe(
-		"/user/"+currentUser.id + "/topic/cobong",
-		onMessageReceived
-	);
-	 */
-
-	stomp.send(
-		"/app/chat/join",
-		{},
-		JSON.stringify({sender:username, type:"JOIN"})
-		)
-}
-
-function onError(error){
-	chatLogs.innerHTML("에러 발생!!");
-	chatLogs.style.color="red";
-}
-
-function sendMsg(event){
-	event.preventDefault();
-	const msgToSend = messageInput.value.trim();
-	if(msgToSend && stomp){
-		const chatMsg = {
-			sender: username,
-			content: messageInput.value+"\n",
-			type: 'CHAT'
-		};
-		stomp.send("/app/chat/send", {}, JSON.stringify(chatMsg));
-		messageInput.value= '';
-	}
-}
-
-function onMessageReceived(payload){
-	const msg = JSON.parse(payload.body);
-	
-	if(msg.type === "JOIN"){
-		msg.content = msg.sender + "님이 들어왔습니다.\n";
-	} else if(msg.type === "LEFT"){
-		msg.content = msg.sender + "님이 나가셨습니다.\n";
-	} 
-	chatLogs.append(msg.sender +" : "+msg.content)
+function connect(){
+	let socket = new SockJS("/yuja");
+	stompClient = Stomp.over(socket);
+	stompClient.connect({}, function(){
+		stompClient.subscribe("/topic/cobong/"+username, function(e){
+			showMessageReceived(JSON.parse(e.body));
+		});
+	});
+	window.scrollTo(0,document.body.scrollHeight);
 }
 
 function disconnect(){
-	stomp.disconnect();
+	if(stompClient !== null){
+		stompClient.disconnect();
+	}
 }
 
-messageForm.addEventListener('submit', sendMsg, true)
-messageForm.addEventListener('button', disconnect, true)
+function send() {
+	message = document.getElementById("message").value;
+    data = {'chatRoomId': roomId, 'sender' :username, 'receiver': receiver,'message': message};
+    stompClient.send("/app/chat/send", {}, JSON.stringify(data));
+    showMessageSend(data);
+    $("#message").val('');
+}
+function showMessageReceived(e){
+	window.scrollTo(0,document.body.scrollHeight);
+	now = new Date();
+	if(now.getHours() > 12){
+		msgArea.innerHTML += "<div style='text-align:left; border-style:solid'><h3>"+e.sender+
+					"</h3><br><h5>"+e.message+"</h5><br><h6>오후 "+now.getHours()%12+":"+now.getMinutes() +"<h6></div>";
+	}else if(now.getHours() === 12){
+		msgArea.innerHTML += "<div style='text-align:left; border-style:solid'><h3>"+e.sender+
+					"</h3><br><h5>"+e.message+"</h5><br><h6>오후 "+now.getHours()+":"+now.getMinutes() +"<h6></div>";
+	}else{
+		msgArea.innerHTML += "<div style='text-align:left; border-style:solid'><h3>"+e.sender+
+					"</h3><br><h5>"+e.message+"</h5><br><h6>오전 "+now.getHours()+":"+now.getMinutes() +"<h6></div>";
+	}
+	window.scrollTo(0,document.body.scrollHeight);
+}
+
+function showMessageSend(e){
+	window.scrollTo(0,document.body.scrollHeight);
+	now = new Date();
+	if(now.getHours() > 12){
+		msgArea.innerHTML += "<div style='text-align:right; border-style:solid'><h3>"+e.sender+
+						"</h3><br><h5>"+e.message+"</h5><br><h6>오후 "+now.getHours()%12+":"+now.getMinutes() +"<h6></div>";
+	} else if(now.getHours() === 12){
+		msgArea.innerHTML += "<div style='text-align:right; border-style:solid'><h3>"+e.sender+
+						"</h3><br><h5>"+e.message+"</h5><br><h6>오후 "+now.getHours()+":"+now.getMinutes() +"<h6></div>";
+	}else{
+		msgArea.innerHTML += "<div style='text-align:right; border-style:solid'><h3>"+e.sender+
+						"</h3><br><h5>"+e.message+"</h5><br><h6>오전 "+now.getHours()+":"+now.getMinutes() +"<h6></div>";
+	}
+	window.scrollTo(0,document.body.scrollHeight);
+}
+
+window.onbeforeunload = function(e){
+	disconnect();
+}

@@ -14,10 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cobong.yuja.config.auth.PrincipalDetails;
-import com.cobong.yuja.config.websocket.ChatRoomDto;
-import com.cobong.yuja.config.websocket.ChatRoomJoinService;
-import com.cobong.yuja.config.websocket.SocketMessageSendDto;
-import com.cobong.yuja.config.websocket.SocketMessageService;
+import com.cobong.yuja.payload.request.chat.ChatRoomDto;
+import com.cobong.yuja.payload.response.chat.SocketMessageSendDto;
+import com.cobong.yuja.service.chat.ChatRoomJoinService;
+import com.cobong.yuja.service.chat.ChatRoomService;
+import com.cobong.yuja.service.chat.SocketMessageService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -46,25 +47,9 @@ public class ChatRoomController {
 		 */
 		List<ChatRoomDto> chatRooms = chatRoomService.findRooms(userId);
 		
-		System.out.println("/////////////////////////////////////////////////");
-		for(ChatRoomDto dto : chatRooms) {
-			System.out.println(dto);
-		}
-		System.out.println("/////////////////////////////////////////////////");
-		
 		model.addAttribute("chatRooms", chatRooms);
 		
 		return "chatting/roomlist";
-	}
-	
-	@GetMapping("/socket/chat")
-	public String index() {
-		return "chatting/chatroom";
-	}
-	
-	@GetMapping("/socket/chat/ex")
-	public String exFromWeb() {
-		return "chatting/exs";
 	}
 	
 	@PostMapping("/socket/room")      //senderId의 경우 HttpServletRequest req로 받아서 현재 로그인 해있는 유저로 받아야한다.
@@ -85,7 +70,7 @@ public class ChatRoomController {
     		throw new IllegalAccessError("채팅을 시도하려는 유저가 존재하지 않거나 유저의 로그인 세션이 끝났습니다.");
     	}
 		String userNickname = principalDetails.getNickname();
-    	List<SocketMessageSendDto> messages = socketMessageService.getAllMsgs(chatRoomId);
+    	List<SocketMessageSendDto> messages = socketMessageService.getAllMsgs(chatRoomId, userId);
 		String receiver = chatRoomJoinService.findReceiver(chatRoomId, userId);
 		
 		model.addAttribute("receiver", receiver);

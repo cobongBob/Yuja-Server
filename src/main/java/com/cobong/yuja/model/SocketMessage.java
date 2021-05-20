@@ -1,4 +1,4 @@
-package com.cobong.yuja.config.websocket;
+package com.cobong.yuja.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.cobong.yuja.model.User;
 import com.cobong.yuja.model.audit.DateAudit;
 
 import lombok.AllArgsConstructor;

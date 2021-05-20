@@ -1,10 +1,13 @@
-package com.cobong.yuja.config.websocket;
+package com.cobong.yuja.service.chat;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cobong.yuja.model.ChatRoom;
+import com.cobong.yuja.model.ChatRoomJoin;
+import com.cobong.yuja.repository.chat.ChatRoomJoinRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -39,6 +42,7 @@ public class ChatRoomJoinService {
 		return 0L;
 	}
 	
+	@Transactional(readOnly = true)
 	public String findReceiver(Long chatRoomId, Long senderId) {
 		List<ChatRoomJoin> joins = chatRoomJoinRepository.findByChatRoomRoomId(chatRoomId);
 		String receiver = "";

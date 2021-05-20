@@ -23,6 +23,8 @@ public class ThumbnailDto {
 				.tempPath(this.tempPath)
 				.origFilename(this.origFilename)
 				.flag(this.flag)
+				.originalFileTemp(this.originalFileTemp)
+				.originalFileDest(this.originalFileDest)
 				.build();
 	}
 }

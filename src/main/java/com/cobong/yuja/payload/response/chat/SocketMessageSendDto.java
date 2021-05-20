@@ -1,4 +1,6 @@
-package com.cobong.yuja.config.websocket;
+package com.cobong.yuja.payload.response.chat;
+
+import com.cobong.yuja.model.SocketMessage;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +10,8 @@ import lombok.Setter;
 public class SocketMessageSendDto {
 	private String sender;
 	private String content;
-	//private Date createdDate; 일단 기초를 구현 후 보낸 시간까지 구현해 보도록 하자.
+	private boolean ownerOrNot;
+	private String createdDate; 
 	
 	public SocketMessageSendDto entityToDto(SocketMessage entity) {
 		SocketMessageSendDto dto = new SocketMessageSendDto();

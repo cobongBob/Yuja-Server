@@ -15,8 +15,10 @@ import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardComment;
 import com.cobong.yuja.model.BoardLiked;
 import com.cobong.yuja.model.BoardType;
+import com.cobong.yuja.model.Thumbnail;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.repository.BoardTypeRepository;
+import com.cobong.yuja.repository.attach.ThumbnailRepository;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.boardLiked.BoardLikedRepository;
 import com.cobong.yuja.repository.comment.CommentRepository;
@@ -46,6 +48,9 @@ public class DummyInsert {
 	@Autowired
 	private AuthoritiesRepository authRepo;
 	
+	@Autowired
+	private ThumbnailRepository thumbnailRepository;
+	
 	@Test //이놈 돌릴땐 yml에서 create로 바꿔주시고 돌린후 update로 돌려주세요
 	public void insertType() {
 //		1. Youtube
@@ -67,6 +72,8 @@ public class DummyInsert {
 		boardType = new BoardType(null,"CustomServiceBoard",null);
 		boardTypeRepository.save(boardType);
 		boardType = new BoardType(null,"FreeBoard",null);
+		boardTypeRepository.save(boardType);
+		boardType = new BoardType(null,"ReportBoard",null);
 		boardTypeRepository.save(boardType);
 	}
 	
@@ -94,8 +101,8 @@ public class DummyInsert {
 			User user = User.builder()
 					.username("user "+i)
 					.password(passwordEncoder.encode("1111"))
-					.nickname("nickname "+i)
-					.realName("tester "+i)
+					.nickname("nickname테스트길게해봅니다 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ "+i)
+					.realName("tester이름을 길게해봅니다 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ "+i)
 					.bday("2000-01-"+i)
 					.authorities(Collections.singletonList(auth1))
 					.build();
@@ -106,8 +113,8 @@ public class DummyInsert {
 			User user = User.builder()
 					.username("user "+i)
 					.password(passwordEncoder.encode("1111"))
-					.nickname("nickname "+i)
-					.realName("tester "+i)
+					.nickname("nickname테스트길게해봅니다 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ "+i)
+					.realName("tester이름을 길게해봅니다 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ "+i)
 					.bday("2000-01-"+i)
 					.youtubeUrl("https://www.youtube.com/channel/UCVrhnbfe78ODeQglXtT1Elw")
 					.authorities(Collections.singletonList(auth2))
@@ -118,8 +125,8 @@ public class DummyInsert {
 			User user = User.builder()
 					.username("user "+i)
 					.password(passwordEncoder.encode("1111"))
-					.nickname("nickname "+i)
-					.realName("tester "+i)
+					.nickname("nickname테스트길게해봅니다 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ "+i)
+					.realName("tester이름을 길게해봅니다 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ "+i)
 					.bday("2000-01-"+i)
 					.youtubeUrl("https://www.youtube.com/channel/UCfpaSruWW3S4dibonKXENjA")
 					.authorities(Collections.singletonList(auth2))
@@ -131,8 +138,8 @@ public class DummyInsert {
 			User user = User.builder()
 					.username("admin "+i)
 					.password(passwordEncoder.encode("1111"))
-					.nickname("Admin "+i)
-					.realName("Admin "+i)
+					.nickname("Admin테스트길게해봅니다 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ "+i)
+					.realName("Adminr이름을 길게해봅니다 ㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋㅋ "+i)
 					.bday("2000-01-"+i)
 					.authorities(Collections.singletonList(auth3))
 					.build();
@@ -157,8 +164,8 @@ public class DummyInsert {
 					.receptionMethod("비대면")
 					.recruitingNum(i)
 					.tools("프리미어 프로,파이널,베가스")
-					.title("테스트 데어 "+i)
-					.content("테스트 데어 "+i)
+					.title("테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어 "+i)
+					.content("테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어 "+i)
 					.worker("편집자")
 					.yWhen("상시모집")
 					.hit(i)
@@ -180,8 +187,8 @@ public class DummyInsert {
 					.receptionMethod("비대면")
 					.recruitingNum(i)
 					.tools("프리미어 프로,파이널,베가스")
-					.title("테스트 쯔양 "+i)
-					.content("테스트 쯔양 "+i)
+					.title("테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 테스트 쯔양 "+i)
+					.content("테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양 "+i)
 					.worker("편집자")
 					.yWhen("상시모집")
 					.hit(i)
@@ -197,8 +204,8 @@ public class DummyInsert {
 			Board board = Board.builder()
 					.boardType(boardType)
 					.user(user)
-					.title("테스트 제목 "+i)
-					.content("테스트 내용 "+i)
+					.title("테스트 윈 제목테스트 윈 제목테스트 윈 제목테스트 윈 제목테스트 윈 제목테스트 윈 제목테스트 윈 제목 "+i)
+					.content("테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용 "+i)
 					.hit(i)
 					.build();
 			boardRepository.save(board);
@@ -212,8 +219,8 @@ public class DummyInsert {
 			Board board = Board.builder()
 					.boardType(boardType)
 					.user(user)
-					.title("테스트 제목 "+i)
-					.content("테스트 내용 "+i)
+					.title("테스트 콜라보 제목테스트 콜라보 제목테스트 콜라보 제목테스트 콜라보 제목테스트 콜라보 제목테스트 콜라보 제목 "+i)
+					.content("테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용 "+i)
 					.hit(i)
 					.build();
 			boardRepository.save(board);
@@ -227,9 +234,10 @@ public class DummyInsert {
 			Board board = Board.builder()
 					.boardType(boardType)
 					.user(user)
-					.title("테스트 제목 "+i)
-					.content("테스트 내용 "+i)
+					.title("테스트 에디터 제목테스트 에디터 제목테스트 에디터 제목테스트 에디터 제목테스트 에디터 제목테스트 에디터 제목 "+i)
+					.content("테스트 에디터 내용테스트 에디터 내용테스트 에디터 내용테스트 에디터 내용테스트 에디터 내용테스트 에디터 내용테스트 에디터 내용테스트 에디터 내용테스트 에디터 내용테스트 에디터 내용테스트 에디터 내용테스트 에디터 내용테스트 에디터 내용 "+i)
 					.tools("프리미어 프로,파이널,베가스")
+					.previewImage("https://img.youtube.com/vi/JSyw7OEbMqM/hqdefault.jpg")
 					.payAmount("100,000")
 					.payType("건당")
 					.hit(i)
@@ -245,8 +253,8 @@ public class DummyInsert {
 			Board board = Board.builder()
 					.boardType(boardType)
 					.user(user)
-					.title("테스트 제목 "+i)
-					.content("테스트 내용 "+i)
+					.title("테스트 썸네일 제목테스트 썸네일 제목테스트 썸네일 제목테스트 썸네일 제목테스트 썸네일 제목테스트 썸네일 제목 "+i)
+					.content("테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용 "+i)
 					.tools("포토샵")
 					.payAmount("50,000")
 					.payType("건당")
@@ -315,6 +323,24 @@ public class DummyInsert {
 					.deleted(false)
 					.build();
 			commentRepository.save(boardComment);
+		});
+	}
+	
+	@Test // files/thumbnail폴더에 yuzu05.png파일 넣어주셔야합니다.
+	public void insertThumb() {
+		IntStream.range(357, 458).forEach(i -> {
+			Board board = Board.builder().boardId(Long.valueOf(i)).build();
+			Thumbnail thumb = Thumbnail.builder()
+					.fileName("yuzu05.png")
+					.board(board)
+					.uploadPath("임시입니다")
+					.tempPath("임시입니다")
+					.origFilename("임시")
+					.flag(true)
+					.originalFileTemp("yuzu05.png")
+					.originalFileDest("yuzu05.png")
+					.build();
+			thumbnailRepository.save(thumb);
 		});
 	}
 }
