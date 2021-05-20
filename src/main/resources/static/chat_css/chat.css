@@ -100,17 +100,69 @@
 	padding: 2%;
 }
 
+.SenderImgWrapper {
+	text-align: center;
+}
+
+.ChatSendProfileImg {
+	border-radius: 50%;
+	width: 12vw;
+	height: 9vh;
+}
+
 .ChatMessageSender {
 	max-width: 30vw;
 	overflow-x: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 1rem;
+  font-size: 1.2rem;
   margin-bottom: 5%;
+  text-align: center;
 }
 
 .ChatMessageContent {
 	text-align: left;
+	width: 30vw;
+}
+
+.ChatTime {
+	display: inline-block;
+}
+
+.ChatReceiverWrapper {
+	background-color: #fff2f2;
+	margin-bottom: 2%;
+	display: inline-block;
+	padding: 2%;
+}
+
+.ReceiverImgWrapper {
+	text-align: center;
+}
+
+.ChatReceiverProfileImg {
+	border-radius: 50%;
+	width: 12vw;
+	height: 9vh;
+}
+
+.ChatMessageReceiver {
+	max-width: 30vw;
+	overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 1.2rem;
+  margin-bottom: 5%;
+  text-align: center;
+}
+
+.ChatMessageContent {
+	text-align: left;
+	width: 30vw;
+}
+
+.ChatTime {
+	display: inline-block;
 }
 
 
