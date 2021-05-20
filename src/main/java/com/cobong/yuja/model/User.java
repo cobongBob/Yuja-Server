@@ -89,9 +89,6 @@ public class User extends DateAudit {
 	
 	private String youtubeUrl;
 	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-	private List<ReportedBoards> reportedBoards;
-	
 	@Column(nullable = false, columnDefinition = "TINYINT(1)")
 	private boolean banned;
 
