@@ -25,6 +25,7 @@ public class UserResponseDto {
 	private String bsn;
 	private String youtubeUrl;
 	private ZonedDateTime createDate;
+	private String youtubeConfirmImg;
 	
 	public UserResponseDto entityToDto(User entity) {
 		this.id = entity.getUserId();

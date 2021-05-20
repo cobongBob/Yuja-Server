@@ -143,7 +143,9 @@ public class UserServiceImpl implements UserService {
 				dto.setDetailAddress(user.getAddress().substring(user.getAddress().indexOf(" # ")));				
 			}
 		}
-		
+		if(youtubeConfirmRepository.findByUserUserId(id).isPresent()) {
+			dto.setYoutubeConfirmImg(youtubeConfirmRepository.findByUserUserId(id).get().getFileName());
+		}
 		Optional<ProfilePicture> optProfilePicture = profilePictureRepository.findByUserUserId(id);
 		if(optProfilePicture.isPresent()) {
 			ProfilePicture profilePicture = optProfilePicture.get();
