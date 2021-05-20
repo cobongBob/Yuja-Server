@@ -12,31 +12,33 @@
    <h1>{{receiver}}와 채팅</h1>
 </div>
 <a href="/rooms">채팅방 나가기</a>
-   <div id="chatlogs">
+   <div id="ChatLogsWrapper">
       {{#messages}}
          {{#ownerOrNot}}
-            <div style='text-align:right; border-style:solid'>
+         <div class="ChatSenderBigWrapper">
+            <div class="ChatSenderWrapper">
             	<img src="/files/profiles/{{senderPic}}" alt="" />
-               <h3>{{sender}}</h3><br>
-               <h5>{{content}}</h5><br>
-               <h6>{{createdDate}}</h6>
+               <div class="ChatMessageSender">{{sender}}</div>
+               <div class="ChatMessageContent">{{content}}</div>
+               <div class="ChatTime">{{createdDate}}</div>
             </div>
+         </div>
          {{/ownerOrNot}}
          {{^ownerOrNot}}
-            <div style='text-align:left; border-style:solid'>
+            <div class="ChatReceiverWrapper">
             	<img src="/files/profiles/{{receiverPic}}" alt="" />
-               <h3>{{sender}}</h3><br>
-               <h5>{{content}}</h5><br>
-               <h6>{{createdDate}}</h6>
+               <div>{{sender}}</div><br>
+               <div>{{content}}</div><br>
+               <div>{{createdDate}}</div>
             </div>
          {{/ownerOrNot}}
       {{/messages}}
-   </div>
-   
    <div>
       <input type="text" id="message" placeholder="메세지를 입력해 주세요" autocomplete="off"/>
       <button type="button" onClick="send()">보내기</button>
    </div>
+   </div>
+   
 
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
