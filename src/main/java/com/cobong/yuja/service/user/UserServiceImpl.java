@@ -115,8 +115,8 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 		
-		if (dto.getYoutubeImgId() != 0L) {
-			YoutubeConfirm youtubeConfirm = youtubeConfirmRepository.findById(dto.getYoutubeImgId())
+		if (dto.getYoutubeConfirmId() != 0L) {
+			YoutubeConfirm youtubeConfirm = youtubeConfirmRepository.findById(dto.getYoutubeConfirmId())
 					.orElseThrow(() -> new IllegalArgumentException("해당 유튜브 인증 이미지를 찾을수 없습니다."));
 			if (!youtubeConfirm.isFlag()) {
 				File temp = new File(youtubeConfirm.getTempPath());

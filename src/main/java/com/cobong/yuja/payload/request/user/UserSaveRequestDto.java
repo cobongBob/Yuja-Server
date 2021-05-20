@@ -40,7 +40,7 @@ public class UserSaveRequestDto {
 	private String detailAddress = "";
 	private String phone ="";
 	private String bsn ="";
-	private Long youtubeImgId = 0L;
+	private Long youtubeConfirmId = 0L;
 	private boolean isMarketingChecked;
 	private Long profilePicId = 0L;
 	private String youtubeUrl = "";
