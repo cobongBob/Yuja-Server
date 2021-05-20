@@ -19,6 +19,7 @@ import com.cobong.yuja.model.User;
 import com.cobong.yuja.model.YoutubeConfirm;
 import com.cobong.yuja.payload.request.user.YoutubeConfirmFIleSaveDto;
 import com.cobong.yuja.payload.request.user.YoutubeConfirmRequestDto;
+import com.cobong.yuja.payload.response.user.UserResponseDto;
 import com.cobong.yuja.payload.response.user.YoutubeConfirmResponseDto;
 import com.cobong.yuja.repository.user.AuthoritiesRepository;
 import com.cobong.yuja.repository.user.UserRepository;
@@ -135,9 +136,13 @@ public class YoutubeConfirmService {
 		
 		for(YoutubeConfirm youtubeConfirm : youtubeConfirms) {
 			YoutubeConfirmResponseDto dto = new YoutubeConfirmResponseDto().entityToDto(youtubeConfirm);
-			dtos.add(dto);
+			if(youtubeConfirm.getUser() != null) {
+				User user = youtubeConfirm.getUser();
+				UserResponseDto userDto = new UserResponseDto().entityToDto(user);
+				dto.setUser(userDto);
+				dtos.add(dto);				
+			}
 		}
-		
 		return dtos;
 	}
 	
