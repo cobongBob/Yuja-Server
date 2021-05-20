@@ -15,8 +15,10 @@ import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardComment;
 import com.cobong.yuja.model.BoardLiked;
 import com.cobong.yuja.model.BoardType;
+import com.cobong.yuja.model.Thumbnail;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.repository.BoardTypeRepository;
+import com.cobong.yuja.repository.attach.ThumbnailRepository;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.boardLiked.BoardLikedRepository;
 import com.cobong.yuja.repository.comment.CommentRepository;
@@ -45,6 +47,9 @@ public class DummyInsert {
 
 	@Autowired
 	private AuthoritiesRepository authRepo;
+	
+	@Autowired
+	private ThumbnailRepository thumbnailRepository;
 	
 	@Test //이놈 돌릴땐 yml에서 create로 바꿔주시고 돌린후 update로 돌려주세요
 	public void insertType() {
@@ -318,6 +323,24 @@ public class DummyInsert {
 					.deleted(false)
 					.build();
 			commentRepository.save(boardComment);
+		});
+	}
+	
+	@Test // files/thumbnail폴더에 yuzu05.png파일 넣어주셔야합니다.
+	public void insertThumb() {
+		IntStream.range(357, 458).forEach(i -> {
+			Board board = Board.builder().boardId(Long.valueOf(i)).build();
+			Thumbnail thumb = Thumbnail.builder()
+					.fileName("yuzu05.png")
+					.board(board)
+					.uploadPath("임시입니다")
+					.tempPath("임시입니다")
+					.origFilename("임시")
+					.flag(true)
+					.originalFileTemp("yuzu05.png")
+					.originalFileDest("yuzu05.png")
+					.build();
+			thumbnailRepository.save(thumb);
 		});
 	}
 }
