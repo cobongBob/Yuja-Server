@@ -5,13 +5,14 @@
 <title>Yuja Chat</title>
 </head>
 <body>
-<img src="{{receiverPic}}" alt="" />
+<img src="{{receiverPic}}" alt="why..?" />
 <h1>{{receiver}}와 체팅</h1>
 <a href="/rooms">채팅방 나가기</a>
 	<div id="chatlogs">
 		{{#messages}}
 			{{#ownerOrNot}}
 				<div style='text-align:right; border-style:solid'>
+					<img src="../files/profiles/{{senderPic}}" alt="" />
 					<h3>{{sender}}</h3><br>
 					<h5>{{content}}</h5><br>
 					<h6>{{createdDate}}</h6>
@@ -19,6 +20,7 @@
 			{{/ownerOrNot}}
 			{{^ownerOrNot}}
 				<div style='text-align:left; border-style:solid'>
+					<img src="../files/profiles/{{receiverPic}}" alt="" />
 					<h3>{{sender}}</h3><br>
 					<h5>{{content}}</h5><br>
 					<h6>{{createdDate}}</h6>
@@ -28,6 +30,7 @@
 	</div>
 	
 	<div>
+		<textarea>{{receiverPic}}</textarea>
 		<input type="text" id="message" placeholder="메세지를 입력해 주세요" autocomplete="off"/>
 		<button type="button" onClick="send()">보내기</button>
 	</div>

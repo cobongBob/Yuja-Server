@@ -171,7 +171,7 @@ public class YoutubeConfirmService {
 		
 		youtubeConfirmRepository.save(youtubeConfirm);
 		dtoToSend.setYoutubeConfirmId(dto.getYoutubeConfirmId());
-		dtoToSend.setYoutubeConfirmImg(youtubeConfirm.getUploadPath());
+		dtoToSend.setYoutubeConfirmImg(youtubeConfirm.getFileName());
 		return dtoToSend;
 	}
 	
