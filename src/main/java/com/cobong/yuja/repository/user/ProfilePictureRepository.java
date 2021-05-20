@@ -10,7 +10,7 @@ import com.cobong.yuja.model.ProfilePicture;
 
 public interface ProfilePictureRepository extends JpaRepository<ProfilePicture, Long>{
 	Optional<ProfilePicture> findByUserUserId(Long userId);
-	
+	Optional<ProfilePicture> findByUserNickname(String nickname);
 	@Query("SELECT P FROM ProfilePicture P WHERE flag = 0")
 	List<ProfilePicture> findAllByFlag();
 	

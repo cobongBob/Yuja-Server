@@ -115,11 +115,7 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 		
-		System.out.println("/n==============================  Visited  ==============================\n");
-		System.out.println("\n dto.getYoutube:  "+ dto.getYoutubeImgId()+"            /////////////// \n");
-		
 		if (dto.getYoutubeImgId() != 0L) {
-			System.out.println("/n==============================  Visited  ==============================\n");
 			YoutubeConfirm youtubeConfirm = youtubeConfirmRepository.findById(dto.getYoutubeImgId())
 					.orElseThrow(() -> new IllegalArgumentException("해당 유튜브 인증 이미지를 찾을수 없습니다."));
 			if (!youtubeConfirm.isFlag()) {
@@ -143,13 +139,17 @@ public class UserServiceImpl implements UserService {
 	public UserResponseDto findById(Long id) {
 		User user = userRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
-		dto.setAddress(user.getAddress().substring(0,user.getAddress().indexOf(" # ")));
-		dto.setDetailAddress(user.getAddress().substring(user.getAddress().indexOf(" # ")));
+		if(user.getAddress() != null) {
+			dto.setAddress(user.getAddress().substring(0,user.getAddress().indexOf(" # ")));
+			if(user.getAddress().contains("#")) {
+				dto.setDetailAddress(user.getAddress().substring(user.getAddress().indexOf(" # ")));				
+			}
+		}
 		
 		Optional<ProfilePicture> optProfilePicture = profilePictureRepository.findByUserUserId(id);
 		if(optProfilePicture.isPresent()) {
 			ProfilePicture profilePicture = optProfilePicture.get();
-			dto.setProfilePic(profilePicture.getUploadPath());			
+			dto.setProfilePic(profilePicture.getFileName());			
 		} else {
 			dto.setProfilePic("");
 		} 
@@ -266,7 +266,7 @@ public class UserServiceImpl implements UserService {
 			File toDel = new File(originalProfilePicture.getUploadPath());
 			if(toDel.exists()) {
 				toDel.delete();				
-			} 
+			}
 		}
 		userRepository.deleteById(bno);
 		return "success";
@@ -289,8 +289,13 @@ public class UserServiceImpl implements UserService {
 	public UserResponseDto findByUsername(String username) {
 		User user = userRepository.findByUsername(username).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
-		dto.setAddress(user.getAddress().substring(0,user.getAddress().indexOf(" # ")));
-		dto.setDetailAddress(user.getAddress().substring(user.getAddress().indexOf(" # ")));
+		
+		if(user.getAddress() != null) {
+			dto.setAddress(user.getAddress().substring(0,user.getAddress().indexOf(" # ")));
+			if(user.getAddress().contains("#")) {
+				dto.setDetailAddress(user.getAddress().substring(user.getAddress().indexOf(" # ")));				
+			}
+		}
 		return dto;
 	}
 	@Override
