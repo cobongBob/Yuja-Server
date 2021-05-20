@@ -26,6 +26,7 @@ public class UserResponseDto {
 	private String youtubeUrl;
 	private ZonedDateTime createDate;
 	private String youtubeConfirmImg;
+	private boolean banned;
 	
 	public UserResponseDto entityToDto(User entity) {
 		this.id = entity.getUserId();
@@ -40,6 +41,7 @@ public class UserResponseDto {
 		this.bsn = entity.getBsn();
 		this.youtubeUrl = entity.getYoutubeUrl();
 		this.createDate = entity.getCreatedDate().atZone(ZoneId.of("Asia/Seoul"));
+		this.banned = entity.isBanned();
 		return this;
 	}
 	

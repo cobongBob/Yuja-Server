@@ -522,18 +522,15 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public UserResponseDto banned(Long bno, UserUpdateRequestDto userUpdateRequestDto) {
-		User user = userRepository.findById(bno)
-				.orElseThrow(()-> new IllegalAccessError("해당유저 없음 " +bno));
-		
-		user.modify(userUpdateRequestDto.getUsername(), 
-				userUpdateRequestDto.getNickname(),userUpdateRequestDto.getRealName(),
-				userUpdateRequestDto.getBday(),userUpdateRequestDto.getProvidedId(), 
-				userUpdateRequestDto.getProvider(), userUpdateRequestDto.getAddress(), 
-				userUpdateRequestDto.getPhone(),userUpdateRequestDto.getBsn(), 
-				userUpdateRequestDto.getYoututubeUrl(), true);
-		
-		UserResponseDto dto = new UserResponseDto().entityToDto(user);
-		return dto;
+	public String banned(Long uno) {
+		User user = userRepository.findById(uno)
+				.orElseThrow(()-> new IllegalAccessError("해당유저 없음 " +uno));
+		if(user.isBanned()) {
+			user.setBanned(false);
+			return "해당 유저가 밴 해제 되었습니다.";
+		} else {
+			user.setBanned(true);
+			return "해당 유저가 밴 되었습니다.";
+		}
 	}
 }

@@ -109,4 +109,7 @@ public class User extends DateAudit {
 	public void resetPasword(String password) {
 		this.password = password;
 	}
+	public void setBanned(boolean banned) {
+		this.banned = banned;
+	}
 }
