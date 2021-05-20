@@ -42,6 +42,7 @@ public class ChatRoomJoinService {
 		return 0L;
 	}
 	
+	@Transactional(readOnly = true)
 	public String findReceiver(Long chatRoomId, Long senderId) {
 		List<ChatRoomJoin> joins = chatRoomJoinRepository.findByChatRoomRoomId(chatRoomId);
 		String receiver = "";

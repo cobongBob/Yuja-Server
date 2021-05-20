@@ -1,6 +1,5 @@
 package com.cobong.yuja.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -19,6 +18,9 @@ public class ChatRoom {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long roomId;
 	
-	@OneToMany(mappedBy = "chatRoom", cascade = CascadeType.ALL)
-	private List<SocketMessage> messages = new ArrayList<SocketMessage>();
+	@OneToMany(mappedBy = "chatRoom", cascade = CascadeType.REMOVE)
+	private List<SocketMessage> messages;
+	
+	@OneToMany(mappedBy = "chatRoom", cascade = CascadeType.REMOVE)
+	private List<ChatRoomJoin> joins;
 }

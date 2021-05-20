@@ -1,19 +1,11 @@
 package com.cobong.yuja.service.chat;
 
-import java.nio.channels.IllegalChannelGroupException;
-import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.boot.autoconfigure.web.format.DateTimeFormatters;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -92,6 +84,7 @@ public class SocketMessageService {
 		return dtoList;
 	}
 
+	@Transactional
 	public void delete2weeksOld() {
 		List<SocketMessage> msgList = socketMessageRepository.findAll();
 		LocalDateTime now = LocalDateTime.now();
