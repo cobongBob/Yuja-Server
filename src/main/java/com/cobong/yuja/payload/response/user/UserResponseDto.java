@@ -1,5 +1,7 @@
 package com.cobong.yuja.payload.response.user;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 import com.cobong.yuja.model.User;
@@ -22,6 +24,7 @@ public class UserResponseDto {
 	private String phone;
 	private String bsn;
 	private String youtubeUrl;
+	private ZonedDateTime createDate;
 	
 	public UserResponseDto entityToDto(User entity) {
 		this.id = entity.getUserId();
@@ -35,6 +38,7 @@ public class UserResponseDto {
 		this.phone = entity.getPhone();
 		this.bsn = entity.getBsn();
 		this.youtubeUrl = entity.getYoutubeUrl();
+		this.createDate = entity.getCreatedDate().atZone(ZoneId.of("Asia/Seoul"));
 		return this;
 	}
 	
