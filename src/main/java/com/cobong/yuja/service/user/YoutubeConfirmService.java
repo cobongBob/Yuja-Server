@@ -105,7 +105,7 @@ public class YoutubeConfirmService {
 	@Transactional
 	public YoutubeConfirmRequestDto apply(YoutubeConfirmRequestDto dto) {
 		User user = userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("존재하지 않는 유저입니다"));
-		user.modify(user.getUsername(), user.getPassword(), user.getNickname(), user.getRealName(), 
+		user.modify(user.getUsername(), user.getNickname(), user.getRealName(), 
 				user.getBday(), user.getProvidedId(), user.getProvider(), user.getAddress(), 
 				user.getPhone(), dto.getBsn(), dto.getYoutubeUrl(), false);
 		userRepository.save(user);

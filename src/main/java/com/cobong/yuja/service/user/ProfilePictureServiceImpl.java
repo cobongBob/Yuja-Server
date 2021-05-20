@@ -108,7 +108,7 @@ public class ProfilePictureServiceImpl implements ProfilePictureService {
 		if(profilePictureRepository.findByUserNickname(userNickname).isPresent()) {
 			psa += profilePictureRepository.findByUserNickname(userNickname).get().getUploadPath();
 		} else {
-			psa += "yuju05.png";
+			psa += "static/imgs/yuju05.png";
 		}
 		return psa;
 	}

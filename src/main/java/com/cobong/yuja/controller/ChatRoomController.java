@@ -102,7 +102,7 @@ public class ChatRoomController {
 		model.addAttribute("messages", messages);
 		model.addAttribute("roomId", chatRoomId);
 		model.addAttribute("senderPic", senderPic);
-		model.addAttribute("receiverPic", receiver);
+		model.addAttribute("receiverPic", receiverPic);
 		return "chatting/chatroom";
 	}
 }

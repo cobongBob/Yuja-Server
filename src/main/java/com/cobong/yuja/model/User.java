@@ -92,10 +92,9 @@ public class User extends DateAudit {
 	@Column(nullable = false, columnDefinition = "TINYINT(1)")
 	private boolean banned;
 
-	public void modify(String username2, String password2, String nickname2, String realName2, String bday2,
+	public void modify(String username2, String nickname2, String realName2, String bday2,
 			String providedId2, String provider2, String address2, String phone2, String bsn2, String youtubeUrl, boolean banned) {
 		this.username = username2;
-		this.password = password2;
 		this.nickname = nickname2;
 		this.bday = bday2;
 		this.providedId = providedId2;

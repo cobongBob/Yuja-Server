@@ -89,7 +89,6 @@ public class UserServiceImpl implements UserService {
 		.providedId(dto.getProvidedId())
 		.address(wholeAddr)
 		.provider(dto.getProvider())
-		.address(dto.getAddress())
 		.phone(dto.getPhone())
 		.bsn(dto.getBsn())
 		.isMarketingChecked(dto.getIsMarketingChecked())
@@ -97,7 +96,6 @@ public class UserServiceImpl implements UserService {
 		.build();
 
 		User user = userRepository.save(entity);
-
 
 		if (dto.getProfilePicId() != 0) {
 			ProfilePicture profilePicture = profilePictureRepository.findById(dto.getProfilePicId())
@@ -196,7 +194,7 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findById(bno)
 				.orElseThrow(() -> new IllegalAccessError("해당유저 없음" + bno));
 		
-		user.modify(userUpdateRequestDto.getUsername(), userUpdateRequestDto.getPassword(), 
+		user.modify(userUpdateRequestDto.getUsername(),  
 				userUpdateRequestDto.getNickname(),userUpdateRequestDto.getRealName(),
 				userUpdateRequestDto.getBday(),userUpdateRequestDto.getProvidedId(), 
 				userUpdateRequestDto.getProvider(), wholeAddr, 
@@ -526,7 +524,7 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findById(bno)
 				.orElseThrow(()-> new IllegalAccessError("해당유저 없음 " +bno));
 		
-		user.modify(userUpdateRequestDto.getUsername(), userUpdateRequestDto.getPassword(), 
+		user.modify(userUpdateRequestDto.getUsername(), 
 				userUpdateRequestDto.getNickname(),userUpdateRequestDto.getRealName(),
 				userUpdateRequestDto.getBday(),userUpdateRequestDto.getProvidedId(), 
 				userUpdateRequestDto.getProvider(), userUpdateRequestDto.getAddress(), 
