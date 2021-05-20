@@ -14,7 +14,7 @@ public class YoutubeConfirmResponseDto {
 	
 	public YoutubeConfirmResponseDto entityToDto(YoutubeConfirm entity) {
 		this.youtubeConfirmId = entity.getYoutubeConfirmId();
-		this.youtubeConfirmImg = entity.getUploadPath();
+		this.youtubeConfirmImg = entity.getFileName();
 		this.user = entity.getUser();
 		return this;
 	}
