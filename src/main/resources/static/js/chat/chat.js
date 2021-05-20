@@ -41,7 +41,7 @@ function showMessageReceived(e) {
   if (now.getHours() > 12) {
     msgArea.innerHTML +=
       "<div style='text-align:left; border-style:solid'>" +
-      "<img src='.../files/profiles/" +
+      "<img src='/files/profiles/" +
       receiverPic +
       "'>" +
       '<h3>' +
@@ -56,7 +56,7 @@ function showMessageReceived(e) {
   } else if (now.getHours() === 12) {
     msgArea.innerHTML +=
       "<div style='text-align:left; border-style:solid'>" +
-      "<img src='.../files/profiles/" +
+      "<img src='/files/profiles/" +
       receiverPic +
       "'>" +
       '<h3>' +
@@ -71,7 +71,7 @@ function showMessageReceived(e) {
   } else {
     msgArea.innerHTML +=
       "<div style='text-align:left; border-style:solid'>" +
-      "<img src='.../files/profiles/" +
+      "<img src='/files/profiles/" +
       receiverPic +
       "'>" +
       '<h3>' +
@@ -94,7 +94,7 @@ function showMessageSend(e) {
   if (now.getHours() > 12) {
     msgArea.innerHTML +=
       "<div style='text-align:right; border-style:solid'>" +
-      "<img src='.../files/profiles/" +
+      "<img src='/files/profiles/" +
       senderPic +
       "'>" +
       '<h3>' +
@@ -109,7 +109,7 @@ function showMessageSend(e) {
   } else if (now.getHours() === 12) {
     msgArea.innerHTML +=
       "<div style='text-align:right; border-style:solid'>" +
-      "<img src='.../files/profiles/" +
+      "<img src='/files/profiles/" +
       senderPic +
       "'>" +
       '<h3>' +
@@ -124,7 +124,7 @@ function showMessageSend(e) {
   } else {
     msgArea.innerHTML +=
       "<div style='text-align:right; border-style:solid'>" +
-      "<img src='.../files/profiles/" +
+      "<img src='/files/profiles/" +
       senderPic +
       "'>" +
       '<h3>' +
