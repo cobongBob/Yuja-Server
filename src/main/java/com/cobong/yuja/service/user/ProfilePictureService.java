@@ -8,4 +8,6 @@ public interface ProfilePictureService {
 	ProfilePictureDto saveFile(MultipartFile file);
 
 	void deleteUnflagged();
+
+	String getProfileByName(String userNickname);
 }
