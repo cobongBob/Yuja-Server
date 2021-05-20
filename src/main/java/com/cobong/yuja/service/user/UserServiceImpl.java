@@ -140,7 +140,7 @@ public class UserServiceImpl implements UserService {
 		if(user.getAddress() != null) {
 			dto.setAddress(user.getAddress().substring(0,user.getAddress().indexOf(" # ")));
 			if(user.getAddress().contains("#")) {
-				dto.setDetailAddress(user.getAddress().substring(user.getAddress().indexOf(" # ")-1));				
+				dto.setDetailAddress(user.getAddress().substring(user.getAddress().indexOf(" # ")+3));				
 			}
 		}
 		if(youtubeConfirmRepository.findByUserUserId(id).isPresent()) {
@@ -167,7 +167,7 @@ public class UserServiceImpl implements UserService {
 			Optional<ProfilePicture> optProfilePicture = profilePictureRepository.findByUserUserId(user.getUserId());
 			if(optProfilePicture.isPresent()) {
 				ProfilePicture profilePicture = optProfilePicture.get();
-				dto.setProfilePic(profilePicture.getUploadPath());			
+				dto.setProfilePic(profilePicture.getFileName());			
 			} else {
 				dto.setProfilePic("");
 			}
@@ -293,7 +293,7 @@ public class UserServiceImpl implements UserService {
 		if(user.getAddress() != null) {
 			dto.setAddress(user.getAddress().substring(0,user.getAddress().indexOf(" # ")));
 			if(user.getAddress().contains("#")) {
-				dto.setDetailAddress(user.getAddress().substring(user.getAddress().indexOf(" # ")));				
+				dto.setDetailAddress(user.getAddress().substring(user.getAddress().indexOf(" # ")+3));				
 			}
 		}
 		return dto;

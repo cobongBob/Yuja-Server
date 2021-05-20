@@ -107,6 +107,11 @@ public class BoardServiceImpl implements BoardService {
 				thumbnailRepository.save(thumbnail);
 			}
 		}
+		
+		if(dto.getBoardCode() == 2L) {
+			
+		}
+		
 		return new BoardResponseDto().entityToDto(board2);
 	}
 	
