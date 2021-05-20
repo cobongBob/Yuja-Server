@@ -140,7 +140,7 @@ public class UserServiceImpl implements UserService {
 		if(user.getAddress() != null) {
 			dto.setAddress(user.getAddress().substring(0,user.getAddress().indexOf(" # ")));
 			if(user.getAddress().contains("#")) {
-				dto.setDetailAddress(user.getAddress().substring(user.getAddress().indexOf(" # ")));				
+				dto.setDetailAddress(user.getAddress().substring(user.getAddress().indexOf(" # ")-1));				
 			}
 		}
 		if(youtubeConfirmRepository.findByUserUserId(id).isPresent()) {

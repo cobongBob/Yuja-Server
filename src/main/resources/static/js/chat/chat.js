@@ -53,7 +53,7 @@ function showMessageSend(e){
 	now = new Date();
 	if(now.getHours() > 12){
 		msgArea.innerHTML += "<div style='text-align:right; border-style:solid'>"+
-						"<img src='"+senderPic+"'>" +"<h3>"+e.sender+
+						"<img src='../files/profiles/"+senderPic+"'>" +"<h3>"+e.sender+
 						"</h3><br><h5>"+e.message+"</h5><br><h6>오후 "+now.getHours()%12+":"+now.getMinutes() +"<h6></div>";
 	} else if(now.getHours() === 12){
 		msgArea.innerHTML += "<div style='text-align:right; border-style:solid'>"+
