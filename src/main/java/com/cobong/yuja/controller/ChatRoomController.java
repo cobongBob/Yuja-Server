@@ -5,9 +5,12 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -78,6 +81,24 @@ public class ChatRoomController {
 		}
 		Long chatRoomId = chatRoomService.newRoom(receiver, user2Id);
 		return "redirect:/socket/chat/"+chatRoomId;
+	}
+	
+	@DeleteMapping("/socket/room/{roomId}")
+	public ResponseEntity<List<ChatRoomDto>> deleteRoom(@PathVariable Long roomId) {
+		chatRoomService.delete(roomId);
+		PrincipalDetails principalDetails = null;
+    	Long userId = 0L;
+    	if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PrincipalDetails) {
+    		principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			userId = principalDetails.getUserId();
+		}
+		return new ResponseEntity<List<ChatRoomDto>>(chatRoomService.findRooms(userId), HttpStatus.OK);
+	}
+	
+	@GetMapping("/delete")
+	public String deleteRoomt(@RequestParam("chatRoomId") Long chatRoomId) {
+		chatRoomService.delete(chatRoomId);
+		return "redirect:/rooms";
 	}
 	
 	@RequestMapping("/socket/chat/{chatRoomId}")

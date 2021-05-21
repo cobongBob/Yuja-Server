@@ -136,6 +136,11 @@ public class UserServiceImpl implements UserService {
 	@Transactional(readOnly = true)
 	public UserResponseDto findById(Long id) {
 		User user = userRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
+		
+		if(user.isDeleted()) {
+			new IllegalArgumentException("해당 유저는 탈퇴한 회원입니다.");
+		}
+		
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
 		if(user.getAddress() != null) {
 			dto.setAddress(user.getAddress().substring(0,user.getAddress().indexOf(" # ")));
@@ -190,7 +195,6 @@ public class UserServiceImpl implements UserService {
 		if(bno != userId && !isAdminOrManager) {
 			throw new IllegalAccessError("관리자가 아니므로 해당 유저의 정보를 삭제할 수 없습니다");
 		}
-		System.out.println("+++++++++++++++++++++++\n"+attemptingUser.getAuthorities()+"\n+++++++++++++++++++++++++++");
 		String wholeAddr = userUpdateRequestDto.getAddress() +" # "+ userUpdateRequestDto.getDetailAddress();
 		
 		User user = userRepository.findById(bno)
@@ -309,10 +313,15 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Cookie[] signIn(LoginRequest loginRequest) {
 		User user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow(()-> new IllegalArgumentException("이메일이나 비밀번호가 일치하지 않습니다."));
-		System.out.println("/////////////////////////////////////////"+user.isBanned());
+		
 		if(user.isBanned()) {
 			throw new IllegalAccessError("경고등의 이유로 이용이 정지된 아이디 입니다");
 		}
+		
+		if(user.isDeleted()) {
+			throw new IllegalAccessError("삭제된 아이디 입니다.");
+		}
+		
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -473,6 +482,8 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findByUsername(username).orElse(null);
 		if(user == null) {
 			throw new IllegalAccessError("이메일을 확인해 주세요.");
+		} else if(user.isDeleted()) {
+			throw new IllegalAccessError("탈퇴한 회원입니다.");
 		}
 		String pattern = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$";
 		if(Pattern.matches(pattern, username) == false) {
