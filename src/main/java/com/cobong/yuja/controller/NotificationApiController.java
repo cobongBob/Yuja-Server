@@ -22,8 +22,8 @@ public class NotificationApiController {
 		return new ResponseEntity<>(notificationService.unread(userId),HttpStatus.OK);
 	}
 	
-	// 알림 읽기
-	@GetMapping("/api/notiread/{userId}")
+	// 알림 하나 읽기
+	@GetMapping("/api/notiread/{notiId}")
 	public ResponseEntity<?> getRead(@PathVariable Long notiId) {
 		return new ResponseEntity<>(notificationService.read(notiId),HttpStatus.OK);
 	}
