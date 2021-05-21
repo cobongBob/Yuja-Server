@@ -2,6 +2,7 @@ package com.cobong.yuja.service.board;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,6 +21,7 @@ import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.board.BoardSaveRequestDto;
 import com.cobong.yuja.payload.request.board.BoardUpdateRequestDto;
 import com.cobong.yuja.payload.response.board.BoardResponseDto;
+import com.cobong.yuja.payload.response.board.BoardTypeResponseDto;
 import com.cobong.yuja.payload.response.board.MainboardsResponseDto;
 import com.cobong.yuja.repository.BoardTypeRepository;
 import com.cobong.yuja.repository.attach.AttachRepository;
@@ -61,7 +63,7 @@ public class BoardServiceImpl implements BoardService {
 		Board board = new Board().createBoard(boardType, user, dto.getTitle(), dto.getContent(), dto.getExpiredDate(),
 				dto.getPayType(), dto.getPayAmount(), dto.getCareer(), toolsCombined, dto.getWorker(), dto.getYWhen(),
 				dto.getChannelName(),dto.getRecruitingNum(),dto.getReceptionMethod(),dto.getManager(), dto.getIsPrivate(), 
-				dto.getPreviewImage());
+				dto.getPreviewImage(),Instant.now());
 		Board board2 = boardRepository.save(board);
 		//null일경우 처리 필요
 		if(dto.getBoardAttachNames() != null) {
@@ -248,7 +250,7 @@ public class BoardServiceImpl implements BoardService {
 				toolsCombined, boardUpdateRequestDto.getExpiredDate(),boardUpdateRequestDto.getWorker(), 
 				boardUpdateRequestDto.getYWhen(),boardUpdateRequestDto.getChannelName(),
 				boardUpdateRequestDto.getRecruitingNum(),boardUpdateRequestDto.getReceptionMethod(),
-				boardUpdateRequestDto.getManager(), boardUpdateRequestDto.getIsPrivate(), boardUpdateRequestDto.getPreviewImage());
+				boardUpdateRequestDto.getManager(), boardUpdateRequestDto.getIsPrivate(), boardUpdateRequestDto.getPreviewImage(), Instant.now());
 		BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
 		
 		for(Long i: boardUpdateRequestDto.getBoardAttachIds()) {
@@ -331,6 +333,7 @@ public class BoardServiceImpl implements BoardService {
 	public List<BoardResponseDto> boardsInBoardType(Long boardCode,Long userId){
 		List<Board> curBoard = boardRepository.boardsInBoardType(boardCode);
 		List<BoardResponseDto> curBoardResponseDto = new ArrayList<BoardResponseDto>();
+		BoardType boardType = boardTypeRepository.findById(boardCode).orElseThrow(() -> new IllegalAccessError("존재하지 않는 게시판"));
 		for(Board board: curBoard) {
 			boolean likedOrNot = boardRepository.likedOrNot(board.getBoardId(), userId);
 			int likes = Long.valueOf(boardRepository.likedReceived(board.getBoardId())).intValue();
@@ -343,6 +346,7 @@ public class BoardServiceImpl implements BoardService {
 			dto.setTools(tools);
 			dto.setLikesAndComments(likes, comments);
 			dto.setLiked(likedOrNot);
+			dto.setBoardType(new BoardTypeResponseDto().entityToDto(boardType));
 			Optional<Thumbnail> thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId());
 			if(thumbnail.isPresent()) {
 				dto.setThumbnail(thumbnail.get().getFileName());		

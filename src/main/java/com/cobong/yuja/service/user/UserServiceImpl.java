@@ -268,7 +268,7 @@ public class UserServiceImpl implements UserService {
 				toDel.delete();				
 			}
 		}
-		userRepository.deleteById(bno);
+		attemptingUser.setDeleted(true);
 		return "success";
 	}
 	

@@ -1,5 +1,6 @@
 package com.cobong.yuja.payload.response.board;
 
+import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.Date;
@@ -41,6 +42,8 @@ public class BoardResponseDto {
 	private boolean isPrivate;
 	private String previewImage;
 	private boolean firstOrNot = false;
+	private BoardTypeResponseDto boardType;
+	private ZonedDateTime boardUpdatedDate;
 	
 	public BoardResponseDto entityToDto(Board entity) {
 		this.id=entity.getBoardId();
@@ -62,6 +65,8 @@ public class BoardResponseDto {
 		this.isPrivate = entity.isPrivate();
 		this.createDate = entity.getCreatedDate().atZone(ZoneId.of("Asia/Seoul"));
 		this.previewImage = entity.getPreviewImage();
+		this.boardType = new BoardTypeResponseDto().entityToDto(entity.getBoardType());
+		this.boardUpdatedDate = entity.getBoardUpdatedDate().atZone(ZoneId.of("Asia/Seoul"));
 		return this;
 	}
 	

@@ -112,4 +112,7 @@ public class User extends DateAudit {
 	public void setBanned(boolean banned) {
 		this.banned = banned;
 	}
+	public void setDeleted(boolean deleted) {
+		this.deleted= deleted;
+	}
 }

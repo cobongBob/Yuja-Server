@@ -1,5 +1,6 @@
 package com.cobong.yuja.domain;
 
+import java.time.Instant;
 import java.util.Collections;
 import java.util.Date;
 import java.util.stream.IntStream;
@@ -169,6 +170,7 @@ public class DummyInsert {
 					.worker("편집자")
 					.yWhen("상시모집")
 					.hit(i)
+					.boardUpdatedDate(Instant.now())
 					.build();
 			boardRepository.save(board);
 		});
@@ -192,6 +194,7 @@ public class DummyInsert {
 					.worker("편집자")
 					.yWhen("상시모집")
 					.hit(i)
+					.boardUpdatedDate(Instant.now())
 					.build();
 			boardRepository.save(board);
 		});
@@ -241,6 +244,7 @@ public class DummyInsert {
 					.payAmount("100,000")
 					.payType("건당")
 					.hit(i)
+					.boardUpdatedDate(Instant.now())
 					.build();
 			boardRepository.save(board);
 		});
@@ -259,6 +263,7 @@ public class DummyInsert {
 					.payAmount("50,000")
 					.payType("건당")
 					.hit(i)
+					.boardUpdatedDate(Instant.now())
 					.build();
 			boardRepository.save(board);
 		});
