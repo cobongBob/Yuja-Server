@@ -44,7 +44,7 @@ function showMessageReceived(e) {
       "<div class='ChatReceiverWrapper'>" +
       "<div class='ReceiverImgWrapper'>" +
       "<img class='ChatReceiverProfileImg' src='/files/profiles/" +
-      senderPic +
+      receiverPic +
       "'>" +
       '</div>' +
       "<div class='ChatMessageReceiver'>" +
@@ -66,7 +66,7 @@ function showMessageReceived(e) {
       "<div class='ChatReceiverWrapper'>" +
       "<div class='ReceiverImgWrapper'>" +
       "<img class='ChatReceiverProfileImg' src='/files/profiles/" +
-      senderPic +
+      receiverPic +
       "'>" +
       '</div>' +
       "<div class='ChatMessageReceiver'>" +
@@ -88,7 +88,7 @@ function showMessageReceived(e) {
       "<div class='ChatReceiverWrapper'>" +
       "<div class='ReceiverImgWrapper'>" +
       "<img class='ChatReceiverProfileImg' src='/files/profiles/" +
-      senderPic +
+      receiverPic +
       "'>" +
       '</div>' +
       "<div class='ChatMessageReceiver'>" +
