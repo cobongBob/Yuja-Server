@@ -36,6 +36,10 @@ public class ChatRoomService {
 		if(receiverEntity.get().getUserId() == sender) {
 			throw new IllegalAccessError("자기자신과는 채팅할수 없습니다.");
 		}
+		if(sender == 0L) {
+			throw new IllegalAccessError("로그인해 주시기 바랍니다.");
+		}
+		
 		Long roomId = chatRoomJoinService.checkForRoom(receiverEntity.get().getUserId(), sender);
 		if(roomId != 0L) {
 			return roomId;
@@ -78,5 +82,8 @@ public class ChatRoomService {
 				chatRoomRepository.delete(room);
 			}
 		}
+	}
+	public void delete(Long roomId) {
+		chatRoomRepository.deleteById(roomId);
 	}	
 }

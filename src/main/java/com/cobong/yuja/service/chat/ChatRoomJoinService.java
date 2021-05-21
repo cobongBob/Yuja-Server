@@ -1,5 +1,6 @@
 package com.cobong.yuja.service.chat;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -53,10 +54,16 @@ public class ChatRoomJoinService {
 	@Transactional(readOnly = true)
 	public Long checkForRoom(Long receiver, Long sender) {
 		List<ChatRoomJoin> receiverList = chatRoomJoinRepository.findByUserUserId(receiver);
+		List<ChatRoom> receiverRooms = new ArrayList<ChatRoom>();
+		
+		for(ChatRoomJoin receiverJoin : receiverList) {
+			receiverRooms.add(receiverJoin.getChatRoom());
+		}
 		List<ChatRoomJoin> senderList = chatRoomJoinRepository.findByUserUserId(sender);
+		
 		for(ChatRoomJoin joins: senderList) {
-			if(receiverList.contains(joins)) {
-				return joins.getRoomJoinId();
+			if(receiverRooms.contains(joins.getChatRoom())) {
+				return joins.getChatRoom().getRoomId();
 			}
 		}
 		return 0L;
