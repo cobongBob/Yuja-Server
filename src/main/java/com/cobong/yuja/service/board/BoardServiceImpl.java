@@ -340,7 +340,7 @@ public class BoardServiceImpl implements BoardService {
 			int comments = Long.valueOf(boardRepository.commentsReceived(board.getBoardId())).intValue();
 			BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
 			List<String> tools = new ArrayList<>();
-			if(board.getTools() != null) {
+			if(board.getTools() != null && board.getTools().length() != 0) {
 				tools = Arrays.asList(board.getTools().split(","));
 			}
 			dto.setTools(tools);

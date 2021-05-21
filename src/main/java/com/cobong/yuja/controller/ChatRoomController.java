@@ -110,7 +110,8 @@ public class ChatRoomController {
 			userId = principalDetails.getUserId();
 		}
     	if(userId == 0L) {
-    		throw new IllegalAccessError("채팅을 시도하려는 유저가 존재하지 않거나 유저의 로그인 세션이 끝났습니다.");
+    		//throw new IllegalAccessError("채팅을 시도하려는 유저가 존재하지 않거나 유저의 로그인 세션이 끝났습니다.");(에러 메세지 띄워줘야함)
+    		return "redirect:/rooms";
     	}
 		String userNickname = principalDetails.getNickname();
     	List<SocketMessageSendDto> messages = socketMessageService.getAllMsgs(chatRoomId, userId);

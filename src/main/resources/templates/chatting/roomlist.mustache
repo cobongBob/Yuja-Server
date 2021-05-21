@@ -20,11 +20,10 @@
     <div>
         <div class="ChatRoomsWrapper">
             {{#chatRooms}}
-            <div class="RoomWrapper">
+            <div class="RoomWrapper" id="roomNum{{chatRoomId}}">
                    <div class="ChatImg"><a href="/socket/chat/{{chatRoomId}}"><img src="../files/profiles/{{profilePic}}" alt="ProfilePicture"/></a></div>
                    <div class="ChatSender">{{writer}}</div>
-                   <div class="ChatRoomIn"><a href="#" id="delete" onClick="delete({{chatRoomId}})">나가기</a></div>
-                   <div><input type="button" id="click" value="삭제" onclick="deleteById({{chatRoomId}})"></div>
+                   <div class="ChatRoomIn"><a href="#" id="delete" onClick="deleteById({{chatRoomId}})">나가기</a></div>
             </div>
             {{/chatRooms}}
         </div>
