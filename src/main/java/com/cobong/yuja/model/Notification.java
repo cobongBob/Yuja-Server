@@ -68,4 +68,8 @@ public class Notification extends DateAudit{
 		notification.readDate = readDate;
     	return notification;
     }
+	
+	public void setReadDate(Date date) {
+		this.readDate = date;
+	}
 }

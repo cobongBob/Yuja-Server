@@ -54,10 +54,9 @@ public class NotificationServiceImpl implements NotificationService {
 		Notification notification =  notificationRepository.findById(notiId).orElseThrow(()-> new IllegalArgumentException("해당 메세지가 없습니다."));
 		NotificationResponseDto dto = new NotificationResponseDto().entityToDto(notification);
 		Date now = new Date();
-		if(dto.getReadDate().equals(null)) {
-			dto.setReadDate(now);
+		if(dto.getReadDate()==null) {
+			notification.setReadDate(now);
 		}
-		notificationRepository.save(notification);
 		return dto;
 	}
 
