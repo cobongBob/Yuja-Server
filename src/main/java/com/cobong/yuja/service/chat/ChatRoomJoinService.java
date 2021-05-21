@@ -34,16 +34,16 @@ public class ChatRoomJoinService {
 		
 		
 		
-//		// create notification
-//		String type = "chatNoti"; 
-//		Notification notification = new Notification().createNotification(
-//				null, 
-//				null, 
-//				userRepository.findById(senderId).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음")), 
-//				userRepository.findById(receiverId).orElseThrow(() -> new IllegalAccessError("알림 받는 유저 없음")),
-//				type,
-//				null);
-//		notificationRepository.save(notification);
+		// create notification
+		String type = "chatNoti"; 
+		Notification notification = new Notification().createNotification(
+				null, 
+				null, 
+				userRepository.findById(senderId).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음")), 
+				userRepository.findById(receiverId).orElseThrow(() -> new IllegalAccessError("알림 받는 유저 없음")),
+				type,
+				null);
+		notificationRepository.save(notification);
 		
 		
 		

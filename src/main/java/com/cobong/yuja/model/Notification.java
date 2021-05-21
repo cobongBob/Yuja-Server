@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@ToString(exclude = {"commentId","sender","recipient","chatId"})
+@ToString(exclude = {"comment","sender","recipient","chat"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
@@ -32,11 +32,11 @@ public class Notification extends DateAudit{
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="commentId")
-	private BoardComment commentId;
+	private BoardComment comment;
 	
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="chatId")
-	private ChatRoom chatId;
+	private ChatRoom chat;
 	
 	// 알림을 보낸 유저 
 	@ManyToOne(fetch = FetchType.LAZY)
@@ -57,11 +57,11 @@ public class Notification extends DateAudit{
     // 알림 내용(미정)
 //	private String message;
 	
-	public Notification createNotification(BoardComment commentId, ChatRoom chat, 
+	public Notification createNotification(BoardComment comment, ChatRoom chat, 
 			User sender, User recipient, String type, Date readDate) {
 		Notification notification = new Notification();
-		notification.commentId = commentId;
-		notification.chatId = chatId;
+		notification.comment = comment;
+		notification.chat = chat;
 		notification.sender = sender;
 		notification.recipient = recipient;
 		notification.type = type;
