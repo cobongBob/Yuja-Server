@@ -210,6 +210,7 @@ public class DummyInsert {
 					.title("테스트 윈 제목테스트 윈 제목테스트 윈 제목테스트 윈 제목테스트 윈 제목테스트 윈 제목테스트 윈 제목 "+i)
 					.content("테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용 "+i)
 					.hit(i)
+					.boardUpdatedDate(Instant.now())
 					.build();
 			boardRepository.save(board);
 		});
@@ -225,6 +226,7 @@ public class DummyInsert {
 					.title("테스트 콜라보 제목테스트 콜라보 제목테스트 콜라보 제목테스트 콜라보 제목테스트 콜라보 제목테스트 콜라보 제목 "+i)
 					.content("테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용 "+i)
 					.hit(i)
+					.boardUpdatedDate(Instant.now())
 					.build();
 			boardRepository.save(board);
 		});
@@ -279,6 +281,7 @@ public class DummyInsert {
 					.title("테스트 제목 "+i)
 					.content("테스트 내용 "+i)
 					.hit(i)
+					.boardUpdatedDate(Instant.now())
 					.build();
 			boardRepository.save(board);
 		});
@@ -294,6 +297,7 @@ public class DummyInsert {
 					.title("테스트 제목 "+i)
 					.content("테스트 내용 "+i)
 					.hit(i)
+					.boardUpdatedDate(Instant.now())
 					.build();
 			boardRepository.save(board);
 		});
