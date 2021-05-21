@@ -33,6 +33,7 @@ function send() {
   stompClient.send('/app/chat/send', {}, JSON.stringify(data));
   showMessageSend(data);
   $('#message').val('');
+  return false;
 }
 // 채팅 진행중 -> 메세지 받을때 보여지는 div
 function showMessageReceived(e) {

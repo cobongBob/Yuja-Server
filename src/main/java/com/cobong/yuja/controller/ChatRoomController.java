@@ -68,19 +68,23 @@ public class ChatRoomController {
 			user2Id = principalDetails.getUserId();
 		}
 		Long chatRoomId = chatRoomService.newRoom(receiver.get("receiver"), user2Id);
+		if(chatRoomId < 0) {
+			return "redirect:/rooms";
+		}
 		return "redirect:/socket/chat/"+chatRoomId;
 	}
 	
 	@PostMapping("/socket/room")
-	public String newRoom(@RequestParam("receiver") String receiver) {
+	public ResponseEntity<String> newRoom(@RequestParam("receiver") String receiver) {
 		PrincipalDetails principalDetails = null;
     	Long user2Id = 0L;
     	if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PrincipalDetails) {
     		principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			user2Id = principalDetails.getUserId();
 		}
-		Long chatRoomId = chatRoomService.newRoom(receiver, user2Id);
-		return "redirect:/socket/chat/"+chatRoomId;
+    	Long chatRoomId = chatRoomService.newRoom(receiver, user2Id);
+		
+		return new ResponseEntity<String>("/socket/chat/"+chatRoomId, HttpStatus.CREATED);
 	}
 	
 	@DeleteMapping("/socket/room/{roomId}")
@@ -95,12 +99,6 @@ public class ChatRoomController {
 		return new ResponseEntity<List<ChatRoomDto>>(chatRoomService.findRooms(userId), HttpStatus.OK);
 	}
 	
-	@GetMapping("/delete")
-	public String deleteRoomt(@RequestParam("chatRoomId") Long chatRoomId) {
-		chatRoomService.delete(chatRoomId);
-		return "redirect:/rooms";
-	}
-	
 	@RequestMapping("/socket/chat/{chatRoomId}")
 	public String enterRoom(@PathVariable("chatRoomId") Long chatRoomId, Model model, HttpServletRequest req) {
 		PrincipalDetails principalDetails = null;
@@ -110,8 +108,7 @@ public class ChatRoomController {
 			userId = principalDetails.getUserId();
 		}
     	if(userId == 0L) {
-    		//throw new IllegalAccessError("채팅을 시도하려는 유저가 존재하지 않거나 유저의 로그인 세션이 끝났습니다.");(에러 메세지 띄워줘야함)
-    		return "redirect:/rooms";
+    		throw new IllegalAccessError("채팅을 시도하려는 유저가 존재하지 않거나 유저의 로그인 세션이 끝났습니다.");
     	}
 		String userNickname = principalDetails.getNickname();
     	List<SocketMessageSendDto> messages = socketMessageService.getAllMsgs(chatRoomId, userId);

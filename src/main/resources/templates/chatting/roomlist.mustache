@@ -10,20 +10,23 @@
 <body>
 <div class="ChatListTitle">
    <h2><strong>"{{nickname}}"</strong> 님의 채팅방</h2>
+   <div id="ErrorMsg"></div>
 </div>
    <div>
-       <form class="ChatForm" action="/socket/room" method="POST">
-           <input class="ChatSearch" type="text" id="receiver" name="receiver" placeholder="상대방 닉네임을 입력하세요!" maxlength="20" required>
-           <input class="ChatSubmit" id="ChatSubmitIcon" type="submit" value="Start!">
-       </form>
+       <div class="ChatForm">
+	       <form onsubmit="return findRoom()">
+	           <input class="ChatSearch" type="text" id="receiver" name="receiver" placeholder="상대방 닉네임을 입력하세요!" maxlength="20" required>
+	           <input class="ChatSubmit" id="ChatSubmitIcon" type="submit" value="Start!">       
+	       </form>
+       </div>
    </div>
     <div>
         <div class="ChatRoomsWrapper">
             {{#chatRooms}}
             <div class="RoomWrapper" id="roomNum{{chatRoomId}}">
-                   <div class="ChatImg"><a href="/socket/chat/{{chatRoomId}}"><img src="../files/profiles/{{profilePic}}" alt="ProfilePicture"/></a></div>
+                   <div class="ChatImg"><a href="javascript:void(0);" id="enterRoom" onClick="enterRoom({{chatRoomId}})"><img src="../files/profiles/{{profilePic}}" alt="ProfilePicture"/></a></div>
                    <div class="ChatSender">{{writer}}</div>
-                   <div class="ChatRoomIn"><a href="#" id="delete" onClick="deleteById({{chatRoomId}})">나가기</a></div>
+                   <div class="ChatRoomIn"><a href="javascript:void(0);" id="delete" onClick="deleteById({{chatRoomId}})">나가기</a></div>
             </div>
             {{/chatRooms}}
         </div>

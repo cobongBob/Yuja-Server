@@ -31,7 +31,7 @@ public class ChatRoomService {
 	public Long newRoom(String receiver, Long sender) {
 		Optional<User> receiverEntity = userRepository.findByNickname(receiver);
 		if(!receiverEntity.isPresent()) {
-			throw new IllegalAccessError("해당 닉네임을 가진 유저가 없거나 잘못된 닉네임 입니다.");
+			throw new IllegalArgumentException("해당 닉네임을 가진 유저가 없거나 잘못된 닉네임 입니다.");
 		}
 		if(receiverEntity.get().getUserId() == sender) {
 			throw new IllegalAccessError("자기자신과는 채팅할수 없습니다.");
