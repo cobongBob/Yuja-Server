@@ -11,38 +11,38 @@
 <div class="ChatWho">
    <h1>{{receiver}}와 채팅</h1>
 </div>
-<a href="/rooms">채팅방 나가기</a>
    <div id="ChatLogsWrapper">
    	<div id="chatLog">
       {{#messages}}
          {{#ownerOrNot}}
          <div class="ChatSenderBigWrapper">
             <div class="ChatSenderWrapper">
-            <div class="SenderImgWrapper">
-            	<img class="ChatSendProfileImg" src="/files/profiles/{{senderPic}}" alt="" />
-            </div>
                <div class="ChatMessageSender">{{sender}}</div>
-               <div class="ChatMessageContent">{{content}}</div>
-               <div class="ChatTime">{{createdDate}}</div>
+	            <div class="SenderImgWrapper">
+	            	<img class="ChatSendProfileImg" src="/files/profiles/{{senderPic}}" alt="" />
+	            </div>
+	            <div class="SenderChatMessageContent"><p class="ChatContent">{{content}}</p><span class="SenderChatDate">{{createdDate}}</span></div>
             </div>
          </div>
          {{/ownerOrNot}}
          {{^ownerOrNot}}
+         <div class="ChatReceiverBigWrapper">
             <div class="ChatReceiverWrapper">
 	            <div class="ReceiverImgWrapper">
-	            	<img src="/files/profiles/{{receiverPic}}" alt="" />
+	            	<img class="ChatReceiverProfileImg" src="/files/profiles/{{receiverPic}}" alt="" />
 	            </div>
-               <div class="ChatMessageReceiver">{{sender}}</div><br>
-               <div class="ChatMessageContent">{{content}}</div><br>
-               <div class="ChatTime">{{createdDate}}</div>
+               <div class="ChatMessageReceiver">{{sender}}</div>
+               <div class="ReceiverChatMessageContent"><span class="ReceiverChatDate">{{createdDate}}</span><p class="ChatContent">{{content}}</p></div>
             </div>
+         </div>
          {{/ownerOrNot}}
       {{/messages}}
       </div>
-   <div>
-      <input type="text" id="message" placeholder="메세지를 입력해 주세요" autocomplete="off"/>
-      <button type="button" onClick="send()">보내기</button>
    </div>
+   <div class="MessageInputWrapper">
+      <input class="MessageInput" type="text" id="message" placeholder="Message" autocomplete="off"/>
+      <button class="MessageButton" type="button" onClick="send()">보내기</button>
+      <a href="/rooms">뒤로</a>
    </div>
    
 
