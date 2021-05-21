@@ -40,49 +40,70 @@ function showMessageReceived(e) {
   now = new Date();
   if (now.getHours() > 12) {
     msgArea.innerHTML +=
-      "<div style='text-align:left; border-style:solid'>" +
-      "<img src='/files/profiles/" +
+      "<div class='ChatReceiverBigWrapper'>" +
+      "<div class='ChatReceiverWrapper'>" +
+      "<div class='ReceiverImgWrapper'>" +
+      "<img class='ChatReceiverProfileImg' src='/files/profiles/" +
       receiverPic +
       "'>" +
-      '<h3>' +
+      '</div>' +
+      "<div class='ChatMessageReceiver'>" +
       e.sender +
-      '</h3><br><h5>' +
-      e.message +
-      '</h5><br><h6>오후 ' +
+      '</div>' +
+      "<div class='ReceiverChatMessageContent'>" +
+      "<span class='ReceiverChatDate'>오후" +
       (now.getHours() % 12) +
       ':' +
       now.getMinutes() +
-      '</h6></div>';
+      '</span>' +
+      "<p class='ChatContent'>" +
+      e.message +
+      '</p>' +
+      '</div>';
   } else if (now.getHours() === 12) {
     msgArea.innerHTML +=
-      "<div style='text-align:left; border-style:solid'>" +
-      "<img src='/files/profiles/" +
+      "<div class='ChatReceiverBigWrapper'>" +
+      "<div class='ChatReceiverWrapper'>" +
+      "<div class='ReceiverImgWrapper'>" +
+      "<img class='ChatReceiverProfileImg' src='/files/profiles/" +
       receiverPic +
       "'>" +
-      '<h3>' +
+      '</div>' +
+      "<div class='ChatMessageReceiver'>" +
       e.sender +
-      '</h3><br><h5>' +
-      e.message +
-      '</h5><br><h6>오후 ' +
+      '</div>' +
+      "<div class='ReceiverChatMessageContent'>" +
+      "<span class='ReceiverChatDate'>오후" +
       now.getHours() +
       ':' +
       now.getMinutes() +
-      '</h6></div>';
+      '</span>' +
+      "<p class='ChatContent'>" +
+      e.message +
+      '</p>' +
+      '</div>';
   } else {
     msgArea.innerHTML +=
-      "<div style='text-align:left; border-style:solid'>" +
-      "<img src='/files/profiles/" +
+      "<div class='ChatReceiverBigWrapper'>" +
+      "<div class='ChatReceiverWrapper'>" +
+      "<div class='ReceiverImgWrapper'>" +
+      "<img class='ChatReceiverProfileImg' src='/files/profiles/" +
       receiverPic +
       "'>" +
-      '<h3>' +
+      '</div>' +
+      "<div class='ChatMessageReceiver'>" +
       e.sender +
-      '</h3><br><h5>' +
-      e.message +
-      '</h5><br><h6>오전 ' +
+      '</div>' +
+      "<div class='ReceiverChatMessageContent'>" +
+      "<span class='ReceiverChatDate'>오전" +
       now.getHours() +
       ':' +
       now.getMinutes() +
-      '</h6></div>';
+      '</span>' +
+      "<p class='ChatContent'>" +
+      e.message +
+      '</p>' +
+      '</div>';
   }
   window.scrollTo(0, document.body.scrollHeight);
 }
@@ -93,49 +114,70 @@ function showMessageSend(e) {
   now = new Date();
   if (now.getHours() > 12) {
     msgArea.innerHTML +=
-      "<div style='text-align:right; border-style:solid'>" +
-      "<img src='/files/profiles/" +
+      "<div class='ChatSenderBigWrapper'>" +
+      "<div class='ChatSenderWrapper'>" +
+      "<div class='ChatMessageSender'>" +
+      e.sender +
+      '</div>' +
+      "<div class='SenderImgWrapper'>" +
+      "<img class='ChatSendProfileImg' src='/files/profiles/" +
       senderPic +
       "'>" +
-      '<h3>' +
-      e.sender +
-      '</h3><br><h5>' +
+      '</div>' +
+      "<div class='SenderChatMessageContent'>" +
+      "<p class='ChatContent'>" +
       e.message +
-      '</h5><br><h6>오후 ' +
+      '</p>' +
+      "<span class='SenderChatDate'>오후" +
       (now.getHours() % 12) +
       ':' +
       now.getMinutes() +
-      '</h6></div>';
+      '</span>' +
+      '</div>';
   } else if (now.getHours() === 12) {
     msgArea.innerHTML +=
-      "<div style='text-align:right; border-style:solid'>" +
-      "<img src='/files/profiles/" +
+      "<div class='ChatSenderBigWrapper'>" +
+      "<div class='ChatSenderWrapper'>" +
+      "<div class='ChatMessageSender'>" +
+      e.sender +
+      '</div>' +
+      "<div class='SenderImgWrapper'>" +
+      "<img class='ChatSendProfileImg' src='/files/profiles/" +
       senderPic +
       "'>" +
-      '<h3>' +
-      e.sender +
-      '</h3><br><h5>' +
+      '</div>' +
+      "<div class='SenderChatMessageContent'>" +
+      "<p class='ChatContent'>" +
       e.message +
-      '</h5><br><h6>오후 ' +
+      '</p>' +
+      "<span class='SenderChatDate'>오후" +
       now.getHours() +
       ':' +
       now.getMinutes() +
-      '</h6></div>';
+      '</span>' +
+      '</div>';
   } else {
     msgArea.innerHTML +=
-      "<div style='text-align:right; border-style:solid'>" +
-      "<img src='/files/profiles/" +
+      "<div class='ChatSenderBigWrapper'>" +
+      "<div class='ChatSenderWrapper'>" +
+      "<div class='ChatMessageSender'>" +
+      e.sender +
+      '</div>' +
+      "<div class='SenderImgWrapper'>" +
+      "<img class='ChatSendProfileImg' src='/files/profiles/" +
       senderPic +
       "'>" +
-      '<h3>' +
-      e.sender +
-      '</h3><br><h5>' +
+      '</div>' +
+      "<div class='SenderChatMessageContent'>" +
+      "<p class='ChatContent'>" +
       e.message +
-      '</h5><br><h6>오전 ' +
+      '</p>' +
+      "<span class='SenderChatDate'>오전" +
       now.getHours() +
       ':' +
       now.getMinutes() +
-      '</h6></div>';
+      '</span>' +
+      '</div>';
   }
   window.scrollTo(0, document.body.scrollHeight);
 }

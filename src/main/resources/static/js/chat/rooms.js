@@ -5,7 +5,7 @@ function deleteById(chatRoomId) {
 		url: "socket/room/"+chatRoomId,
 		method: "DELETE",
 		success: function(data){
-			chatRoomsWrapper.innerHTML = data;
+			$(this).parent().remove();
 		}
 	})
 }
