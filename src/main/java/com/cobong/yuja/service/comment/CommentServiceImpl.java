@@ -112,6 +112,7 @@ public class CommentServiceImpl implements CommentService {
 			//null이 아니면 deleted로 바꾼다.
 			boardComment.deleteComment();
 		} else {
+			notificationRepository.deleteByCommentId(commentId);
 			commentRepository.deleteById(commentId);
 		}
 		//대댓글이있으면 안의 deleted가 true로 바뀌고 아니면 삭제.
