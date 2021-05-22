@@ -85,6 +85,9 @@ public class BoardAttachService {
 				case 8:
 					boardType += "Report";
 					break;
+				case 9:
+					boardType += "Notice";
+					break;
 				default:
 					throw new IllegalAccessError("해당 게시판이 존재하지 않습니다.");
 				}

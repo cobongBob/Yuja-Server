@@ -76,6 +76,8 @@ public class DummyInsert {
 		boardTypeRepository.save(boardType);
 		boardType = new BoardType(null,"ReportBoard",null);
 		boardTypeRepository.save(boardType);
+		boardType = new BoardType(null,"NoticeBoard",null);
+		boardTypeRepository.save(boardType);
 	}
 	
 	@Test
