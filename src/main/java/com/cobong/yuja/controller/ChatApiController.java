@@ -21,19 +21,4 @@ public class ChatApiController {
 		socketMessageService.save(msg);
 		msgTemplate.convertAndSend("/topic/cobong/"+receiver, msg);
 	}
-	
-	/* 
-	@MessageMapping("/chat/send")
-	@SendTo("/topic/cobong")
-	public void sendMsg(@Payload SocketMessage msg) {
-		msgTemplate.convertAndSend("/topic/cobong", msg);
-	}
-	
-	@MessageMapping("/chat/join")
-	@SendTo("/topic/cobong")
-	public SocketMessage join(@Payload SocketMessage msg, SimpMessageHeaderAccessor smha) {
-		smha.getSessionAttributes().put("username", "Sender");
-		return msg;
-	}
-	 * */
 }

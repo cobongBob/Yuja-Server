@@ -24,6 +24,10 @@ function disconnect() {
 
 function send() {
   message = document.getElementById('message').value;
+  if(message.includes("<script>")){
+	console.log("comes here");
+	return showError();
+}
   data = {
     chatRoomId: roomId,
     sender: username,
@@ -35,6 +39,14 @@ function send() {
   $('#message').val('');
   return false;
 }
+
+function showError(){
+	window.scrollTo(0, document.body.scrollHeight);
+	msgArea.innerHTML += "<div class='ChatReceiverBigWrapper'>" +
+      					"<div class='ChatReceiverWrapper'>" +
+      					"<h3 style='color: red'>'<script>'가 포함된 문구는 적을수 없습니다.<h3></div></div>"
+}
+
 // 채팅 진행중 -> 메세지 받을때 보여지는 div
 function showMessageReceived(e) {
   window.scrollTo(0, document.body.scrollHeight);
