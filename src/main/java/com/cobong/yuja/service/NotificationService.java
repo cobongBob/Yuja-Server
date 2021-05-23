@@ -11,5 +11,9 @@ public interface NotificationService {
 	List<NotificationResponseDto> unread(Long userId);
 	
 	NotificationResponseDto read(Long notiId);
+
+	List<NotificationResponseDto> findAll(Long userId);
+
+	String deletedNoti(Long notiId);
 	
 }
