@@ -15,12 +15,15 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cobong.yuja.model.Authorities;
 import com.cobong.yuja.model.AuthorityNames;
+import com.cobong.yuja.model.Board;
+import com.cobong.yuja.model.Notification;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.model.YoutubeConfirm;
 import com.cobong.yuja.payload.request.user.YoutubeConfirmFIleSaveDto;
 import com.cobong.yuja.payload.request.user.YoutubeConfirmRequestDto;
 import com.cobong.yuja.payload.response.user.UserResponseDto;
 import com.cobong.yuja.payload.response.user.YoutubeConfirmResponseDto;
+import com.cobong.yuja.repository.NotificationRepository;
 import com.cobong.yuja.repository.user.AuthoritiesRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 import com.cobong.yuja.repository.user.YoutubeConfirmRepository;
@@ -34,6 +37,7 @@ public class YoutubeConfirmService {
 	private final YoutubeConfirmRepository youtubeConfirmRepository;
 	private final UserRepository userRepository;
 	private final AuthoritiesRepository authoritiesRepository;
+	private final NotificationRepository notificationRepository;
 	
 	private final List<String> availableTypes = Arrays.asList(".jpg",".jpeg",".png",".gif");
 	
@@ -177,6 +181,19 @@ public class YoutubeConfirmService {
 		youtubeConfirmRepository.save(youtubeConfirm);
 		dtoToSend.setYoutubeConfirmId(dto.getYoutubeConfirmId());
 		dtoToSend.setYoutubeConfirmImg(youtubeConfirm.getFileName());
+		
+		
+		// 승격 성공 알림
+		String type = "promoNoti"; 
+		Notification notification = new Notification().createNotification(
+				null, 
+				null, 
+				youtubeConfirmRepository.findById(dto.getYoutubeConfirmId()).orElseThrow(() -> new IllegalAccessError("해당 승격 요청 없음 "+dto.getYoutubeConfirmId())),
+				null, // sender x
+				userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("해당 유저가 존재하지 않습니다.")),
+				type,
+				null);
+		notificationRepository.save(notification);	
 		return dtoToSend;
 	}
 	
@@ -188,6 +205,19 @@ public class YoutubeConfirmService {
 		if(youtubeImgToDel.exists()) {
 			youtubeImgToDel.delete();
 		}
+		
+		// 승격 실패 알림
+		String type = "promoNoti"; 
+		Notification notification = new Notification().createNotification(
+				null, 
+				null, 
+				youtubeConfirmRepository.findById(youtubeConfirmId).orElseThrow(() -> new IllegalAccessError("해당 유저의 유튜버 승격 요청이 존재하지 않습니다.")),
+				null, // sender x
+				youtubeConfirm.getUser(),
+				type,
+				null);
+		notificationRepository.save(notification);	
+		
 		youtubeConfirmRepository.deleteById(youtubeConfirmId);
 		return "Success";
 	}

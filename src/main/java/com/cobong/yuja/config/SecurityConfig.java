@@ -84,7 +84,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.addHeaderWriter(new StaticHeadersWriter("X-FRAME-OPTIONS", "ALLOW-FROM " + "http://localhost:3000"))
 				.and()
 			.authorizeRequests()
-				.antMatchers("/api/auth/**") // 로그인 회원가입
+				.antMatchers("/api/auth/**","/api/main/board") // 로그인 회원가입
 					.permitAll() //  all methods all authorities
 				.antMatchers(HttpMethod.POST,"/api/2/board", "/api/3/board", "/api/4/board","/api/5/board", "/api/board/liked","/api/comment","/api/board/img/upload", "api/2/thumbnail/upload", "api/3/thumbnail/upload") 
 					.hasAnyAuthority("ROLE_GENERAL", "ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN" )// post  all
@@ -105,7 +105,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN", "ROLE_GENERAL") // manager admin  
 				.antMatchers(HttpMethod.POST,"/api/user/**","/api/reported") 
 					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // manager admin 
-				.antMatchers(HttpMethod.GET,"/api/reported")
+				.antMatchers(HttpMethod.GET,"/api/reported", "/api/notice/private/**")
 					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // manager admin 
 				.antMatchers(HttpMethod.PUT,"/api/banned/**")
 					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // manager admin 

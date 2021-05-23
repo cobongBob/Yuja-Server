@@ -61,21 +61,17 @@ public class CommentServiceImpl implements CommentService {
 		CommentResponseDto responseDto = new CommentResponseDto().entityToDto(commentRepository.save(comment));
 		
 		
-		
-		// create notification
-//		User sendUser = userRepository.findById(responseDto.getUserId()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+dto.getUserId()));
-//		BoardComment commentId = commentRepository.findById(responseDto.getCommentId()).orElseThrow(() -> new IllegalAccessError("해당 댓글 없음 "+responseDto.getCommentId()));
 		Board board = boardRepository.findById(dto.getBoardId()).orElseThrow(() -> new IllegalAccessError("알림 받는 유저 없음 "+dto.getBoardId()));
 		String type = "commentNoti"; 
 		Notification notification = new Notification().createNotification(
 				commentRepository.findById(responseDto.getCommentId()).orElseThrow(() -> new IllegalAccessError("해당 댓글 없음 "+responseDto.getCommentId())), 
-				null, 
+				null,
+				null,// youtubeconfirmId
 				userRepository.findById(responseDto.getUserId()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+dto.getUserId())), 
 				board.getUser(),
 				type,
 				null);
 		notificationRepository.save(notification);
-		
 		
 		
 		return responseDto;
