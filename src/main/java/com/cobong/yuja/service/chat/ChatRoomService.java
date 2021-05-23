@@ -63,7 +63,9 @@ public class ChatRoomService {
 			
 			if(profileRepository.findByUserNickname(receiver).isPresent()) {
 				dto.setProfilePic(profileRepository.findByUserNickname(receiver).get().getFileName());
-			} 
+			} else {
+				dto.setProfilePic("yuzu05.png");
+			}
 			dtoList.add(dto);
 		}
 		return dtoList;

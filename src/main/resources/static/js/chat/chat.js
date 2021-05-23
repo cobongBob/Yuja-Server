@@ -24,9 +24,13 @@ function disconnect() {
 
 function send() {
   message = document.getElementById('message').value;
-  if(message.includes("<script>")){
-	console.log("comes here");
-	return showError();
+  if(message.includes("<") || message.includes(">")){
+	console.log("visited");
+	//message.replaceAll('<', '111');
+	//message.replaceAll(">", "222"); doesnt work. 
+	showError();
+	window.scrollTo(0, document.body.scrollHeight);
+	return false;
 }
   data = {
     chatRoomId: roomId,
@@ -41,15 +45,13 @@ function send() {
 }
 
 function showError(){
-	window.scrollTo(0, document.body.scrollHeight);
-	msgArea.innerHTML += "<div class='ChatReceiverBigWrapper'>" +
-      					"<div class='ChatReceiverWrapper'>" +
-      					"<h3 style='color: red'>'<script>'가 포함된 문구는 적을수 없습니다.<h3></div></div>"
+	msgArea.innerHTML += "<div class='ChatSenderBigWrapper'>" +
+      					"<div class='ChatSenderWrapper'>" +
+      					"<h3 style='color: red'>'<'나 '>'가 포함된 문구는 적을수 없습니다.<h3></div></div>";
 }
 
 // 채팅 진행중 -> 메세지 받을때 보여지는 div
 function showMessageReceived(e) {
-  window.scrollTo(0, document.body.scrollHeight);
   now = new Date();
   if (now.getHours() > 12) {
     msgArea.innerHTML +=
@@ -123,7 +125,6 @@ function showMessageReceived(e) {
 
 // 채팅 진행중 -> 메세지 보낼때 보여지는 div
 function showMessageSend(e) {
-  window.scrollTo(0, document.body.scrollHeight);
   now = new Date();
   if (now.getHours() > 12) {
     msgArea.innerHTML +=

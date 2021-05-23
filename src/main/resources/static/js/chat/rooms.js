@@ -27,6 +27,10 @@ function enterRoom(chatRoomId){
 }
 
 function findRoom(){
+	if($("#receiver").val().includes("<") || $("#receiver").val().includes(">")){
+		$("#ErrorMsg").html("<h3 style='color: red'>특수문자는 검색할수 없습니다<h3>");
+		return false;
+	}
 	$.ajax({
 		url: "/socket/room?receiver="+$("#receiver").val(),
 		method: "POST",
