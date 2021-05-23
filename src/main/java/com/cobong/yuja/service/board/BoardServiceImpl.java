@@ -510,4 +510,12 @@ public class BoardServiceImpl implements BoardService {
 		
 		return mainboardsResponseDto;
 	}
+
+	@Override
+	@Transactional
+	public String noticePrivateSwitch(Long bno) {
+		Board board = boardRepository.findById(bno).orElseThrow(()->new IllegalArgumentException("존재하지 않는 글입니다."));
+		board.setPrivate(!board.isPrivate());
+		return "success";
+	}
 }

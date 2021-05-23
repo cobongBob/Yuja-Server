@@ -151,6 +151,10 @@ public class Board extends DateAudit{
 	public void addHit() {
 		this.hit = this.hit+1;
 	}
+
+	public void setPrivate(boolean isPrivate) {
+		this.isPrivate = isPrivate;
+	}
 	
 	
 }

@@ -28,4 +28,6 @@ public interface BoardService {
 	List<BoardResponseDto> boardsUserCommented(Long userId);
 	
 	MainboardsResponseDto getMainBoardData();
+
+	String noticePrivateSwitch(Long bno);
 }

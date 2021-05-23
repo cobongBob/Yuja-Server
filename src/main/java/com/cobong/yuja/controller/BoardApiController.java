@@ -121,4 +121,8 @@ public class BoardApiController {
 	public ResponseEntity<?> getMainBoardData() {
 		return new ResponseEntity<>(boardService.getMainBoardData(), HttpStatus.OK);
 	}
+	@GetMapping("/api/notice/private/{bno}")
+	public ResponseEntity<?> setNoticePrivate(@PathVariable Long bno) {
+		return new ResponseEntity<>(boardService.noticePrivateSwitch(bno), HttpStatus.OK);
+	}
 }
