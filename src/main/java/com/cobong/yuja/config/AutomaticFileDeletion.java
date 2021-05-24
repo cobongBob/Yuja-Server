@@ -27,7 +27,7 @@ public class AutomaticFileDeletion {
 	private final SocketMessageService socketMessageService;
 	private final ChatRoomService chatRoomService;
 	
-	@Scheduled(cron = "0 0 4 * * *")
+	@Scheduled(cron = "0 10 20 * * *")
 	public void deleteAtFourAM() {
 		File tempToDel = Paths.get(System.getProperty("user.dir") + File.separator+"files" + File.separator +"temp").toFile();
 		File[] tempsToDel = tempToDel.listFiles();

@@ -3,6 +3,8 @@ package com.cobong.yuja.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException.BadRequest;
@@ -10,6 +12,7 @@ import org.springframework.web.client.HttpClientErrorException.TooManyRequests;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javassist.compiler.CompileError;
 import lombok.Value;
 
 @RestControllerAdvice
@@ -23,16 +26,6 @@ public class ExceptionController extends ResponseEntityExceptionHandler {
 	public ResponseEntity<?> illegalStateException(IllegalArgumentException e) {
 		return new ResponseEntity<>(new ExceptionRestResponse(500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);
 	}
-	
-	//@ExceptionHandler(value = RuntimeException.class)
-	//public ResponseEntity<?> runtimeException(Exception e) {
-		//return new ResponseEntity<>(new ExceptionRestResponse(1403, e.getLocalizedMessage()), HttpStatus.OK);
-		/**
-		 * 현재 생각나는 발생 가능한 오류들은 캐치되고 있으나, 이 외의 상황이 발생할시 필요할수 있다. 
-		 * 다만 사용에는 주의가 필요한 점이 있는데, IllegalErrorAccess가 try-catch문 안에서 발생했을시, catch문에서 
-		 * illegalAccessError를 throw 하더라도 런타임으로 발생하기에 여기로 온다. 근데 또 항상 그런건 아닌듯하다.. 
-		 */
-	//}
 	
 	@ExceptionHandler(value = AuthenticationException.class)
 	public ResponseEntity<?> passwordError(Exception e) {

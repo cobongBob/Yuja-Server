@@ -27,6 +27,9 @@ function enterRoom(chatRoomId){
 }
 
 function findRoom(){
+	if($("#receiver").val() === null || $("#receiver").val() === ""){
+		return false;
+	}
 	if($("#receiver").val().includes("<") || $("#receiver").val().includes(">")){
 		$("#ErrorMsg").html("<h3 style='color: red'>&lt나 &gt는 검색할수 없습니다<h3>");
 		return false;

@@ -27,7 +27,7 @@
 	            <div class="SenderImgWrapper">
 	            	<img class="ChatSendProfileImg" src="/files/profiles/{{senderPic}}" alt="" />
 	            </div>
-	            <div class="SenderChatMessageContent"><p class="ChatContent">{{content}}</p><span class="SenderChatDate">{{createdDate}}</span></div>
+	            <div class="SenderChatMessageContent"><div><p class="ChatContent">{{content}}</p></div><span class="SenderChatDate">{{createdDate}}</span></div>
             </div>
          </div>
          {{/ownerOrNot}}
@@ -38,7 +38,7 @@
 	            	<img class="ChatReceiverProfileImg" src="/files/profiles/{{receiverPic}}" alt="" />
 	            </div>
                <div class="ChatMessageReceiver">{{sender}}</div>
-               <div class="ReceiverChatMessageContent"><p class="ChatContent">{{content}}</p><span class="ReceiverChatDate">{{createdDate}}</span></div>
+               <div class="ReceiverChatMessageContent"><div><p class="ChatContent">{{content}}</p></div><span class="ReceiverChatDate">{{createdDate}}</span></div>
             </div>
          </div>
          {{/ownerOrNot}}
