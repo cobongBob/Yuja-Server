@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.cobong.yuja.model.Authorities;
 import com.cobong.yuja.model.AuthorityNames;
-import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.Notification;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.model.YoutubeConfirm;
@@ -183,13 +182,10 @@ public class YoutubeConfirmService {
 		dtoToSend.setYoutubeConfirmImg(youtubeConfirm.getFileName());
 		
 		
-		// 승격 성공 알림
-		String type = "promoNoti"; 
+		// 유튜버 승격 성공 알림
+		String type = "youtubeNoti"; 
 		Notification notification = new Notification().createNotification(
 				null, 
-				null, 
-				youtubeConfirmRepository.findById(dto.getYoutubeConfirmId()).orElseThrow(() -> new IllegalAccessError("해당 승격 요청 없음 "+dto.getYoutubeConfirmId())),
-				null,
 				null, // sender x
 				userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("해당 유저가 존재하지 않습니다.")),
 				type,
@@ -211,9 +207,6 @@ public class YoutubeConfirmService {
 		String type = "promoNoti"; 
 		Notification notification = new Notification().createNotification(
 				null, 
-				null, 
-				youtubeConfirmRepository.findById(youtubeConfirmId).orElseThrow(() -> new IllegalAccessError("해당 유저의 유튜버 승격 요청이 존재하지 않습니다.")),
-				null,
 				null, // sender x
 				youtubeConfirm.getUser(),
 				type,
