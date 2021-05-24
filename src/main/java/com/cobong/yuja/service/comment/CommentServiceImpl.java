@@ -1,7 +1,6 @@
 package com.cobong.yuja.service.comment;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,7 +11,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardComment;
 import com.cobong.yuja.model.Notification;
-import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.comment.CommentRequestDto;
 import com.cobong.yuja.payload.response.comment.CommentResponseDto;
 import com.cobong.yuja.repository.NotificationRepository;
@@ -65,9 +63,6 @@ public class CommentServiceImpl implements CommentService {
 		String type = "commentNoti"; 
 		Notification notification = new Notification().createNotification(
 				commentRepository.findById(responseDto.getCommentId()).orElseThrow(() -> new IllegalAccessError("해당 댓글 없음 "+responseDto.getCommentId())), 
-				null,
-				null,// youtubeconfirmId
-				null,
 				userRepository.findById(responseDto.getUserId()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+dto.getUserId())), 
 				board.getUser(),
 				type,

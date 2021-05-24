@@ -123,12 +123,9 @@ public class BoardServiceImpl implements BoardService {
 				user.getAuthorities().add(editor);
 				boardDto.setFirstOrNot(true);
 				
-				String type = "promoNoti"; 
+				String type = "editNoti"; 
 				Notification notification = new Notification().createNotification(
 						null, 
-						null, 
-						null,
-						boardRepository.findById( boardDto.getId()).orElseThrow(() -> new IllegalAccessError("해당 게시판이 존재하지 않습니다.")),
 						null, // sender x
 						userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("해당 유저가 존재하지 않습니다.")),
 						type,
@@ -140,12 +137,9 @@ public class BoardServiceImpl implements BoardService {
 			if(!user.getAuthorities().contains(thumb)) {
 				user.getAuthorities().add(thumb);
 				boardDto.setFirstOrNot(true);
-				String type = "promoNoti"; 
+				String type = "thumbNoti"; 
 				Notification notification = new Notification().createNotification(
 						null, 
-						null, 
-						null,
-						boardRepository.findById( boardDto.getId()).orElseThrow(() -> new IllegalAccessError("해당 게시판이 존재하지 않습니다.")),
 						null, // sender x
 						userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("해당 유저가 존재하지 않습니다.")),
 						type,

@@ -1,11 +1,6 @@
 package com.cobong.yuja.payload.response.board;
 
-import java.time.ZonedDateTime;
-import java.util.Date;
-import java.util.List;
-
 import com.cobong.yuja.model.BoardType;
-import com.cobong.yuja.payload.response.user.UserResponseDto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

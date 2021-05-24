@@ -34,18 +34,6 @@ public class Notification extends DateAudit{
 	@JoinColumn(name="commentId")
 	private BoardComment comment;
 	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="socketMsgId")
-	private SocketMessage message;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="confirmId")
-	private YoutubeConfirm confirm;
-	
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name="boardId")
-	private Board board;
-	
 	// 알림을 보낸 유저 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name="senderId")
@@ -62,16 +50,10 @@ public class Notification extends DateAudit{
 	// 알림 확인 일시
 	private Date readDate;
 	
-    // 알림 내용(미정)
-//	private String message;
-	
-	public Notification createNotification(BoardComment comment, SocketMessage message, YoutubeConfirm confirm, Board board, 
+	public Notification createNotification(BoardComment comment, 
 			User sender, User recipient, String type, Date readDate) {
 		Notification notification = new Notification();
 		notification.comment = comment;
-		notification.message = message;
-		notification.confirm = confirm;
-		notification.board = board;
 		notification.sender = sender;
 		notification.recipient = recipient;
 		notification.type = type;
