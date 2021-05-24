@@ -89,8 +89,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers(HttpMethod.POST,"/api/2/board", "/api/3/board", "/api/4/board","/api/5/board", "/api/board/liked","/api/comment","/api/board/img/upload", "api/2/thumbnail/upload", "api/3/thumbnail/upload") 
 					.hasAnyAuthority("ROLE_GENERAL", "ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN" )// post  all
 				.antMatchers(HttpMethod.PUT,"/api/2/board/**","/api/3/board/**","/api/4/board/**","/api/5/board/**","/api/comment/**", "/api/user/**" ) 
-					.permitAll()
-					//.hasAnyAuthority("ROLE_GENERAL", "ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN" )// put all
+//					.permitAll()
+					.hasAnyAuthority("ROLE_GENERAL", "ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN" )// put all
 				.antMatchers(HttpMethod.DELETE,"/api/2/board/**","/api/3/board/**","/api/4/board/**","/api/5/board/**", "/api/board/liked","api/comment/**") 
 					.hasAnyAuthority("ROLE_GENERAL", "ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN" )// delete all
 				.antMatchers(HttpMethod.POST,"/api/1/board", "api/1/thumbnail/upload")
