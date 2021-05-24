@@ -73,32 +73,34 @@
   outline: none;
   font-weight: bold;
 }
-
-.ChatWho {
-  font-size: 1.3rem;
+.whoBox {
+	display: flex;
+    vertical-align: middle;
 }
-
-.ChatWho > h1 {
+.ChatWho {
+  display:inline-block;
+}
+.ChatWhoImg {
+	border-radius: 50%;
+	width: 12vw;
+	height: 10vh;
+}
+.ChatWho > h2 {
+	text-align: center;
 	display: inline-block;
 }
 
-.MessageGoBack {
-	float: right;
-	font-size: 1.3rem;
-	font-weight: bold;
-	color: #c4302b;
-	text-decoration:none;
-	outline: none;
-	display: block;
+.chatWhoName {
+    display: inline-block;
+    margin-top: 2%;
+    margin-left: 5%;
+    vertical-align: middle;
 }
-
-
 .ChatOut {
 	font-size: 1.5rem;
 }
 
 #ChatLogsWrapper {
-  background-color: #dddddd;
   padding: 3%;
   min-height: 20vh;
 }
@@ -195,15 +197,22 @@
 .MessageInputWrapper {
 	margin-top: 3%;
 	text-align: center;
+	border-top: 2px solid #ffb963;
+}
+.submitBox {
+	margin-top: 3%;
 }
 
 .MessageInput {
-  border: 4px solid #dddddd;
+  border: 2px solid #ffb963;
+  border-radius: 30px;
   padding: 2%;
-  font-size: 1.8rem;
-  width: 70vw;
+  font-size: 1.2rem;
+  width: 80vw;
+  height:1vh;
   text-align: center;
   font-weight: bold;
+  font-family: 'scdream3';
 }
 
 .MessageInput:focus {
@@ -211,13 +220,15 @@
   background-color: none;
   font-weight: bold;
 }
+.MessageInput:focus::placeholder {
+	color:white;
+}
 
 .MessageButton {
-  font-size: 1.8rem;
-  font-weight: bold;
-  border: 3px solid #5280ff;
-  background-color: #5280ff;
-  border-radius: 50%;
-  margin-left: 2%;
+  font-size: 1.7rem;
+  border:none;
+  background-color: #ffb963;
+  border-radius: 30%;
+  margin-left: 3%;
   cursor: pointer;
 }

@@ -487,7 +487,6 @@ public class UserServiceImpl implements UserService {
 			googleUser.setFlag(true);
 		} else {
 			googleUser.setFlag(false);
-			
 		}
 		googleUser.setAttribute(profile);
 		return googleUser;

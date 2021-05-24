@@ -7,9 +7,15 @@
 </head>
 
 {{! 채팅방 들어갈때 -> 채팅 기록 남은거 보여주는 div }}
+
 <body>
-<div class="ChatWho">
-   <h1>{{receiver}}와 채팅</h1>
+<div class="whoBox">
+	<div class="ChatWho">
+  		<img class="ChatWhoImg" src="/files/profiles/{{receiverPic}}" alt="" />
+	</div>
+	<div class="chatWhoName">
+		<h2>{{receiver}}</h2>
+	</div>
 </div>
    <div id="ChatLogsWrapper">
    	<div id="chatLog">
@@ -40,12 +46,12 @@
       </div>
    </div>
    <div class="MessageInputWrapper">
+   	<div class="submitBox">
    	<form onsubmit="return send()">
-      <input class="MessageInput" type="text" id="message" placeholder="Message" autocomplete="off"/>
-      <button class="MessageButton" type="button" onclick="return send()">보내기</button>
+      <input class="MessageInput" type="text" id="message" placeholder="메세지를 적어주세요" autocomplete="off" autofocus="autofocus"/>
+      <button class="MessageButton" type="button" onclick="return send()">💬</button>
     </form>
-      <a class="MessageGoBack" href="/rooms">뒤로</a>
-      <a href="javascript:void(0);" id="delete" onClick="return stupidShit()">Stupid Shit</a>
+   </div>
    </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
