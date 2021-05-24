@@ -21,8 +21,6 @@ public interface BoardService {
 	
 	List<BoardResponseDto> boardsInBoardType(Long boardCode, Long userId);
 	
-	List<BoardResponseDto> boardsUserWrote(Long userId);
-	
 	List<BoardResponseDto> boardsUserLiked(Long userId);
 	
 	List<BoardResponseDto> boardsUserCommented(Long userId);
@@ -30,4 +28,6 @@ public interface BoardService {
 	MainboardsResponseDto getMainBoardData();
 
 	String noticePrivateSwitch(Long bno);
+
+	List<BoardResponseDto> boardsUserWrote(Long userId, Long boardCode);
 }

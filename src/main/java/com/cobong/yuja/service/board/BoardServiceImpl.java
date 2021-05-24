@@ -52,6 +52,19 @@ public class BoardServiceImpl implements BoardService {
 		User user = userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("해당유저 없음 "+dto.getUserId()));
 		BoardType boardType = boardTypeRepository.findById(dto.getBoardCode()).orElseThrow(() -> new IllegalAccessError("해당글 타입 없음" + dto.getBoardCode()));
 		
+		if(dto.getBoardCode() == 1L) {
+			List<Board> curBoards = boardRepository.boardsUserWrote(user.getUserId(), 1L);
+			if(curBoards.size() >= 3) {
+				delete(curBoards.get(2).getBoardId(), user.getUserId());
+			}
+		} else if(dto.getBoardCode() == 2L || dto.getBoardCode() == 3L) {
+			List<Board> curBoards = boardRepository.boardsUserWrote(user.getUserId(), dto.getBoardCode());
+			if(curBoards.size() >= 1) {
+				delete(curBoards.get(0).getBoardId(), user.getUserId());
+			}
+		}
+		
+		
 		String receivelink = dto.getPreviewImage();
 		String target = "https://www.youtube.com/watch?v=";
 		
@@ -380,8 +393,8 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<BoardResponseDto> boardsUserWrote(Long userId) {
-		List<Board> curBoard = boardRepository.boardsUserWrote(userId);
+	public List<BoardResponseDto> boardsUserWrote(Long userId, Long boardCode) {
+		List<Board> curBoard = boardRepository.boardsUserWrote(userId, boardCode);
 		List<BoardResponseDto> curBoardResponseDto = new ArrayList<BoardResponseDto>();
 		for(Board board: curBoard) {
 			boolean likedOrNot = boardRepository.likedOrNot(board.getBoardId(), userId);
