@@ -24,14 +24,16 @@ function disconnect() {
 
 function send() {
   message = document.getElementById('message').value;
-  if(message.includes("<") || message.includes(">")){
+  if(message.includes("&")){
+	message = message.replaceAll("&", "&amp");
+	}
+  if(message.includes("<") || message.includes(">") || message.includes("'") || message.includes('"')){
 	console.log("visited");
-	//message.replaceAll('<', '111');
-	//message.replaceAll(">", "222"); doesnt work. 
-	showError();
-	window.scrollTo(0, document.body.scrollHeight);
-	return false;
-}
+	message = message.replaceAll('<', '&lt');
+	message = message.replaceAll(">", "&gt");
+	message = message.replaceAll("'", "&#39");
+	message = message.replaceAll('"', "&quot");
+	}
   data = {
     chatRoomId: roomId,
     sender: username,

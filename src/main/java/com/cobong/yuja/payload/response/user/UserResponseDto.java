@@ -17,6 +17,7 @@ public class UserResponseDto {
 	private List<?> authorities;
 	private String bday;
 	private String profilePic;
+	private Long profilePicId;
 	private String providedId;
 	private String provider;
 	private String address;
