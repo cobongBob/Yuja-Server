@@ -22,7 +22,7 @@ public class UserUpdateRequestDto {
 	private String detailAddress;
 	private String phone;
 	private String bsn;
-	private Long youtubeImgId;
+	private Long youtubeConfirmId = 0L;
 	private String yoututubeUrl;
 	
 	public User dtoToEntity() {

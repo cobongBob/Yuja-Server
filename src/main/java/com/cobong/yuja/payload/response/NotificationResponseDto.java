@@ -3,7 +3,6 @@ package com.cobong.yuja.payload.response;
 import java.util.Date;
 
 import com.cobong.yuja.model.Notification;
-import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.response.comment.CommentResponseDto;
 import com.cobong.yuja.payload.response.user.UserResponseDto;
 
@@ -28,7 +27,7 @@ public class NotificationResponseDto {
 		this.sender = new UserResponseDto().entityToDto(entity.getSender());
 		this.type = entity.getType();
 		this.readDate = entity.getReadDate();
-		this.comment = new CommentResponseDto().entityToDto(entity.getComment());
+		this.comment = (entity.getComment() != null)? new CommentResponseDto().entityToDto(entity.getComment()): null;
 		return this;
 	}
 }

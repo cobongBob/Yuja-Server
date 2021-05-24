@@ -24,8 +24,8 @@ public class CustomBoardRepositoryImpl implements CustomBoardRepository {
 	}
 
 	@Override
-	public List<Board> boardsUserWrote(Long userId) {
-		return queryFactory.selectFrom(board).where(board.user.userId.eq(userId)).orderBy(board.updatedDate.asc())
+	public List<Board> boardsUserWrote(Long userId, Long boardCode) {
+		return queryFactory.selectFrom(board).where(board.user.userId.eq(userId), board.boardType.boardCode.eq(boardCode)).orderBy(board.updatedDate.asc())
 				.fetch();
 	}
 
