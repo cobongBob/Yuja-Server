@@ -10,10 +10,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cobong.yuja.model.ChatRoom;
+import com.cobong.yuja.model.Notification;
 import com.cobong.yuja.model.SocketMessage;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.chat.SocketMessageReceiveDto;
 import com.cobong.yuja.payload.response.chat.SocketMessageSendDto;
+import com.cobong.yuja.repository.NotificationRepository;
 import com.cobong.yuja.repository.chat.ChatRoomRepository;
 import com.cobong.yuja.repository.chat.SocketMessageRepository;
 import com.cobong.yuja.repository.user.UserRepository;
@@ -26,6 +28,7 @@ public class SocketMessageService {
 	private final SocketMessageRepository socketMessageRepository;
 	private final ChatRoomRepository chatRoomRepository;
 	private final UserRepository userRepository;
+	private final NotificationRepository notificationRepository;
 	
 	@Transactional
 	public void save(SocketMessageReceiveDto msg) {
@@ -36,6 +39,19 @@ public class SocketMessageService {
 		}
 		User user = userOpt.get();
 		SocketMessage socketmsg = SocketMessage.builder().user(user).chatRoom(chatRoom).message(msg.getMessage()).build();
+		
+				
+		String type = "chatNoti"; 
+		Notification notification = new Notification().createNotification(
+				null, 
+				socketMessageRepository.findById(msg.getChatRoomId()).orElseThrow(() -> new IllegalAccessError("해당 채빙방 없음 "+msg.getChatRoomId())),
+				null, // youtubeconfirmId
+				null,
+				userRepository.findByNickname(msg.getSender()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+msg.getSender())),
+				userRepository.findByNickname(msg.getReceiver()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+msg.getReceiver())),
+				type,
+				null);
+		notificationRepository.save(notification);
 		
 		socketMessageRepository.save(socketmsg);
 	}
@@ -54,6 +70,12 @@ public class SocketMessageService {
 		List<SocketMessageSendDto> dtoList = new ArrayList<SocketMessageSendDto>();
 		for(SocketMessage msgs : entityList) {
 			SocketMessageSendDto dto = new SocketMessageSendDto().entityToDto(msgs);
+			System.out.println("Visited!!!!!!!!"+dto.getContent());
+			dto.setContent(dto.getContent().replaceAll("&lt", "<"));
+			dto.setContent(dto.getContent().replaceAll("&gt", ">"));
+			dto.setContent(dto.getContent().replaceAll("&quot", "\""));
+			dto.setContent(dto.getContent().replaceAll("&#39", "\'"));
+			dto.setContent(dto.getContent().replaceAll("&amp", "&"));
 			LocalDateTime msgTime = LocalDateTime.ofInstant(msgs.getCreatedDate(), ZoneId.systemDefault());
 			
 			if(msgTime.getDayOfYear() != now.getDayOfYear()) {

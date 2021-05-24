@@ -150,11 +150,14 @@ public class UserServiceImpl implements UserService {
 		}
 		if(youtubeConfirmRepository.findByUserUserId(id).isPresent()) {
 			dto.setYoutubeConfirmImg(youtubeConfirmRepository.findByUserUserId(id).get().getFileName());
+		} else {
+			dto.setYoutubeConfirmImg("");
 		}
 		Optional<ProfilePicture> optProfilePicture = profilePictureRepository.findByUserUserId(id);
 		if(optProfilePicture.isPresent()) {
 			ProfilePicture profilePicture = optProfilePicture.get();
 			dto.setProfilePic(profilePicture.getFileName());			
+			dto.setProfilePicId(profilePicture.getProfilePicId());
 		} else {
 			dto.setProfilePic("");
 		} 
