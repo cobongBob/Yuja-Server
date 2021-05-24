@@ -66,9 +66,11 @@ public class NotificationServiceImpl implements NotificationService {
 	public List<NotificationResponseDto> findAll(Long userId) {
 		List<Notification> entityList = notificationRepository.findByRecipientId(userId);
 		List<NotificationResponseDto> notifications = new ArrayList<NotificationResponseDto>();
-		for(Notification notification : entityList) {
-			NotificationResponseDto dto = new NotificationResponseDto().entityToDto(notification);
-			notifications.add(dto);
+		if(entityList.size()>0) {
+			for(Notification notification : entityList) {
+				NotificationResponseDto dto = new NotificationResponseDto().entityToDto(notification);
+				notifications.add(dto);
+			}
 		}
 		return notifications;
 	}
