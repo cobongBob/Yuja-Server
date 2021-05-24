@@ -2,6 +2,7 @@ package com.cobong.yuja.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -26,6 +27,16 @@ public class NotificationApiController {
 	@GetMapping("/api/notiread/{notiId}")
 	public ResponseEntity<?> getRead(@PathVariable Long notiId) {
 		return new ResponseEntity<>(notificationService.read(notiId),HttpStatus.OK);
+	}
+	
+	//
+	@GetMapping("/api/findnoti/{userId}")
+	public ResponseEntity<?> findAllNoti(@PathVariable Long userId) {
+		return new ResponseEntity<>(notificationService.findAll(userId),HttpStatus.OK);
+	}
+	@DeleteMapping("/api/deletenoti/{notiId}")
+	public ResponseEntity<?> deleteNoti(@PathVariable Long notiId) {
+		return new ResponseEntity<>(notificationService.deletedNoti(notiId),HttpStatus.OK);
 	}
 
 }

@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.transaction.Transactional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.cobong.yuja.model.Notification;
 import com.cobong.yuja.payload.response.NotificationResponseDto;
@@ -58,6 +58,26 @@ public class NotificationServiceImpl implements NotificationService {
 			notification.setReadDate(now);
 		}
 		return dto;
+	}
+	
+	//모든 알림 조회
+	@Override
+	@Transactional(readOnly = true)
+	public List<NotificationResponseDto> findAll(Long userId) {
+		List<Notification> entityList = notificationRepository.findByRecipientId(userId);
+		List<NotificationResponseDto> notifications = new ArrayList<NotificationResponseDto>();
+		for(Notification notification : entityList) {
+			NotificationResponseDto dto = new NotificationResponseDto().entityToDto(notification);
+			notifications.add(dto);
+		}
+		return notifications;
+	}
+
+	@Override
+	@Transactional
+	public String deletedNoti(Long notiId) {
+		notificationRepository.deleteById(notiId);
+		return "success";
 	}
 
 }
