@@ -32,7 +32,7 @@
 	            	<img class="ChatReceiverProfileImg" src="/files/profiles/{{receiverPic}}" alt="" />
 	            </div>
                <div class="ChatMessageReceiver">{{sender}}</div>
-               <div class="ReceiverChatMessageContent"><span class="ReceiverChatDate">{{createdDate}}</span><p class="ChatContent">{{content}}</p></div>
+               <div class="ReceiverChatMessageContent"><p class="ChatContent">{{content}}</p><span class="ReceiverChatDate">{{createdDate}}</span></div>
             </div>
          </div>
          {{/ownerOrNot}}
@@ -45,6 +45,7 @@
       <button class="MessageButton" type="button" onclick="return send()">보내기</button>
     </form>
       <a class="MessageGoBack" href="/rooms">뒤로</a>
+      <a href="javascript:void(0);" id="delete" onClick="return stupidShit()">Stupid Shit</a>
    </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>

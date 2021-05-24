@@ -52,6 +52,12 @@ function showError(){
       					"<h3 style='color: red'>'<'나 '>'가 포함된 문구는 적을수 없습니다.<h3></div></div>";
 }
 
+function stupidShit(){
+	console.log("hey we are here to do some stupid shit!");
+	msgArea.innerHTML += "<script>alert('Hey')</script>";
+	return false;
+}
+
 // 채팅 진행중 -> 메세지 받을때 보여지는 div
 function showMessageReceived(e) {
   now = new Date();
