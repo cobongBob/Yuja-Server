@@ -67,6 +67,7 @@ public class CommentServiceImpl implements CommentService {
 				commentRepository.findById(responseDto.getCommentId()).orElseThrow(() -> new IllegalAccessError("해당 댓글 없음 "+responseDto.getCommentId())), 
 				null,
 				null,// youtubeconfirmId
+				null,
 				userRepository.findById(responseDto.getUserId()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+dto.getUserId())), 
 				board.getUser(),
 				type,

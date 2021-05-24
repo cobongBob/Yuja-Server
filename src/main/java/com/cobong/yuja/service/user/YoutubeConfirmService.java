@@ -189,6 +189,7 @@ public class YoutubeConfirmService {
 				null, 
 				null, 
 				youtubeConfirmRepository.findById(dto.getYoutubeConfirmId()).orElseThrow(() -> new IllegalAccessError("해당 승격 요청 없음 "+dto.getYoutubeConfirmId())),
+				null,
 				null, // sender x
 				userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("해당 유저가 존재하지 않습니다.")),
 				type,
@@ -212,6 +213,7 @@ public class YoutubeConfirmService {
 				null, 
 				null, 
 				youtubeConfirmRepository.findById(youtubeConfirmId).orElseThrow(() -> new IllegalAccessError("해당 유저의 유튜버 승격 요청이 존재하지 않습니다.")),
+				null,
 				null, // sender x
 				youtubeConfirm.getUser(),
 				type,

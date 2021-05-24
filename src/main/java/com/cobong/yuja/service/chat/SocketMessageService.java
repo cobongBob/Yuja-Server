@@ -46,6 +46,7 @@ public class SocketMessageService {
 				null, 
 				socketMessageRepository.findById(msg.getChatRoomId()).orElseThrow(() -> new IllegalAccessError("해당 채빙방 없음 "+msg.getChatRoomId())),
 				null, // youtubeconfirmId
+				null,
 				userRepository.findByNickname(msg.getSender()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+msg.getSender())),
 				userRepository.findByNickname(msg.getReceiver()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+msg.getReceiver())),
 				type,

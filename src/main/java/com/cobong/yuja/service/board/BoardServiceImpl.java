@@ -16,6 +16,7 @@ import com.cobong.yuja.model.AuthorityNames;
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardAttach;
 import com.cobong.yuja.model.BoardType;
+import com.cobong.yuja.model.Notification;
 import com.cobong.yuja.model.Thumbnail;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.board.BoardSaveRequestDto;
@@ -24,6 +25,7 @@ import com.cobong.yuja.payload.response.board.BoardResponseDto;
 import com.cobong.yuja.payload.response.board.BoardTypeResponseDto;
 import com.cobong.yuja.payload.response.board.MainboardsResponseDto;
 import com.cobong.yuja.repository.BoardTypeRepository;
+import com.cobong.yuja.repository.NotificationRepository;
 import com.cobong.yuja.repository.attach.AttachRepository;
 import com.cobong.yuja.repository.attach.ThumbnailRepository;
 import com.cobong.yuja.repository.board.BoardRepository;
@@ -42,6 +44,7 @@ public class BoardServiceImpl implements BoardService {
 	private final AttachRepository attachRepository;
 	private final ThumbnailRepository thumbnailRepository;
 	private final AuthoritiesRepository authoritiesRepository;
+	private final NotificationRepository notificationRepository;
 	
 	@Override
 	@Transactional
@@ -111,18 +114,43 @@ public class BoardServiceImpl implements BoardService {
 				thumbnailRepository.save(thumbnail);
 			}
 		}
+		
+		// 승격 알림 추가함
 		BoardResponseDto boardDto = new BoardResponseDto().entityToDto(board2);
 		if(dto.getBoardCode() == 2L) {
 			Authorities editor = authoritiesRepository.findByAuthority(AuthorityNames.EDITOR).get();
 			if(!user.getAuthorities().contains(editor)) {
 				user.getAuthorities().add(editor);
 				boardDto.setFirstOrNot(true);
+				
+				String type = "promoNoti"; 
+				Notification notification = new Notification().createNotification(
+						null, 
+						null, 
+						null,
+						boardRepository.findById( boardDto.getId()).orElseThrow(() -> new IllegalAccessError("해당 게시판이 존재하지 않습니다.")),
+						null, // sender x
+						userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("해당 유저가 존재하지 않습니다.")),
+						type,
+						null);
+				notificationRepository.save(notification);	
 			}
 		} else if(dto.getBoardCode() == 3L) {
 			Authorities thumb = authoritiesRepository.findByAuthority(AuthorityNames.THUMBNAIOR).get();
 			if(!user.getAuthorities().contains(thumb)) {
 				user.getAuthorities().add(thumb);
 				boardDto.setFirstOrNot(true);
+				String type = "promoNoti"; 
+				Notification notification = new Notification().createNotification(
+						null, 
+						null, 
+						null,
+						boardRepository.findById( boardDto.getId()).orElseThrow(() -> new IllegalAccessError("해당 게시판이 존재하지 않습니다.")),
+						null, // sender x
+						userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("해당 유저가 존재하지 않습니다.")),
+						type,
+						null);
+				notificationRepository.save(notification);	
 			}
 		}
 		

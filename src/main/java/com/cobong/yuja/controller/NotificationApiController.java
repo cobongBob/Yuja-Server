@@ -19,7 +19,7 @@ public class NotificationApiController {
 	
 	// 안읽은 알림들 리스트
 	@GetMapping("/api/notiUnread/{userId}")
-	public ResponseEntity<?> getUread(@PathVariable Long userId ) {
+	public ResponseEntity<?> getUnread(@PathVariable Long userId ) {
 		return new ResponseEntity<>(notificationService.unread(userId),HttpStatus.OK);
 	}
 	
