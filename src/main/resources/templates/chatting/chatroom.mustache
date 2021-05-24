@@ -21,17 +21,15 @@
    	<div id="chatLog">
       {{#messages}}
          {{#ownerOrNot}}
+         
          <div class="ChatSenderBigWrapper">
             <div class="ChatSenderWrapper">
-               <div class="ChatMessageSender">{{sender}}</div>
-	            <div class="SenderImgWrapper">
-	            	<img class="ChatSendProfileImg" src="/files/profiles/{{senderPic}}" alt="" />
-	            </div>
 	            <div class="SenderChatMessageContent"><div><p class="ChatContent">{{content}}</p></div><span class="SenderChatDate">{{createdDate}}</span></div>
             </div>
          </div>
          {{/ownerOrNot}}
          {{^ownerOrNot}}
+         
          <div class="ChatReceiverBigWrapper">
             <div class="ChatReceiverWrapper">
 	            <div class="ReceiverImgWrapper">
