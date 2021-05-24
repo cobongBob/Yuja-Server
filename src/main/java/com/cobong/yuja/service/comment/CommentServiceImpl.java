@@ -1,6 +1,7 @@
 package com.cobong.yuja.service.comment;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,9 +9,13 @@ import java.util.Map;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardComment;
+import com.cobong.yuja.model.Notification;
+import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.comment.CommentRequestDto;
 import com.cobong.yuja.payload.response.comment.CommentResponseDto;
+import com.cobong.yuja.repository.NotificationRepository;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.comment.CommentRepository;
 import com.cobong.yuja.repository.user.UserRepository;
@@ -23,6 +28,7 @@ public class CommentServiceImpl implements CommentService {
 	private final CommentRepository commentRepository;
 	private final UserRepository userRepository;
 	private final BoardRepository boardRepository;
+	private final NotificationRepository notificationRepository;
 
 	@Transactional(readOnly = true)
 	@Override
@@ -53,6 +59,25 @@ public class CommentServiceImpl implements CommentService {
 						commentRepository.findById(dto.getParentId()).orElseThrow(()->new IllegalArgumentException("존재하지않는 부모")):null);
 		
 		CommentResponseDto responseDto = new CommentResponseDto().entityToDto(commentRepository.save(comment));
+		
+		
+		
+		// create notification
+//		User sendUser = userRepository.findById(responseDto.getUserId()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+dto.getUserId()));
+//		BoardComment commentId = commentRepository.findById(responseDto.getCommentId()).orElseThrow(() -> new IllegalAccessError("해당 댓글 없음 "+responseDto.getCommentId()));
+		Board board = boardRepository.findById(dto.getBoardId()).orElseThrow(() -> new IllegalAccessError("알림 받는 유저 없음 "+dto.getBoardId()));
+		String type = "commentNoti"; 
+		Notification notification = new Notification().createNotification(
+				commentRepository.findById(responseDto.getCommentId()).orElseThrow(() -> new IllegalAccessError("해당 댓글 없음 "+responseDto.getCommentId())), 
+				null, 
+				userRepository.findById(responseDto.getUserId()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+dto.getUserId())), 
+				board.getUser(),
+				type,
+				null);
+		notificationRepository.save(notification);
+		
+		
+		
 		return responseDto;
 	}
 	
@@ -87,6 +112,7 @@ public class CommentServiceImpl implements CommentService {
 			//null이 아니면 deleted로 바꾼다.
 			boardComment.deleteComment();
 		} else {
+			notificationRepository.deleteByCommentId(commentId);
 			commentRepository.deleteById(commentId);
 		}
 		//대댓글이있으면 안의 deleted가 true로 바뀌고 아니면 삭제.

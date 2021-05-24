@@ -1,0 +1,222 @@
+@font-face {
+  src: url('../../fonts/SCDream3.otf');
+  font-family: 'scdream3';
+}
+
+.ChatListTitle {
+  font-size: 1.5rem;
+  margin-bottom: 5%;
+  text-align: center;
+  font-family: 'scdream3';
+}
+
+.ChatForm {
+  text-align: center;
+  margin-bottom: 5%;
+  font-family: 'scdream3';
+}
+
+.ChatSearch {
+  border: 4px solid #dddddd;
+  padding: 2%;
+  font-size: 1.8rem;
+  width: 50vw;
+  text-align: center;
+  font-weight: bold;
+}
+
+.ChatSearch:focus {
+  outline: none;
+  background-color: none;
+  font-weight: bold;
+}
+
+.ChatSubmit {
+  font-size: 2rem;
+  font-weight: bold;
+  background: #dddddd;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  margin-left: 1%;
+}
+
+.RoomWrapper {
+  margin-bottom: 2%;
+}
+
+.ChatImg {
+  display: inline-block;
+}
+
+.ChatImg > a > img {
+  width: 10vw;
+  height: 10vw;
+  border-radius: 50%;
+}
+
+.ChatSender {
+  display: inline-block;
+  font-size: 1.8rem;
+  font-weight: bold;
+}
+
+.ChatRoomIn {
+  display: inline-block;
+  font-size: 1.5rem;
+  margin-left: 3%;
+}
+
+.ChatRoomIn > a {
+  color: #c4302b;
+  text-decoration: none;
+  outline: none;
+  font-weight: bold;
+}
+
+.ChatWho {
+  font-size: 1.3rem;
+}
+
+.ChatWho > h1 {
+	display: inline-block;
+}
+
+.ChatWho > a {
+	float: right;
+	font-size: 2rem;
+	font-weight: bold;
+	color: #c4302b;
+	text-decoration:none;
+	outline: none;
+}
+
+
+.ChatOut {
+	font-size: 1.5rem;
+}
+
+#ChatLogsWrapper {
+  background-color: #dddddd;
+  padding: 3%;
+  min-height: 20vh;
+}
+
+.ChatSenderBigWrapper {
+  text-align: right;
+}
+
+.ChatSenderWrapper {
+  background-color: #fff2f2;
+  margin-bottom: 2%;
+  display: inline-block;
+  padding: 2%;
+}
+
+.SenderImgWrapper {
+  text-align: center;
+  display: inline-block;
+}
+
+.ChatSendProfileImg {
+  border-radius: 50%;
+  width: 8vw;
+  height: 6vh;
+}
+
+.ChatMessageSender {
+  max-width: 15vw;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 1.2rem;
+  margin-bottom: 5%;
+  text-align: center;
+  display: inline-block;
+}
+
+.SenderChatMessageContent {
+  text-align: left;
+  width: 30vw;
+}
+
+.SenderChatDate {
+  float: right;
+}
+
+.ChatReceiverBigWrapper {
+  text-align: left;
+}
+
+.ChatReceiverWrapper {
+  background-color: #d4fbff;
+  margin-bottom: 2%;
+  display: inline-block;
+  padding: 2%;
+}
+
+.ReceiverImgWrapper {
+  text-align: center;
+  display: inline-block;
+}
+
+.ChatReceiverProfileImg {
+  border-radius: 50%;
+  width: 8vw;
+  height: 6vh;
+}
+
+.ChatMessageReceiver {
+  max-width: 30vw;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 1.2rem;
+  margin-bottom: 5%;
+  text-align: center;
+  display: inline-block;
+}
+
+.ReceiverChatMessageContent {
+  text-align: right;
+  width: 30vw;
+}
+
+.ReceiverChatDate {
+  float: left;
+}
+
+.ChatContent {
+  display: inline-block;
+  font-size: 1.2rem;
+}
+
+.MessageInputWrapper {
+	margin-top: 3%;
+	text-align: center;
+}
+
+.MessageInput {
+  border: 4px solid #dddddd;
+  padding: 2%;
+  font-size: 1.8rem;
+  width: 70vw;
+  text-align: center;
+  font-weight: bold;
+}
+
+.MessageInput:focus {
+  outline: none;
+  background-color: none;
+  font-weight: bold;
+}
+
+.MessageButton {
+  font-size: 1.8rem;
+  font-weight: bold;
+  border: 3px solid #5280ff;
+  background-color: #5280ff;
+  border-radius: 50%;
+  margin-left: 2%;
+  cursor: pointer;
+}

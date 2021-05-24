@@ -11,9 +11,9 @@ import com.cobong.yuja.model.YoutubeConfirm;
 public interface YoutubeConfirmRepository extends JpaRepository<YoutubeConfirm, Long>{
 	Optional<YoutubeConfirm> findByUserUserId(Long userId);
 	
-	@Query("SELECT Y FROM YoutubeConfirm Y WHERE flag = 0")
+	@Query("SELECT Y FROM YoutubeConfirm Y WHERE Y.flag = 0")
 	List<YoutubeConfirm> findAllByFlag();
 	
-	@Query("SELECT Y FROM YoutubeConfirm Y WHERE authorized = 0")
+	@Query("SELECT Y FROM YoutubeConfirm Y WHERE Y.authorized = 0")
 	List<YoutubeConfirm> findAllByAuthorized();
 }

@@ -2,21 +2,61 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<link rel="stylesheet" href="/chat_css/chat.css" />
+<title>Yuja Chat</title>
 </head>
+
+{{! 채팅방 들어갈때 -> 채팅 기록 남은거 보여주는 div }}
 <body>
-<h1>하하하하하</h1>
-<form id ="messageForm" name="messageForm">
-	<input type="text" id="message" placeholder="Type a message..." autocomplete="off" class="form-control"/>
-	<button type="submit">보내기</button>
-	<input type="text" id="user" placeholder="who are you" autocomplete="off" class="form-control"/>
-	<input type="text" id="receiver" placeholder="to whom do you want to send this?" autocomplete="off" class="form-control"/>
-	<button type="button">나가기</button>
-	<textarea name="chatLogs" id="chatLogs" cols="30" rows="10"></textarea>
-</form>
-<button type="button" id="connect">입장</button>
+<div class="ChatWho">
+   <h1>{{receiver}}와 채팅</h1>
+</div>
+   <div id="ChatLogsWrapper">
+   	<div id="chatLog">
+      {{#messages}}
+         {{#ownerOrNot}}
+         <div class="ChatSenderBigWrapper">
+            <div class="ChatSenderWrapper">
+               <div class="ChatMessageSender">{{sender}}</div>
+	            <div class="SenderImgWrapper">
+	            	<img class="ChatSendProfileImg" src="/files/profiles/{{senderPic}}" alt="" />
+	            </div>
+	            <div class="SenderChatMessageContent"><p class="ChatContent">{{content}}</p><span class="SenderChatDate">{{createdDate}}</span></div>
+            </div>
+         </div>
+         {{/ownerOrNot}}
+         {{^ownerOrNot}}
+         <div class="ChatReceiverBigWrapper">
+            <div class="ChatReceiverWrapper">
+	            <div class="ReceiverImgWrapper">
+	            	<img class="ChatReceiverProfileImg" src="/files/profiles/{{receiverPic}}" alt="" />
+	            </div>
+               <div class="ChatMessageReceiver">{{sender}}</div>
+               <div class="ReceiverChatMessageContent"><span class="ReceiverChatDate">{{createdDate}}</span><p class="ChatContent">{{content}}</p></div>
+            </div>
+         </div>
+         {{/ownerOrNot}}
+      {{/messages}}
+      </div>
+   </div>
+   <div class="MessageInputWrapper">
+   	<form onsubmit="return send()">
+      <input class="MessageInput" type="text" id="message" placeholder="Message" autocomplete="off"/>
+      <button class="MessageButton" type="button">보내기</button>
+    </form>
+      <a class="MessageGoBack" href="/rooms">뒤로</a>
+   </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script>
+const receiver = "{{{receiver}}}";
+const username = "{{{username}}}";
+const roomId = "{{{roomId}}}";
+const senderPic = "{{{senderPic}}}";
+const receiverPic = "{{{receiverPic}}}";
+</script>
 <script src="/js/chat/chat.js"></script>
 </html>

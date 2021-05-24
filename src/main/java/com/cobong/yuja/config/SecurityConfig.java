@@ -15,6 +15,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.header.writers.StaticHeadersWriter;
 
 import com.cobong.yuja.config.auth.PrincipalDetailsService;
 import com.cobong.yuja.config.jwt.JwtAuthenticationEntryPoint;
@@ -79,13 +80,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.accessDeniedHandler(unauthorizedException)
 				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
 				.and()
+			.headers().frameOptions().disable()
+				.addHeaderWriter(new StaticHeadersWriter("X-FRAME-OPTIONS", "ALLOW-FROM " + "http://localhost:3000"))
+				.and()
 			.authorizeRequests()
 				.antMatchers("/api/auth/**") // 로그인 회원가입
 					.permitAll() //  all methods all authorities
 				.antMatchers(HttpMethod.POST,"/api/2/board", "/api/3/board", "/api/4/board","/api/5/board", "/api/board/liked","/api/comment","/api/board/img/upload", "api/2/thumbnail/upload", "api/3/thumbnail/upload") 
 					.hasAnyAuthority("ROLE_GENERAL", "ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN" )// post  all
 				.antMatchers(HttpMethod.PUT,"/api/2/board/**","/api/3/board/**","/api/4/board/**","/api/5/board/**","/api/comment/**", "/api/user/**" ) 
-					.hasAnyAuthority("ROLE_GENERAL", "ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN" )// put all
+					.permitAll()
+					//.hasAnyAuthority("ROLE_GENERAL", "ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN" )// put all
 				.antMatchers(HttpMethod.DELETE,"/api/2/board/**","/api/3/board/**","/api/4/board/**","/api/5/board/**", "/api/board/liked","api/comment/**") 
 					.hasAnyAuthority("ROLE_GENERAL", "ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN" )// delete all
 				.antMatchers(HttpMethod.POST,"/api/1/board", "api/1/thumbnail/upload")

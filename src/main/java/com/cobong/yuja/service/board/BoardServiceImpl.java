@@ -2,6 +2,7 @@ package com.cobong.yuja.service.board;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -20,11 +21,13 @@ import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.board.BoardSaveRequestDto;
 import com.cobong.yuja.payload.request.board.BoardUpdateRequestDto;
 import com.cobong.yuja.payload.response.board.BoardResponseDto;
+import com.cobong.yuja.payload.response.board.BoardTypeResponseDto;
 import com.cobong.yuja.payload.response.board.MainboardsResponseDto;
 import com.cobong.yuja.repository.BoardTypeRepository;
 import com.cobong.yuja.repository.attach.AttachRepository;
 import com.cobong.yuja.repository.attach.ThumbnailRepository;
 import com.cobong.yuja.repository.board.BoardRepository;
+import com.cobong.yuja.repository.user.AuthoritiesRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 import com.google.common.io.Files;
 
@@ -38,6 +41,7 @@ public class BoardServiceImpl implements BoardService {
 	private final UserRepository userRepository;
 	private final AttachRepository attachRepository;
 	private final ThumbnailRepository thumbnailRepository;
+	private final AuthoritiesRepository authoritiesRepository;
 	
 	@Override
 	@Transactional
@@ -45,14 +49,12 @@ public class BoardServiceImpl implements BoardService {
 		User user = userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("해당유저 없음 "+dto.getUserId()));
 		BoardType boardType = boardTypeRepository.findById(dto.getBoardCode()).orElseThrow(() -> new IllegalAccessError("해당글 타입 없음" + dto.getBoardCode()));
 		
-		
-		
 		String receivelink = dto.getPreviewImage();
 		String target = "https://www.youtube.com/watch?v=";
 		
 		if(receivelink.startsWith(target)) {
 			String code = receivelink.substring(target.length(), target.length()+11);
-			String previewImage = "img.youtube.com/vi/" + code + "/hqdefault.jpg";
+			String previewImage = "https://img.youtube.com/vi/" + code + "/hqdefault.jpg";
 			dto.setPreviewImage(previewImage);
 		}
 		
@@ -61,7 +63,7 @@ public class BoardServiceImpl implements BoardService {
 		Board board = new Board().createBoard(boardType, user, dto.getTitle(), dto.getContent(), dto.getExpiredDate(),
 				dto.getPayType(), dto.getPayAmount(), dto.getCareer(), toolsCombined, dto.getWorker(), dto.getYWhen(),
 				dto.getChannelName(),dto.getRecruitingNum(),dto.getReceptionMethod(),dto.getManager(), dto.getIsPrivate(), 
-				dto.getPreviewImage());
+				dto.getPreviewImage(),Instant.now());
 		Board board2 = boardRepository.save(board);
 		//null일경우 처리 필요
 		if(dto.getBoardAttachNames() != null) {
@@ -109,6 +111,21 @@ public class BoardServiceImpl implements BoardService {
 				thumbnailRepository.save(thumbnail);
 			}
 		}
+		BoardResponseDto boardDto = new BoardResponseDto().entityToDto(board2);
+		if(dto.getBoardCode() == 2L) {
+			Authorities editor = authoritiesRepository.findByAuthority(AuthorityNames.EDITOR).get();
+			if(!user.getAuthorities().contains(editor)) {
+				user.getAuthorities().add(editor);
+				boardDto.setFirstOrNot(true);
+			}
+		} else if(dto.getBoardCode() == 3L) {
+			Authorities thumb = authoritiesRepository.findByAuthority(AuthorityNames.THUMBNAIOR).get();
+			if(!user.getAuthorities().contains(thumb)) {
+				user.getAuthorities().add(thumb);
+				boardDto.setFirstOrNot(true);
+			}
+		}
+		
 		return new BoardResponseDto().entityToDto(board2);
 	}
 	
@@ -135,11 +152,11 @@ public class BoardServiceImpl implements BoardService {
 		}			
 		
 		Optional<Thumbnail> thumbnailtodel = thumbnailRepository.findByBoardBoardId(bno);
-		String thumbnailOrig = "";
+		String thumbnailOrig = "original";
 		if(thumbnailtodel.isPresent()) {
 			Thumbnail thumbnail = thumbnailtodel.get();
 			if(thumbnail.getOriginalFileDest() != null && thumbnail.getOriginalFileDest().length() != 0) {
-				thumbnailOrig += thumbnail.getOriginalFileDest();
+				thumbnailOrig += thumbnail.getFileName();
 			}
 		}
 		
@@ -233,7 +250,7 @@ public class BoardServiceImpl implements BoardService {
 				toolsCombined, boardUpdateRequestDto.getExpiredDate(),boardUpdateRequestDto.getWorker(), 
 				boardUpdateRequestDto.getYWhen(),boardUpdateRequestDto.getChannelName(),
 				boardUpdateRequestDto.getRecruitingNum(),boardUpdateRequestDto.getReceptionMethod(),
-				boardUpdateRequestDto.getManager(), boardUpdateRequestDto.getIsPrivate(), boardUpdateRequestDto.getPreviewImage());
+				boardUpdateRequestDto.getManager(), boardUpdateRequestDto.getIsPrivate(), boardUpdateRequestDto.getPreviewImage(), Instant.now());
 		BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
 		
 		for(Long i: boardUpdateRequestDto.getBoardAttachIds()) {
@@ -316,21 +333,23 @@ public class BoardServiceImpl implements BoardService {
 	public List<BoardResponseDto> boardsInBoardType(Long boardCode,Long userId){
 		List<Board> curBoard = boardRepository.boardsInBoardType(boardCode);
 		List<BoardResponseDto> curBoardResponseDto = new ArrayList<BoardResponseDto>();
+		BoardType boardType = boardTypeRepository.findById(boardCode).orElseThrow(() -> new IllegalAccessError("존재하지 않는 게시판"));
 		for(Board board: curBoard) {
 			boolean likedOrNot = boardRepository.likedOrNot(board.getBoardId(), userId);
 			int likes = Long.valueOf(boardRepository.likedReceived(board.getBoardId())).intValue();
 			int comments = Long.valueOf(boardRepository.commentsReceived(board.getBoardId())).intValue();
 			BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
 			List<String> tools = new ArrayList<>();
-			if(board.getTools() != null) {
+			if(board.getTools() != null && board.getTools().length() != 0) {
 				tools = Arrays.asList(board.getTools().split(","));
 			}
 			dto.setTools(tools);
 			dto.setLikesAndComments(likes, comments);
 			dto.setLiked(likedOrNot);
+			dto.setBoardType(new BoardTypeResponseDto().entityToDto(boardType));
 			Optional<Thumbnail> thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId());
 			if(thumbnail.isPresent()) {
-				dto.setThumbnail(thumbnail.get().getUploadPath());		
+				dto.setThumbnail(thumbnail.get().getFileName());		
 			}
 			curBoardResponseDto.add(dto);
 		}
@@ -357,7 +376,7 @@ public class BoardServiceImpl implements BoardService {
 			
 			Optional<Thumbnail> thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId());
 			if(thumbnail.isPresent()) {
-				dto.setThumbnail(thumbnail.get().getUploadPath());
+				dto.setThumbnail(thumbnail.get().getFileName());
 			}
 			curBoardResponseDto.add(dto);
 		}
@@ -384,7 +403,7 @@ public class BoardServiceImpl implements BoardService {
 			
 			Optional<Thumbnail> thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId());
 			if(thumbnail.isPresent()) {
-				dto.setThumbnail(thumbnail.get().getUploadPath());
+				dto.setThumbnail(thumbnail.get().getFileName());
 			}
 			curBoardResponseDto.add(dto);
 		}
@@ -411,7 +430,7 @@ public class BoardServiceImpl implements BoardService {
 			
 			Optional<Thumbnail> thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId());
 			if(thumbnail.isPresent()) {
-				dto.setThumbnail(thumbnail.get().getUploadPath());
+				dto.setThumbnail(thumbnail.get().getFileName());
 			}
 			
 			curBoardResponseDto.add(dto);
@@ -490,5 +509,13 @@ public class BoardServiceImpl implements BoardService {
 		mainboardsResponseDto.setThumbLikes12(result);
 		
 		return mainboardsResponseDto;
+	}
+
+	@Override
+	@Transactional
+	public String noticePrivateSwitch(Long bno) {
+		Board board = boardRepository.findById(bno).orElseThrow(()->new IllegalArgumentException("존재하지 않는 글입니다."));
+		board.setPrivate(!board.isPrivate());
+		return "success";
 	}
 }

@@ -1,5 +1,6 @@
 package com.cobong.yuja.model;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -90,17 +91,17 @@ public class Board extends DateAudit{
 	
 	private String yWhen;
 	
-	@OneToMany(mappedBy = "board", cascade = CascadeType.REMOVE)
-	private List<ReportedBoards> reportedBoards;
-	
 	@Column(nullable = false, columnDefinition = "TINYINT(1)")
 	private boolean isPrivate;
 	
 	private String previewImage;
 	
+	@Column(nullable = false)
+	private Instant boardUpdatedDate;
+	
 	public Board modify(String title, String content, String payType, String payAmount,	String career, String tools, 
 			Date expiredDate, String worker, String yWhen, String channelName, int recruitingNum,String receptionMethod,
-			String manager, boolean hidden, String previewImage) {
+			String manager, boolean hidden, String previewImage,Instant boardUpdatedDate) {
 		
 		this.title=title;
 		this.content=content;
@@ -117,12 +118,13 @@ public class Board extends DateAudit{
 		this.manager = manager;
 		this.isPrivate = hidden;
 		this.previewImage=previewImage;
+		this.boardUpdatedDate=boardUpdatedDate;
 		return this;
 	}
 
 	public Board createBoard(BoardType boardType, User user, String title, String content, Date expiredDate, String payType,
 			String payAmount, String career, String tools, String worker, String yWhen, String channelName, int recruitingNum,
-			String receptionMethod,String manager, boolean hidden, String previewImage) {
+			String receptionMethod,String manager, boolean hidden, String previewImage,Instant boardUpdatedDate) {
 		Board board = new Board();
 		board.boardId = boardId;
 		board.boardType = boardType;
@@ -142,11 +144,16 @@ public class Board extends DateAudit{
 		board.manager = manager;
 		board.isPrivate = hidden;
 		board.previewImage=previewImage;
+		board.boardUpdatedDate=boardUpdatedDate;
 		return board;
 	}
 
 	public void addHit() {
 		this.hit = this.hit+1;
+	}
+
+	public void setPrivate(boolean isPrivate) {
+		this.isPrivate = isPrivate;
 	}
 	
 	

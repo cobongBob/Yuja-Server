@@ -15,6 +15,7 @@ import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import javax.servlet.http.Cookie;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -63,7 +64,8 @@ public class UserServiceImpl implements UserService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final JavaMailSender javaMailSender;
     private final YoutubeConfirmRepository youtubeConfirmRepository;
-	
+    @Value("${app.oauthSecret}")
+	private String oauthSecret;
 	@Override
 	@Transactional
 	public UserResponseDto save(UserSaveRequestDto dto) {		
@@ -95,7 +97,6 @@ public class UserServiceImpl implements UserService {
 
 		User user = userRepository.save(entity);
 
-
 		if (dto.getProfilePicId() != 0) {
 			ProfilePicture profilePicture = profilePictureRepository.findById(dto.getProfilePicId())
 					.orElseThrow(() -> new IllegalArgumentException("해당 프로필 사진을 찾을수 없습니다."));
@@ -112,12 +113,8 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 		
-		System.out.println("/n==============================  Visited  ==============================\n");
-		System.out.println("\n dto.getYoutube:  "+ dto.getYoutubeImgId()+"            /////////////// \n");
-		
-		if (dto.getYoutubeImgId() != 0L) {
-			System.out.println("/n==============================  Visited  ==============================\n");
-			YoutubeConfirm youtubeConfirm = youtubeConfirmRepository.findById(dto.getYoutubeImgId())
+		if (dto.getYoutubeConfirmId() != 0L) {
+			YoutubeConfirm youtubeConfirm = youtubeConfirmRepository.findById(dto.getYoutubeConfirmId())
 					.orElseThrow(() -> new IllegalArgumentException("해당 유튜브 인증 이미지를 찾을수 없습니다."));
 			if (!youtubeConfirm.isFlag()) {
 				File temp = new File(youtubeConfirm.getTempPath());
@@ -139,14 +136,25 @@ public class UserServiceImpl implements UserService {
 	@Transactional(readOnly = true)
 	public UserResponseDto findById(Long id) {
 		User user = userRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
-		UserResponseDto dto = new UserResponseDto().entityToDto(user);
-		dto.setAddress(user.getAddress().substring(0,user.getAddress().indexOf(" # ")));
-		dto.setDetailAddress(user.getAddress().substring(user.getAddress().indexOf(" # ")));
 		
+		if(user.isDeleted()) {
+			new IllegalArgumentException("해당 유저는 탈퇴한 회원입니다.");
+		}
+		
+		UserResponseDto dto = new UserResponseDto().entityToDto(user);
+		if(user.getAddress() != null) {
+			dto.setAddress(user.getAddress().substring(0,user.getAddress().indexOf(" # ")));
+			if(user.getAddress().contains("#")) {
+				dto.setDetailAddress(user.getAddress().substring(user.getAddress().indexOf(" # ")+3));				
+			}
+		}
+		if(youtubeConfirmRepository.findByUserUserId(id).isPresent()) {
+			dto.setYoutubeConfirmImg(youtubeConfirmRepository.findByUserUserId(id).get().getFileName());
+		}
 		Optional<ProfilePicture> optProfilePicture = profilePictureRepository.findByUserUserId(id);
 		if(optProfilePicture.isPresent()) {
 			ProfilePicture profilePicture = optProfilePicture.get();
-			dto.setProfilePic(profilePicture.getUploadPath());			
+			dto.setProfilePic(profilePicture.getFileName());			
 		} else {
 			dto.setProfilePic("");
 		} 
@@ -164,7 +172,7 @@ public class UserServiceImpl implements UserService {
 			Optional<ProfilePicture> optProfilePicture = profilePictureRepository.findByUserUserId(user.getUserId());
 			if(optProfilePicture.isPresent()) {
 				ProfilePicture profilePicture = optProfilePicture.get();
-				dto.setProfilePic(profilePicture.getUploadPath());			
+				dto.setProfilePic(profilePicture.getFileName());			
 			} else {
 				dto.setProfilePic("");
 			}
@@ -187,13 +195,12 @@ public class UserServiceImpl implements UserService {
 		if(bno != userId && !isAdminOrManager) {
 			throw new IllegalAccessError("관리자가 아니므로 해당 유저의 정보를 삭제할 수 없습니다");
 		}
-		
 		String wholeAddr = userUpdateRequestDto.getAddress() +" # "+ userUpdateRequestDto.getDetailAddress();
 		
 		User user = userRepository.findById(bno)
 				.orElseThrow(() -> new IllegalAccessError("해당유저 없음" + bno));
 		
-		user.modify(userUpdateRequestDto.getUsername(), userUpdateRequestDto.getPassword(), 
+		user.modify(userUpdateRequestDto.getUsername(),  
 				userUpdateRequestDto.getNickname(),userUpdateRequestDto.getRealName(),
 				userUpdateRequestDto.getBday(),userUpdateRequestDto.getProvidedId(), 
 				userUpdateRequestDto.getProvider(), wholeAddr, 
@@ -263,9 +270,9 @@ public class UserServiceImpl implements UserService {
 			File toDel = new File(originalProfilePicture.getUploadPath());
 			if(toDel.exists()) {
 				toDel.delete();				
-			} 
+			}
 		}
-		userRepository.deleteById(bno);
+		attemptingUser.setDeleted(true);
 		return "success";
 	}
 	
@@ -286,8 +293,13 @@ public class UserServiceImpl implements UserService {
 	public UserResponseDto findByUsername(String username) {
 		User user = userRepository.findByUsername(username).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
-		dto.setAddress(user.getAddress().substring(0,user.getAddress().indexOf(" # ")));
-		dto.setDetailAddress(user.getAddress().substring(user.getAddress().indexOf(" # ")));
+		
+		if(user.getAddress() != null) {
+			dto.setAddress(user.getAddress().substring(0,user.getAddress().indexOf(" # ")));
+			if(user.getAddress().contains("#")) {
+				dto.setDetailAddress(user.getAddress().substring(user.getAddress().indexOf(" # ")+3));				
+			}
+		}
 		return dto;
 	}
 	@Override
@@ -301,10 +313,15 @@ public class UserServiceImpl implements UserService {
 	@Override
 	public Cookie[] signIn(LoginRequest loginRequest) {
 		User user = userRepository.findByUsername(loginRequest.getUsername()).orElseThrow(()-> new IllegalArgumentException("이메일이나 비밀번호가 일치하지 않습니다."));
-		System.out.println("/////////////////////////////////////////"+user.isBanned());
+		
 		if(user.isBanned()) {
 			throw new IllegalAccessError("경고등의 이유로 이용이 정지된 아이디 입니다");
 		}
+		
+		if(user.isDeleted()) {
+			throw new IllegalAccessError("삭제된 아이디 입니다.");
+		}
+		
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
 		Authentication authentication = authenticationManager.authenticate(
 				new UsernamePasswordAuthenticationToken(loginRequest.getUsername(), loginRequest.getPassword()));
@@ -428,7 +445,7 @@ public class UserServiceImpl implements UserService {
 		String username = (String) profile.get("email");
 		Boolean user = userRepository.existsByUsername(username);
 		GoogleUser googleUser = new GoogleUser();
-		googleUser.setPassword("cobongbob");
+		googleUser.setPassword(oauthSecret);
 		
 //		System.out.println("username 존재여부 : "+ user);
 		// 201 -> 회원가입
@@ -464,6 +481,8 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findByUsername(username).orElse(null);
 		if(user == null) {
 			throw new IllegalAccessError("이메일을 확인해 주세요.");
+		} else if(user.isDeleted()) {
+			throw new IllegalAccessError("탈퇴한 회원입니다.");
 		}
 		String pattern = "^[_a-zA-Z0-9-\\.]+@[\\.a-zA-Z0-9-]+\\.[a-zA-Z]+$";
 		if(Pattern.matches(pattern, username) == false) {
@@ -513,18 +532,15 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	@Transactional
-	public UserResponseDto banned(Long bno, UserUpdateRequestDto userUpdateRequestDto) {
-		User user = userRepository.findById(bno)
-				.orElseThrow(()-> new IllegalAccessError("해당유저 없음 " +bno));
-		
-		user.modify(userUpdateRequestDto.getUsername(), userUpdateRequestDto.getPassword(), 
-				userUpdateRequestDto.getNickname(),userUpdateRequestDto.getRealName(),
-				userUpdateRequestDto.getBday(),userUpdateRequestDto.getProvidedId(), 
-				userUpdateRequestDto.getProvider(), userUpdateRequestDto.getAddress(), 
-				userUpdateRequestDto.getPhone(),userUpdateRequestDto.getBsn(), 
-				userUpdateRequestDto.getYoututubeUrl(), true);
-		
-		UserResponseDto dto = new UserResponseDto().entityToDto(user);
-		return dto;
+	public String banned(Long uno) {
+		User user = userRepository.findById(uno)
+				.orElseThrow(()-> new IllegalAccessError("해당유저 없음 " +uno));
+		if(user.isBanned()) {
+			user.setBanned(false);
+			return "해당 유저가 밴 해제 되었습니다.";
+		} else {
+			user.setBanned(true);
+			return "해당 유저가 밴 되었습니다.";
+		}
 	}
 }

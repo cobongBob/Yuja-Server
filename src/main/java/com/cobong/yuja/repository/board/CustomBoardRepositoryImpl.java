@@ -20,7 +20,7 @@ public class CustomBoardRepositoryImpl implements CustomBoardRepository {
 	@Override
 	public List<Board> boardsInBoardType(Long boardCode) {
 		return queryFactory.selectFrom(board).where(board.boardType.boardCode.eq(boardCode))
-				.orderBy(board.updatedDate.asc()).fetch();
+				.orderBy(board.boardUpdatedDate.asc()).fetch();
 	}
 
 	@Override
