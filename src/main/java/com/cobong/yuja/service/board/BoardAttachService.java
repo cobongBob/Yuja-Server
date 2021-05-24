@@ -119,29 +119,6 @@ public class BoardAttachService {
 	}
 	
 	@Transactional
-	public BoardAttachDto saveFileEdited(BoardAttachDto attachDto) {
-		BoardAttach attachEntity = attachRepository.save(attachDto.toEntitiy());
-		return BoardAttachDto.builder()
-				.attachId(attachEntity.getId())
-				.uploadPath(attachEntity.getUploadPath())
-				.tempPath(attachEntity.getTempPath())
-				.fileName(attachEntity.getFileName())
-				.origFilename(attachEntity.getOrigFilename())
-				.flag(attachEntity.isFlag()).build();
-	}
-	@Transactional(readOnly = true)
-	public BoardAttachDto findById(Long attachId) {
-		BoardAttach attachEntity = attachRepository.findById(attachId).orElseThrow(()->new IllegalArgumentException("존재하지 않는 파일"));
-		return BoardAttachDto.builder()
-				.attachId(attachEntity.getId())
-				.uploadPath(attachEntity.getUploadPath())
-				.tempPath(attachEntity.getTempPath())
-				.fileName(attachEntity.getFileName())
-				.origFilename(attachEntity.getOrigFilename())
-				.flag(attachEntity.isFlag()).build();
-	}
-	
-	@Transactional
 	public void deleteUnflagged() {
 		List<BoardAttach> attachesToDel = attachRepository.findAllByFlag();
 		
