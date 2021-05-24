@@ -160,6 +160,11 @@ public class YoutubeConfirmService {
 	
 	@Transactional
 	public YoutubeConfirmResponseDto confirm(YoutubeConfirmRequestDto dto) {
+		
+		//수정필 어드민 아이디값
+		User admin = userRepository.findById(90L).orElse(null);
+		//수정필 어드민 아이디값
+		
 		YoutubeConfirmResponseDto dtoToSend = new YoutubeConfirmResponseDto();
 		
 		YoutubeConfirm youtubeConfirm = youtubeConfirmRepository.findById(dto.getYoutubeConfirmId())
@@ -186,7 +191,7 @@ public class YoutubeConfirmService {
 		String type = "youtubeNoti"; 
 		Notification notification = new Notification().createNotification(
 				null, 
-				null, // sender x
+				admin, // sender default admin
 				userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("해당 유저가 존재하지 않습니다.")),
 				type,
 				null);
@@ -196,6 +201,9 @@ public class YoutubeConfirmService {
 	
 	@Transactional
 	public String rejectUser(Long youtubeConfirmId) {
+		//수정필 어드민 아이디값
+		User admin = userRepository.findById(90L).orElse(null);
+		//수정필 어드민 아이디값
 		YoutubeConfirm youtubeConfirm = youtubeConfirmRepository.findById(youtubeConfirmId)
 				.orElseThrow(() -> new IllegalAccessError("해당 유저의 유튜버 승격 요청이 존재하지 않습니다."));
 		File youtubeImgToDel = new File(youtubeConfirm.getUploadPath());
@@ -204,10 +212,10 @@ public class YoutubeConfirmService {
 		}
 		
 		// 승격 실패 알림
-		String type = "promoNoti"; 
+		String type = "rejectNoti"; 
 		Notification notification = new Notification().createNotification(
 				null, 
-				null, // sender x
+				admin, // sender default admin
 				youtubeConfirm.getUser(),
 				type,
 				null);

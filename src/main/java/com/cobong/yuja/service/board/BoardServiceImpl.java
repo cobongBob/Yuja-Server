@@ -50,6 +50,11 @@ public class BoardServiceImpl implements BoardService {
 	@Transactional
 	public BoardResponseDto save(BoardSaveRequestDto dto) {
 		User user = userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("해당유저 없음 "+dto.getUserId()));
+		
+		//나중에 수정필 어드민 아이디 넣어줘야함
+		User admin = userRepository.findById(90L).orElse(null);
+		//나중에 수정필
+		
 		BoardType boardType = boardTypeRepository.findById(dto.getBoardCode()).orElseThrow(() -> new IllegalAccessError("해당글 타입 없음" + dto.getBoardCode()));
 		
 		if(dto.getBoardCode() == 1L) {
@@ -71,6 +76,9 @@ public class BoardServiceImpl implements BoardService {
 		if(receivelink.startsWith(target)) {
 			String code = receivelink.substring(target.length(), target.length()+11);
 			String previewImage = "https://img.youtube.com/vi/" + code + "/hqdefault.jpg";
+			dto.setPreviewImage(previewImage);
+		} else {
+			String previewImage = "http://localhost:8888/imgs/defaultImg.png";
 			dto.setPreviewImage(previewImage);
 		}
 		
@@ -139,7 +147,7 @@ public class BoardServiceImpl implements BoardService {
 				String type = "editNoti"; 
 				Notification notification = new Notification().createNotification(
 						null, 
-						null, // sender x
+						admin, // sender default admin
 						userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("해당 유저가 존재하지 않습니다.")),
 						type,
 						null);
@@ -153,7 +161,7 @@ public class BoardServiceImpl implements BoardService {
 				String type = "thumbNoti"; 
 				Notification notification = new Notification().createNotification(
 						null, 
-						null, // sender x
+						admin, // sender default admin
 						userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("해당 유저가 존재하지 않습니다.")),
 						type,
 						null);
