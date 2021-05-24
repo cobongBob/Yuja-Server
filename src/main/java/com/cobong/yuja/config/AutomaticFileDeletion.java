@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
+import com.cobong.yuja.service.NotificationService;
 import com.cobong.yuja.service.board.BoardAttachService;
 import com.cobong.yuja.service.board.ThumbnailService;
 import com.cobong.yuja.service.chat.ChatRoomService;
@@ -26,8 +27,9 @@ public class AutomaticFileDeletion {
 	private final YoutubeConfirmService youtuberConfirmService;
 	private final SocketMessageService socketMessageService;
 	private final ChatRoomService chatRoomService;
+	private final NotificationService notificationService;
 	
-	@Scheduled(cron = "0 10 20 * * *")
+	@Scheduled(cron = "0 0 4 * * *")
 	public void deleteAtFourAM() {
 		File tempToDel = Paths.get(System.getProperty("user.dir") + File.separator+"files" + File.separator +"temp").toFile();
 		File[] tempsToDel = tempToDel.listFiles();
@@ -45,5 +47,6 @@ public class AutomaticFileDeletion {
 		youtuberConfirmService.deleteUnflagged();
 		socketMessageService.delete2weeksOld();
 		chatRoomService.deleteEmptyRooms();
+		notificationService.delete2weeksOld();
 	}
 }

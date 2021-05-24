@@ -42,21 +42,4 @@ public class AttachApiController {
 	public ResponseEntity<?> uploadThumbnail(@RequestParam("file") MultipartFile file){
 		return new ResponseEntity<>(thumbnailService.saveFile(file), HttpStatus.OK);
 	}
-	
-	//파일 다운로드를 위한 로직인데.. 필요한가?
-	@GetMapping("/api/board/img/download/{attachId}")
-	public ResponseEntity<?> send(@PathVariable Long attachId) {
-		BoardAttachDto attachDto = attachService.findById(attachId);
-		Path path = Paths.get(attachDto.getUploadPath());
-		Resource resource = null;
-	    try {
-			resource = new InputStreamResource(Files.newInputStream(path));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return ResponseEntity.ok()
-				.contentType(MediaType.parseMediaType("application/octet-stream"))
-				.header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + attachDto.getOrigFilename()+"\"")
-				.body(resource);
-	}
 }
