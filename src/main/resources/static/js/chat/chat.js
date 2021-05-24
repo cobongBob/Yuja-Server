@@ -24,6 +24,9 @@ function disconnect() {
 
 function send() {
   message = document.getElementById('message').value;
+  if(message === null || message === ""){
+	return false;
+	}
   if(message.includes("&")){
 	message = message.replaceAll("&", "&amp");
 	}
@@ -46,18 +49,6 @@ function send() {
   return false;
 }
 
-function showError(){
-	msgArea.innerHTML += "<div class='ChatSenderBigWrapper'>" +
-      					"<div class='ChatSenderWrapper'>" +
-      					"<h3 style='color: red'>'<'나 '>'가 포함된 문구는 적을수 없습니다.<h3></div></div>";
-}
-
-function stupidShit(){
-	console.log("hey we are here to do some stupid shit!");
-	msgArea.innerHTML += "<script>alert('Hey')</script>";
-	return false;
-}
-
 // 채팅 진행중 -> 메세지 받을때 보여지는 div
 function showMessageReceived(e) {
   now = new Date();
@@ -74,14 +65,14 @@ function showMessageReceived(e) {
       e.sender +
       '</div>' +
       "<div class='ReceiverChatMessageContent'>" +
+      "<p class='ChatContent'>" +
+      e.message +
+      '</p></div>' +
       "<span class='ReceiverChatDate'>오후" +
       (now.getHours() % 12) +
       ':' +
       now.getMinutes() +
       '</span>' +
-      "<p class='ChatContent'>" +
-      e.message +
-      '</p>' +
       '</div>';
   } else if (now.getHours() === 12) {
     msgArea.innerHTML +=
@@ -96,15 +87,14 @@ function showMessageReceived(e) {
       e.sender +
       '</div>' +
       "<div class='ReceiverChatMessageContent'>" +
+      "<p class='ChatContent'>" +
+      e.message +
+      '</p></div>' +
       "<span class='ReceiverChatDate'>오후" +
       now.getHours() +
       ':' +
       now.getMinutes() +
-      '</span>' +
-      "<p class='ChatContent'>" +
-      e.message +
-      '</p>' +
-      '</div>';
+      '</span>' + '</div>';
   } else {
     msgArea.innerHTML +=
       "<div class='ChatReceiverBigWrapper'>" +
@@ -118,14 +108,14 @@ function showMessageReceived(e) {
       e.sender +
       '</div>' +
       "<div class='ReceiverChatMessageContent'>" +
+      "<p class='ChatContent'>" +
+      e.message +
+      '</p></div>' +
       "<span class='ReceiverChatDate'>오전" +
       now.getHours() +
       ':' +
       now.getMinutes() +
       '</span>' +
-      "<p class='ChatContent'>" +
-      e.message +
-      '</p>' +
       '</div>';
   }
   window.scrollTo(0, document.body.scrollHeight);
@@ -149,7 +139,7 @@ function showMessageSend(e) {
       "<div class='SenderChatMessageContent'>" +
       "<p class='ChatContent'>" +
       e.message +
-      '</p>' +
+      '</p></div>' +
       "<span class='SenderChatDate'>오후" +
       (now.getHours() % 12) +
       ':' +
@@ -171,7 +161,7 @@ function showMessageSend(e) {
       "<div class='SenderChatMessageContent'>" +
       "<p class='ChatContent'>" +
       e.message +
-      '</p>' +
+      '</p></div>' +
       "<span class='SenderChatDate'>오후" +
       now.getHours() +
       ':' +
@@ -193,7 +183,7 @@ function showMessageSend(e) {
       "<div class='SenderChatMessageContent'>" +
       "<p class='ChatContent'>" +
       e.message +
-      '</p>' +
+      '</p></div>' +
       "<span class='SenderChatDate'>오전" +
       now.getHours() +
       ':' +

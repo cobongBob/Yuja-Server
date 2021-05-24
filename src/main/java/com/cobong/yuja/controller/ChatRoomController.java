@@ -11,6 +11,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,6 +27,7 @@ import com.cobong.yuja.service.chat.ChatRoomService;
 import com.cobong.yuja.service.chat.SocketMessageService;
 import com.cobong.yuja.service.user.ProfilePictureService;
 
+import javassist.compiler.CompileError;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -37,7 +39,7 @@ public class ChatRoomController {
 	private final ProfilePictureService profileService;
 	
 	@GetMapping("/rooms")
-	public String rooms(HttpServletRequest req, Model model) {
+	public String rooms(HttpServletRequest req, Model model) throws CompileError {
 		PrincipalDetails principalDetails = null;
     	Long userId = 0L;
     	if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PrincipalDetails) {
@@ -45,7 +47,7 @@ public class ChatRoomController {
 			userId = principalDetails.getUserId();
 		}
     	if(userId == 0L) {
-    		throw new IllegalAccessError("채팅을 시도하려는 유저가 존재하지 않거나 유저의 로그인 세션이 끝났습니다.");
+    		throw new CompileError("채팅을 시도하려는 유저가 존재하지 않거나 유저의 로그인 세션이 끝났습니다.");
     	}
 		model.addAttribute("nickname",principalDetails.getNickname());
 		model.addAttribute("userId", userId);
@@ -123,6 +125,12 @@ public class ChatRoomController {
 		model.addAttribute("senderPic", senderPic);
 		model.addAttribute("receiverPic", receiverPic);
 		return "chatting/chatroom";
+	}
+	
+	@ExceptionHandler(value = CompileError.class)
+	public String chatSessionEndedError(CompileError e, Model model) {
+		model.addAttribute("errorMsg", e.getMessage());
+		return "chatting/errorPage";
 	}
 }
 
