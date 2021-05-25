@@ -84,6 +84,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.addHeaderWriter(new StaticHeadersWriter("X-FRAME-OPTIONS", "ALLOW-FROM " + "http://localhost:3000"))
 				.and()
 			.authorizeRequests()
+				.antMatchers("/static/**","/imgs/**","/files/**")
+					.permitAll()
 				.antMatchers("/api/auth/**","/api/main/board") // 로그인 회원가입
 					.permitAll() //  all methods all authorities
 				.antMatchers(HttpMethod.POST,"/api/2/board", "/api/3/board", "/api/4/board","/api/5/board", "/api/board/liked","/api/comment","/api/board/img/upload", "api/2/thumbnail/upload", "api/3/thumbnail/upload") 
@@ -113,6 +115,72 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 //					.hasAuthority("ROLE_THUMBNAILOR") // 썸넬러
 //				.antMatchers()
 //					.hasAuthority("ROLE_ADMIN")
+
+				.antMatchers(HttpMethod.GET,"/api/1L/board/**","/api/2L/board/**","/api/3L/board/**","/api/4L/board/**", "/api/5L/board/**", "/api/7L/board/**","/api/6L/board/**","/api/9L/board/**")
+					.permitAll() // 비로그인 용
+					
+				// 모든 회원	
+				.antMatchers(HttpMethod.POST,"/api/2L/board", "/api/3L/board", "/api/4L/board","/api/5L/board","/api/6L/board", "/api/7L/board","/api/2L/board/img/upload","/api/3L/board/img/upload","/api/4L/board/img/upload","/api/5L/board/img/upload","/api/6L/board/img/upload","/api/7L/board/img/upload", 
+						"api/3/thumbnail/upload", "/socket/room/**" , "/api/comment","/api/8/board") 
+					.hasAnyAuthority("ROLE_GENERAL", "ROLE_MANAGER","ROLE_ADMIN") // 모든 회원 POST
+					
+				.antMatchers(HttpMethod.PUT,"/api/4L/board/**", "/api/5L/board/**","/api/6L/board", "/api/7L/board", "/api/user/**") 
+					.hasAnyAuthority("ROLE_GENERAL", "ROLE_MANAGER","ROLE_ADMIN", "/api/comment/**")// 모든 회원 PUT
+					
+				.antMatchers(HttpMethod.DELETE, "/api/4L/board/**", "/api/5L/board/**", "/socket/room/**", "/api/comment/**", "/api/user/**") 
+					.hasAnyAuthority("ROLE_GENERAL", "ROLE_MANAGER", "ROLE_ADMIN")// 모든 회원 DELETE
+					
+				.antMatchers(HttpMethod.GET, "/api/user/board/**","/api/user/likedBy/**","api/user/commentedBy/**", "/api/notice/private/**", "/rooms","/api/notiUnread/**", "/api/notiread/**", "/api/user/**") 
+					.hasAnyAuthority("ROLE_GENERAL", "ROLE_MANAGER", "ROLE_ADMIN")// 모든 회원 GET
+					
+					
+				// 유튜버
+				.antMatchers(HttpMethod.POST,"/api/1L/board", "api/1L/thumbnail/upload","/api/1L/board/img/upload")
+					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_MANAGER","ROLE_ADMIN") // 유튜버 POST
+					
+				.antMatchers(HttpMethod.PUT,"/api/1L/board/**")
+					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_MANAGER","ROLE_ADMIN") // 유튜버 PUT
+					
+				.antMatchers(HttpMethod.DELETE,"/api/1L/board/**")
+					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_MANAGER","ROLE_ADMIN") // 유튜버 DELETE
+					
+				// 편집자
+					
+				.antMatchers(HttpMethod.PUT,"/api/2L/board/**")
+					.hasAnyAuthority("ROLE_EDITOR","ROLE_MANAGER","ROLE_ADMIN") // 편집자 PUT
+					
+				.antMatchers(HttpMethod.DELETE,"/api/2L/board/**")
+					.hasAnyAuthority("ROLE_EDITOR","ROLE_MANAGER","ROLE_ADMIN") // 편집자 DELETE
+					
+				// 썸네일러
+					
+				.antMatchers(HttpMethod.PUT,"/api/3L/board/**")
+					.hasAnyAuthority("ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN") // 썸네일러 PUT
+					
+				.antMatchers(HttpMethod.DELETE,"/api/3L/board/**")
+					.hasAnyAuthority("ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN") // 썸네일러 DELETE
+					
+				// 유튜버 편집자 썸네일러
+				.antMatchers(HttpMethod.POST,"/api/board/liked/**")
+					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN") // 유튜버 편집자 썸네일러 POST
+					
+				.antMatchers(HttpMethod.DELETE,"/api/board/liked/**")
+					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN") // 유튜버 편집자 썸네일러 DELETE
+					
+
+				// 매니저
+				.antMatchers(HttpMethod.POST, "/api/9L/board","/api/8L/board/img/upload","/api/9L/board/img/upload", "/api/admin/promote/**") 
+					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // 매니저만 POST
+					
+				.antMatchers(HttpMethod.PUT, "/api/9L/board", "/api/banned/**")
+					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // 매니저만  PUT
+					
+				.antMatchers(HttpMethod.DELETE,"/api/8L/board", "/api/9L/board","/api/admin/promote/**")
+					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // 매니저만 DELETE 
+					
+				.antMatchers(HttpMethod.GET,"/api/8L/board", "/api/user","/api/admin/promote/**")
+					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // 매니저만 GET
+					
 				.anyRequest()
 					.permitAll();// 임시
 //					.authenticated();
