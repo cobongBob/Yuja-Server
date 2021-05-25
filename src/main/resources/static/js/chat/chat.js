@@ -5,6 +5,7 @@ let hour = 0;
 let min = 0;
 connect();
 
+
 function connect() {
   let socket = new SockJS('/yuja');
   stompClient = Stomp.over(socket);
@@ -142,15 +143,6 @@ function showMessageSend(e) {
   } else if (now.getHours() === 12) {
     msgArea.innerHTML +=
       "<div class='ChatSenderBigWrapper'>" +
-      "<div class='ChatSenderWrapper'>" +
-      "<div class='ChatMessageSender'>" +
-      e.sender +
-      '</div>' +
-      "<div class='SenderImgWrapper'>" +
-      "<img class='ChatSendProfileImg' src='/files/profiles/" +
-      senderPic +
-      "'>" +
-      '</div>' +
       "<div class='SenderChatMessageContent'>" +
       "<p class='ChatContent'>" +
       e.message +
@@ -165,14 +157,6 @@ function showMessageSend(e) {
     msgArea.innerHTML +=
       "<div class='ChatSenderBigWrapper'>" +
       "<div class='ChatSenderWrapper'>" +
-      "<div class='ChatMessageSender'>" +
-      e.sender +
-      '</div>' +
-      "<div class='SenderImgWrapper'>" +
-      "<img class='ChatSendProfileImg' src='/files/profiles/" +
-      senderPic +
-      "'>" +
-      '</div>' +
       "<div class='SenderChatMessageContent'>" +
       "<p class='ChatContent'>" +
       e.message +
@@ -187,6 +171,12 @@ function showMessageSend(e) {
   window.scrollTo(0, document.body.scrollHeight);
 }
 
-window.onbeforeunload = function (e) {
+window.onkeydown = function(e) {
+    if(e.keyCode == 27) {
+      disconnect();
+    }
+};
+
+window.onunload = function (e) {
   disconnect();
 };
