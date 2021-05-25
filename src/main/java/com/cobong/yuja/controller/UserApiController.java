@@ -25,17 +25,17 @@ public class UserApiController {
 
 	private final UserService userService;
 	
-	@GetMapping("/api/user/{userId}")
+	@GetMapping("/api/user/{userId}") // done
 	public ResponseEntity<?> getOneUser(@PathVariable Long userId) {
 		return new ResponseEntity<>(userService.findById(userId),HttpStatus.OK);
 	}
 	
-	@GetMapping("/api/user")
+	@GetMapping("/api/user") // test 해바야댐
 	public ResponseEntity<?> getAllUser(){
 		return new ResponseEntity<>(userService.findAll(),HttpStatus.OK);
 	}
 	
-	@PutMapping("/api/user/{bno}")
+	@PutMapping("/api/user/{bno}") // done
 	public ResponseEntity<?> modifyUser(@PathVariable Long bno, @RequestBody UserUpdateRequestDto userUpdateRequestDto){
 		PrincipalDetails principalDetails = null;
     	Long userId = 0L;
@@ -46,7 +46,7 @@ public class UserApiController {
 		return new ResponseEntity<>(userService.modify(bno,userUpdateRequestDto, userId),HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/api/user/{bno}")
+	@DeleteMapping("/api/user/{bno}") // done
 	public ResponseEntity<?> deleteUser(@PathVariable Long bno){
 		PrincipalDetails principalDetails = null;
     	Long userId = 0L;
@@ -57,7 +57,7 @@ public class UserApiController {
 		return new ResponseEntity<>(userService.delete(bno, userId),HttpStatus.OK);
 	}
 	
-	@PutMapping("/api/banned/{uno}")
+	@PutMapping("/api/banned/{uno}") // done
 	public ResponseEntity<?> setBanned(@PathVariable Long uno){
 		PrincipalDetails principalDetails = null;
     	String authorities = null;

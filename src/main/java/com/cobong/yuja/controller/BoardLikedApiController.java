@@ -18,7 +18,7 @@ import lombok.RequiredArgsConstructor;
 public class BoardLikedApiController {
 	private final BoardLikedService boardLikedService;
 	
-	@PostMapping("/api/board/liked/{bno}")
+	@PostMapping("/api/board/liked/{bno}") // done
 	public ResponseEntity<?> insertLike(@PathVariable Long bno){
 		PrincipalDetails principalDetails = null;
     	Long userId = 0L;
@@ -29,7 +29,7 @@ public class BoardLikedApiController {
 		return new ResponseEntity<>(boardLikedService.liked(bno,userId), HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping("/api/board/liked/{bno}")
+	@DeleteMapping("/api/board/liked/{bno}") // done
 	public ResponseEntity<?> deleteLike(@PathVariable Long bno){
 		PrincipalDetails principalDetails = null;
     	Long userId = 0L;

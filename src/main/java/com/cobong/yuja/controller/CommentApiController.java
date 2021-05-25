@@ -25,18 +25,18 @@ public class CommentApiController {
 		return new ResponseEntity<>(commentService.getCommentsByBoardId(boardId),HttpStatus.OK);
 	}
 	
-	@PostMapping("/api/comment")
+	@PostMapping("/api/comment") // done
 	public ResponseEntity<?> insertComment(@RequestBody CommentRequestDto dto) {
 		dto.setDeleted(false);
 		return new ResponseEntity<>(commentService.save(dto),HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/api/comment/{commentId}")
+	@PutMapping("/api/comment/{commentId}") // done
 	public ResponseEntity<?> updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto dto) {
 		return new ResponseEntity<>(commentService.modify(commentId, dto),HttpStatus.OK);
 	}
 	
-	@DeleteMapping("api/comment/{commentId}")
+	@DeleteMapping("api/comment/{commentId}") // done
 	public ResponseEntity<?> deleteComment(@PathVariable Long commentId) {
 		//deleted값이 true로 바뀐다.
 		return new ResponseEntity<>(commentService.deleteById(commentId),HttpStatus.OK);
