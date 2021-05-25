@@ -15,7 +15,7 @@ public class ChatApiController {
 	private final SimpMessagingTemplate msgTemplate;
 	private final SocketMessageService socketMessageService;
 	
-	@MessageMapping("/chat/send")
+	@MessageMapping("/chat/send") //?
 	public void sendMsg(SocketMessageReceiveDto msg) {
 		String receiver = msg.getReceiver();
 		socketMessageService.save(msg);

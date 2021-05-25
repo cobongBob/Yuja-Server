@@ -18,13 +18,13 @@ public class NotificationApiController {
 	private final NotificationService notificationService;
 	
 	// 안읽은 알림들 리스트
-	@GetMapping("/api/notiUnread/{userId}")
+	@GetMapping("/api/notiUnread/{userId}") // done
 	public ResponseEntity<?> getUnread(@PathVariable Long userId ) {
 		return new ResponseEntity<>(notificationService.unread(userId),HttpStatus.OK);
 	}
 	
 	// 알림 하나 읽기
-	@GetMapping("/api/notiread/{notiId}")
+	@GetMapping("/api/notiread/{notiId}") // done
 	public ResponseEntity<?> getRead(@PathVariable Long notiId) {
 		return new ResponseEntity<>(notificationService.read(notiId),HttpStatus.OK);
 	}
