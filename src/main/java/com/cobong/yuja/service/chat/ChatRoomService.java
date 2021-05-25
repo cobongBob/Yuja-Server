@@ -1,6 +1,7 @@
 package com.cobong.yuja.service.chat;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,6 +12,7 @@ import com.cobong.yuja.model.ChatRoom;
 import com.cobong.yuja.model.ChatRoomJoin;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.chat.ChatRoomDto;
+import com.cobong.yuja.repository.NotificationRepository;
 import com.cobong.yuja.repository.chat.ChatRoomJoinRepository;
 import com.cobong.yuja.repository.chat.ChatRoomRepository;
 import com.cobong.yuja.repository.user.ProfilePictureRepository;
@@ -61,6 +63,8 @@ public class ChatRoomService {
 			String receiver = chatRoomJoinService.findReceiver(curRoom.getRoomId(), userId);			
 			ChatRoomDto dto = new ChatRoomDto().create(curRoom.getRoomId(), receiver, "성공이다!!!!!");
 			
+			dto.setLastMsgReceivedDate(join.getChatRoom().getMessages().get(join.getChatRoom().getMessages().size() - 1).getCreatedDate());
+			
 			if(profileRepository.findByUserNickname(receiver).isPresent()) {
 				dto.setProfilePic(profileRepository.findByUserNickname(receiver).get().getFileName());
 			} else {
@@ -68,6 +72,9 @@ public class ChatRoomService {
 			}
 			dtoList.add(dto);
 		}
+		
+		Collections.sort(dtoList, (dto1, dto2) -> dto1.getLastMsgReceivedDate().compareTo(dto2.getLastMsgReceivedDate()));
+		Collections.reverse(dtoList);
 		return dtoList;
 	}
 

@@ -4,6 +4,7 @@ import static com.cobong.yuja.model.QBoard.board;
 import static com.cobong.yuja.model.QBoardComment.boardComment;
 import static com.cobong.yuja.model.QBoardLiked.boardLiked;
 
+import java.util.Date;
 import java.util.List;
 
 import com.cobong.yuja.model.Board;
@@ -79,5 +80,11 @@ public class CustomBoardRepositoryImpl implements CustomBoardRepository {
 		} else {
 			return true;
 		}
+	}
+
+	@Override
+	public List<Board> findExpired(Date now) {
+		return queryFactory.selectFrom(board)
+				.where(board.expiredDate.before(now), board.boardType.boardCode.eq(1L)).fetch();
 	}
 }

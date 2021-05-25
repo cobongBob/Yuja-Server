@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 
 import com.cobong.yuja.service.NotificationService;
 import com.cobong.yuja.service.board.BoardAttachService;
+import com.cobong.yuja.service.board.BoardService;
 import com.cobong.yuja.service.board.ThumbnailService;
 import com.cobong.yuja.service.chat.ChatRoomService;
 import com.cobong.yuja.service.chat.SocketMessageService;
@@ -28,8 +29,9 @@ public class AutomaticFileDeletion {
 	private final SocketMessageService socketMessageService;
 	private final ChatRoomService chatRoomService;
 	private final NotificationService notificationService;
+	private final BoardService boardService;
 	
-	@Scheduled(cron = "0 0 4 * * *")
+	@Scheduled(cron = "45 18 17 * * *")
 	public void deleteAtFourAM() {
 		File tempToDel = Paths.get(System.getProperty("user.dir") + File.separator+"files" + File.separator +"temp").toFile();
 		File[] tempsToDel = tempToDel.listFiles();
@@ -48,5 +50,8 @@ public class AutomaticFileDeletion {
 		socketMessageService.delete2weeksOld();
 		chatRoomService.deleteEmptyRooms();
 		notificationService.delete2weeksOld();
+		
+		//마감일 지난 공고들 자동삭제
+		boardService.deleteExpired();
 	}
 }

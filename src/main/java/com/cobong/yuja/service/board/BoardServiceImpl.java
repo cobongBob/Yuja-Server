@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -60,7 +61,7 @@ public class BoardServiceImpl implements BoardService {
 		if(dto.getBoardCode() == 1L) {
 			List<Board> curBoards = boardRepository.boardsUserWrote(user.getUserId(), 1L);
 			if(curBoards.size() >= 3) {
-				delete(curBoards.get(2).getBoardId(), user.getUserId());
+				delete(curBoards.get(0).getBoardId(), user.getUserId());
 			}
 		} else if(dto.getBoardCode() == 2L || dto.getBoardCode() == 3L) {
 			List<Board> curBoards = boardRepository.boardsUserWrote(user.getUserId(), dto.getBoardCode());
@@ -84,7 +85,9 @@ public class BoardServiceImpl implements BoardService {
 		
 		String toolsCombined = String.join(",", dto.getTools());
 		
-		Board board = new Board().createBoard(boardType, user, dto.getTitle(), dto.getContent(), dto.getExpiredDate(),
+		Date expDate = dto.getExpiredDate() == null?new Date(1924873200000L):dto.getExpiredDate();
+		
+		Board board = new Board().createBoard(boardType, user, dto.getTitle(), dto.getContent(), expDate,
 				dto.getPayType(), dto.getPayAmount(), dto.getCareer(), toolsCombined, dto.getWorker(), dto.getYWhen(),
 				dto.getChannelName(),dto.getRecruitingNum(),dto.getReceptionMethod(),dto.getManager(), dto.getIsPrivate(), 
 				dto.getPreviewImage(),Instant.now());
@@ -560,5 +563,17 @@ public class BoardServiceImpl implements BoardService {
 		Board board = boardRepository.findById(bno).orElseThrow(()->new IllegalArgumentException("존재하지 않는 글입니다."));
 		board.setPrivate(!board.isPrivate());
 		return "success";
+	}
+
+	@Override
+	@Transactional
+	public void deleteExpired() {
+		Date now = new Date();
+		List<Board> expiredBoards = boardRepository.findExpired(now);
+		System.out.println("====== 가즈아아아"+expiredBoards.size());
+		for(Board expBoard:expiredBoards) {
+			System.out.println("====== 가즈아아아"+expBoard);
+			boardRepository.delete(expBoard);
+		}
 	}
 }

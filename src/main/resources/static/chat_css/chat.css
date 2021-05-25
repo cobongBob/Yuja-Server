@@ -2,16 +2,36 @@
   src: url('/font/SCDream3.otf');
   font-family: 'scdream3';
 }
+@font-face {
+  src: url('/font/NanumBarunGothic.ttf');
+  font-family: 'nanumGothic';
+}
 
 body {
 	font-family: 'scdream3';
+	-ms-overflow-style: none;
 }
-
+::-webkit-scrollbar { 
+	display: none;
+}
 .ChatListTitle {
-  font-size: 1.5rem;
-  margin-bottom: 5%;
-  text-align: center;
-  font-family: 'scdream3';
+    font-size: 1.5rem;
+    margin-bottom: 5%;
+    margin-left: 33%;
+    text-align: center;
+    font-family: 'scdream3';
+    border-bottom: 2px solid #c4302b;
+    width: 35%;
+    position: relative;
+}
+.ChatListTitle h3 {
+	margin:auto;
+	padding-bottom:10px;
+}
+#ErrorMsg {
+	font-size: 1rem;
+	text-align: center;
+	font-family: 'scdream3';
 }
 
 .ChatForm {
@@ -21,10 +41,14 @@ body {
 }
 
 .ChatSearch {
-  border: 4px solid #dddddd;
+	border-bottom: 2px solid #c4302b;
+	border-top:none;
+	border-left:none;
+	border-right:none;
   padding: 2%;
-  font-size: 1.8rem;
-  width: 50vw;
+  font-size: 1.2rem;
+  width: 80vw;
+  font-family: 'scdream3';
   text-align: center;
   font-weight: bold;
 }
@@ -43,31 +67,48 @@ body {
   border-radius: 50%;
   cursor: pointer;
   margin-left: 1%;
+  display:none;
 }
-
+.ChatRoomsWrapper {
+	margin-left:8%;
+}
 .RoomWrapper {
   margin-bottom: 2%;
-}
-
-.ChatImg {
+  width: 100%;
   display: inline-block;
 }
 
+.ChatImg {
+	float:left;
+}
+
 .ChatImg > a > img {
-  width: 10vw;
-  height: 10vw;
+  width: 15vw;
+  height: 15vw;
   border-radius: 50%;
 }
 
 .ChatSender {
-  display: inline-block;
-  font-size: 1.8rem;
+  float:left;
+  font-size: 1.2rem;
   font-weight: bold;
+  color:black;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  width: 60%;
+  overflow-x: hidden;
+  margin-top:5%;
+  	margin-left: 5%;
+  	font-family: 'scdream3';
+}
+.ChatSender a {
+	color:black;
+  text-decoration:none;
 }
 
 .ChatRoomIn {
-  display: inline-block;
-  font-size: 1.5rem;
+	margin-top: 5%;
+  font-size: 1rem;
   margin-left: 3%;
 }
 
@@ -77,9 +118,13 @@ body {
   outline: none;
   font-weight: bold;
 }
+
+/* chatroom */
+
 .whoBox {
 	display: flex;
     vertical-align: middle;
+    border-bottom: 3px solid #c4302b;
 }
 .ChatWho {
   display:inline-block;
@@ -98,6 +143,10 @@ body {
     display: inline-block;
     margin-left: 5%;
     vertical-align: middle;
+    margin-top: 4%;
+    font-weight: bold;
+    font-size:1.5rem; 
+    font-family: 'scdream3';
 }
 .ChatOut {
 	font-size: 1.5rem;
@@ -113,10 +162,11 @@ body {
 }
 
 .ChatSenderWrapper {
-  background-color: #fff2f2;
+  background-color: #c4302b;
   margin-bottom: 2%;
   display: inline-block;
   padding: 2%;
+  border-radius: 10px;
 }
 
 .SenderImgWrapper {
@@ -143,11 +193,14 @@ body {
 
 .SenderChatMessageContent {
   text-align: left;
-  width: 30vw;
+  width: 35vw;
 }
 
 .SenderChatDate {
   float: right;
+  font-family:nanumGothic;
+  font-size: 0.8rem;
+  margin-top:5%;
 }
 
 .ChatReceiverBigWrapper {
@@ -155,10 +208,11 @@ body {
 }
 
 .ChatReceiverWrapper {
-  background-color: #d4fbff;
+  background-color: royalblue;
   margin-bottom: 2%;
   display: inline-block;
   padding: 2%;
+  border-radius: 10px;
 }
 
 .ReceiverImgWrapper {
@@ -177,45 +231,51 @@ body {
   overflow-x: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 1.2rem;
+  font-size: 1rem;
   margin-bottom: 5%;
   text-align: center;
   display: inline-block;
+  font-weight:bold;
+  font-family: 'scdream3';
 }
 
 .ReceiverChatMessageContent {
-  text-align: right;
-  width: 30vw;
+  width: 35vw;
 }
 
 .ReceiverChatDate {
   float: left;
+  font-family:nanumGothic;
+  font-size: 0.8rem;
 }
 
 .ChatContent {
-  display: inline-block;
-  font-size: 1.2rem;
+    font-weight: bold;
+    display: inline-block;
+    font-size: 0.9rem;
+    font-family: nanumGothic;
+    margin: 0px;
 }
 
 .MessageInputWrapper {
-	margin-top: 3%;
+	margin-top: 1%;
 	text-align: center;
-	border-top: 2px solid #ffb963;
+	border-top: 2px solid #c4302b;
 }
 .submitBox {
-	margin-top: 3%;
+	margin-top: 1%;
 }
 
 .MessageInput {
-  border: 2px solid #ffb963;
+  border: 2px solid #c4302b;
   border-radius: 30px;
   padding: 2%;
-  font-size: 1.2rem;
-  width: 80vw;
+  font-size: 0.9rem;
+  width: 60vw;
   height:1vh;
   text-align: center;
-  font-weight: bold;
-  font-family: 'scdream3';
+  font-family: nanumGothic;
+  opacity: 0.9;
 }
 
 .MessageInput:focus {
@@ -226,11 +286,18 @@ body {
 .MessageInput:focus::placeholder {
 	color:white;
 }
-
-.MessageButton {
-  font-size: 1.7rem;
+.MessageButtonL {
+  font-size: 1.2rem;
   border:none;
-  background-color: #ffb963;
+  background-color: #c4302b;
+  border-radius: 30%;
+  margin-right:3%;
+  cursor: pointer;
+}
+.MessageButtonR {
+  font-size: 1.2rem;
+  border:none;
+  background-color: #c4302b;
   border-radius: 30%;
   margin-left: 3%;
   cursor: pointer;

@@ -46,3 +46,8 @@ function findRoom(){
 	})
 	return false;
 }
+
+function myFunction() {
+  var x = document.getElementById("ChatSearch").autofocus;
+  document.getElementById("ChatSearch").innerHTML = x;
+}

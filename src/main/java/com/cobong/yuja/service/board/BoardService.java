@@ -30,4 +30,6 @@ public interface BoardService {
 	String noticePrivateSwitch(Long bno);
 
 	List<BoardResponseDto> boardsUserWrote(Long userId, Long boardCode);
+
+	void deleteExpired();
 }
