@@ -128,14 +128,6 @@ function showMessageSend(e) {
     msgArea.innerHTML +=
       "<div class='ChatSenderBigWrapper'>" +
       "<div class='ChatSenderWrapper'>" +
-      "<div class='ChatMessageSender'>" +
-      e.sender +
-      '</div>' +
-      "<div class='SenderImgWrapper'>" +
-      "<img class='ChatSendProfileImg' src='/files/profiles/" +
-      senderPic +
-      "'>" +
-      '</div>' +
       "<div class='SenderChatMessageContent'>" +
       "<p class='ChatContent'>" +
       e.message +
