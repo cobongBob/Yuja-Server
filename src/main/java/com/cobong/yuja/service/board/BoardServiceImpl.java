@@ -60,7 +60,7 @@ public class BoardServiceImpl implements BoardService {
 		if(dto.getBoardCode() == 1L) {
 			List<Board> curBoards = boardRepository.boardsUserWrote(user.getUserId(), 1L);
 			if(curBoards.size() >= 3) {
-				delete(curBoards.get(2).getBoardId(), user.getUserId());
+				delete(curBoards.get(0).getBoardId(), user.getUserId());
 			}
 		} else if(dto.getBoardCode() == 2L || dto.getBoardCode() == 3L) {
 			List<Board> curBoards = boardRepository.boardsUserWrote(user.getUserId(), dto.getBoardCode());

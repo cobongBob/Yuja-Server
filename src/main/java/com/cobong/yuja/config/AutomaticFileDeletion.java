@@ -48,5 +48,7 @@ public class AutomaticFileDeletion {
 		socketMessageService.delete2weeksOld();
 		chatRoomService.deleteEmptyRooms();
 		notificationService.delete2weeksOld();
+		
+		//마감일 기준 지난 공고들 자동삭제
 	}
 }
