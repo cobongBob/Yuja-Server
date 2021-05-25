@@ -27,7 +27,7 @@ public class BoardSaveRequestDto {
 	private List<String> tools = new ArrayList<String>();
 	private int hit = 0;
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	private Date expiredDate = new Date();
+	private Date expiredDate = new Date(1924873200000L);
 	private String channelName = "";
 	private int recruitingNum = 0;
 	private String receptionMethod = "";

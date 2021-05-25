@@ -31,7 +31,7 @@ public class AutomaticFileDeletion {
 	private final NotificationService notificationService;
 	private final BoardService boardService;
 	
-	@Scheduled(cron = "0 0 4 * * *")
+	@Scheduled(cron = "45 18 17 * * *")
 	public void deleteAtFourAM() {
 		File tempToDel = Paths.get(System.getProperty("user.dir") + File.separator+"files" + File.separator +"temp").toFile();
 		File[] tempsToDel = tempToDel.listFiles();
@@ -51,7 +51,7 @@ public class AutomaticFileDeletion {
 		chatRoomService.deleteEmptyRooms();
 		notificationService.delete2weeksOld();
 		
-		//마감일 기준 지난 공고들 자동삭제
+		//마감일 지난 공고들 자동삭제
 		boardService.deleteExpired();
 	}
 }

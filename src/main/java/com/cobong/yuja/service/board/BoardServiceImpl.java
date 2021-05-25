@@ -85,9 +85,9 @@ public class BoardServiceImpl implements BoardService {
 		
 		String toolsCombined = String.join(",", dto.getTools());
 		
-		System.out.println("=====Date=====" + dto.getExpiredDate()+ "   "+(dto.getExpiredDate() instanceof Date)+ "   "+new Date(32503561200000L));
+		Date expDate = dto.getExpiredDate() == null?new Date(1924873200000L):dto.getExpiredDate();
 		
-		Board board = new Board().createBoard(boardType, user, dto.getTitle(), dto.getContent(), dto.getExpiredDate(),
+		Board board = new Board().createBoard(boardType, user, dto.getTitle(), dto.getContent(), expDate,
 				dto.getPayType(), dto.getPayAmount(), dto.getCareer(), toolsCombined, dto.getWorker(), dto.getYWhen(),
 				dto.getChannelName(),dto.getRecruitingNum(),dto.getReceptionMethod(),dto.getManager(), dto.getIsPrivate(), 
 				dto.getPreviewImage(),Instant.now());
@@ -568,6 +568,12 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	@Transactional
 	public void deleteExpired() {
-		//List<Board> expiredBoards = boardRepository.findExpired();
+		Date now = new Date();
+		List<Board> expiredBoards = boardRepository.findExpired(now);
+		System.out.println("====== 가즈아아아"+expiredBoards.size());
+		for(Board expBoard:expiredBoards) {
+			System.out.println("====== 가즈아아아"+expBoard);
+			boardRepository.delete(expBoard);
+		}
 	}
 }
