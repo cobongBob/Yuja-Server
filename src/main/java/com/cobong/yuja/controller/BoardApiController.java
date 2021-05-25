@@ -38,6 +38,7 @@ public class BoardApiController {
 	@GetMapping("/api/{boardCode}/board/{bno}")
 	public ResponseEntity<?> getOneBoard(@PathVariable Long boardCode, @PathVariable Long bno,
 			HttpServletResponse res,HttpServletRequest req) {
+		
 		PrincipalDetails principalDetails = null;
     	Long userId = 0L;
     	boolean ishit = false;
