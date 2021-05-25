@@ -38,7 +38,7 @@ public class ChatRoomController {
 	private final ChatRoomJoinService chatRoomJoinService;
 	private final ProfilePictureService profileService;
 	
-	@GetMapping("/rooms")
+	@GetMapping("/rooms") // done
 	public String rooms(HttpServletRequest req, Model model) throws CompileError {
 		PrincipalDetails principalDetails = null;
     	Long userId = 0L;
@@ -61,7 +61,7 @@ public class ChatRoomController {
 		return "chatting/roomlist";
 	}
 	
-	@PostMapping("/socket/room/client")
+	@PostMapping("/socket/room/client") // done
 	public String newRoomFromReact(@RequestBody Map<String, String> receiver) {
 		PrincipalDetails principalDetails = null;
     	Long user2Id = 0L;
@@ -76,7 +76,7 @@ public class ChatRoomController {
 		return "redirect:/socket/chat/"+chatRoomId;
 	}
 	
-	@PostMapping("/socket/room")
+	@PostMapping("/socket/room") // done
 	public ResponseEntity<String> newRoom(@RequestParam("receiver") String receiver) {
 		PrincipalDetails principalDetails = null;
     	Long user2Id = 0L;
@@ -89,7 +89,7 @@ public class ChatRoomController {
 		return new ResponseEntity<String>("/socket/chat/"+chatRoomId, HttpStatus.CREATED);
 	}
 	
-	@DeleteMapping("/socket/room/{roomId}")
+	@DeleteMapping("/socket/room/{roomId}") // done
 	public ResponseEntity<List<ChatRoomDto>> deleteRoom(@PathVariable Long roomId) {
 		chatRoomService.delete(roomId);
 		PrincipalDetails principalDetails = null;
@@ -101,7 +101,7 @@ public class ChatRoomController {
 		return new ResponseEntity<List<ChatRoomDto>>(chatRoomService.findRooms(userId), HttpStatus.OK);
 	}
 	
-	@RequestMapping("/socket/chat/{chatRoomId}")
+	@RequestMapping("/socket/chat/{chatRoomId}") // ?
 	public String enterRoom(@PathVariable("chatRoomId") Long chatRoomId, Model model, HttpServletRequest req) {
 		PrincipalDetails principalDetails = null;
     	Long userId = 0L;

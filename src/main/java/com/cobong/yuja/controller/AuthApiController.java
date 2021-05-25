@@ -29,7 +29,7 @@ import com.cobong.yuja.service.user.YoutubeConfirmService;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/api/auth") // done
 @RequiredArgsConstructor
 public class AuthApiController {
 
