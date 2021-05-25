@@ -15,5 +15,7 @@ public interface NotificationService {
 	List<NotificationResponseDto> findAll(Long userId);
 
 	String deletedNoti(Long notiId);
+
+	void delete2weeksOld();
 	
 }

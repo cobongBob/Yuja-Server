@@ -150,11 +150,14 @@ public class UserServiceImpl implements UserService {
 		}
 		if(youtubeConfirmRepository.findByUserUserId(id).isPresent()) {
 			dto.setYoutubeConfirmImg(youtubeConfirmRepository.findByUserUserId(id).get().getFileName());
+		} else {
+			dto.setYoutubeConfirmImg("");
 		}
 		Optional<ProfilePicture> optProfilePicture = profilePictureRepository.findByUserUserId(id);
 		if(optProfilePicture.isPresent()) {
 			ProfilePicture profilePicture = optProfilePicture.get();
 			dto.setProfilePic(profilePicture.getFileName());			
+			dto.setProfilePicId(profilePicture.getProfilePicId());
 		} else {
 			dto.setProfilePic("");
 		} 
@@ -244,6 +247,37 @@ public class UserServiceImpl implements UserService {
 				}
 				profilePicture.completelySave();
 				profilePicture.addUser(user);
+			}
+		}
+		
+		if(userUpdateRequestDto.getYoutubeConfirmId() != 0L) {
+			YoutubeConfirm confirm = youtubeConfirmRepository.findById(userUpdateRequestDto.getYoutubeConfirmId())
+					.orElseThrow(() -> new IllegalAccessError("유튜버 인증 이미지가 존재하지 않습니다."));
+			if(youtubeConfirmRepository.findByUserUserId(user.getUserId()) != null) {
+				
+				Optional<YoutubeConfirm> optOriginalYoutubeConfirm = youtubeConfirmRepository.findByUserUserId(user.getUserId());
+				if(optOriginalYoutubeConfirm.isPresent()) {
+					YoutubeConfirm originalYoutubeConfirm = optOriginalYoutubeConfirm.get();
+					File toDel = new File(originalYoutubeConfirm.getUploadPath());
+					if(toDel.exists()) {
+						toDel.delete();				
+					} else {
+						throw new IllegalAccessError("서버에 해당 이미지가 존재하지 않습니다");
+					}
+					youtubeConfirmRepository.delete(originalYoutubeConfirm);
+				}
+			}
+			if(!confirm.isFlag()) {
+				try {
+					File temp = new File(confirm.getTempPath());
+					File dest = new File(confirm.getUploadPath());
+					Files.move(temp, dest);
+				} catch (IOException e) {
+					e.printStackTrace();
+					throw new IllegalAccessError("서버에 해당 이미지가 존재하지 않습니다");
+				}
+				confirm.completelySave();
+				confirm.addUser(user);
 			}
 		}
 		return dto;
@@ -453,7 +487,6 @@ public class UserServiceImpl implements UserService {
 			googleUser.setFlag(true);
 		} else {
 			googleUser.setFlag(false);
-			
 		}
 		googleUser.setAttribute(profile);
 		return googleUser;

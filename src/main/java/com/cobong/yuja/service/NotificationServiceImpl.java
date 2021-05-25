@@ -1,10 +1,12 @@
 package com.cobong.yuja.service;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
+import org.springframework.scheduling.quartz.LocalDataSourceJobStore;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,9 +68,11 @@ public class NotificationServiceImpl implements NotificationService {
 	public List<NotificationResponseDto> findAll(Long userId) {
 		List<Notification> entityList = notificationRepository.findByRecipientId(userId);
 		List<NotificationResponseDto> notifications = new ArrayList<NotificationResponseDto>();
-		for(Notification notification : entityList) {
-			NotificationResponseDto dto = new NotificationResponseDto().entityToDto(notification);
-			notifications.add(dto);
+		if(entityList.size()>0) {
+			for(Notification notification : entityList) {
+				NotificationResponseDto dto = new NotificationResponseDto().entityToDto(notification);
+				notifications.add(dto);
+			}
 		}
 		return notifications;
 	}
@@ -78,6 +82,19 @@ public class NotificationServiceImpl implements NotificationService {
 	public String deletedNoti(Long notiId) {
 		notificationRepository.deleteById(notiId);
 		return "success";
+	}
+
+	@Override
+	@Transactional
+	public void delete2weeksOld() {
+		List<Notification> notis = notificationRepository.findAll();
+		LocalDateTime now = LocalDateTime.now();
+		for(Notification noti: notis) {
+			LocalDateTime notiTime = LocalDateTime.ofInstant(noti.getCreatedDate(), ZoneId.systemDefault());
+			if(now.getDayOfYear() - notiTime.getDayOfYear() > 14) {
+				notificationRepository.delete(noti);
+			}
+		}
 	}
 
 }

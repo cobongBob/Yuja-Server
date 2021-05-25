@@ -7,9 +7,15 @@
 </head>
 
 {{! 채팅방 들어갈때 -> 채팅 기록 남은거 보여주는 div }}
+
 <body>
-<div class="ChatWho">
-   <h1>{{receiver}}와 채팅</h1>
+<div class="whoBox">
+	<div class="ChatWho">
+  		<img class="ChatWhoImg" src="/files/profiles/{{receiverPic}}" alt="" />
+	</div>
+	<div class="chatWhoName">
+		<h2>{{receiver}}</h2>
+	</div>
 </div>
    <div id="ChatLogsWrapper">
    	<div id="chatLog">
@@ -21,7 +27,7 @@
 	            <div class="SenderImgWrapper">
 	            	<img class="ChatSendProfileImg" src="/files/profiles/{{senderPic}}" alt="" />
 	            </div>
-	            <div class="SenderChatMessageContent"><p class="ChatContent">{{content}}</p><span class="SenderChatDate">{{createdDate}}</span></div>
+	            <div class="SenderChatMessageContent"><div><p class="ChatContent">{{content}}</p></div><span class="SenderChatDate">{{createdDate}}</span></div>
             </div>
          </div>
          {{/ownerOrNot}}
@@ -32,7 +38,7 @@
 	            	<img class="ChatReceiverProfileImg" src="/files/profiles/{{receiverPic}}" alt="" />
 	            </div>
                <div class="ChatMessageReceiver">{{sender}}</div>
-               <div class="ReceiverChatMessageContent"><span class="ReceiverChatDate">{{createdDate}}</span><p class="ChatContent">{{content}}</p></div>
+               <div class="ReceiverChatMessageContent"><div><p class="ChatContent">{{content}}</p></div><span class="ReceiverChatDate">{{createdDate}}</span></div>
             </div>
          </div>
          {{/ownerOrNot}}
@@ -40,11 +46,12 @@
       </div>
    </div>
    <div class="MessageInputWrapper">
+   	<div class="submitBox">
    	<form onsubmit="return send()">
-      <input class="MessageInput" type="text" id="message" placeholder="Message" autocomplete="off"/>
-      <button class="MessageButton" type="button">보내기</button>
+      <input class="MessageInput" type="text" id="message" placeholder="메세지를 적어주세요" autocomplete="off" autofocus="autofocus"/>
+      <button class="MessageButton" type="button" onclick="return send()">💬</button>
     </form>
-      <a class="MessageGoBack" href="/rooms">뒤로</a>
+   </div>
    </div>
 </body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>

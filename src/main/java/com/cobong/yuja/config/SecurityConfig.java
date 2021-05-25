@@ -1,8 +1,5 @@
 package com.cobong.yuja.config;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -87,50 +84,38 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.addHeaderWriter(new StaticHeadersWriter("X-FRAME-OPTIONS", "ALLOW-FROM " + "http://localhost:3000"))
 				.and()
 			.authorizeRequests()
-			
-//				.antMatchers(HttpMethod.GET,"/api/9/board/**","/api/8/board/**")
-//					.hasAnyAuthority("ROLE_MANAGER", "ROLE_MANAGER") // 관리자
-//					
-				.antMatchers(HttpMethod.GET,"/api/2/board/**", "/api/auth/**","/api/main/board")
-					.permitAll() // 비회원 이상
-					
-				.antMatchers(HttpMethod.POST,"/api/2/board", "/api/3/board", "/api/4/board","/api/5/board","/api/7/board") 
-					.hasAnyAuthority("ROLE_GENERAL", "ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN" ) // GENERAL 이상
-					
-				.antMatchers(HttpMethod.PUT, "/api/**/board/**") 
-					.hasAnyAuthority("ROLE_GENERAL", "ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN" ) // GENERAL 이상
-					
-				.antMatchers(HttpMethod.DELETE,"/api/2/board/**") 
-					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN" ) // GENERAL 이상
-					
-				.antMatchers(HttpMethod.POST,"/api/1/board")
-					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_MANAGER","ROLE_ADMIN") // YOUTUBER 이상
-					
-				.antMatchers(HttpMethod.PUT)
-					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_MANAGER","ROLE_ADMIN") // YOUTUBER 이상
-					
-				.antMatchers(HttpMethod.DELETE)
-					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_MANAGER","ROLE_ADMIN","ROLE_GENERAL") // YOUTUBER 이상
-					
-				.antMatchers(HttpMethod.DELETE)
+				.antMatchers("/api/auth/**","/api/main/board") // 로그인 회원가입
+					.permitAll() //  all methods all authorities
+				.antMatchers(HttpMethod.POST,"/api/2/board", "/api/3/board", "/api/4/board","/api/5/board", "/api/board/liked","/api/comment","/api/board/img/upload", "api/2/thumbnail/upload", "api/3/thumbnail/upload") 
+					.hasAnyAuthority("ROLE_GENERAL", "ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN" )// post  all
+				.antMatchers(HttpMethod.PUT,"/api/2/board/**","/api/3/board/**","/api/4/board/**","/api/5/board/**","/api/comment/**", "/api/user/**" ) 
+//					.permitAll()
+					.hasAnyAuthority("ROLE_GENERAL", "ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN" )// put all
+				.antMatchers(HttpMethod.DELETE,"/api/2/board/**","/api/3/board/**","/api/4/board/**","/api/5/board/**", "/api/board/liked","api/comment/**") 
+					.hasAnyAuthority("ROLE_GENERAL", "ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN" )// delete all
+				.antMatchers(HttpMethod.POST,"/api/1/board", "api/1/thumbnail/upload")
+					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_MANAGER","ROLE_ADMIN") // post youtuber
+				.antMatchers(HttpMethod.PUT,"/api/1/board/**")
+					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_MANAGER","ROLE_ADMIN") // put youtuber
+				.antMatchers(HttpMethod.DELETE,"/api/1/board/**")
+					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_MANAGER","ROLE_ADMIN","ROLE_GENERAL") // delete youtuber
+				.antMatchers(HttpMethod.DELETE,"/api/user/**")
 					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN", "ROLE_GENERAL") 
-					
-				.antMatchers(HttpMethod.DELETE) // 유저 삭제, 신고리스트 삭제 
-					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN", "ROLE_GENERAL") // 매니저
-					
-				.antMatchers(HttpMethod.POST,"/api/8/board","/api/9/board") 
+				.antMatchers(HttpMethod.DELETE,"/api/user/**","/api/repoarted/{bno}") // 유저 삭제, 신고리스트 삭제 
+					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN", "ROLE_GENERAL") // manager admin  
+				.antMatchers(HttpMethod.POST,"/api/user/**","/api/reported") 
 					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // manager admin 
-				.antMatchers(HttpMethod.GET,"/**")
+				.antMatchers(HttpMethod.GET,"/api/reported", "/api/notice/private/**")
 					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // manager admin 
-				.antMatchers(HttpMethod.PUT)
+				.antMatchers(HttpMethod.PUT,"/api/banned/**")
 					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // manager admin 
-				.antMatchers() 
-					.hasAuthority("ROLE_THUMBNAILOR") // 썸넬러
+//				.antMatchers() 
+//					.hasAuthority("ROLE_THUMBNAILOR") // 썸넬러
 //				.antMatchers()
 //					.hasAuthority("ROLE_ADMIN")
 				.anyRequest()
 					.permitAll();// 임시
-					//.authenticated();
+//					.authenticated();
 		
 		http
 		.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

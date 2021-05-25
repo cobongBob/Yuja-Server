@@ -96,12 +96,12 @@ public class BoardApiController {
 		return new ResponseEntity<>(boardService.boardsInBoardType(boardCode,userId), HttpStatus.OK);
 	}
 	
-	@GetMapping("/api/user/board/{userId}")
-	public ResponseEntity<?> boardsUserWrote(@PathVariable Long userId){
+	@GetMapping("/api/user/board/{boardCode}/{userId}")
+	public ResponseEntity<?> boardsUserWrote(@PathVariable Long userId, @PathVariable Long boardCode){
 		/***
 		 * 매핑 받는 주소가 많이 걱정된다. 일단 하나의 보드만을 가져오는 친구와 차별을 두기위해 api를 추가했음.
 		 */
-		return new ResponseEntity<>(boardService.boardsUserWrote(userId), HttpStatus.OK);
+		return new ResponseEntity<>(boardService.boardsUserWrote(userId, boardCode), HttpStatus.OK);
 	}
 	
 	@GetMapping("/api/user/likedBy/{userId}")
