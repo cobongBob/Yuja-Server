@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -83,6 +84,8 @@ public class BoardServiceImpl implements BoardService {
 		}
 		
 		String toolsCombined = String.join(",", dto.getTools());
+		
+		System.out.println("=====Date=====" + dto.getExpiredDate()+ "   "+(dto.getExpiredDate() instanceof Date)+ "   "+new Date(32503561200000L));
 		
 		Board board = new Board().createBoard(boardType, user, dto.getTitle(), dto.getContent(), dto.getExpiredDate(),
 				dto.getPayType(), dto.getPayAmount(), dto.getCareer(), toolsCombined, dto.getWorker(), dto.getYWhen(),
@@ -560,5 +563,11 @@ public class BoardServiceImpl implements BoardService {
 		Board board = boardRepository.findById(bno).orElseThrow(()->new IllegalArgumentException("존재하지 않는 글입니다."));
 		board.setPrivate(!board.isPrivate());
 		return "success";
+	}
+
+	@Override
+	@Transactional
+	public void deleteExpired() {
+		//List<Board> expiredBoards = boardRepository.findExpired();
 	}
 }
