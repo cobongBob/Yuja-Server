@@ -13,8 +13,11 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
+import com.cobong.yuja.config.auth.PrincipalDetails;
 import com.cobong.yuja.model.RefreshToken;
+import com.cobong.yuja.model.User;
 import com.cobong.yuja.repository.RefreshTokenRepository;
+import com.cobong.yuja.repository.user.UserRepository;
 
 // Client에서 request로 엄어온 정보를 가지고 로그인에서 필터링
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
@@ -27,6 +30,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 	
 	@Autowired
     private RefreshTokenRepository refreshTokenRepository ;
+	
+	@Autowired
+	private UserRepository userRepository;
 
 	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
@@ -41,11 +47,32 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 			if (jwtToken != null && jwtTokenProvider.validateToken(jwtToken.getValue()) && SecurityContextHolder.getContext().getAuthentication() == null) {
 				jwt = jwtToken.getValue();
 				Authentication authentication = jwtTokenProvider.getAuthentication(jwt);
-				SecurityContextHolder.getContext().setAuthentication(authentication);
+				
+				//해당 유저가 벤 당했는지 체크하는 로직
+				PrincipalDetails principalDetails = null;
+		    	Long userId = 0L;
+		    	if (authentication.getPrincipal() instanceof PrincipalDetails) {
+		    		principalDetails = (PrincipalDetails) authentication.getPrincipal();
+					userId = principalDetails.getUserId();
+				}
+		    	User user = userRepository.findById(userId).orElseThrow(()->new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+		    	if(user.isBanned()) {
+		    		Cookie accessToken = cookieProvider.logOutCookie(JwtTokenProvider.ACCESS_TOKEN_NAME, null);
+					Cookie refreshToken = cookieProvider.logOutCookie(JwtTokenProvider.REFRESH_TOKEN_NAME, null);
+					response.addCookie(accessToken);
+					response.addCookie(refreshToken);
+					try {
+						request.logout();
+					} catch (ServletException e) {
+						e.printStackTrace();
+					}
+		    	} else { // 밴당한게 아니라면
+		    		SecurityContextHolder.getContext().setAuthentication(authentication);
+		    	}
 			} else { // 토큰이 정상이 아니라면 refresh토큰으로 검증시작
-				Cookie refreshToken = cookieProvider.getCookie(request, JwtTokenProvider.REFRESH_TOKEN_NAME);
-				if (refreshToken != null  && SecurityContextHolder.getContext().getAuthentication() == null) {
-					refreshJwt = refreshToken.getValue();
+				Cookie oriRefreshToken = cookieProvider.getCookie(request, JwtTokenProvider.REFRESH_TOKEN_NAME);
+				if (oriRefreshToken != null  && SecurityContextHolder.getContext().getAuthentication() == null) {
+					refreshJwt = oriRefreshToken.getValue();
 					if(refreshJwt != null){
 		            	refreshUserId = jwtTokenProvider.getUserIdFromJWT(refreshJwt);
 		            	RefreshToken refreshTokenFromDB = refreshTokenRepository.findByUserId(refreshUserId).orElseThrow(()->new IllegalArgumentException("존재하지않는 키"));
@@ -55,12 +82,34 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
 		            	//그와 동시에 db에 updateDate를 갱신시켜주고 새 Access토큰을 발급해준다.
 		                if(refreshTokenFromDB.getRefreshToken().equals(refreshJwt)){
 		    				Authentication authentication = jwtTokenProvider.getAuthentication(refreshJwt);
-		    				SecurityContextHolder.getContext().setAuthentication(authentication);  
-		    				String newToken = jwtTokenProvider.generateToken(authentication);
-		    				refreshTokenFromDB.updateValue(refreshJwt);
-		    		        refreshTokenRepository.save(refreshTokenFromDB);
-		    				Cookie newAccessToken = cookieProvider.createCookie(JwtTokenProvider.ACCESS_TOKEN_NAME, newToken);
-		    				response.addCookie(newAccessToken);
+		    				
+		    				//해당 유저가 벤 당했는지 체크하는 로직
+		    				PrincipalDetails principalDetails = null;
+		    		    	Long userId = 0L;
+		    		    	if (authentication.getPrincipal() instanceof PrincipalDetails) {
+		    		    		principalDetails = (PrincipalDetails) authentication.getPrincipal();
+		    					userId = principalDetails.getUserId();
+		    				}
+		    		    	User user = userRepository.findById(userId).orElseThrow(()->new IllegalArgumentException("해당 유저가 존재하지 않습니다."));
+		    		    	if(user.isBanned()) {
+		    		    		Cookie accessToken = cookieProvider.logOutCookie(JwtTokenProvider.ACCESS_TOKEN_NAME, null);
+		    					Cookie refreshToken = cookieProvider.logOutCookie(JwtTokenProvider.REFRESH_TOKEN_NAME, null);
+		    					response.addCookie(accessToken);
+		    					response.addCookie(refreshToken);
+		    					try {
+		    						request.logout();
+		    					} catch (ServletException e) {
+		    						e.printStackTrace();
+		    					}
+		    		    	} else { // 밴당한게 아니라면
+		    		    		SecurityContextHolder.getContext().setAuthentication(authentication);  
+		    		    		String newToken = jwtTokenProvider.generateToken(authentication);
+		    		    		refreshTokenFromDB.updateValue(refreshJwt);
+		    		    		refreshTokenRepository.save(refreshTokenFromDB);
+		    		    		Cookie newAccessToken = cookieProvider.createCookie(JwtTokenProvider.ACCESS_TOKEN_NAME, newToken);
+		    		    		response.addCookie(newAccessToken);
+		    		    	}
+		    				
 		    			}
 		            } 	
 				}
