@@ -14,7 +14,7 @@
   		<img class="ChatWhoImg" src="/files/profiles/{{receiverPic}}" alt="" />
 	</div>
 	<div class="chatWhoName">
-		<h2>{{receiver}}</h2>
+		{{receiver}}
 	</div>
 </div>
    <div id="ChatLogsWrapper">
@@ -46,8 +46,9 @@
    <div class="MessageInputWrapper">
    	<div class="submitBox">
    	<form onsubmit="return send()">
-      <input class="MessageInput" type="text" id="message" placeholder="메세지를 적어주세요" autocomplete="off" autofocus="autofocus"/>
-      <button class="MessageButton" type="button" onclick="return send()">💬</button>
+   	  <button class="MessageButtonL" type="button" onclick="location.href='/rooms'">◀</button>
+      <input class="MessageInput" type="text" id="message" autofocus="autofocus" placeholder="메세지를 적어주세요" autocomplete="off"/>
+      <button class="MessageButtonR" type="button" onclick="return send()">💬</button>
     </form>
     </div>
    </div>
