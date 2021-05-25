@@ -59,7 +59,7 @@ function showMessageReceived(e) {
       "<div class='ChatReceiverBigWrapper'>" +
       "<div class='ChatReceiverWrapper'>" +
       "<div class='ReceiverImgWrapper'>" +
-      "<img class='ChatReceiverProfileImg' src='/files/profiles/" +
+      "<img class='ChatReceiverProfileImg' src='" +
       receiverPic +
       "'>" +
       '</div>' +
@@ -81,7 +81,7 @@ function showMessageReceived(e) {
       "<div class='ChatReceiverBigWrapper'>" +
       "<div class='ChatReceiverWrapper'>" +
       "<div class='ReceiverImgWrapper'>" +
-      "<img class='ChatReceiverProfileImg' src='/files/profiles/" +
+      "<img class='ChatReceiverProfileImg' src='" +
       receiverPic +
       "'>" +
       '</div>' +
@@ -102,7 +102,7 @@ function showMessageReceived(e) {
       "<div class='ChatReceiverBigWrapper'>" +
       "<div class='ChatReceiverWrapper'>" +
       "<div class='ReceiverImgWrapper'>" +
-      "<img class='ChatReceiverProfileImg' src='/files/profiles/" +
+      "<img class='ChatReceiverProfileImg' src='" +
       receiverPic +
       "'>" +
       '</div>' +

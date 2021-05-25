@@ -1,5 +1,6 @@
 const chatRoomsWrapper = document.getElementsByClassName("ChatRoomsWrapper");
 
+
 function deleteById(chatRoomId) {
 	$.ajax({
 		url: "socket/room/"+chatRoomId,
@@ -51,3 +52,5 @@ function myFunction() {
   var x = document.getElementById("ChatSearch").autofocus;
   document.getElementById("ChatSearch").innerHTML = x;
 }
+
+myFunciton();
