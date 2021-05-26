@@ -86,38 +86,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 			.authorizeRequests()
 				.antMatchers("/static/**","/imgs/**","/files/**")
 					.permitAll()
-				.antMatchers("/api/auth/**","/api/main/board") // 로그인 회원가입
+				.antMatchers("/api/auth/**","/api/main/board") // 로그인 회원가입 메인보드
 					.permitAll() //  all methods all authorities
-				.antMatchers(HttpMethod.POST,"/api/2/board", "/api/3/board", "/api/4/board","/api/5/board", "/api/board/liked","/api/comment","/api/board/img/upload", "api/2/thumbnail/upload", "api/3/thumbnail/upload") 
-					.hasAnyAuthority("ROLE_GENERAL", "ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN" )// post  all
-				.antMatchers(HttpMethod.PUT,"/api/2/board/**","/api/3/board/**","/api/4/board/**","/api/5/board/**","/api/comment/**", "/api/user/**" ) 
-//					.permitAll()
-					.hasAnyAuthority("ROLE_GENERAL", "ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN" )// put all
-				.antMatchers(HttpMethod.DELETE,"/api/2/board/**","/api/3/board/**","/api/4/board/**","/api/5/board/**", "/api/board/liked","api/comment/**") 
-					.hasAnyAuthority("ROLE_GENERAL", "ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN" )// delete all
-				.antMatchers(HttpMethod.POST,"/api/1/board", "api/1/thumbnail/upload")
-					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_MANAGER","ROLE_ADMIN") // post youtuber
-				.antMatchers(HttpMethod.PUT,"/api/1/board/**")
-					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_MANAGER","ROLE_ADMIN") // put youtuber
-				.antMatchers(HttpMethod.DELETE,"/api/1/board/**")
-					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_MANAGER","ROLE_ADMIN","ROLE_GENERAL") // delete youtuber
-				.antMatchers(HttpMethod.DELETE,"/api/user/**")
-					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN", "ROLE_GENERAL") 
-				.antMatchers(HttpMethod.DELETE,"/api/user/**","/api/repoarted/{bno}") // 유저 삭제, 신고리스트 삭제 
-					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN", "ROLE_GENERAL") // manager admin  
-				.antMatchers(HttpMethod.POST,"/api/user/**","/api/reported") 
-					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // manager admin 
-				.antMatchers(HttpMethod.GET,"/api/reported", "/api/notice/private/**")
-					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // manager admin 
-				.antMatchers(HttpMethod.PUT,"/api/banned/**")
-					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // manager admin 
-//				.antMatchers() 
-//					.hasAuthority("ROLE_THUMBNAILOR") // 썸넬러
-//				.antMatchers()
-//					.hasAuthority("ROLE_ADMIN")
 
+				// 비로그인 용
 				.antMatchers(HttpMethod.GET,"/api/1L/board/**","/api/2L/board/**","/api/3L/board/**","/api/4L/board/**", "/api/5L/board/**", "/api/7L/board/**","/api/6L/board/**","/api/9L/board/**")
-					.permitAll() // 비로그인 용
+					.permitAll() 
 					
 				// 모든 회원	
 				.antMatchers(HttpMethod.POST,"/api/2L/board", "/api/3L/board", "/api/4L/board","/api/5L/board","/api/6L/board", "/api/7L/board","/api/2L/board/img/upload","/api/3L/board/img/upload","/api/4L/board/img/upload","/api/5L/board/img/upload","/api/6L/board/img/upload","/api/7L/board/img/upload", 
@@ -182,7 +156,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // 매니저만 GET
 					
 				.anyRequest()
-					.permitAll();// 임시
+					.permitAll();
 //					.authenticated();
 		
 		http
