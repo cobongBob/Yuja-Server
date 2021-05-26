@@ -62,7 +62,7 @@ public class ThumbnailServiceImpl implements ThumbnailService{
 			savePath += File.separator + filename;
 			
 			FileOutputStream res = new FileOutputStream(new File(savePath));
-			if(ImageIO.read(file.getInputStream()).getHeight() >= 202 || ImageIO.read(file.getInputStream()).getWidth() >= 320) {
+			if(ImageIO.read(file.getInputStream()).getHeight() < 202 || ImageIO.read(file.getInputStream()).getWidth() < 320) {
 				throw new IllegalAccessError("이미지 파일이 너무 작습니다! 400x300 이상되는 사이즈를 권장합니다.");
 			}
 			
