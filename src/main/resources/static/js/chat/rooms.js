@@ -48,9 +48,15 @@ function findRoom(){
 	return false;
 }
 
-function myFunction() {
-  var x = document.getElementById("ChatSearch").autofocus;
-  document.getElementById("ChatSearch").innerHTML = x;
-}
+window.onload = function(e) {
+document.getElementById('receiver').focus();
+};
 
-myFunciton();
+
+window.onkeydown = function(e) {
+console.log("esc 작동")
+    if(e.keyCode == 27) {
+      window.close();
+    }
+};
+
