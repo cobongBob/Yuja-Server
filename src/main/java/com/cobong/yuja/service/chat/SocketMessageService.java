@@ -40,18 +40,17 @@ public class SocketMessageService {
 		User user = userOpt.get();
 		SocketMessage socketmsg = SocketMessage.builder().user(user).chatRoom(chatRoom).message(msg.getMessage()).build();
 		
-		Long senderId = userRepository.findByNickname(msg.getSender()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+msg.getSender())).getUserId();
-		Long receiverId = userRepository.findByNickname(msg.getReceiver()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+msg.getReceiver())).getUserId();
+		User sender = userRepository.findByNickname(msg.getSender()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+msg.getSender()));
+		User receiver = userRepository.findByNickname(msg.getReceiver()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+msg.getReceiver()));
 		String type = "chatNoti"; 
-		System.out.println("Visited!!!1");
-		if(notificationRepository.findByLastChatNoti(senderId, receiverId).isPresent()) {
-			System.out.println("Visited!!!2");
-			notificationRepository.delete(notificationRepository.findByLastChatNoti(senderId, receiverId).get());
+		Optional<Notification> lastNoti = notificationRepository.findByLastNoti(sender.getUserId(), receiver.getUserId(),type);
+		if(lastNoti.isPresent()) {
+			notificationRepository.delete(lastNoti.get());
 		}
 		Notification notification = new Notification().createNotification(
 				null, 
-				userRepository.findByNickname(msg.getSender()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+msg.getSender())),
-				userRepository.findByNickname(msg.getReceiver()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+msg.getReceiver())),
+				sender,
+				receiver,
 				type,
 				null);
 		notificationRepository.save(notification);

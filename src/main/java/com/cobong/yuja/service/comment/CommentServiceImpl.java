@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -11,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardComment;
 import com.cobong.yuja.model.Notification;
+import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.comment.CommentRequestDto;
 import com.cobong.yuja.payload.response.comment.CommentResponseDto;
 import com.cobong.yuja.repository.board.BoardRepository;
@@ -60,10 +62,16 @@ public class CommentServiceImpl implements CommentService {
 		
 		Board board = boardRepository.findById(dto.getBoardId()).orElseThrow(() -> new IllegalAccessError("알림 받는 유저 없음 "+dto.getBoardId()));
 		String type = "commentNoti"; 
+		User sender = userRepository.findById(responseDto.getUserId()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+dto.getUserId()));
+		Optional<Notification> lastNoti = notificationRepository.findByLastNoti(sender.getUserId(), board.getUser().getUserId(),type);
+		System.out.println(lastNoti.get());
+		if(lastNoti.isPresent()) {
+			notificationRepository.delete(lastNoti.get());
+		}
 		if(responseDto.getUserId() != board.getUser().getUserId()) {
 		Notification notification = new Notification().createNotification(
 				commentRepository.findById(responseDto.getCommentId()).orElseThrow(() -> new IllegalAccessError("해당 댓글 없음 "+responseDto.getCommentId())), 
-				userRepository.findById(responseDto.getUserId()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+dto.getUserId())), 
+				sender, 
 				board.getUser(),
 				type,
 				null);

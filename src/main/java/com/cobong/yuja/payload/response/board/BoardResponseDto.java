@@ -40,7 +40,6 @@ public class BoardResponseDto {
 	private String thumbnail;
 	private boolean isPrivate;
 	private String previewImage;
-	private boolean firstOrNot = false;
 	private BoardTypeResponseDto boardType;
 	private ZonedDateTime boardUpdatedDate;
 	

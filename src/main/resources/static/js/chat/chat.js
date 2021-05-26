@@ -173,6 +173,7 @@ function showMessageSend(e) {
 
 window.onkeydown = function(e) {
     if(e.keyCode == 27) {
+		window.parent.postMessage({exit:'exit'},'*')
       disconnect();
     }
 };

@@ -145,7 +145,6 @@ public class BoardServiceImpl implements BoardService {
 			Authorities editor = authoritiesRepository.findByAuthority(AuthorityNames.EDITOR).get();
 			if(!user.getAuthorities().contains(editor)) {
 				user.getAuthorities().add(editor);
-				boardDto.setFirstOrNot(true);
 				
 				String type = "editNoti"; 
 				Notification notification = new Notification().createNotification(
@@ -160,7 +159,7 @@ public class BoardServiceImpl implements BoardService {
 			Authorities thumb = authoritiesRepository.findByAuthority(AuthorityNames.THUMBNAILER).get();
 			if(!user.getAuthorities().contains(thumb)) {
 				user.getAuthorities().add(thumb);
-				boardDto.setFirstOrNot(true);
+
 				String type = "thumbNoti"; 
 				Notification notification = new Notification().createNotification(
 						null, 
@@ -172,7 +171,7 @@ public class BoardServiceImpl implements BoardService {
 			}
 		}
 		
-		return new BoardResponseDto().entityToDto(board2);
+		return boardDto;
 	}
 	
 	@Override

@@ -1,6 +1,5 @@
 package com.cobong.yuja.config.jwt;
 
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Date;
 import java.util.stream.Collectors;
@@ -121,14 +120,14 @@ public class JwtTokenProvider {
             throw new RuntimeException("권한 정보가 없는 토큰입니다.");
         }
 
-        // 클레임에서 권한 정보 가져오기
-        Collection<? extends GrantedAuthority> authorities =
-                Arrays.stream(claims.get(AUTHORITIES_KEY).toString().split(","))
-                        .map((role)->new SimpleGrantedAuthority("ROLE_"+role))
-                        .collect(Collectors.toList());
         Long userId = getUserIdFromJWT(accessToken);
         // UserDetails 객체를 만들어서 Authentication 리턴
         PrincipalDetails principalDetails = principalDetailsService.loadUserById(userId);
+        // 권한 정보 가져오기
+        Collection<? extends GrantedAuthority> authorities =principalDetails.getAuthorities()
+        							.stream().map(
+        									(role)->new SimpleGrantedAuthority("ROLE_"+role))
+        							.collect(Collectors.toList());;
 
         return new UsernamePasswordAuthenticationToken(principalDetails, "", authorities);
     }

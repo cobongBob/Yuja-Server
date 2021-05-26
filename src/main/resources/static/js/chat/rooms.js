@@ -48,9 +48,15 @@ function findRoom(){
 	return false;
 }
 
+window.onkeydown = function(e) {
+    if(e.keyCode == 27) {
+		window.parent.postMessage({exit:'exit'},'*')
+    }
+};
+
 function myFunction() {
   var x = document.getElementById("ChatSearch").autofocus;
   document.getElementById("ChatSearch").innerHTML = x;
 }
 
-myFunciton();
+//myFunciton();
