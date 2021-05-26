@@ -92,6 +92,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				// 비로그인 용
 				.antMatchers(HttpMethod.GET,"/api/1L/board/**","/api/2L/board/**","/api/3L/board/**","/api/4L/board/**", "/api/5L/board/**", "/api/7L/board/**","/api/6L/board/**","/api/9L/board/**")
 					.permitAll() 
+				.antMatchers("/api/notiUnread/**","/api/notiread/**","/api/findnoti/**","/api/deletenoti/**")
+					.permitAll()
 					
 				// 모든 회원	
 				.antMatchers(HttpMethod.POST,"/api/2L/board", "/api/3L/board", "/api/4L/board","/api/5L/board","/api/6L/board", "/api/7L/board","/api/2L/board/img/upload","/api/3L/board/img/upload","/api/4L/board/img/upload","/api/5L/board/img/upload","/api/6L/board/img/upload","/api/7L/board/img/upload", 
@@ -104,7 +106,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers(HttpMethod.DELETE, "/api/4L/board/**", "/api/5L/board/**", "/socket/room/**", "/api/comment/**", "/api/user/**") 
 					.hasAnyAuthority("ROLE_GENERAL", "ROLE_MANAGER", "ROLE_ADMIN")// 모든 회원 DELETE
 					
-				.antMatchers(HttpMethod.GET, "/api/user/board/**","/api/user/likedBy/**","api/user/commentedBy/**", "/api/notice/private/**", "/rooms","/api/notiUnread/**", "/api/notiread/**", "/api/user/**") 
+				.antMatchers(HttpMethod.GET, "/api/user/board/**","/api/user/likedBy/**","api/user/commentedBy/**", "/api/notice/private/**", "/rooms", "/api/user/**") 
 					.hasAnyAuthority("ROLE_GENERAL", "ROLE_MANAGER", "ROLE_ADMIN")// 모든 회원 GET
 					
 					
