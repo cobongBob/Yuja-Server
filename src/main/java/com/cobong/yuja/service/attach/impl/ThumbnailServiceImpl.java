@@ -26,7 +26,7 @@ import net.coobird.thumbnailator.Thumbnailator;
 public class ThumbnailServiceImpl implements ThumbnailService{
 	private final ThumbnailRepository thumbnailRepository;
 
-	private final List<String> availableTypes = Arrays.asList(".jpg",".jpeg",".png",".gif");
+	private final List<String> availableTypes = Arrays.asList(".jfif",".pjpeg",".pjp",".jpg",".jpeg",".png",".gif");
 	
 	@Override
 	@Transactional
