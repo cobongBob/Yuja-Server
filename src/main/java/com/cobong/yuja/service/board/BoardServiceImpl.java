@@ -289,6 +289,18 @@ public class BoardServiceImpl implements BoardService {
 			throw new IllegalAccessError("관리자가 아니므로 해당 유저의 정보를 삭제할 수 없습니다");
 		}
 		
+		String receivelink = boardUpdateRequestDto.getPreviewImage();
+		String target = "https://www.youtube.com/watch?v=";
+		
+		if(receivelink.startsWith(target)) {
+			String code = receivelink.substring(target.length(), target.length()+11);
+			String previewImage = "https://img.youtube.com/vi/" + code + "/hqdefault.jpg";
+			boardUpdateRequestDto.setPreviewImage(previewImage);
+		} else {
+			String previewImage = "http://localhost:8888/imgs/defaultImg.png";
+			boardUpdateRequestDto.setPreviewImage(previewImage);
+		}
+		
 		String toolsCombined = String.join(",", boardUpdateRequestDto.getTools());
 		board.modify(boardUpdateRequestDto.getTitle(), boardUpdateRequestDto.getContent(), 
 				boardUpdateRequestDto.getPayType(),
