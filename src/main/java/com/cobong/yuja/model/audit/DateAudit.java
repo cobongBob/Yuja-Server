@@ -2,7 +2,6 @@ package com.cobong.yuja.model.audit;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.time.LocalDateTime;
 
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;

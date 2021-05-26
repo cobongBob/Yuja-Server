@@ -29,13 +29,9 @@ import com.cobong.yuja.model.Board;
 import com.cobong.yuja.payload.request.board.BoardSaveRequestDto;
 import com.cobong.yuja.payload.request.board.BoardUpdateRequestDto;
 import com.cobong.yuja.payload.response.board.BoardResponseDto;
-import com.cobong.yuja.payload.response.user.UserResponseDto;
 import com.cobong.yuja.service.board.BoardService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.extern.log4j.Log4j2;
-
-@Log4j2
 @WebMvcTest(BoardApiController.class)
 @MockBean(JpaMetamodelMappingContext.class)
 public class BoardControllerUnitTest {
@@ -79,11 +75,9 @@ public class BoardControllerUnitTest {
 		boardSaveRequestDto.setTitle("테스트 제목1");
 		boardSaveRequestDto.setContent("테스트 내용1");
 		boardSaveRequestDto.setExpiredDate(new Date());
-		BoardResponseDto boardResponseDto = new BoardResponseDto().entityToDto(boardSaveRequestDto.dtoToEntity());
 
-		BoardResponseDto resultBoard = new BoardResponseDto().entityToDto(new Board(0L, null, null, "테스트 제목1", "테스트 내용1", null, null, null, 0, null, null, null, null, null, null, null, 0, null, null, null, null, false, null, null));
 		boardService.save(boardSaveRequestDto);
-//		when(boardService.findById(1L)).thenReturn(resultBoard);
+		
 		//when
 		Long id = 1L;
 		this.mockMvc.perform(get("/{bno}", id)

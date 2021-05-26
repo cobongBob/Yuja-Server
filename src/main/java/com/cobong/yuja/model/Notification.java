@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @Getter
-@ToString(exclude = {"comment","sender","recipient","message","confirm","board"})
+@ToString(exclude = {"comment","sender","recipient"})
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

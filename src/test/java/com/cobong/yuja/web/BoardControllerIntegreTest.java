@@ -26,13 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.payload.request.board.BoardSaveRequestDto;
-import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.service.board.BoardService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.extern.log4j.Log4j2;
-
-@Log4j2
 @Transactional
 @AutoConfigureMockMvc // 단위테스트용 @WebMvcTest 에는 포함되어있다.
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK) 
@@ -40,9 +36,6 @@ public class BoardControllerIntegreTest {
 	
 	@Autowired
 	private MockMvc mockMvc; //@@AutoConfigureMockMvc가 필요하다.
-	
-	@Autowired
-	private BoardRepository boardRepository;
 	
 	@Autowired
 	private BoardService boardService;
