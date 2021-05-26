@@ -23,7 +23,7 @@ import lombok.RequiredArgsConstructor;
 public class BoardAttachService {
 	private final AttachRepository attachRepository;
 	
-	private final List<String> availableTypes = Arrays.asList(".jpg",".jpeg",".png",".gif");
+	private final List<String> availableTypes = Arrays.asList(".jfif",".pjpeg",".pjp",".jpg",".jpeg",".png",".gif");
 	
 	@Transactional
 	public List<BoardAttachDto> saveFile(MultipartFile[] files, Long boardCode) {

@@ -26,7 +26,7 @@ import net.coobird.thumbnailator.Thumbnailator;
 public class ProfilePictureServiceImpl implements ProfilePictureService {
 	private final ProfilePictureRepository profilePictureRepository;
 	
-	private final List<String> availableTypes = Arrays.asList(".jpg",".jpeg",".png",".gif");
+	private final List<String> availableTypes = Arrays.asList(".jfif",".pjpeg",".pjp",".jpg",".jpeg",".png",".gif");
 	
 	@Override
 	@Transactional
