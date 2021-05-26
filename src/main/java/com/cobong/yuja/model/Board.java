@@ -25,6 +25,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@SuppressWarnings("serial")
 @Getter
 @ToString(exclude = {"attachments","comments","boardType","user"})
 @NoArgsConstructor

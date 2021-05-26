@@ -18,6 +18,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@SuppressWarnings("serial")
 @Getter
 @EqualsAndHashCode(callSuper=false)
 @ToString(exclude = {"user","board","parent"})

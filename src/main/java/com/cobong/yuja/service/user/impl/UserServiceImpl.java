@@ -477,13 +477,13 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public GoogleUser googleOauthCheck(Map<String, Object> data) {
 		
+		@SuppressWarnings("unchecked") // 지정한 형식의 개체가 포함될 것을 확신한다 하면 어노테이션으로 ignore warning 시킴
 		Map<String, Object> profile = (Map<String, Object>) data.get("profileObj");
 		String username = (String) profile.get("email");
 		Boolean user = userRepository.existsByUsername(username);
 		GoogleUser googleUser = new GoogleUser();
 		googleUser.setPassword(oauthSecret);
 		
-//		System.out.println("username 존재여부 : "+ user);
 		// 201 -> 회원가입
 		if (user.equals(false)) {
 			googleUser.setFlag(true);

@@ -17,6 +17,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+@SuppressWarnings("serial")
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
