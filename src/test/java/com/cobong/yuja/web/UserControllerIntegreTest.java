@@ -1,16 +1,12 @@
 package com.cobong.yuja.web;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.EntityManager;
 
@@ -30,12 +26,8 @@ import org.springframework.transaction.annotation.Transactional;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.user.UserSaveRequestDto;
 import com.cobong.yuja.payload.request.user.UserUpdateRequestDto;
-import com.cobong.yuja.payload.response.user.UserResponseDto;
-import com.cobong.yuja.repository.user.UserRepository;
 import com.cobong.yuja.service.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
-
-import lombok.extern.log4j.Log4j2;
 
 /**
  * 통합 테스트 (모든 Bean들을 똑같이 IoC 올리고 테스트하는것)
@@ -45,7 +37,6 @@ import lombok.extern.log4j.Log4j2;
  * @Transactional 은 각 각의 테스트함수가 종료 될때마다 트랜잭션을 rollback해주는 어노테이션
  */
 
-@Log4j2
 @Transactional
 @AutoConfigureMockMvc // 단위테스트용 @WebMvcTest 에는 포함되어있다.
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK) 

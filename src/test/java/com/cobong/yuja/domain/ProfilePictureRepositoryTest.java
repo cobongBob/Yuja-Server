@@ -6,9 +6,6 @@ import org.springframework.boot.test.context.SpringBootTest;
 
 import com.cobong.yuja.repository.attach.ProfilePictureRepository;
 
-import lombok.extern.log4j.Log4j2;
-
-@Log4j2
 @SpringBootTest
 public class ProfilePictureRepositoryTest {
 	@Autowired

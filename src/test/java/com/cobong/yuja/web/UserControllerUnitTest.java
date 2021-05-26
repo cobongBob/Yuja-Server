@@ -31,9 +31,6 @@ import com.cobong.yuja.payload.response.user.UserResponseDto;
 import com.cobong.yuja.service.user.UserService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import lombok.extern.log4j.Log4j2;
-
-@Log4j2
 @WebMvcTest(UserApiController.class) //controller관련된 빈만 뜬다.
 @MockBean(JpaMetamodelMappingContext.class)
 public class UserControllerUnitTest {
