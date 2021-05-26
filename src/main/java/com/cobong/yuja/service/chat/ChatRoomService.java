@@ -1,5 +1,6 @@
 package com.cobong.yuja.service.chat;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -62,7 +63,11 @@ public class ChatRoomService {
 			String receiver = chatRoomJoinService.findReceiver(curRoom.getRoomId(), userId);			
 			ChatRoomDto dto = new ChatRoomDto().create(curRoom.getRoomId(), receiver, "성공이다!!!!!");
 			
-			dto.setLastMsgReceivedDate(join.getChatRoom().getMessages().get(join.getChatRoom().getMessages().size() - 1).getCreatedDate());
+			if(join.getChatRoom().getMessages().size() != 0) {
+				dto.setLastMsgReceivedDate(join.getChatRoom().getMessages().get(join.getChatRoom().getMessages().size() - 1).getCreatedDate());
+			} else {
+				dto.setLastMsgReceivedDate(Instant.now());
+			}
 			
 			if(profileRepository.findByUserNickname(receiver).isPresent()) {
 				dto.setProfilePic(profileRepository.findByUserNickname(receiver).get().getFileName());

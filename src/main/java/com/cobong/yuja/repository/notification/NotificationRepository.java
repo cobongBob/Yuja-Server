@@ -1,6 +1,7 @@
 package com.cobong.yuja.repository.notification;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -22,4 +23,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 	@Query("SELECT n FROM Notification n WHERE recipientId = :recipientId")
 	List<Notification> findByRecipientId(@Param("recipientId") Long recipientId);
 
+	@Query("SELECT n FROM Notification n WHERE recipientId = :recipientId AND senderId =:senderId AND type='chatNoti'")
+	Optional<Notification> findByLastChatNoti(@Param("recipientId") Long recipientId, @Param("senderId") Long senderId);
 }

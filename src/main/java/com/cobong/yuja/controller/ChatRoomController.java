@@ -132,6 +132,12 @@ public class ChatRoomController {
 		model.addAttribute("errorMsg", e.getMessage());
 		return "chatting/errorPage";
 	}
+	
+	@ExceptionHandler(value = RuntimeException.class)
+	public String chatRuntime(RuntimeException e, Model model) {
+		model.addAttribute("errorMsg", e.getMessage());
+		return "chatting/errorPage";
+	}
 }
 
 
