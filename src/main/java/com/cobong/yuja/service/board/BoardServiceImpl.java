@@ -157,7 +157,7 @@ public class BoardServiceImpl implements BoardService {
 				notificationRepository.save(notification);	
 			}
 		} else if(dto.getBoardCode() == 3L) {
-			Authorities thumb = authoritiesRepository.findByAuthority(AuthorityNames.THUMBNAIOR).get();
+			Authorities thumb = authoritiesRepository.findByAuthority(AuthorityNames.THUMBNAILER).get();
 			if(!user.getAuthorities().contains(thumb)) {
 				user.getAuthorities().add(thumb);
 				boardDto.setFirstOrNot(true);

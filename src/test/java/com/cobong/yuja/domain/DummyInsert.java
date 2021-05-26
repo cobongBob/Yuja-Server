@@ -89,7 +89,7 @@ public class DummyInsert {
 		authRepo.save(authorities);
 		authorities = new Authorities(3L,AuthorityNames.EDITOR);
 		authRepo.save(authorities);
-		authorities = new Authorities(4L,AuthorityNames.THUMBNAIOR);
+		authorities = new Authorities(4L,AuthorityNames.THUMBNAILER);
 		authRepo.save(authorities);
 		authorities = new Authorities(5L,AuthorityNames.MANAGER);
 		authRepo.save(authorities);

@@ -101,7 +101,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 					.hasAnyAuthority("ROLE_GENERAL", "ROLE_MANAGER","ROLE_ADMIN") // 모든 회원 POST
 					
 				.antMatchers(HttpMethod.PUT,"/api/4L/board/**", "/api/5L/board/**","/api/6L/board", "/api/7L/board", "/api/user/**") 
-					.hasAnyAuthority("ROLE_GENERAL", "ROLE_MANAGER","ROLE_ADMIN", "/api/comment/**")// 모든 회원 PUT
+					.hasAnyAuthority("ROLE_GENERAL", "ROLE_MANAGER","ROLE_ADMIN")// 모든 회원 PUT
 					
 				.antMatchers(HttpMethod.DELETE, "/api/4L/board/**", "/api/5L/board/**", "/socket/room/**", "/api/comment/**", "/api/user/**") 
 					.hasAnyAuthority("ROLE_GENERAL", "ROLE_MANAGER", "ROLE_ADMIN")// 모든 회원 DELETE
@@ -131,17 +131,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				// 썸네일러
 					
 				.antMatchers(HttpMethod.PUT,"/api/3L/board/**")
-					.hasAnyAuthority("ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN") // 썸네일러 PUT
+					.hasAnyAuthority("ROLE_THUMBNAILER","ROLE_MANAGER","ROLE_ADMIN") // 썸네일러 PUT
 					
 				.antMatchers(HttpMethod.DELETE,"/api/3L/board/**")
-					.hasAnyAuthority("ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN") // 썸네일러 DELETE
+					.hasAnyAuthority("ROLE_THUMBNAILER","ROLE_MANAGER","ROLE_ADMIN") // 썸네일러 DELETE
 					
 				// 유튜버 편집자 썸네일러
 				.antMatchers(HttpMethod.POST,"/api/board/liked/**")
-					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN") // 유튜버 편집자 썸네일러 POST
+					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILER","ROLE_MANAGER","ROLE_ADMIN") // 유튜버 편집자 썸네일러 POST
 					
 				.antMatchers(HttpMethod.DELETE,"/api/board/liked/**")
-					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILOR","ROLE_MANAGER","ROLE_ADMIN") // 유튜버 편집자 썸네일러 DELETE
+					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILER","ROLE_MANAGER","ROLE_ADMIN") // 유튜버 편집자 썸네일러 DELETE
 					
 
 				// 매니저
