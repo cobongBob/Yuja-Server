@@ -550,7 +550,13 @@ public class BoardServiceImpl implements BoardService {
 		result = new ArrayList<BoardResponseDto>();
 		for (int i = 0; i < board.size(); i++) {
 			BoardResponseDto resDto = new BoardResponseDto();
-			result.add(resDto.entityToDto(board.get(i)));
+			resDto = resDto.entityToDto(board.get(i));
+			System.out.println("Visited!1");
+			if(thumbnailRepository.findByBoardBoardId(board.get(i).getBoardId()).isPresent()) {
+				resDto.setPreviewImage("http://localhost:8888/files/thumbnail/"+thumbnailRepository.findByBoardBoardId(board.get(i).getBoardId()).get().getFileName());
+				System.out.println("Visited!2");
+			}
+			result.add(resDto);
 		}
 		mainboardsResponseDto.setThumbLikes12(result);
 		
