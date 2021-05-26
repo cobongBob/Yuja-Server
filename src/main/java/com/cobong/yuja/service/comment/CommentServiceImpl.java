@@ -58,9 +58,9 @@ public class CommentServiceImpl implements CommentService {
 		
 		CommentResponseDto responseDto = new CommentResponseDto().entityToDto(commentRepository.save(comment));
 		
-		
 		Board board = boardRepository.findById(dto.getBoardId()).orElseThrow(() -> new IllegalAccessError("알림 받는 유저 없음 "+dto.getBoardId()));
 		String type = "commentNoti"; 
+		if(responseDto.getCommentId() != board.getUser().getUserId()) {
 		Notification notification = new Notification().createNotification(
 				commentRepository.findById(responseDto.getCommentId()).orElseThrow(() -> new IllegalAccessError("해당 댓글 없음 "+responseDto.getCommentId())), 
 				userRepository.findById(responseDto.getUserId()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+dto.getUserId())), 
@@ -68,8 +68,7 @@ public class CommentServiceImpl implements CommentService {
 				type,
 				null);
 		notificationRepository.save(notification);
-		
-		
+		}
 		return responseDto;
 	}
 	
