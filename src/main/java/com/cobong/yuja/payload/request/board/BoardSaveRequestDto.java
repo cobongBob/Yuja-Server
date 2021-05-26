@@ -1,6 +1,5 @@
 package com.cobong.yuja.payload.request.board;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

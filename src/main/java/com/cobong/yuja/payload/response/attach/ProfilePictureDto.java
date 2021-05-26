@@ -1,4 +1,4 @@
-package com.cobong.yuja.payload.response.user;
+package com.cobong.yuja.payload.response.attach;
 
 import com.cobong.yuja.model.ProfilePicture;
 

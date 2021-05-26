@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cobong.yuja.service.NotificationService;
+import com.cobong.yuja.service.notification.NotificationService;
 
 import lombok.RequiredArgsConstructor;
 

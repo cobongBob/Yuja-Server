@@ -15,9 +15,9 @@ import com.cobong.yuja.model.SocketMessage;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.chat.SocketMessageReceiveDto;
 import com.cobong.yuja.payload.response.chat.SocketMessageSendDto;
-import com.cobong.yuja.repository.NotificationRepository;
 import com.cobong.yuja.repository.chat.ChatRoomRepository;
 import com.cobong.yuja.repository.chat.SocketMessageRepository;
+import com.cobong.yuja.repository.notification.NotificationRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;

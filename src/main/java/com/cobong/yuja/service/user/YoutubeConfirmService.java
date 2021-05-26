@@ -14,15 +14,15 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cobong.yuja.model.Authorities;
-import com.cobong.yuja.model.AuthorityNames;
 import com.cobong.yuja.model.Notification;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.model.YoutubeConfirm;
+import com.cobong.yuja.model.enums.AuthorityNames;
 import com.cobong.yuja.payload.request.user.YoutubeConfirmFIleSaveDto;
 import com.cobong.yuja.payload.request.user.YoutubeConfirmRequestDto;
 import com.cobong.yuja.payload.response.user.UserResponseDto;
 import com.cobong.yuja.payload.response.user.YoutubeConfirmResponseDto;
-import com.cobong.yuja.repository.NotificationRepository;
+import com.cobong.yuja.repository.notification.NotificationRepository;
 import com.cobong.yuja.repository.user.AuthoritiesRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 import com.cobong.yuja.repository.user.YoutubeConfirmRepository;

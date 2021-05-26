@@ -1,4 +1,4 @@
-package com.cobong.yuja.service.board;
+package com.cobong.yuja.service.attach;
 
 import org.springframework.web.multipart.MultipartFile;
 

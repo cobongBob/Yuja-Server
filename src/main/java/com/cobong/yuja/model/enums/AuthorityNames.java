@@ -1,4 +1,4 @@
-package com.cobong.yuja.model;
+package com.cobong.yuja.model.enums;
 
 import lombok.Getter;
 

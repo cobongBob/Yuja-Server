@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.cobong.yuja.service.board.BoardAttachService;
-import com.cobong.yuja.service.board.ThumbnailService;
+import com.cobong.yuja.service.attach.BoardAttachService;
+import com.cobong.yuja.service.attach.ThumbnailService;
 
 import lombok.RequiredArgsConstructor;
 

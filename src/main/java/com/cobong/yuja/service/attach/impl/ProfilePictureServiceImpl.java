@@ -1,4 +1,4 @@
-package com.cobong.yuja.service.user;
+package com.cobong.yuja.service.attach.impl;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -14,8 +14,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cobong.yuja.model.ProfilePicture;
-import com.cobong.yuja.payload.response.user.ProfilePictureDto;
-import com.cobong.yuja.repository.user.ProfilePictureRepository;
+import com.cobong.yuja.payload.response.attach.ProfilePictureDto;
+import com.cobong.yuja.repository.attach.ProfilePictureRepository;
+import com.cobong.yuja.service.attach.ProfilePictureService;
 
 import lombok.RequiredArgsConstructor;
 import net.coobird.thumbnailator.Thumbnailator;

@@ -1,4 +1,4 @@
-package com.cobong.yuja.repository.boardLiked;
+package com.cobong.yuja.repository.liked;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

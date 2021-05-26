@@ -12,10 +12,9 @@ import com.cobong.yuja.model.ChatRoom;
 import com.cobong.yuja.model.ChatRoomJoin;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.chat.ChatRoomDto;
-import com.cobong.yuja.repository.NotificationRepository;
+import com.cobong.yuja.repository.attach.ProfilePictureRepository;
 import com.cobong.yuja.repository.chat.ChatRoomJoinRepository;
 import com.cobong.yuja.repository.chat.ChatRoomRepository;
-import com.cobong.yuja.repository.user.ProfilePictureRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;

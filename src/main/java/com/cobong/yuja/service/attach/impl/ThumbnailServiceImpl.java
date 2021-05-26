@@ -1,8 +1,6 @@
-package com.cobong.yuja.service.board;
+package com.cobong.yuja.service.attach.impl;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
@@ -16,8 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cobong.yuja.model.Thumbnail;
-import com.cobong.yuja.payload.request.board.ThumbnailDto;
+import com.cobong.yuja.payload.request.attach.ThumbnailDto;
 import com.cobong.yuja.repository.attach.ThumbnailRepository;
+import com.cobong.yuja.service.attach.ThumbnailService;
 
 import lombok.RequiredArgsConstructor;
 import net.coobird.thumbnailator.Thumbnailator;

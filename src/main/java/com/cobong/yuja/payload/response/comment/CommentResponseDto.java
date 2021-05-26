@@ -9,7 +9,6 @@ import com.cobong.yuja.model.BoardComment;
 import com.cobong.yuja.payload.response.board.BoardResponseDto;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 

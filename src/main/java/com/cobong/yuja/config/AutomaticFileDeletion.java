@@ -6,13 +6,13 @@ import java.nio.file.Paths;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.cobong.yuja.service.NotificationService;
-import com.cobong.yuja.service.board.BoardAttachService;
+import com.cobong.yuja.service.attach.BoardAttachService;
+import com.cobong.yuja.service.attach.ProfilePictureService;
+import com.cobong.yuja.service.attach.ThumbnailService;
 import com.cobong.yuja.service.board.BoardService;
-import com.cobong.yuja.service.board.ThumbnailService;
 import com.cobong.yuja.service.chat.ChatRoomService;
 import com.cobong.yuja.service.chat.SocketMessageService;
-import com.cobong.yuja.service.user.ProfilePictureService;
+import com.cobong.yuja.service.notification.NotificationService;
 import com.cobong.yuja.service.user.UserService;
 import com.cobong.yuja.service.user.YoutubeConfirmService;
 

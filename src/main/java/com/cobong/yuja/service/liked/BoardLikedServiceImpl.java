@@ -1,4 +1,4 @@
-package com.cobong.yuja.service.board;
+package com.cobong.yuja.service.liked;
 
 import javax.transaction.Transactional;
 
@@ -6,7 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.cobong.yuja.model.BoardLiked;
 import com.cobong.yuja.repository.board.BoardRepository;
-import com.cobong.yuja.repository.boardLiked.BoardLikedRepository;
+import com.cobong.yuja.repository.liked.BoardLikedRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;

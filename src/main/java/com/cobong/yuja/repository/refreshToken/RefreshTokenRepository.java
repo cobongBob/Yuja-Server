@@ -1,4 +1,4 @@
-package com.cobong.yuja.repository;
+package com.cobong.yuja.repository.refreshToken;
 
 import java.util.Optional;
 

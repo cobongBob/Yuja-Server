@@ -22,7 +22,7 @@ import com.cobong.yuja.config.oauth.GoogleUser;
 import com.cobong.yuja.payload.request.user.LoginRequest;
 import com.cobong.yuja.payload.request.user.UserSaveRequestDto;
 import com.cobong.yuja.payload.request.user.YoutubeConfirmRequestDto;
-import com.cobong.yuja.service.user.ProfilePictureService;
+import com.cobong.yuja.service.attach.ProfilePictureService;
 import com.cobong.yuja.service.user.UserService;
 import com.cobong.yuja.service.user.YoutubeConfirmService;
 

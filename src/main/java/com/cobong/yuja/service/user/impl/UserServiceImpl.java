@@ -1,4 +1,4 @@
-package com.cobong.yuja.service.user;
+package com.cobong.yuja.service.user.impl;
 
 import java.io.File;
 import java.io.IOException;
@@ -32,21 +32,22 @@ import com.cobong.yuja.config.jwt.CookieProvider;
 import com.cobong.yuja.config.jwt.JwtTokenProvider;
 import com.cobong.yuja.config.oauth.GoogleUser;
 import com.cobong.yuja.model.Authorities;
-import com.cobong.yuja.model.AuthorityNames;
 import com.cobong.yuja.model.ProfilePicture;
 import com.cobong.yuja.model.RefreshToken;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.model.YoutubeConfirm;
+import com.cobong.yuja.model.enums.AuthorityNames;
 import com.cobong.yuja.payload.request.user.LoginRequest;
 import com.cobong.yuja.payload.request.user.UserSaveRequestDto;
 import com.cobong.yuja.payload.request.user.UserUpdateRequestDto;
 import com.cobong.yuja.payload.response.user.UserForClientResponseDto;
 import com.cobong.yuja.payload.response.user.UserResponseDto;
-import com.cobong.yuja.repository.RefreshTokenRepository;
+import com.cobong.yuja.repository.attach.ProfilePictureRepository;
+import com.cobong.yuja.repository.refreshToken.RefreshTokenRepository;
 import com.cobong.yuja.repository.user.AuthoritiesRepository;
-import com.cobong.yuja.repository.user.ProfilePictureRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 import com.cobong.yuja.repository.user.YoutubeConfirmRepository;
+import com.cobong.yuja.service.user.UserService;
 import com.google.common.io.Files;
 
 import lombok.RequiredArgsConstructor;

@@ -16,7 +16,7 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import com.cobong.yuja.config.auth.PrincipalDetails;
 import com.cobong.yuja.model.RefreshToken;
 import com.cobong.yuja.model.User;
-import com.cobong.yuja.repository.RefreshTokenRepository;
+import com.cobong.yuja.repository.refreshToken.RefreshTokenRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 
 // Client에서 request로 엄어온 정보를 가지고 로그인에서 필터링

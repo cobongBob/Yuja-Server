@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.cobong.yuja.config.auth.PrincipalDetails;
-import com.cobong.yuja.service.board.BoardLikedService;
+import com.cobong.yuja.service.liked.BoardLikedService;
 
 import lombok.RequiredArgsConstructor;
 

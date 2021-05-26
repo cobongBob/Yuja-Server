@@ -1,4 +1,4 @@
-package com.cobong.yuja.repository.boardLiked;
+package com.cobong.yuja.repository.liked;
 
 import com.cobong.yuja.model.BoardLiked;
 import com.querydsl.jpa.impl.JPAQueryFactory;

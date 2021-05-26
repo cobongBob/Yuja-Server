@@ -1,4 +1,4 @@
-package com.cobong.yuja.repository.user;
+package com.cobong.yuja.repository.attach;
 
 import java.util.List;
 import java.util.Optional;

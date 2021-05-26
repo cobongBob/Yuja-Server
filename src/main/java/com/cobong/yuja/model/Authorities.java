@@ -8,6 +8,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
+import com.cobong.yuja.model.enums.AuthorityNames;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;

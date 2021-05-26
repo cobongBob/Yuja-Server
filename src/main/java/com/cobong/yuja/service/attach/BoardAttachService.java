@@ -1,4 +1,4 @@
-package com.cobong.yuja.service.board;
+package com.cobong.yuja.service.attach;
 
 
 import java.io.File;
@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cobong.yuja.model.BoardAttach;
-import com.cobong.yuja.payload.request.board.BoardAttachDto;
+import com.cobong.yuja.payload.request.attach.BoardAttachDto;
 import com.cobong.yuja.repository.attach.AttachRepository;
 
 import lombok.RequiredArgsConstructor;

@@ -1,4 +1,4 @@
-package com.cobong.yuja.repository;
+package com.cobong.yuja.repository.notification;
 
 import java.util.List;
 

@@ -1,4 +1,4 @@
-package com.cobong.yuja.repository;
+package com.cobong.yuja.repository.board;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 

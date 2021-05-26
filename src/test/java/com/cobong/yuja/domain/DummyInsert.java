@@ -11,18 +11,18 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import com.cobong.yuja.model.Authorities;
-import com.cobong.yuja.model.AuthorityNames;
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardComment;
 import com.cobong.yuja.model.BoardLiked;
 import com.cobong.yuja.model.BoardType;
 import com.cobong.yuja.model.Thumbnail;
 import com.cobong.yuja.model.User;
-import com.cobong.yuja.repository.BoardTypeRepository;
+import com.cobong.yuja.model.enums.AuthorityNames;
 import com.cobong.yuja.repository.attach.ThumbnailRepository;
 import com.cobong.yuja.repository.board.BoardRepository;
-import com.cobong.yuja.repository.boardLiked.BoardLikedRepository;
+import com.cobong.yuja.repository.board.BoardTypeRepository;
 import com.cobong.yuja.repository.comment.CommentRepository;
+import com.cobong.yuja.repository.liked.BoardLikedRepository;
 import com.cobong.yuja.repository.user.AuthoritiesRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 

@@ -1,4 +1,4 @@
-package com.cobong.yuja.payload.response;
+package com.cobong.yuja.payload.response.notification;
 
 import java.util.Date;
 

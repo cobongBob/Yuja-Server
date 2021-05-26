@@ -1,4 +1,4 @@
-package com.cobong.yuja.service;
+package com.cobong.yuja.service.notification;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -6,13 +6,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import org.springframework.scheduling.quartz.LocalDataSourceJobStore;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cobong.yuja.model.Notification;
-import com.cobong.yuja.payload.response.NotificationResponseDto;
-import com.cobong.yuja.repository.NotificationRepository;
+import com.cobong.yuja.payload.response.notification.NotificationResponseDto;
+import com.cobong.yuja.repository.notification.NotificationRepository;
 
 import lombok.RequiredArgsConstructor;
 
@@ -20,23 +19,6 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
 	private final NotificationRepository notificationRepository; 
-	
-	// 알림보내기 일단 만듬
-//	@Override
-//	@Transactional
-//	public NotificationResponseDto send(NotificationRequestDto dto) {
-//		Notification notification = Notification.builder()
-//				.sender(userRepository.findById(dto.getSender())
-//						.orElseThrow(()-> new IllegalArgumentException("메세지 보낸 유저 없음"+dto.getSender())))
-//				.recipient(userRepository.findById(dto.getResipeint())
-//						.orElseThrow(()-> new IllegalArgumentException("메세지 받은 유저 없음"+dto.getResipeint())))
-//				.type(dto.getType())
-//				.message(dto.getMessage())
-//				.readDate(dto.getReadDate())
-//				.build();
-//		notificationRepository.save(notification);
-//		return new NotificationResponseDto().entityToDto(notification);
-//	}
 
 	@Override
 	@Transactional

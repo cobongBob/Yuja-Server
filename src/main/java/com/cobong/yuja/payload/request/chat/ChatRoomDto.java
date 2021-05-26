@@ -2,8 +2,6 @@ package com.cobong.yuja.payload.request.chat;
 
 import java.time.Instant;
 
-import com.cobong.yuja.model.ChatRoom;
-
 import lombok.Data;
 
 @Data

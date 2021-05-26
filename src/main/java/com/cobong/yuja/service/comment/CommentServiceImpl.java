@@ -13,9 +13,9 @@ import com.cobong.yuja.model.BoardComment;
 import com.cobong.yuja.model.Notification;
 import com.cobong.yuja.payload.request.comment.CommentRequestDto;
 import com.cobong.yuja.payload.response.comment.CommentResponseDto;
-import com.cobong.yuja.repository.NotificationRepository;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.comment.CommentRepository;
+import com.cobong.yuja.repository.notification.NotificationRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 
 import lombok.RequiredArgsConstructor;

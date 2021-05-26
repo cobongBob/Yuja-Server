@@ -1,4 +1,4 @@
-package com.cobong.yuja.payload.request.board;
+package com.cobong.yuja.payload.request.attach;
 
 import com.cobong.yuja.model.Thumbnail;
 
