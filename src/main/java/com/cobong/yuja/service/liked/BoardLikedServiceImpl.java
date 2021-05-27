@@ -21,10 +21,13 @@ public class BoardLikedServiceImpl implements BoardLikedService{
 	@Override
 	@Transactional
 	public String liked(Long bno, Long userId) {
+		// 좋아요 한번만 할수있게끔 (조건문없으면 중복가능해서 카운트가 1이상 증가함)
+		if(boardLikedRepository.duplicateCheck(bno, userId) == null ) {
 		BoardLiked liked = BoardLiked.builder()
 				.user(userRepository.findById(userId).orElseThrow(()->new IllegalArgumentException("존재하지않는 유저")))
 				.board(boardRepository.findById(bno).orElseThrow(()->new IllegalArgumentException("존재하지않는 글"))).build();
 		boardLikedRepository.save(liked);
+		}
 		return "Success!!";
 	}
 
