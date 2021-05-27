@@ -209,8 +209,7 @@ public class UserServiceImpl implements UserService {
 				userUpdateRequestDto.getBday(),userUpdateRequestDto.getProvidedId(), 
 				userUpdateRequestDto.getProvider(), wholeAddr, 
 				userUpdateRequestDto.getPhone(), userUpdateRequestDto.getBsn(), 
-				userUpdateRequestDto.getYoututubeUrl(), false);
-		
+				userUpdateRequestDto.getYoutubeUrl(), false);
 		UserResponseDto dto = new UserResponseDto().entityToDto(user);
 
 		if(userUpdateRequestDto.getProfilePicId() != 0L) {
