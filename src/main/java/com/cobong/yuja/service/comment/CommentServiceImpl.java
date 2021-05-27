@@ -74,11 +74,9 @@ public class CommentServiceImpl implements CommentService {
 		Optional<Notification> lastNoti = null;
 		
 		if(parentComment !=null && commentReceiver.getUserId() == sender.getUserId()) {
-			System.out.println("대댓글인데 개새키 == 캐시키");
 		}else if (parentComment == null && board.getUser().getUserId() == sender.getUserId()){
-			System.out.println("댓글인데 댓글 작성자 == 글 작성자");
 		}else if(parentComment != null && commentReceiver.getUserId() != sender.getUserId()) {
-			lastNoti = notificationRepository.findByLastNoti(sender.getUserId(), commentReceiver.getUserId(),"nestedCommet");
+			lastNoti = notificationRepository.findByLastNoti(sender.getUserId(), commentReceiver.getUserId(),"nestedComment");
 			if(lastNoti.isPresent()) {
 				notificationRepository.delete(lastNoti.get());
 			}
@@ -86,11 +84,11 @@ public class CommentServiceImpl implements CommentService {
 					commentRepository.findById(responseDto.getCommentId()).orElseThrow(() -> new IllegalAccessError("해당 댓글 없음 "+responseDto.getCommentId())), 
 					sender, 
 					commentReceiver,	
-					"nestedCommet",
+					"nestedComment",
 					null);
 			notificationRepository.save(notification);
 		}else {
-			lastNoti = notificationRepository.findByLastNoti(sender.getUserId(), board.getUser().getUserId(),"nestedCommet");
+			lastNoti = notificationRepository.findByLastNoti(sender.getUserId(), board.getUser().getUserId(),"nestedComment");
 			if(lastNoti.isPresent()) {
 				notificationRepository.delete(lastNoti.get());
 			}
