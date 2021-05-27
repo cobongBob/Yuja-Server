@@ -585,9 +585,7 @@ public class BoardServiceImpl implements BoardService {
 	public void deleteExpired() {
 		Date now = new Date();
 		List<Board> expiredBoards = boardRepository.findExpired(now);
-		System.out.println("====== 가즈아아아"+expiredBoards.size());
 		for(Board expBoard:expiredBoards) {
-			System.out.println("====== 가즈아아아"+expBoard);
 			boardRepository.delete(expBoard);
 		}
 	}

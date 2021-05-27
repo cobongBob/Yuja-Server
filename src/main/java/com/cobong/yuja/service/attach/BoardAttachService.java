@@ -49,7 +49,6 @@ public class BoardAttachService {
 				if (!new File(savePath).exists()) {
 					try {
 						new File(savePath).mkdirs(); //mkdirs는 폴더안에 폴더를 찾는데 그 상위폴더 조차 존재치 않으면 만들어준다.
-						System.out.println(savePath);
 					} catch (Exception e) {
 						e.getStackTrace();
 					}
@@ -95,7 +94,6 @@ public class BoardAttachService {
 				if (!new File(uploadPath).exists()) {
 					try {
 						new File(uploadPath).mkdirs();
-						System.out.println(uploadPath);
 					} catch (Exception e) {
 						e.getStackTrace();
 					}
