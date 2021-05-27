@@ -357,7 +357,7 @@ public class BoardServiceImpl implements BoardService {
 						origToDel.delete();
 					}					
 				} catch (Exception e) {
-					throw new IllegalAccessError("");
+					throw new IllegalAccessError("이전 썸네일이 존재하지 않습니다.");
 				}
 				thumbnailRepository.delete(origThumbnail);
 				if(boardUpdateRequestDto.getThumbnailId() != null && boardUpdateRequestDto.getThumbnailId() != 0L) {
@@ -372,7 +372,7 @@ public class BoardServiceImpl implements BoardService {
 								Files.move(temp, dest);
 								Files.move(origTemp, origDest);
 							} catch (IOException e) {
-								e.printStackTrace();
+								throw new IllegalAccessError("썸네일이 존재하지 않습니다");
 							}
 							newThumb.get().completelySave();
 						}
