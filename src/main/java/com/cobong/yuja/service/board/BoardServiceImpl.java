@@ -513,8 +513,12 @@ public class BoardServiceImpl implements BoardService {
 		MainboardsResponseDto mainboardsResponseDto = new MainboardsResponseDto();
 		List<BoardResponseDto> result = new ArrayList<BoardResponseDto>();
 		for (int i = 0; i < board.size(); i++) {
-			BoardResponseDto resDto = new BoardResponseDto();
-			result.add(resDto.entityToDto(board.get(i)));
+			BoardResponseDto resDto = new BoardResponseDto().entityToDto(board.get(i));
+			Optional<ProfilePicture> optprofile = profilePictureRepository.findByUserUserId(board.get(i).getUser().getUserId());
+			if(optprofile.isPresent()) {
+				resDto.setPreviewImage("http://localhost:8888/files/profiles/"+optprofile.get().getFileName());
+			}
+			result.add(resDto);
 		}
 		mainboardsResponseDto.setYouUpdatedOrder4(result);
 		
@@ -522,8 +526,12 @@ public class BoardServiceImpl implements BoardService {
 		board =boardRepository.orderEditLatest();
 		result = new ArrayList<BoardResponseDto>();
 		for (int i = 0; i < board.size(); i++) {
-			BoardResponseDto resDto = new BoardResponseDto();
-			result.add(resDto.entityToDto(board.get(i)));
+			BoardResponseDto resDto = new BoardResponseDto().entityToDto(board.get(i));
+			Optional<ProfilePicture> optprofile = profilePictureRepository.findByUserUserId(board.get(i).getUser().getUserId());
+			if(optprofile.isPresent()) {
+				resDto.setPreviewImage("http://localhost:8888/files/profiles/"+optprofile.get().getFileName());
+			}
+			result.add(resDto);
 		}
 		mainboardsResponseDto.setEditUpdatedOrder4(result);
 		
@@ -531,8 +539,12 @@ public class BoardServiceImpl implements BoardService {
 		board =boardRepository.orderThumLatest();
 		result = new ArrayList<BoardResponseDto>();
 		for (int i = 0; i < board.size(); i++) {
-			BoardResponseDto resDto = new BoardResponseDto();
-			result.add(resDto.entityToDto(board.get(i)));
+			BoardResponseDto resDto = new BoardResponseDto().entityToDto(board.get(i));
+			Optional<ProfilePicture> optprofile = profilePictureRepository.findByUserUserId(board.get(i).getUser().getUserId());
+			if(optprofile.isPresent()) {
+				resDto.setPreviewImage("http://localhost:8888/files/profiles/"+optprofile.get().getFileName());
+			}
+			result.add(resDto);
 		}
 		mainboardsResponseDto.setThumUpdatedOrder4(result);
 
