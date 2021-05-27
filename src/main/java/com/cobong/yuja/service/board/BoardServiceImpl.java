@@ -414,7 +414,7 @@ public class BoardServiceImpl implements BoardService {
 			if(boardType.getBoardCode() == 1L) {
 				Optional<ProfilePicture> psa = profilePictureRepository.findByUserUserId(board.getUser().getUserId());
 				if(psa.isPresent()) {
-					dto.setPreviewImage("http://localhost:8888/files/profiles"+psa.get().getFileName());					
+					dto.setPreviewImage("http://localhost:8888/files/profiles/"+psa.get().getFileName());					
 				}
 			}
 			curBoardResponseDto.add(dto);
