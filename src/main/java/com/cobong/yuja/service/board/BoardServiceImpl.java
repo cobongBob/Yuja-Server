@@ -17,6 +17,7 @@ import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardAttach;
 import com.cobong.yuja.model.BoardType;
 import com.cobong.yuja.model.Notification;
+import com.cobong.yuja.model.ProfilePicture;
 import com.cobong.yuja.model.Thumbnail;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.model.enums.AuthorityNames;
@@ -26,6 +27,7 @@ import com.cobong.yuja.payload.response.board.BoardResponseDto;
 import com.cobong.yuja.payload.response.board.BoardTypeResponseDto;
 import com.cobong.yuja.payload.response.board.MainboardsResponseDto;
 import com.cobong.yuja.repository.attach.AttachRepository;
+import com.cobong.yuja.repository.attach.ProfilePictureRepository;
 import com.cobong.yuja.repository.attach.ThumbnailRepository;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.board.BoardTypeRepository;
@@ -46,6 +48,7 @@ public class BoardServiceImpl implements BoardService {
 	private final ThumbnailRepository thumbnailRepository;
 	private final AuthoritiesRepository authoritiesRepository;
 	private final NotificationRepository notificationRepository;
+	private final ProfilePictureRepository profilePictureRepository;
 	
 	@Override
 	@Transactional
@@ -407,6 +410,12 @@ public class BoardServiceImpl implements BoardService {
 			Optional<Thumbnail> thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId());
 			if(thumbnail.isPresent()) {
 				dto.setThumbnail(thumbnail.get().getFileName());		
+			}
+			if(boardType.getBoardCode() == 1L) {
+				Optional<ProfilePicture> psa = profilePictureRepository.findByUserUserId(board.getUser().getUserId());
+				if(psa.isPresent()) {
+					dto.setPreviewImage("http://localhost:8888/files/profiles"+psa.get().getFileName());					
+				}
 			}
 			curBoardResponseDto.add(dto);
 		}
