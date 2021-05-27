@@ -55,6 +55,7 @@ public class BoardControllerIntegreTest {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	@Test
 	public void save_test() throws Exception {
 		//given

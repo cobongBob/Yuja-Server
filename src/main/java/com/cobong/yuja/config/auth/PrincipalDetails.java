@@ -14,6 +14,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import lombok.Getter;
 
+@SuppressWarnings("serial")
 @Getter
 public class PrincipalDetails implements UserDetails {
 

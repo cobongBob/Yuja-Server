@@ -177,7 +177,8 @@ document.getElementById('message').focus();
 
 window.onkeydown = function(e) {
     if(e.keyCode == 27) {
-      window.close()
+		window.parent.postMessage({exit:'exit'},'*')
+      disconnect();
     }
 };
 

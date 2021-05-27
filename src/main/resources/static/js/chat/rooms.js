@@ -51,12 +51,8 @@ function findRoom(){
 window.onload = function(e) {
 document.getElementById('receiver').focus();
 };
-
-
 window.onkeydown = function(e) {
-console.log("esc 작동")
     if(e.keyCode == 27) {
-      window.close();
+		window.parent.postMessage({exit:'exit'},'*')
     }
 };
-

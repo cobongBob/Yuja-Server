@@ -26,7 +26,7 @@ import net.coobird.thumbnailator.Thumbnailator;
 public class ThumbnailServiceImpl implements ThumbnailService{
 	private final ThumbnailRepository thumbnailRepository;
 
-	private final List<String> availableTypes = Arrays.asList(".jpg",".jpeg",".png",".gif");
+	private final List<String> availableTypes = Arrays.asList(".jfif",".pjpeg",".pjp",".jpg",".jpeg",".png",".gif");
 	
 	@Override
 	@Transactional
@@ -62,11 +62,15 @@ public class ThumbnailServiceImpl implements ThumbnailService{
 			savePath += File.separator + filename;
 			
 			FileOutputStream res = new FileOutputStream(new File(savePath));
-			if(ImageIO.read(file.getInputStream()).getHeight() >= 202 || ImageIO.read(file.getInputStream()).getWidth() >= 360) {
+			if(ImageIO.read(file.getInputStream()).getHeight() < 202 || ImageIO.read(file.getInputStream()).getWidth() < 320) {
+				throw new IllegalAccessError("이미지 파일이 너무 작습니다! 400x300 이상되는 사이즈를 권장합니다.");
+			}
+			
+			if(ImageIO.read(file.getInputStream()).getHeight() >= 256 || ImageIO.read(file.getInputStream()).getWidth() >= 360) {
 				if(ImageIO.read(file.getInputStream()).getHeight() < ImageIO.read(file.getInputStream()).getWidth()) {
 					Thumbnailator.createThumbnail(file.getInputStream(), res, 360 ,ImageIO.read(file.getInputStream()).getHeight());
 				} else {
-					Thumbnailator.createThumbnail(file.getInputStream(), res, ImageIO.read(file.getInputStream()).getWidth(), 202);	
+					Thumbnailator.createThumbnail(file.getInputStream(), res, ImageIO.read(file.getInputStream()).getWidth(), 256);	
 				}
 			} else {
 				Thumbnailator.createThumbnail(file.getInputStream(), res, ImageIO.read(file.getInputStream()).getWidth(), ImageIO.read(file.getInputStream()).getHeight());

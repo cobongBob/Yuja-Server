@@ -40,12 +40,17 @@ public class SocketMessageService {
 		User user = userOpt.get();
 		SocketMessage socketmsg = SocketMessage.builder().user(user).chatRoom(chatRoom).message(msg.getMessage()).build();
 		
-				
+		User sender = userRepository.findByNickname(msg.getSender()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+msg.getSender()));
+		User receiver = userRepository.findByNickname(msg.getReceiver()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+msg.getReceiver()));
 		String type = "chatNoti"; 
+		Optional<Notification> lastNoti = notificationRepository.findByLastNoti(sender.getUserId(), receiver.getUserId(),type);
+		if(lastNoti.isPresent()) {
+			notificationRepository.delete(lastNoti.get());
+		}
 		Notification notification = new Notification().createNotification(
 				null, 
-				userRepository.findByNickname(msg.getSender()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+msg.getSender())),
-				userRepository.findByNickname(msg.getReceiver()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+msg.getReceiver())),
+				sender,
+				receiver,
 				type,
 				null);
 		notificationRepository.save(notification);
@@ -67,7 +72,6 @@ public class SocketMessageService {
 		List<SocketMessageSendDto> dtoList = new ArrayList<SocketMessageSendDto>();
 		for(SocketMessage msgs : entityList) {
 			SocketMessageSendDto dto = new SocketMessageSendDto().entityToDto(msgs);
-			System.out.println("Visited!!!!!!!!"+dto.getContent());
 			dto.setContent(dto.getContent().replaceAll("&lt", "<"));
 			dto.setContent(dto.getContent().replaceAll("&gt", ">"));
 			dto.setContent(dto.getContent().replaceAll("&quot", "\""));
