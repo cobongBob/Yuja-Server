@@ -546,6 +546,7 @@ public class BoardServiceImpl implements BoardService {
 			}
 			result.add(resDto);
 		}
+		
 		mainboardsResponseDto.setThumUpdatedOrder4(result);
 
 		// 윈윈(4) 최신순(createdDate) 5개
