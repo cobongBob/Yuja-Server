@@ -48,11 +48,19 @@ function findRoom(){
 	return false;
 }
 
-window.onload = function(e) {
-document.getElementById('receiver').focus();
-};
+
 window.onkeydown = function(e) {
     if(e.keyCode == 27) {
 		window.parent.postMessage({exit:'exit'},'*')
     }
 };
+
+window.addEventListener("message", (event) => {
+    if (event.origin.startsWith("http://localhost:3000")) {
+      if (event.data && event.data.enter === "enter") {
+		 document.getElementById("receiver").focus();
+      }
+    } else {
+      return;
+    }
+});

@@ -64,7 +64,6 @@ public class CommentServiceImpl implements CommentService {
 		String type = "commentNoti"; 
 		User sender = userRepository.findById(responseDto.getUserId()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+dto.getUserId()));
 		Optional<Notification> lastNoti = notificationRepository.findByLastNoti(sender.getUserId(), board.getUser().getUserId(),type);
-		System.out.println(lastNoti.get());
 		if(lastNoti.isPresent()) {
 			notificationRepository.delete(lastNoti.get());
 		}
