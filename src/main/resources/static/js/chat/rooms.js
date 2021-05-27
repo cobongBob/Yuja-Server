@@ -54,9 +54,12 @@ window.onkeydown = function(e) {
     }
 };
 
-function myFunction() {
-  var x = document.getElementById("ChatSearch").autofocus;
-  document.getElementById("ChatSearch").innerHTML = x;
-}
-
-//myFunciton();
+window.addEventListener("message", (event) => {
+    if (event.origin.startsWith("http://localhost:3000")) {
+      if (event.data && event.data.enter === "enter") {
+		 document.getElementById("receiver").focus();
+      }
+    } else {
+      return;
+    }
+});
