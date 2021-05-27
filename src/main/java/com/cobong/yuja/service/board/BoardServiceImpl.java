@@ -346,7 +346,7 @@ public class BoardServiceImpl implements BoardService {
 			}
 		}
 		
-		Optional<Thumbnail> origThumb = thumbnailRepository.findById(boardUpdateRequestDto.getThumbnailId());
+		Optional<Thumbnail> origThumb = thumbnailRepository.findByBoardBoardId(board.getBoardId());
 		if(origThumb.isPresent()) {
 			Thumbnail origThumbnail = origThumb.get();
 			if(boardUpdateRequestDto.getThumbnailId() != origThumbnail.getThumbnailId()) {
@@ -362,7 +362,7 @@ public class BoardServiceImpl implements BoardService {
 				} catch (Exception e) {
 					throw new IllegalAccessError("이전 썸네일이 존재하지 않습니다.");
 				}
-				
+				thumbnailRepository.delete(origThumbnail);
 				if(boardUpdateRequestDto.getThumbnailId() != null && boardUpdateRequestDto.getThumbnailId() != 0L) {
 					Optional<Thumbnail> newThumb = thumbnailRepository.findById(boardUpdateRequestDto.getThumbnailId());
 					if(newThumb.isPresent()) {
