@@ -57,24 +57,50 @@ public class CommentServiceImpl implements CommentService {
 				userRepository.findById(dto.getUserId()).orElseThrow(()->new IllegalArgumentException("존재하지않는 유저")),
 				dto.getParentId() != null? 
 						commentRepository.findById(dto.getParentId()).orElseThrow(()->new IllegalArgumentException("존재하지않는 부모")):null);
-		
 		CommentResponseDto responseDto = new CommentResponseDto().entityToDto(commentRepository.save(comment));
 		
 		Board board = boardRepository.findById(dto.getBoardId()).orElseThrow(() -> new IllegalAccessError("알림 받는 유저 없음 "+dto.getBoardId()));
 		String type = "commentNoti"; 
 		User sender = userRepository.findById(responseDto.getUserId()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+dto.getUserId()));
-		Optional<Notification> lastNoti = notificationRepository.findByLastNoti(sender.getUserId(), board.getUser().getUserId(),type);
-		if(lastNoti.isPresent()) {
-			notificationRepository.delete(lastNoti.get());
+		BoardComment parentComment = null;
+		if(comment.getParent() != null) {
+			parentComment = commentRepository.findById(comment.getParent().getCommentId()).orElse(null);
 		}
-		if(responseDto.getUserId() != board.getUser().getUserId()) {
-		Notification notification = new Notification().createNotification(
-				commentRepository.findById(responseDto.getCommentId()).orElseThrow(() -> new IllegalAccessError("해당 댓글 없음 "+responseDto.getCommentId())), 
-				sender, 
-				board.getUser(),
-				type,
-				null);
-		notificationRepository.save(notification);
+		User commentReceiver = null;
+		if(parentComment != null) {
+			commentReceiver = parentComment.getUser();
+		}
+		
+		Optional<Notification> lastNoti = null;
+		
+		if(parentComment !=null && commentReceiver.getUserId() == sender.getUserId()) {
+			System.out.println("대댓글인데 개새키 == 캐시키");
+		}else if (parentComment == null && board.getUser().getUserId() == sender.getUserId()){
+			System.out.println("댓글인데 댓글 작성자 == 글 작성자");
+		}else if(parentComment != null && commentReceiver.getUserId() != sender.getUserId()) {
+			lastNoti = notificationRepository.findByLastNoti(sender.getUserId(), commentReceiver.getUserId(),"nestedCommet");
+			if(lastNoti.isPresent()) {
+				notificationRepository.delete(lastNoti.get());
+			}
+			Notification notification = new Notification().createNotification(
+					commentRepository.findById(responseDto.getCommentId()).orElseThrow(() -> new IllegalAccessError("해당 댓글 없음 "+responseDto.getCommentId())), 
+					sender, 
+					commentReceiver,	
+					"nestedCommet",
+					null);
+			notificationRepository.save(notification);
+		}else {
+			lastNoti = notificationRepository.findByLastNoti(sender.getUserId(), board.getUser().getUserId(),"nestedCommet");
+			if(lastNoti.isPresent()) {
+				notificationRepository.delete(lastNoti.get());
+			}
+			Notification notification = new Notification().createNotification(
+					commentRepository.findById(responseDto.getCommentId()).orElseThrow(() -> new IllegalAccessError("해당 댓글 없음 "+responseDto.getCommentId())), 
+					sender, 
+					board.getUser(),	
+					type,
+					null);
+			notificationRepository.save(notification);
 		}
 		return responseDto;
 	}
