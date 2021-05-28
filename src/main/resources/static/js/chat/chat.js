@@ -172,6 +172,10 @@ function showMessageSend(e) {
   window.scrollTo(0, document.body.scrollHeight);
 }
 
+window.onload = function(e) {
+document.getElementById('message').focus();
+};
+
 window.onkeydown = function(e) {
     if(e.keyCode == 27) {
 		window.parent.postMessage({exit:'exit'},'*')
