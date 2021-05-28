@@ -12,7 +12,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cobong.yuja.config.jwt.JwtAuthenticationEntryPoint;
 import com.cobong.yuja.model.Authorities;
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardAttach;
@@ -187,7 +186,7 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
 	@Transactional
-	public BoardResponseDto findById(Long bno, Long userId,boolean ishit) {
+	public BoardResponseDto findById(Long bno, Long userId, boolean ishit) {
 		Board board = boardRepository.findById(bno).orElseThrow(() -> new IllegalAccessError("해당글 없음" + bno));
 		if(ishit == false&&userId != board.getUser().getUserId()) {
 			board.addHit();
@@ -217,6 +216,14 @@ public class BoardServiceImpl implements BoardService {
 		}
 		
 		BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
+		if(board.getBoardType().getBoardCode() == 2L || board.getBoardType().getBoardCode() == 3L) {
+			Optional<ProfilePicture> psa = profilePictureRepository.findByUserUserId(userId);
+			if(psa.isPresent()) {
+				dto.setPreviewImage("http://localhost:8888/files/profiles/"+psa.get().getFileName());
+			}else {
+				dto.setPreviewImage("");
+			}
+		}		
 		dto.setLikesAndComments(likes, comments);
 		dto.setAttaches(boardAttachesToSend);
 		dto.setTools(tools);
@@ -363,7 +370,8 @@ public class BoardServiceImpl implements BoardService {
 		Optional<Thumbnail> origThumb = thumbnailRepository.findByBoardBoardId(board.getBoardId());
 		if(origThumb.isPresent()) {
 			Thumbnail origThumbnail = origThumb.get();
-			if(boardUpdateRequestDto.getThumbnailId() != origThumbnail.getThumbnailId()) {
+			System.out.println(origThumbnail);
+			if(boardUpdateRequestDto.getThumbnailId() != origThumbnail.getThumbnailId() && boardUpdateRequestDto.getThumbnailId() != 0L) {
 				try {
 					File thumbToDel = new File(origThumbnail.getUploadPath());
 					if(thumbToDel.exists()) {
@@ -398,6 +406,27 @@ public class BoardServiceImpl implements BoardService {
 					}
 				}
 			}
+		} else {
+			if(boardUpdateRequestDto.getThumbnailId() != null && boardUpdateRequestDto.getThumbnailId() != 0L) {
+				Optional<Thumbnail> newThumb = thumbnailRepository.findById(boardUpdateRequestDto.getThumbnailId());
+				if(newThumb.isPresent()) {
+					if(!newThumb.get().isFlag()) {
+						File temp = new File(newThumb.get().getTempPath());
+						File dest = new File(newThumb.get().getUploadPath());
+						File origTemp = new File(newThumb.get().getOriginalFileTemp());
+						File origDest = new File(newThumb.get().getOriginalFileDest());
+						try {
+							Files.move(temp, dest);
+							Files.move(origTemp, origDest);
+						} catch (IOException e) {
+							throw new IllegalAccessError("썸네일이 존재하지 않습니다");
+						}
+						newThumb.get().completelySave();
+					}
+					newThumb.get().addBoard(board);
+					thumbnailRepository.save(newThumb.get());		
+				}
+			}
 		}
 		return dto;
 	}
@@ -424,7 +453,10 @@ public class BoardServiceImpl implements BoardService {
 			Optional<Thumbnail> thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId());
 			if(thumbnail.isPresent()) {
 				dto.setThumbnail(thumbnail.get().getFileName());		
+			} else {
+				dto.setThumbnail("defaultImg.png");
 			}
+			
 			if(boardType.getBoardCode() == 1L) {
 				Optional<ProfilePicture> psa = profilePictureRepository.findByUserUserId(board.getUser().getUserId());
 				if(psa.isPresent()) {
@@ -436,7 +468,7 @@ public class BoardServiceImpl implements BoardService {
 				Long reportedId = Long.valueOf(board.getTitle().substring(board.getTitle().indexOf("##")+2));
 				if(!boardRepository.findById(reportedId).isPresent()) {
 					System.out.println(board);
-					String del = delete(board.getBoardId(), userId);
+					delete(board.getBoardId(), userId);
 				}else {
 					curBoardResponseDto.add(dto);
 				}

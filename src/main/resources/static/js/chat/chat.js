@@ -10,7 +10,7 @@ function connect() {
   let socket = new SockJS('/yuja');
   stompClient = Stomp.over(socket);
   stompClient.connect({}, function () {
-    stompClient.subscribe('/topic/cobong/' + username, function (e) {
+    stompClient.subscribe('/topic/cobong/' + username+receiver, function (e) {
       showMessageReceived(JSON.parse(e.body));
     });
   });
@@ -68,9 +68,9 @@ function showMessageReceived(e) {
       e.sender +
       '</div>' +
       "<div class='ReceiverChatMessageContent'>" +
-      "<p class='ChatContent'>" +
+      "<span class='ChatContent'>" +
       e.message +
-      '</p></div>' +
+      '</span></div>' +
       "<span class='ReceiverChatDate'>오후" +
       (now.getHours() % 12) +
       ':' +
@@ -90,9 +90,9 @@ function showMessageReceived(e) {
       e.sender +
       '</div>' +
       "<div class='ReceiverChatMessageContent'>" +
-      "<p class='ChatContent'>" +
+      "<span class='ChatContent'>" +
       e.message +
-      '</p></div>' +
+      '</span></div>' +
       "<span class='ReceiverChatDate'>오후" +
       now.getHours() +
       ':' +
@@ -111,9 +111,9 @@ function showMessageReceived(e) {
       e.sender +
       '</div>' +
       "<div class='ReceiverChatMessageContent'>" +
-      "<p class='ChatContent'>" +
+      "<span class='ChatContent'>" +
       e.message +
-      '</p></div>' +
+      '</span></div>' +
       "<span class='ReceiverChatDate'>오전" +
       now.getHours() +
       ':' +
@@ -132,9 +132,9 @@ function showMessageSend(e) {
       "<div class='ChatSenderBigWrapper'>" +
       "<div class='ChatSenderWrapper'>" +
       "<div class='SenderChatMessageContent'>" +
-      "<p class='ChatContent'>" +
+      "<span class='ChatContent'>" +
       e.message +
-      '</p></div>' +
+      "</span></div>" +
       "<span class='SenderChatDate'>오후" +
       (now.getHours() % 12) +
       ':' +
@@ -145,9 +145,9 @@ function showMessageSend(e) {
     msgArea.innerHTML +=
       "<div class='ChatSenderBigWrapper'>" +
       "<div class='SenderChatMessageContent'>" +
-      "<p class='ChatContent'>" +
+      "<span class='ChatContent'>" +
       e.message +
-      '</p></div>' +
+      "</span></div>" +
       "<span class='SenderChatDate'>오후" +
       now.getHours() +
       ':' +
@@ -159,9 +159,9 @@ function showMessageSend(e) {
       "<div class='ChatSenderBigWrapper'>" +
       "<div class='ChatSenderWrapper'>" +
       "<div class='SenderChatMessageContent'>" +
-      "<p class='ChatContent'>" +
+      "<span class='ChatContent'>" +
       e.message +
-      '</p></div>' +
+      "</span></div>" +
       "<span class='SenderChatDate'>오전" +
       now.getHours() +
       ':' +
