@@ -47,4 +47,7 @@ public interface UserService {
 	String banned(Long uno);
 
 	String findPassword(String string);
+
+	String remove(Long uno, Long userId);
+
 }

@@ -56,6 +56,16 @@ public class UserApiController {
 		}
 		return new ResponseEntity<>(userService.delete(bno, userId),HttpStatus.OK);
 	}
+	@DeleteMapping("/api/user/remove/{uno}") // done
+	public ResponseEntity<?> removeUser(@PathVariable Long uno){
+		PrincipalDetails principalDetails = null;
+		Long userId = 0L;
+		if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PrincipalDetails) {
+			principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			userId = principalDetails.getUserId();
+		}
+		return new ResponseEntity<>(userService.remove(uno, userId),HttpStatus.OK);
+	}
 	
 	@PutMapping("/api/banned/{uno}") // done
 	public ResponseEntity<?> setBanned(@PathVariable Long uno){
