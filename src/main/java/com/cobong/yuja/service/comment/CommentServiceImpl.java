@@ -93,7 +93,7 @@ public class CommentServiceImpl implements CommentService {
 					null);
 			notificationRepository.save(notification);
 		}else {
-			lastNoti = notificationRepository.findByLastNoti(sender.getUserId(), board.getUser().getUserId(),"nestedComment");
+			lastNoti = notificationRepository.findByLastNoti(sender.getUserId(), board.getUser().getUserId(),type);
 			if(lastNoti.isPresent()) {
 				notificationRepository.delete(lastNoti.get());
 			}

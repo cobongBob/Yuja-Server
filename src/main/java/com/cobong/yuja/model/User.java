@@ -41,7 +41,7 @@ public class User extends DateAudit {
 	 * 디폴트 값을 General로 주는 방법 찾아보기
 	 * sts 가 주는 힌트는 @Builder.Default를 이용하라는 듯 하다.  
 	 * */
-	@ManyToMany(fetch = FetchType.EAGER)
+	@ManyToMany(fetch = FetchType.EAGER,  cascade = CascadeType.REMOVE)
 	@JoinTable(name = "UserRole", joinColumns = @JoinColumn(name="userId"), inverseJoinColumns = @JoinColumn(name="authorityId"))
 	private List<Authorities> authorities;
 	

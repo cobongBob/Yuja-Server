@@ -74,6 +74,11 @@ public class BoardServiceImpl implements BoardService {
 			if(curBoards.size() >= 1) {
 				delete(curBoards.get(0).getBoardId(), user.getUserId());
 			}
+		} else if(dto.getBoardCode() == 8L) {
+			if(boardRepository.findByTitleAndWriter(dto.getTitle(), user.getUserId()).isPresent()) {
+				throw new IllegalAccessError("해당글 신고 처리중 입니다.");
+			}
+			
 		}
 		
 		
@@ -425,8 +430,19 @@ public class BoardServiceImpl implements BoardService {
 				if(psa.isPresent()) {
 					dto.setPreviewImage("http://localhost:8888/files/profiles/"+psa.get().getFileName());					
 				}
+			} 
+			
+			if(boardType.getBoardCode() == 8L) {
+				Long reportedId = Long.valueOf(board.getTitle().substring(board.getTitle().indexOf("##")+2));
+				if(!boardRepository.findById(reportedId).isPresent()) {
+					boardRepository.delete(board);
+				}else {
+					curBoardResponseDto.add(dto);
+				}
+			} else {
+				curBoardResponseDto.add(dto);				
 			}
-			curBoardResponseDto.add(dto);
+			
 		}
 		return curBoardResponseDto;
 	}
