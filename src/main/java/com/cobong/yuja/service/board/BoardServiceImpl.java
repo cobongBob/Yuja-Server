@@ -12,6 +12,7 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cobong.yuja.config.jwt.JwtAuthenticationEntryPoint;
 import com.cobong.yuja.model.Authorities;
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardAttach;
@@ -54,7 +55,9 @@ public class BoardServiceImpl implements BoardService {
 	@Transactional
 	public BoardResponseDto save(BoardSaveRequestDto dto) {
 		User user = userRepository.findById(dto.getUserId()).orElseThrow(() -> new IllegalAccessError("해당유저 없음 "+dto.getUserId()));
-		
+		if(user.isBanned()) {
+			throw new IllegalAccessError("이용이 정지된 계정입니다.");
+		}
 		//나중에 수정필 어드민 아이디 넣어줘야함
 		User admin = userRepository.findById(90L).orElse(null);
 		//나중에 수정필
@@ -242,6 +245,9 @@ public class BoardServiceImpl implements BoardService {
 		if(board.getUser().getUserId() != userId && !isAdminOrManager) {
 			throw new IllegalAccessError("관리자가 아니므로 해당 유저의 정보를 삭제할 수 없습니다");
 		}
+		if(attemptingUser.isBanned()) {
+			throw new IllegalAccessError("이용이 정지된 계정입니다.");
+		}
 		
 		List<BoardAttach> attaches = attachRepository.findAllByBoardId(bno);
 		for(BoardAttach boardAttach: attaches) {
@@ -289,6 +295,9 @@ public class BoardServiceImpl implements BoardService {
 		}
 		if(board.getUser().getUserId() != userId && !isAdminOrManager) {
 			throw new IllegalAccessError("관리자가 아니므로 해당 유저의 정보를 삭제할 수 없습니다");
+		}
+		if(attemptingUser.isBanned()) {
+			throw new IllegalAccessError("이용이 정지된 계정입니다.");
 		}
 		
 		String receivelink = boardUpdateRequestDto.getPreviewImage();

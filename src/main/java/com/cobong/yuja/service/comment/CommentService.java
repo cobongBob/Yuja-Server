@@ -12,6 +12,6 @@ public interface CommentService {
 	public CommentResponseDto save(CommentRequestDto dto);
 	public CommentResponseDto getOneCommentById(Long commentId);
 	public CommentResponseDto modify(Long commentId, CommentRequestDto dto);
-	public String deleteById(Long commentId);
+	public String deleteById(Long commentId, Long userId);
 	public List<CommentResponseDto> makeNestedShape(List<BoardComment> comments);
 }
