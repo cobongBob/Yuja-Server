@@ -59,14 +59,16 @@ public class ProfilePictureServiceImpl implements ProfilePictureService {
 			}
 			savePath += File.separator + filename;
 			
-			FileOutputStream res = new FileOutputStream(new File(savePath));
-			if(ImageIO.read(file.getInputStream()).getHeight() < ImageIO.read(file.getInputStream()).getWidth()) {
-				Thumbnailator.createThumbnail(file.getInputStream(), res, 160, ImageIO.read(file.getInputStream()).getHeight());	
-			} else {
-				Thumbnailator.createThumbnail(file.getInputStream(), res, ImageIO.read(file.getInputStream()).getWidth(), 160);
-			}
-			res.close();
+//			FileOutputStream res = new FileOutputStream(new File(savePath));
+//			if(ImageIO.read(file.getInputStream()).getHeight() < ImageIO.read(file.getInputStream()).getWidth()) {
+//				Thumbnailator.createThumbnail(file.getInputStream(), res, 160, ImageIO.read(file.getInputStream()).getHeight());	
+//			} else {
+//				Thumbnailator.createThumbnail(file.getInputStream(), res, ImageIO.read(file.getInputStream()).getWidth(), 160);
+//			}
+//			res.close();
 
+			file.transferTo(new File(savePath));
+			
 	        String uploadPath = System.getProperty("user.dir") + File.separator+"files" + File.separator + "profiles";
 			
 			if (!new File(uploadPath).exists()) {

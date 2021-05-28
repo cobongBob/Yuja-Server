@@ -17,6 +17,7 @@ import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardAttach;
 import com.cobong.yuja.model.BoardType;
 import com.cobong.yuja.model.Notification;
+import com.cobong.yuja.model.ProfilePicture;
 import com.cobong.yuja.model.Thumbnail;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.model.enums.AuthorityNames;
@@ -26,6 +27,7 @@ import com.cobong.yuja.payload.response.board.BoardResponseDto;
 import com.cobong.yuja.payload.response.board.BoardTypeResponseDto;
 import com.cobong.yuja.payload.response.board.MainboardsResponseDto;
 import com.cobong.yuja.repository.attach.AttachRepository;
+import com.cobong.yuja.repository.attach.ProfilePictureRepository;
 import com.cobong.yuja.repository.attach.ThumbnailRepository;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.board.BoardTypeRepository;
@@ -46,6 +48,7 @@ public class BoardServiceImpl implements BoardService {
 	private final ThumbnailRepository thumbnailRepository;
 	private final AuthoritiesRepository authoritiesRepository;
 	private final NotificationRepository notificationRepository;
+	private final ProfilePictureRepository profilePictureRepository;
 	
 	@Override
 	@Transactional
@@ -343,7 +346,7 @@ public class BoardServiceImpl implements BoardService {
 			}
 		}
 		
-		Optional<Thumbnail> origThumb = thumbnailRepository.findById(boardUpdateRequestDto.getThumbnailId());
+		Optional<Thumbnail> origThumb = thumbnailRepository.findByBoardBoardId(board.getBoardId());
 		if(origThumb.isPresent()) {
 			Thumbnail origThumbnail = origThumb.get();
 			if(boardUpdateRequestDto.getThumbnailId() != origThumbnail.getThumbnailId()) {
@@ -357,9 +360,9 @@ public class BoardServiceImpl implements BoardService {
 						origToDel.delete();
 					}					
 				} catch (Exception e) {
-					throw new IllegalAccessError("");
+					throw new IllegalAccessError("이전 썸네일이 존재하지 않습니다.");
 				}
-				
+				thumbnailRepository.delete(origThumbnail);
 				if(boardUpdateRequestDto.getThumbnailId() != null && boardUpdateRequestDto.getThumbnailId() != 0L) {
 					Optional<Thumbnail> newThumb = thumbnailRepository.findById(boardUpdateRequestDto.getThumbnailId());
 					if(newThumb.isPresent()) {
@@ -372,7 +375,7 @@ public class BoardServiceImpl implements BoardService {
 								Files.move(temp, dest);
 								Files.move(origTemp, origDest);
 							} catch (IOException e) {
-								e.printStackTrace();
+								throw new IllegalAccessError("썸네일이 존재하지 않습니다");
 							}
 							newThumb.get().completelySave();
 						}
@@ -407,6 +410,12 @@ public class BoardServiceImpl implements BoardService {
 			Optional<Thumbnail> thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId());
 			if(thumbnail.isPresent()) {
 				dto.setThumbnail(thumbnail.get().getFileName());		
+			}
+			if(boardType.getBoardCode() == 1L) {
+				Optional<ProfilePicture> psa = profilePictureRepository.findByUserUserId(board.getUser().getUserId());
+				if(psa.isPresent()) {
+					dto.setPreviewImage("http://localhost:8888/files/profiles/"+psa.get().getFileName());					
+				}
 			}
 			curBoardResponseDto.add(dto);
 		}
@@ -504,8 +513,12 @@ public class BoardServiceImpl implements BoardService {
 		MainboardsResponseDto mainboardsResponseDto = new MainboardsResponseDto();
 		List<BoardResponseDto> result = new ArrayList<BoardResponseDto>();
 		for (int i = 0; i < board.size(); i++) {
-			BoardResponseDto resDto = new BoardResponseDto();
-			result.add(resDto.entityToDto(board.get(i)));
+			BoardResponseDto resDto = new BoardResponseDto().entityToDto(board.get(i));
+			Optional<ProfilePicture> optprofile = profilePictureRepository.findByUserUserId(board.get(i).getUser().getUserId());
+			if(optprofile.isPresent()) {
+				resDto.setPreviewImage("http://localhost:8888/files/profiles/"+optprofile.get().getFileName());
+			}
+			result.add(resDto);
 		}
 		mainboardsResponseDto.setYouUpdatedOrder4(result);
 		
@@ -513,8 +526,12 @@ public class BoardServiceImpl implements BoardService {
 		board =boardRepository.orderEditLatest();
 		result = new ArrayList<BoardResponseDto>();
 		for (int i = 0; i < board.size(); i++) {
-			BoardResponseDto resDto = new BoardResponseDto();
-			result.add(resDto.entityToDto(board.get(i)));
+			BoardResponseDto resDto = new BoardResponseDto().entityToDto(board.get(i));
+			Optional<ProfilePicture> optprofile = profilePictureRepository.findByUserUserId(board.get(i).getUser().getUserId());
+			if(optprofile.isPresent()) {
+				resDto.setPreviewImage("http://localhost:8888/files/profiles/"+optprofile.get().getFileName());
+			}
+			result.add(resDto);
 		}
 		mainboardsResponseDto.setEditUpdatedOrder4(result);
 		
@@ -522,9 +539,14 @@ public class BoardServiceImpl implements BoardService {
 		board =boardRepository.orderThumLatest();
 		result = new ArrayList<BoardResponseDto>();
 		for (int i = 0; i < board.size(); i++) {
-			BoardResponseDto resDto = new BoardResponseDto();
-			result.add(resDto.entityToDto(board.get(i)));
+			BoardResponseDto resDto = new BoardResponseDto().entityToDto(board.get(i));
+			Optional<ProfilePicture> optprofile = profilePictureRepository.findByUserUserId(board.get(i).getUser().getUserId());
+			if(optprofile.isPresent()) {
+				resDto.setPreviewImage("http://localhost:8888/files/profiles/"+optprofile.get().getFileName());
+			}
+			result.add(resDto);
 		}
+		
 		mainboardsResponseDto.setThumUpdatedOrder4(result);
 
 		// 윈윈(4) 최신순(createdDate) 5개
@@ -585,9 +607,7 @@ public class BoardServiceImpl implements BoardService {
 	public void deleteExpired() {
 		Date now = new Date();
 		List<Board> expiredBoards = boardRepository.findExpired(now);
-		System.out.println("====== 가즈아아아"+expiredBoards.size());
 		for(Board expBoard:expiredBoards) {
-			System.out.println("====== 가즈아아아"+expBoard);
 			boardRepository.delete(expBoard);
 		}
 	}
