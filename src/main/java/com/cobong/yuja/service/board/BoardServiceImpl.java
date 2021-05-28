@@ -403,7 +403,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 	
 	@Override
-	@Transactional(readOnly = true)
+	@Transactional
 	public List<BoardResponseDto> boardsInBoardType(Long boardCode,Long userId){
 		List<Board> curBoard = boardRepository.boardsInBoardType(boardCode);
 		List<BoardResponseDto> curBoardResponseDto = new ArrayList<BoardResponseDto>();
@@ -435,7 +435,8 @@ public class BoardServiceImpl implements BoardService {
 			if(boardType.getBoardCode() == 8L) {
 				Long reportedId = Long.valueOf(board.getTitle().substring(board.getTitle().indexOf("##")+2));
 				if(!boardRepository.findById(reportedId).isPresent()) {
-					boardRepository.delete(board);
+					System.out.println(board);
+					String del = delete(board.getBoardId(), userId);
 				}else {
 					curBoardResponseDto.add(dto);
 				}
