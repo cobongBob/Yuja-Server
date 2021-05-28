@@ -517,6 +517,8 @@ public class BoardServiceImpl implements BoardService {
 			Optional<ProfilePicture> optprofile = profilePictureRepository.findByUserUserId(board.get(i).getUser().getUserId());
 			if(optprofile.isPresent()) {
 				resDto.setPreviewImage("http://localhost:8888/files/profiles/"+optprofile.get().getFileName());
+			}else {
+				resDto.setPreviewImage("");
 			}
 			result.add(resDto);
 		}
@@ -530,6 +532,8 @@ public class BoardServiceImpl implements BoardService {
 			Optional<ProfilePicture> optprofile = profilePictureRepository.findByUserUserId(board.get(i).getUser().getUserId());
 			if(optprofile.isPresent()) {
 				resDto.setPreviewImage("http://localhost:8888/files/profiles/"+optprofile.get().getFileName());
+			}else {
+				resDto.setPreviewImage("");
 			}
 			result.add(resDto);
 		}
@@ -543,6 +547,8 @@ public class BoardServiceImpl implements BoardService {
 			Optional<ProfilePicture> optprofile = profilePictureRepository.findByUserUserId(board.get(i).getUser().getUserId());
 			if(optprofile.isPresent()) {
 				resDto.setPreviewImage("http://localhost:8888/files/profiles/"+optprofile.get().getFileName());
+			}else {
+				resDto.setPreviewImage("");
 			}
 			result.add(resDto);
 		}
