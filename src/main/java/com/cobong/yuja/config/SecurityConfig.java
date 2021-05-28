@@ -129,7 +129,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 					.hasAnyAuthority("ROLE_EDITOR","ROLE_MANAGER","ROLE_ADMIN") // 편집자 DELETE
 					
 				// 썸네일러
-					
 				.antMatchers(HttpMethod.PUT,"/api/3L/board/**")
 					.hasAnyAuthority("ROLE_THUMBNAILER","ROLE_MANAGER","ROLE_ADMIN") // 썸네일러 PUT
 					
