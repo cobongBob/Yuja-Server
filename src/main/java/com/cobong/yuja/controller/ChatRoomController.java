@@ -89,13 +89,13 @@ public class ChatRoomController {
 	
 	@DeleteMapping("/socket/room/{roomId}") // done
 	public ResponseEntity<List<ChatRoomDto>> deleteRoom(@PathVariable Long roomId) {
-		chatRoomService.delete(roomId);
 		PrincipalDetails principalDetails = null;
     	Long userId = 0L;
     	if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PrincipalDetails) {
     		principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			userId = principalDetails.getUserId();
 		}
+    	chatRoomService.delete(roomId, userId);
 		return new ResponseEntity<List<ChatRoomDto>>(chatRoomService.findRooms(userId), HttpStatus.OK);
 	}
 	

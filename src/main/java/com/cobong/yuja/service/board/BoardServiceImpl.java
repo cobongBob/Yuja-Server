@@ -217,7 +217,7 @@ public class BoardServiceImpl implements BoardService {
 		BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
 		Optional<ProfilePicture> optProfile = profilePictureRepository.findByUserUserId(board.getUser().getUserId());
 		if(optProfile.isPresent()) {
-			dto.setProfilePicture(optProfile.get().getFileName());
+			dto.setProfilePicture("http://localhost:8888/files/profiles/"+optProfile.get().getFileName());
 		} else {
 			dto.setProfilePicture("");
 		}

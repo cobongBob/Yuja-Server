@@ -96,7 +96,16 @@ public class ChatRoomService {
 			}
 		}
 	}
-	public void delete(Long roomId) {
-		chatRoomRepository.deleteById(roomId);
+	
+	@Transactional
+	public void delete(Long roomId, Long userId) {
+		if(chatroomjoinrepository.findByRoomIdAndUserId(roomId, userId).isPresent()) {
+			chatroomjoinrepository.delete(chatroomjoinrepository.findByRoomIdAndUserId(roomId, userId).get());
+		}
+		if(chatroomjoinrepository.findByChatRoomRoomId(roomId).size() == 0) {
+			chatRoomRepository.deleteById(roomId);			
+		}
 	}	
+	
+	
 }
