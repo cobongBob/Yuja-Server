@@ -119,10 +119,8 @@ public class CommentServiceImpl implements CommentService {
 	@Transactional
 	@Override
 	public CommentResponseDto modify(Long commentId,CommentRequestDto dto) {
-		User user = userRepository.findById(dto.getUserId()).orElseThrow(()->new IllegalArgumentException("존재하지 않는 유저입니다"));
-		if(user.isBanned()) {
-			throw new IllegalAccessError("이용이 정지된 계정입니다.");
-		}
+		User user = userRepository.findById(dto.getUserId()).orElseThrow(()->new IllegalArgumentException("이용이 정지된 계정입니다."));
+
 		BoardComment boardComment = commentRepository.findById(commentId).orElseThrow(()->new IllegalArgumentException("존재하지 않는 댓글"));
 		//select후 영속화
 		CommentResponseDto responseDto = new CommentResponseDto().entityToDto(boardComment.modifyComment(dto.getContent()));
