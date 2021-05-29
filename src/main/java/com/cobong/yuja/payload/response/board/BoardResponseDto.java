@@ -10,9 +10,11 @@ import com.cobong.yuja.payload.response.user.UserResponseDto;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class BoardResponseDto {
 	private Long id;
 	private UserResponseDto user;

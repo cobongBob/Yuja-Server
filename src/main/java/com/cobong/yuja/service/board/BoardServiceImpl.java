@@ -216,14 +216,6 @@ public class BoardServiceImpl implements BoardService {
 		}
 		
 		BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
-		if(board.getBoardType().getBoardCode() == 2L || board.getBoardType().getBoardCode() == 3L) {
-			Optional<ProfilePicture> psa = profilePictureRepository.findByUserUserId(userId);
-			if(psa.isPresent()) {
-				dto.setPreviewImage("http://localhost:8888/files/profiles/"+psa.get().getFileName());
-			}else {
-				dto.setPreviewImage("");
-			}
-		}		
 		dto.setLikesAndComments(likes, comments);
 		dto.setAttaches(boardAttachesToSend);
 		dto.setTools(tools);
@@ -618,6 +610,9 @@ public class BoardServiceImpl implements BoardService {
 		result = new ArrayList<BoardResponseDto>();
 		for (int i = 0; i < board.size(); i++) {
 			BoardResponseDto resDto = new BoardResponseDto();
+			int likes = Long.valueOf(boardRepository.likedReceived(board.get(i).getBoardId())).intValue();
+			int comments = Long.valueOf(boardRepository.commentsReceived(board.get(i).getBoardId())).intValue();
+			resDto.setLikesAndComments(likes, comments);
 			result.add(resDto.entityToDto(board.get(i)));
 		}
 		mainboardsResponseDto.setWincreatedOrder5(result);
@@ -628,6 +623,9 @@ public class BoardServiceImpl implements BoardService {
 		result = new ArrayList<BoardResponseDto>();
 		for (int i = 0; i < board.size(); i++) {
 			BoardResponseDto resDto = new BoardResponseDto();
+			int likes = Long.valueOf(boardRepository.likedReceived(board.get(i).getBoardId())).intValue();
+			int comments = Long.valueOf(boardRepository.commentsReceived(board.get(i).getBoardId())).intValue();
+			resDto.setLikesAndComments(likes, comments);
 			result.add(resDto.entityToDto(board.get(i)));
 		}
 		mainboardsResponseDto.setColcreatedOrder5(result);
