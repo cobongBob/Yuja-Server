@@ -34,7 +34,7 @@ public class CommentRepositoryUnitTest {
 	@Test
 	public void insertTest() {
 		// given
-		BoardComment comment = new BoardComment(0L, null, null, null, "테스트 댓글1", false);
+		BoardComment comment = new BoardComment(0L, null, null, null, null, "테스트 댓글1", false);
 		// when
 		BoardComment commentEntity = commentRepository.save(comment);
 
@@ -46,7 +46,7 @@ public class CommentRepositoryUnitTest {
 	@Test
 	public void getOneTest() {
 		// given
-		BoardComment comment = new BoardComment(0L, null, null, null, "테스트 댓글1", false);
+		BoardComment comment = new BoardComment(0L, null, null, null, null, "테스트 댓글1", false);
 		// when
 		commentRepository.save(comment);
 		BoardComment commentEntity = commentRepository.findById(1L).orElseThrow(()->new IllegalArgumentException("존재하지않는 댓글"));

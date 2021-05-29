@@ -1,13 +1,10 @@
 package com.cobong.yuja.service.attach.impl;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
-
-import javax.imageio.ImageIO;
 
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,7 +16,6 @@ import com.cobong.yuja.repository.attach.ProfilePictureRepository;
 import com.cobong.yuja.service.attach.ProfilePictureService;
 
 import lombok.RequiredArgsConstructor;
-import net.coobird.thumbnailator.Thumbnailator;
 
 @Service
 @RequiredArgsConstructor
