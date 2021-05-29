@@ -119,8 +119,10 @@ public class CommentServiceImpl implements CommentService {
 	@Transactional
 	@Override
 	public CommentResponseDto modify(Long commentId,CommentRequestDto dto) {
-		User user = userRepository.findById(dto.getUserId()).orElseThrow(()->new IllegalArgumentException("이용이 정지된 계정입니다."));
-
+		//userRepository.findById(dto.getUserId()).orElseThrow(()->new IllegalArgumentException("이용이 정지된 계정입니다."));
+		/***
+		 * 현재 댓글을 수정하려는 유저가 밴되어있는지 확인할 필요가 있나 확신이 안들어서 일단 주석 처리만 해둠.
+		 */
 		BoardComment boardComment = commentRepository.findById(commentId).orElseThrow(()->new IllegalArgumentException("존재하지 않는 댓글"));
 		//select후 영속화
 		CommentResponseDto responseDto = new CommentResponseDto().entityToDto(boardComment.modifyComment(dto.getContent()));
