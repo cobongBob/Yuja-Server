@@ -214,8 +214,13 @@ public class BoardServiceImpl implements BoardService {
 				thumbnailOrig += thumbnail.getFileName();
 			}
 		}
-		
 		BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
+		Optional<ProfilePicture> optProfile = profilePictureRepository.findByUserUserId(board.getUser().getUserId());
+		if(optProfile.isPresent()) {
+			dto.setProfilePicture(optProfile.get().getFileName());
+		} else {
+			dto.setProfilePicture("");
+		}
 		dto.setLikesAndComments(likes, comments);
 		dto.setAttaches(boardAttachesToSend);
 		dto.setTools(tools);

@@ -51,9 +51,7 @@ public class ChatRoomController {
     	}
 		model.addAttribute("nickname",principalDetails.getNickname());
 		model.addAttribute("userId", userId);
-		/***
-		 * getting current user done
-		 */
+	
 		List<ChatRoomDto> chatRooms = chatRoomService.findRooms(userId);
 		
 		model.addAttribute("chatRooms", chatRooms);

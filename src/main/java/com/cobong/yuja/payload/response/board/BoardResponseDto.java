@@ -44,6 +44,7 @@ public class BoardResponseDto {
 	private String previewImage;
 	private BoardTypeResponseDto boardType;
 	private ZonedDateTime boardUpdatedDate;
+	private String profilePicture;
 	
 	public BoardResponseDto entityToDto(Board entity) {
 		this.id=entity.getBoardId();
