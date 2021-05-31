@@ -99,6 +99,15 @@ public class User extends DateAudit {
 	@OneToMany(mappedBy = "recipient", cascade = CascadeType.REMOVE)
 	private List<Notification> notiReceiver;
 	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+	private List<ChatRoomJoin> chatRoomJoins;
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+	private List<SocketMessage> msgs;
+	
+	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
+	private List<YoutubeConfirm> confirmImg;
+	
 	public void modify(String username2, String nickname2, String realName2, String bday2,
 			String providedId2, String provider2, String address2, String phone2, String bsn2, String youtubeUrl, boolean banned) {
 		this.username = username2;
