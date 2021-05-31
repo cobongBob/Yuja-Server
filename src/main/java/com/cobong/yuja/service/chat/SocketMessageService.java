@@ -54,15 +54,15 @@ public class SocketMessageService {
 		}
 		
 		String type = "chatNoti"; 
-		Optional<Notification> lastNoti = notificationRepository.findByLastNoti(sender.getUserId(), receiver.getUserId(),type);
-		Optional<Notification> lastreceiveNoti = notificationRepository.findByLastNoti(receiver.getUserId(),sender.getUserId(),type);
+		Optional<Long> lastNoti = notificationRepository.findByLastNoti(sender.getUserId(), receiver.getUserId(),type);
+		Optional<Long> lastreceiveNoti = notificationRepository.findByLastNoti(receiver.getUserId(),sender.getUserId(),type);
 		if(lastreceiveNoti.isPresent()) {
 			//실시간 알림 제거
-			notificationRepository.delete(lastreceiveNoti.get());
+			notificationRepository.deleteById(lastreceiveNoti.get());
 		}
 		if(lastNoti.isPresent()) {
 			//중복 알림 제거
-			notificationRepository.delete(lastNoti.get());
+			notificationRepository.deleteById(lastNoti.get());
 		}
 		Notification notification = new Notification().createNotification(
 				null, 

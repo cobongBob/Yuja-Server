@@ -100,7 +100,17 @@ public class DummyInsert {
 	@Test
 	public void insertUser() {
 		Authorities auth1 = authRepo.findById(1L).orElseThrow(()->new IllegalArgumentException("없는 권한"));
-		IntStream.rangeClosed(1, 25).forEach(i -> {
+		User user1 = User.builder()
+				.username("user "+1)
+				.password(passwordEncoder.encode("1111"))
+				.nickname("nickname"+1)
+				.realName("tester"+1)
+				.bday("2000-01-"+1)
+				.authorities(Collections.singletonList(auth1))
+				.build();
+		userRepository.save(user1);
+		
+		IntStream.rangeClosed(2, 25).forEach(i -> {
 			User user = User.builder()
 					.username("user "+i)
 					.password(passwordEncoder.encode("1111"))
