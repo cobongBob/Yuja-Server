@@ -1,5 +1,6 @@
 package com.cobong.yuja.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -12,11 +13,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -32,4 +31,11 @@ public class ChatRoomJoin {
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "roomId")
 	private ChatRoom chatRoom; 
+	
+	@Column(nullable = false, columnDefinition = "TINYINT(1)")
+	private boolean deleted;
+	
+	public void setDeleted(boolean bool) {
+		this.deleted = bool;
+	}
 }
