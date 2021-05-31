@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -38,7 +39,7 @@ public class YoutubeConfirmService {
 	private final AuthoritiesRepository authoritiesRepository;
 	private final NotificationRepository notificationRepository;
 	
-	private final List<String> availableTypes = Arrays.asList(".jpg",".jpeg",".png",".gif");
+	private final List<String> availableTypes = Arrays.asList(".jfif",".pjpeg",".pjp",".jpg",".jpeg",".png",".gif");
 	
 	@Transactional
 	public YoutubeConfirmFIleSaveDto saveFile(MultipartFile file) {
@@ -113,6 +114,11 @@ public class YoutubeConfirmService {
 				user.getBday(), user.getProvidedId(), user.getProvider(), user.getAddress(), 
 				user.getPhone(), dto.getBsn(), dto.getYoutubeUrl(), false);
 		userRepository.save(user);
+		
+		Optional<YoutubeConfirm> confirm = youtubeConfirmRepository.findByUserUserId(user.getUserId());
+		if(confirm.isPresent()) {
+			throw new IllegalAccessError("이미 신청이 완료된 유저입니다.");
+		}
 		
 		if (dto.getYoutubeConfirmId() != 0) {
 			YoutubeConfirm youtubeConfirm = youtubeConfirmRepository.findById(dto.getYoutubeConfirmId())
