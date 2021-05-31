@@ -41,7 +41,7 @@ public class User extends DateAudit {
 	 * 디폴트 값을 General로 주는 방법 찾아보기
 	 * sts 가 주는 힌트는 @Builder.Default를 이용하라는 듯 하다.  
 	 * */
-	@ManyToMany(fetch = FetchType.EAGER,  cascade = {CascadeType.PERSIST,CascadeType.MERGE,CascadeType.DETACH})
+	@ManyToMany(fetch = FetchType.EAGER,  cascade = {CascadeType.MERGE, CascadeType.DETACH})
 	@JoinTable(name = "UserRole", joinColumns = @JoinColumn(name="userId"), inverseJoinColumns = @JoinColumn(name="authorityId"))
 	private List<Authorities> authorities;
 	
@@ -92,7 +92,17 @@ public class User extends DateAudit {
 	
 	@Column(nullable = false, columnDefinition = "TINYINT(1)")
 	private boolean banned;
+	
+	/*
+	 * 유저 삭제 불가의 이유==> 알림이 ManyToOne으로 받고 있으나 유저에 아무 연관관계가 없어 유저가 삭제될시 아무런 행동을 취하지 않는다.
+	 * 유저가 삭제되면 해당 유저가 연관된 모든 알림이 지워지는게 맞는듯.
+	 * */
+	@OneToMany(mappedBy = "sender", cascade = CascadeType.REMOVE)
+	private List<Notification> notiSender;
 
+	@OneToMany(mappedBy = "recipient", cascade = CascadeType.REMOVE)
+	private List<Notification> notiReceiver;
+	
 	public void modify(String username2, String nickname2, String realName2, String bday2,
 			String providedId2, String provider2, String address2, String phone2, String bsn2, String youtubeUrl, boolean banned) {
 		this.username = username2;

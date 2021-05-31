@@ -76,14 +76,14 @@ public class CommentServiceImpl implements CommentService {
 			commentReceiver = parentComment.getUser();
 		}
 		
-		Optional<Notification> lastNoti = null;
+		Optional<Long> lastNoti = null;
 		
 		if(parentComment !=null && commentReceiver.getUserId() == sender.getUserId()) {
 		}else if (parentComment == null && board.getUser().getUserId() == sender.getUserId()){
 		}else if(parentComment != null && commentReceiver.getUserId() != sender.getUserId()) {
 			lastNoti = notificationRepository.findByLastNoti(sender.getUserId(), commentReceiver.getUserId(),"nestedComment");
 			if(lastNoti.isPresent()) {
-				notificationRepository.delete(lastNoti.get());
+				notificationRepository.deleteById(lastNoti.get());
 			}
 			Notification notification = new Notification().createNotification(
 					commentRepository.findById(responseDto.getCommentId()).orElseThrow(() -> new IllegalAccessError("해당 댓글 없음 "+responseDto.getCommentId())), 
@@ -95,7 +95,7 @@ public class CommentServiceImpl implements CommentService {
 		}else {
 			lastNoti = notificationRepository.findByLastNoti(sender.getUserId(), board.getUser().getUserId(),type);
 			if(lastNoti.isPresent()) {
-				notificationRepository.delete(lastNoti.get());
+				notificationRepository.deleteById(lastNoti.get());
 			}
 			Notification notification = new Notification().createNotification(
 					commentRepository.findById(responseDto.getCommentId()).orElseThrow(() -> new IllegalAccessError("해당 댓글 없음 "+responseDto.getCommentId())), 

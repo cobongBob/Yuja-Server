@@ -20,7 +20,7 @@
    <div id="ChatLogsWrapper">
    <div style="text-align: center;">
    	<span style="color:grey">메세지는 최대 2주 동안 보관됩니다</span>
-   	<br />
+   	<hr />
    </div>
    	<div id="chatLog">
       {{#messages}}
@@ -51,7 +51,7 @@
    	<div class="submitBox">
    	<form onsubmit="return send()">
    	  <button class="MessageButtonL" type="button" onclick="location.href='/rooms'">◀</button>
-      <input class="MessageInput" type="text" id="message" placeholder="메세지를 적어주세요" autocomplete="off"/>
+      <input class="MessageInput" type="text" id="message" placeholder="메세지를 적어주세요" autocomplete="off" maxlength="5000"/>
       <button class="MessageButtonR" type="button" onclick="return send()">💬</button>
     </form>
     </div>

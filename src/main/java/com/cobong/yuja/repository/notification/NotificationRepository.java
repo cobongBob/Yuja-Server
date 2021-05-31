@@ -24,5 +24,5 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 	List<Notification> findByRecipientId(@Param("recipientId") Long recipientId);
 
 	@Query("SELECT n.notiId FROM Notification n WHERE recipientId = :recipientId AND senderId =:senderId AND type =:type")
-	Optional<Notification> findByLastNoti(@Param("senderId") Long senderId,@Param("recipientId") Long recipientId,@Param("type") String type);
+	Optional<Long> findByLastNoti(@Param("senderId") Long senderId,@Param("recipientId") Long recipientId,@Param("type") String type);
 }
