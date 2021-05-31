@@ -35,6 +35,13 @@ public class CommentApiController {
 	
 	@PutMapping("/api/comment/{commentId}") // done
 	public ResponseEntity<?> updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto dto) {
+		PrincipalDetails principalDetails = null;
+    	Long userId = 0L;
+    	if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PrincipalDetails) {
+    		principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			userId = principalDetails.getUserId();
+		}
+    	dto.setUserId(userId);
 		return new ResponseEntity<>(commentService.modify(commentId, dto),HttpStatus.OK);
 	}
 	

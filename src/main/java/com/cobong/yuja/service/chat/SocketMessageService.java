@@ -10,11 +10,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.cobong.yuja.model.ChatRoom;
+import com.cobong.yuja.model.ChatRoomJoin;
 import com.cobong.yuja.model.Notification;
 import com.cobong.yuja.model.SocketMessage;
 import com.cobong.yuja.model.User;
 import com.cobong.yuja.payload.request.chat.SocketMessageReceiveDto;
 import com.cobong.yuja.payload.response.chat.SocketMessageSendDto;
+import com.cobong.yuja.repository.chat.ChatRoomJoinRepository;
 import com.cobong.yuja.repository.chat.ChatRoomRepository;
 import com.cobong.yuja.repository.chat.SocketMessageRepository;
 import com.cobong.yuja.repository.notification.NotificationRepository;
@@ -29,6 +31,7 @@ public class SocketMessageService {
 	private final ChatRoomRepository chatRoomRepository;
 	private final UserRepository userRepository;
 	private final NotificationRepository notificationRepository;
+	private final ChatRoomJoinRepository chatRoomJoinRepository;
 	
 	@Transactional
 	public void save(SocketMessageReceiveDto msg) {
@@ -41,17 +44,25 @@ public class SocketMessageService {
 		SocketMessage socketmsg = SocketMessage.builder().user(user).chatRoom(chatRoom).message(msg.getMessage()).build();
 		
 		User sender = userRepository.findByNickname(msg.getSender()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+msg.getSender()));
-		User receiver = userRepository.findByNickname(msg.getReceiver()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+msg.getReceiver()));
+		User receiver = userRepository.findByNickname(msg.getReceiver()).orElseThrow(() -> new IllegalAccessError("알림 보낼 유저 없음 "+msg.getReceiver()));
+		
+		Optional<ChatRoomJoin> join = chatRoomJoinRepository.findByRoomIdAndUserId(msg.getChatRoomId(), receiver.getUserId());
+		if(join.isPresent()) {
+			if(join.get().isDeleted()) {
+				join.get().setDeleted(false);
+			}
+		}
+		
 		String type = "chatNoti"; 
-		Optional<Notification> lastNoti = notificationRepository.findByLastNoti(sender.getUserId(), receiver.getUserId(),type);
-		Optional<Notification> lastreceiveNoti = notificationRepository.findByLastNoti(receiver.getUserId(),sender.getUserId(),type);
+		Optional<Long> lastNoti = notificationRepository.findByLastNoti(sender.getUserId(), receiver.getUserId(),type);
+		Optional<Long> lastreceiveNoti = notificationRepository.findByLastNoti(receiver.getUserId(),sender.getUserId(),type);
 		if(lastreceiveNoti.isPresent()) {
 			//실시간 알림 제거
-			notificationRepository.delete(lastreceiveNoti.get());
+			notificationRepository.deleteById(lastreceiveNoti.get());
 		}
 		if(lastNoti.isPresent()) {
 			//중복 알림 제거
-			notificationRepository.delete(lastNoti.get());
+			notificationRepository.deleteById(lastNoti.get());
 		}
 		Notification notification = new Notification().createNotification(
 				null, 

@@ -51,6 +51,7 @@ body {
   font-family: 'scdream3';
   text-align: center;
   font-weight: bold;
+  opacity: 0.9;
 }
 
 .ChatSearch:focus {
@@ -62,7 +63,6 @@ body {
 .ChatSubmit {
   font-size: 2rem;
   font-weight: bold;
-  background: #dddddd;
   border: none;
   border-radius: 50%;
   cursor: pointer;
@@ -180,17 +180,6 @@ body {
   height: 6vh;
 }
 
-.ChatMessageSender {
-  max-width: 15vw;
-  overflow-x: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  font-size: 1.2rem;
-  margin-bottom: 5%;
-  text-align: center;
-  display: inline-block;
-}
-
 .SenderChatMessageContent {
   text-align: left;
   width: 35vw;
@@ -250,6 +239,8 @@ body {
 }
 
 .ChatContent {
+	word-wrap: break-word;
+	word-break: break-word;
     font-weight: bold;
     display: inline-block;
     font-size: 0.9rem;

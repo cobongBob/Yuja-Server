@@ -12,7 +12,6 @@ import java.util.Optional;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.cobong.yuja.config.jwt.JwtAuthenticationEntryPoint;
 import com.cobong.yuja.model.Authorities;
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.BoardAttach;
@@ -74,6 +73,11 @@ public class BoardServiceImpl implements BoardService {
 			if(curBoards.size() >= 1) {
 				delete(curBoards.get(0).getBoardId(), user.getUserId());
 			}
+		} else if(dto.getBoardCode() == 8L) {
+			if(boardRepository.findByTitleAndWriter(dto.getTitle(), user.getUserId()).isPresent()) {
+				throw new IllegalAccessError("해당글 신고 처리중 입니다.");
+			}
+			
 		}
 		
 		
@@ -182,7 +186,7 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Override
 	@Transactional
-	public BoardResponseDto findById(Long bno, Long userId,boolean ishit) {
+	public BoardResponseDto findById(Long bno, Long userId, boolean ishit) {
 		Board board = boardRepository.findById(bno).orElseThrow(() -> new IllegalAccessError("해당글 없음" + bno));
 		if(ishit == false&&userId != board.getUser().getUserId()) {
 			board.addHit();
@@ -210,8 +214,13 @@ public class BoardServiceImpl implements BoardService {
 				thumbnailOrig += thumbnail.getFileName();
 			}
 		}
-		
 		BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
+		Optional<ProfilePicture> optProfile = profilePictureRepository.findByUserUserId(board.getUser().getUserId());
+		if(optProfile.isPresent()) {
+			dto.setProfilePicture("http://localhost:8888/files/profiles/"+optProfile.get().getFileName());
+		} else {
+			dto.setProfilePicture("");
+		}
 		dto.setLikesAndComments(likes, comments);
 		dto.setAttaches(boardAttachesToSend);
 		dto.setTools(tools);
@@ -358,7 +367,8 @@ public class BoardServiceImpl implements BoardService {
 		Optional<Thumbnail> origThumb = thumbnailRepository.findByBoardBoardId(board.getBoardId());
 		if(origThumb.isPresent()) {
 			Thumbnail origThumbnail = origThumb.get();
-			if(boardUpdateRequestDto.getThumbnailId() != origThumbnail.getThumbnailId()) {
+			System.out.println(origThumbnail);
+			if(boardUpdateRequestDto.getThumbnailId() != origThumbnail.getThumbnailId() && boardUpdateRequestDto.getThumbnailId() != 0L) {
 				try {
 					File thumbToDel = new File(origThumbnail.getUploadPath());
 					if(thumbToDel.exists()) {
@@ -393,12 +403,33 @@ public class BoardServiceImpl implements BoardService {
 					}
 				}
 			}
+		} else {
+			if(boardUpdateRequestDto.getThumbnailId() != null && boardUpdateRequestDto.getThumbnailId() != 0L) {
+				Optional<Thumbnail> newThumb = thumbnailRepository.findById(boardUpdateRequestDto.getThumbnailId());
+				if(newThumb.isPresent()) {
+					if(!newThumb.get().isFlag()) {
+						File temp = new File(newThumb.get().getTempPath());
+						File dest = new File(newThumb.get().getUploadPath());
+						File origTemp = new File(newThumb.get().getOriginalFileTemp());
+						File origDest = new File(newThumb.get().getOriginalFileDest());
+						try {
+							Files.move(temp, dest);
+							Files.move(origTemp, origDest);
+						} catch (IOException e) {
+							throw new IllegalAccessError("썸네일이 존재하지 않습니다");
+						}
+						newThumb.get().completelySave();
+					}
+					newThumb.get().addBoard(board);
+					thumbnailRepository.save(newThumb.get());		
+				}
+			}
 		}
 		return dto;
 	}
 	
 	@Override
-	@Transactional(readOnly = true)
+	@Transactional
 	public List<BoardResponseDto> boardsInBoardType(Long boardCode,Long userId){
 		List<Board> curBoard = boardRepository.boardsInBoardType(boardCode);
 		List<BoardResponseDto> curBoardResponseDto = new ArrayList<BoardResponseDto>();
@@ -419,14 +450,29 @@ public class BoardServiceImpl implements BoardService {
 			Optional<Thumbnail> thumbnail = thumbnailRepository.findByBoardBoardId(board.getBoardId());
 			if(thumbnail.isPresent()) {
 				dto.setThumbnail(thumbnail.get().getFileName());		
+			} else {
+				dto.setThumbnail("defaultImg.png");
 			}
+			
 			if(boardType.getBoardCode() == 1L) {
 				Optional<ProfilePicture> psa = profilePictureRepository.findByUserUserId(board.getUser().getUserId());
 				if(psa.isPresent()) {
 					dto.setPreviewImage("http://localhost:8888/files/profiles/"+psa.get().getFileName());					
 				}
+			} 
+			
+			if(boardType.getBoardCode() == 8L) {
+				Long reportedId = Long.valueOf(board.getTitle().substring(board.getTitle().indexOf("##")+2));
+				if(!boardRepository.findById(reportedId).isPresent()) {
+					System.out.println(board);
+					delete(board.getBoardId(), userId);
+				}else {
+					curBoardResponseDto.add(dto);
+				}
+			} else {
+				curBoardResponseDto.add(dto);				
 			}
-			curBoardResponseDto.add(dto);
+			
 		}
 		return curBoardResponseDto;
 	}
@@ -569,6 +615,9 @@ public class BoardServiceImpl implements BoardService {
 		result = new ArrayList<BoardResponseDto>();
 		for (int i = 0; i < board.size(); i++) {
 			BoardResponseDto resDto = new BoardResponseDto();
+			int likes = Long.valueOf(boardRepository.likedReceived(board.get(i).getBoardId())).intValue();
+			int comments = Long.valueOf(boardRepository.commentsReceived(board.get(i).getBoardId())).intValue();
+			resDto.setLikesAndComments(likes, comments);
 			result.add(resDto.entityToDto(board.get(i)));
 		}
 		mainboardsResponseDto.setWincreatedOrder5(result);
@@ -579,6 +628,9 @@ public class BoardServiceImpl implements BoardService {
 		result = new ArrayList<BoardResponseDto>();
 		for (int i = 0; i < board.size(); i++) {
 			BoardResponseDto resDto = new BoardResponseDto();
+			int likes = Long.valueOf(boardRepository.likedReceived(board.get(i).getBoardId())).intValue();
+			int comments = Long.valueOf(boardRepository.commentsReceived(board.get(i).getBoardId())).intValue();
+			resDto.setLikesAndComments(likes, comments);
 			result.add(resDto.entityToDto(board.get(i)));
 		}
 		mainboardsResponseDto.setColcreatedOrder5(result);

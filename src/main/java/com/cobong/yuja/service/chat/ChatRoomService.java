@@ -70,11 +70,14 @@ public class ChatRoomService {
 			}
 			
 			if(profileRepository.findByUserNickname(receiver).isPresent()) {
-				dto.setProfilePic(profileRepository.findByUserNickname(receiver).get().getFileName());
+				dto.setProfilePic("/files/profiles/"+profileRepository.findByUserNickname(receiver).get().getFileName());
 			} else {
-				dto.setProfilePic("yuzu05.png");
+				dto.setProfilePic("/imgs/yuzu05.png");
 			}
-			dtoList.add(dto);
+			
+			if(!join.isDeleted()) {
+				dtoList.add(dto);				
+			}
 		}
 		
 		Collections.sort(dtoList, (dto1, dto2) -> dto1.getLastMsgReceivedDate().compareTo(dto2.getLastMsgReceivedDate()));
@@ -96,7 +99,25 @@ public class ChatRoomService {
 			}
 		}
 	}
-	public void delete(Long roomId) {
-		chatRoomRepository.deleteById(roomId);
+	
+	@Transactional
+	public void delete(Long roomId, Long userId) {
+		if(chatroomjoinrepository.findByRoomIdAndUserId(roomId, userId).isPresent()) {
+			ChatRoomJoin join = chatroomjoinrepository.findByRoomIdAndUserId(roomId, userId).get();
+			join.setDeleted(true);
+		}
+		List<ChatRoomJoin> joins = chatroomjoinrepository.findByChatRoomRoomId(roomId);
+		
+		int deletedCnt = 0;
+		for(ChatRoomJoin joini: joins) {
+			if(joini.isDeleted()) {
+				deletedCnt++;
+			}
+		}
+		if(deletedCnt == 2) {
+			chatRoomRepository.deleteById(roomId);
+		}
 	}	
+	
+	
 }
