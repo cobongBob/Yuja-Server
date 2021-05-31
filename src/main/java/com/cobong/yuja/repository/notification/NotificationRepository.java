@@ -23,6 +23,6 @@ public interface NotificationRepository extends JpaRepository<Notification, Long
 	@Query("SELECT n FROM Notification n WHERE recipientId = :recipientId")
 	List<Notification> findByRecipientId(@Param("recipientId") Long recipientId);
 
-	@Query("SELECT n FROM Notification n WHERE recipientId = :recipientId AND senderId =:senderId AND type =:type")
+	@Query("SELECT n.notiId FROM Notification n WHERE recipientId = :recipientId AND senderId =:senderId AND type =:type")
 	Optional<Notification> findByLastNoti(@Param("senderId") Long senderId,@Param("recipientId") Long recipientId,@Param("type") String type);
 }
