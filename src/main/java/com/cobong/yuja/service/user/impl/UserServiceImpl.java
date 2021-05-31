@@ -288,6 +288,7 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public String delete(Long bno, Long userId) {
 		User attemptingUser = userRepository.findById(userId).orElseThrow(() -> new IllegalAccessError("해당 유저가 없습니다."));
+		User deletinguser = userRepository.findById(bno).orElseThrow(() -> new IllegalAccessError("해당 유저가 없습니다."));
 		List<Authorities> roles = attemptingUser.getAuthorities(); 
 		boolean isAdminOrManager = false;
 		for(Authorities auth: roles) {
@@ -295,11 +296,35 @@ public class UserServiceImpl implements UserService {
 				isAdminOrManager = true;
 			}
 		}
-		if(bno != userId && !isAdminOrManager) {
+		if(bno == userId || isAdminOrManager) {
+			if(deletinguser.isDeleted()) {
+				deletinguser.setDeleted(false);
+				return "해당 유저가 복구 되었습니다.";
+			} else {
+				deletinguser.setDeleted(true);
+				return "success";
+			}
+		} else {
+			throw new IllegalAccessError("탈퇴 권한이 없습니다");
+		}
+	}
+	
+	@Override
+	@Transactional
+	public String remove(Long uno, Long userId) {
+		User attemptingUser = userRepository.findById(userId).orElseThrow(() -> new IllegalAccessError("해당 유저가 없습니다."));
+		List<Authorities> roles = attemptingUser.getAuthorities(); 
+		boolean isAdminOrManager = false;
+		for(Authorities auth: roles) {
+			if(auth.getAuthority() == AuthorityNames.ADMIN || auth.getAuthority() == AuthorityNames.MANAGER) {
+				isAdminOrManager = true;
+			}
+		}
+		if(!isAdminOrManager) {
 			throw new IllegalAccessError("관리자가 아니므로 해당 유저의 정보를 삭제할 수 없습니다");
 		}
 		
-		Optional<ProfilePicture> optOriginalProfilePicture = profilePictureRepository.findByUserUserId(bno);
+		Optional<ProfilePicture> optOriginalProfilePicture = profilePictureRepository.findByUserUserId(uno);
 		if(optOriginalProfilePicture.isPresent()) {
 			ProfilePicture originalProfilePicture = optOriginalProfilePicture.get();
 			File toDel = new File(originalProfilePicture.getUploadPath());
@@ -307,7 +332,7 @@ public class UserServiceImpl implements UserService {
 				toDel.delete();				
 			}
 		}
-		attemptingUser.setDeleted(true);
+		userRepository.deleteById(uno);
 		return "success";
 	}
 	

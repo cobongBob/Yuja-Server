@@ -52,18 +52,22 @@ public class Board extends DateAudit{
 	@Column(nullable = false)
 	private String content;
 	
+	@Builder.Default
 	@OneToMany(mappedBy = "board",cascade = CascadeType.REMOVE)
 	private List<BoardAttach> attachments = new ArrayList<BoardAttach>();
 	
+	@Builder.Default
 	@OneToMany(mappedBy = "board",cascade = CascadeType.REMOVE)
 	private List<BoardLiked> liked = new ArrayList<BoardLiked>();
 	
+	@Builder.Default
 	@OneToMany(mappedBy = "board",cascade = CascadeType.REMOVE)
 	private List<BoardComment> comments = new ArrayList<BoardComment>();
 	
 	@Column(nullable = false)
 	private int hit; 
 	
+	@Builder.Default
 	@OneToMany(mappedBy = "board",cascade = CascadeType.REMOVE)
 	private List<Thumbnail> thumbnail = new ArrayList<Thumbnail>();
 

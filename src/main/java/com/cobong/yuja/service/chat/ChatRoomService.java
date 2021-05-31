@@ -33,7 +33,7 @@ public class ChatRoomService {
 	public Long newRoom(String receiver, Long sender) {
 		Optional<User> receiverEntity = userRepository.findByNickname(receiver);
 		if(!receiverEntity.isPresent()) {
-			throw new IllegalArgumentException("해당 닉네임을 가진 유저가 없거나 잘못된 닉네임 입니다.");
+			throw new IllegalAccessError("해당 닉네임을 가진 유저가 없거나 잘못된 닉네임 입니다.");
 		}
 		if(receiverEntity.get().getUserId() == sender) {
 			throw new IllegalAccessError("자기자신과는 채팅할수 없습니다.");
@@ -70,9 +70,9 @@ public class ChatRoomService {
 			}
 			
 			if(profileRepository.findByUserNickname(receiver).isPresent()) {
-				dto.setProfilePic(profileRepository.findByUserNickname(receiver).get().getFileName());
+				dto.setProfilePic("/files/profiles/"+profileRepository.findByUserNickname(receiver).get().getFileName());
 			} else {
-				dto.setProfilePic("yuzu05.png");
+				dto.setProfilePic("/imgs/yuzu05.png");
 			}
 			dtoList.add(dto);
 		}
@@ -96,7 +96,16 @@ public class ChatRoomService {
 			}
 		}
 	}
-	public void delete(Long roomId) {
-		chatRoomRepository.deleteById(roomId);
+	
+	@Transactional
+	public void delete(Long roomId, Long userId) {
+		if(chatroomjoinrepository.findByRoomIdAndUserId(roomId, userId).isPresent()) {
+			chatroomjoinrepository.delete(chatroomjoinrepository.findByRoomIdAndUserId(roomId, userId).get());
+		}
+		if(chatroomjoinrepository.findByChatRoomRoomId(roomId).size() == 0) {
+			chatRoomRepository.deleteById(roomId);			
+		}
 	}	
+	
+	
 }

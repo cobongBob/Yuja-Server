@@ -61,7 +61,7 @@ public class ChatRoomJoinService {
 			}
 		}
 		if(receiver.equals("")) {
-			throw new IllegalAccessError("방이 존재하지 않습니다.");
+			receiver += "방을 나간 유저입니다.";
 		}
 		return receiver;
 	}

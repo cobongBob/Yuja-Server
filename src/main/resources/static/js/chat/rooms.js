@@ -10,7 +10,7 @@ function deleteById(chatRoomId) {
 			target.remove();
 		},
 		error: function(data){
-			$(".ChatListTitle").append("<h3 style='color: red'>"+e.responseJSON.message+"<h3>");
+			$(".ChatListTitle").html("<h3 style='color: red'>"+e.responseJSON.message+"<h3>");
 		}
 	})
 }
@@ -22,7 +22,7 @@ function enterRoom(chatRoomId){
 			location.href = "/socket/chat/"+chatRoomId;
 		},
 		error: function(e){
-			$(".ChatListTitle").append("<h3 style='color: red'>"+e.responseJSON.message+"<h3>");
+			$(".ChatListTitle").html("<h3 style='color: red'>"+e.responseJSON.message+"<h3>");
 		}
 	})
 }

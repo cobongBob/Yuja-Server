@@ -81,7 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
 				.and()
 			.headers().frameOptions().disable()
-				.addHeaderWriter(new StaticHeadersWriter("X-FRAME-OPTIONS", "ALLOW-FROM " + "http://localhost:3000"))
+				.addHeaderWriter(new StaticHeadersWriter("Content-Security-Policy", "frame-ancestors self http://localhost:3000"))
 				.and()
 			.authorizeRequests()
 				.antMatchers("/static/**","/imgs/**","/files/**")
@@ -91,7 +91,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 
 				// 비로그인 용
 				.antMatchers(HttpMethod.GET,"/api/1L/board/**","/api/2L/board/**","/api/3L/board/**","/api/4L/board/**", "/api/5L/board/**", "/api/7L/board/**","/api/6L/board/**","/api/9L/board/**")
-					.permitAll() 
+					.permitAll()
 				.antMatchers("/api/notiUnread/**","/api/notiread/**","/api/findnoti/**","/api/deletenoti/**")
 					.permitAll()
 					
@@ -100,7 +100,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 						"api/3/thumbnail/upload", "/socket/room/**" , "/api/comment","/api/8/board") 
 					.hasAnyAuthority("ROLE_GENERAL", "ROLE_MANAGER","ROLE_ADMIN") // 모든 회원 POST
 					
-				.antMatchers(HttpMethod.PUT,"/api/4L/board/**", "/api/5L/board/**","/api/6L/board", "/api/7L/board", "/api/user/**") 
+				.antMatchers(HttpMethod.PUT,"/api/4L/board/**", "/api/5L/board/**","/api/6L/board", "/api/7L/board", "/api/user/**", "/api/comment/**") 
 					.hasAnyAuthority("ROLE_GENERAL", "ROLE_MANAGER","ROLE_ADMIN")// 모든 회원 PUT
 					
 				.antMatchers(HttpMethod.DELETE, "/api/4L/board/**", "/api/5L/board/**", "/socket/room/**", "/api/comment/**", "/api/user/**") 
@@ -156,10 +156,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 					
 				.antMatchers(HttpMethod.GET,"/api/8L/board", "/api/user","/api/admin/promote/**")
 					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // 매니저만 GET
-					
+				
 				.anyRequest()
 					.permitAll();
-//					.authenticated();
+//					.authenticated()
+				
+				
 		
 		http
 		.addFilterBefore(jwtAuthenticationFilter(), UsernamePasswordAuthenticationFilter.class);

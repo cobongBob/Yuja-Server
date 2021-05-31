@@ -62,6 +62,11 @@ public class CommentServiceImpl implements CommentService {
 		Board board = boardRepository.findById(dto.getBoardId()).orElseThrow(() -> new IllegalAccessError("알림 받는 유저 없음 "+dto.getBoardId()));
 		String type = "commentNoti"; 
 		User sender = userRepository.findById(responseDto.getUserId()).orElseThrow(() -> new IllegalAccessError("알림 보낸 유저 없음 "+dto.getUserId()));
+		
+		if(sender.isBanned()) {
+			throw new IllegalAccessError("이용이 정지된 계정입니다.");
+		}
+		
 		BoardComment parentComment = null;
 		if(comment.getParent() != null) {
 			parentComment = commentRepository.findById(comment.getParent().getCommentId()).orElse(null);
@@ -88,7 +93,7 @@ public class CommentServiceImpl implements CommentService {
 					null);
 			notificationRepository.save(notification);
 		}else {
-			lastNoti = notificationRepository.findByLastNoti(sender.getUserId(), board.getUser().getUserId(),"nestedComment");
+			lastNoti = notificationRepository.findByLastNoti(sender.getUserId(), board.getUser().getUserId(),type);
 			if(lastNoti.isPresent()) {
 				notificationRepository.delete(lastNoti.get());
 			}
@@ -114,6 +119,10 @@ public class CommentServiceImpl implements CommentService {
 	@Transactional
 	@Override
 	public CommentResponseDto modify(Long commentId,CommentRequestDto dto) {
+		//userRepository.findById(dto.getUserId()).orElseThrow(()->new IllegalArgumentException("이용이 정지된 계정입니다."));
+		/***
+		 * 현재 댓글을 수정하려는 유저가 밴되어있는지 확인할 필요가 있나 확신이 안들어서 일단 주석 처리만 해둠.
+		 */
 		BoardComment boardComment = commentRepository.findById(commentId).orElseThrow(()->new IllegalArgumentException("존재하지 않는 댓글"));
 		//select후 영속화
 		CommentResponseDto responseDto = new CommentResponseDto().entityToDto(boardComment.modifyComment(dto.getContent()));
@@ -123,8 +132,14 @@ public class CommentServiceImpl implements CommentService {
 	
 	@Transactional
 	@Override
-	public String deleteById(Long commentId) {
+	public String deleteById(Long commentId, Long userId) {
 		BoardComment boardComment = commentRepository.findById(commentId).orElseThrow(()->new IllegalArgumentException("존재하지 않는 댓글"));
+		
+		User user = userRepository.findById(userId).orElseThrow(()->new IllegalArgumentException("존재하지 않는 유저입니다"));
+		if(user.isBanned()) {
+			throw new IllegalAccessError("이용이 정지된 계정입니다.");
+		}
+		
 		List<BoardComment> childComments = commentRepository.findByIdParentId(boardComment.getCommentId()).orElse(null);
 		//select후 영속화
 		if(childComments != null && childComments.size() > 0) {

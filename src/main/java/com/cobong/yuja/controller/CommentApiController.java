@@ -2,6 +2,7 @@ package com.cobong.yuja.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cobong.yuja.config.auth.PrincipalDetails;
 import com.cobong.yuja.payload.request.comment.CommentRequestDto;
 import com.cobong.yuja.service.comment.CommentService;
 
@@ -33,12 +35,25 @@ public class CommentApiController {
 	
 	@PutMapping("/api/comment/{commentId}") // done
 	public ResponseEntity<?> updateComment(@PathVariable Long commentId, @RequestBody CommentRequestDto dto) {
+		PrincipalDetails principalDetails = null;
+    	Long userId = 0L;
+    	if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PrincipalDetails) {
+    		principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			userId = principalDetails.getUserId();
+		}
+    	dto.setUserId(userId);
 		return new ResponseEntity<>(commentService.modify(commentId, dto),HttpStatus.OK);
 	}
 	
 	@DeleteMapping("api/comment/{commentId}") // done
 	public ResponseEntity<?> deleteComment(@PathVariable Long commentId) {
+		PrincipalDetails principalDetails = null;
+    	Long userId = 0L;
+    	if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PrincipalDetails) {
+    		principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			userId = principalDetails.getUserId();
+		}
 		//deleted값이 true로 바뀐다.
-		return new ResponseEntity<>(commentService.deleteById(commentId),HttpStatus.OK);
+		return new ResponseEntity<>(commentService.deleteById(commentId, userId),HttpStatus.OK);
 	}
 }

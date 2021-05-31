@@ -10,9 +10,11 @@ import com.cobong.yuja.payload.response.user.UserResponseDto;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class BoardResponseDto {
 	private Long id;
 	private UserResponseDto user;
@@ -42,6 +44,7 @@ public class BoardResponseDto {
 	private String previewImage;
 	private BoardTypeResponseDto boardType;
 	private ZonedDateTime boardUpdatedDate;
+	private String profilePicture;
 	
 	public BoardResponseDto entityToDto(Board entity) {
 		this.id=entity.getBoardId();

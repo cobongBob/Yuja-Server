@@ -15,7 +15,7 @@
    <div>
        <div class="ChatForm">
 	       <form onsubmit="return findRoom()">
-	           <input class="ChatSearch" type="text" id="receiver" name="receiver" placeholder="상대방 닉네임을 입력하세요" maxlength="20" autofocus="on" autocomplete="off">
+	           <input class="ChatSearch" type="text" id="receiver" name="receiver" placeholder="상대방 닉네임을 입력하세요" maxlength="20" autocomplete="off">
 	           <input class="ChatSubmit" id="ChatSubmitIcon" type="submit" value="Start!" onclick="return findRoom()">       
 	       </form>
        </div>
@@ -24,7 +24,7 @@
         <div class="ChatRoomsWrapper">
             {{#chatRooms}}
             <div class="RoomWrapper" id="roomNum{{chatRoomId}}">
-                   <div class="ChatImg"><a href="javascript:void(0);" id="enterRoom" onClick="enterRoom({{chatRoomId}})"><img src="../files/profiles/{{profilePic}}" alt="ProfilePicture"/></a></div>
+                   <div class="ChatImg"><a href="javascript:void(0);" id="enterRoom" onClick="enterRoom({{chatRoomId}})"><img src="{{profilePic}}" alt="ProfilePicture"/></a></div>
                    <div class="ChatSender"><a href="javascript:void(0);" id="enterRoom" onClick="enterRoom({{chatRoomId}})">{{writer}}</a></div>
                    <div class="ChatRoomIn"><a href="javascript:void(0);" id="delete" onClick="deleteById({{chatRoomId}})">❌</a></div>
             </div>

@@ -31,6 +31,7 @@ public class BoardType {
 	@Column(nullable = false)
 	private String boardName;
 	
+	@Builder.Default
 	@OneToMany(mappedBy = "boardType",cascade = CascadeType.REMOVE)
 	private List<Board> boards = new ArrayList<Board>();
 }
