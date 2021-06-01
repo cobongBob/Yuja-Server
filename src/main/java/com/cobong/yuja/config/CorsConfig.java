@@ -15,6 +15,8 @@ public class CorsConfig {
 		config.setAllowCredentials(true);
 		config.addAllowedOriginPattern("http://127.0.0.1:3000");
 		config.addAllowedOriginPattern("http://localhost:3000");
+		config.addAllowedOriginPattern("http://www.withyuja.com");
+		config.addAllowedOriginPattern("http://withyuja.com");
 		config.addAllowedHeader("*");
 		config.addAllowedMethod("*");
 		source.registerCorsConfiguration("/**", config);
