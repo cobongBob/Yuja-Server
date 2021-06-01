@@ -3,6 +3,8 @@ package com.cobong.yuja.exception;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.client.HttpClientErrorException.BadRequest;
@@ -10,10 +12,17 @@ import org.springframework.web.client.HttpClientErrorException.TooManyRequests;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
+import javassist.compiler.CompileError;
 import lombok.Value;
 
 @RestControllerAdvice
+@Controller
 public class ExceptionController extends ResponseEntityExceptionHandler {
+	@ExceptionHandler(value = CompileError.class)
+	public String chatSessionEndedError(CompileError e, Model model) {
+		model.addAttribute("errorMsg", e.getMessage());
+		return "chatting/errorPage";
+	}
 	@ExceptionHandler(value = IllegalAccessError.class)
 	public ResponseEntity<?> illegalAccessController(IllegalAccessError e){
 		return new ResponseEntity<>(new ExceptionRestResponse(500, e.getMessage()), HttpStatus.INTERNAL_SERVER_ERROR);

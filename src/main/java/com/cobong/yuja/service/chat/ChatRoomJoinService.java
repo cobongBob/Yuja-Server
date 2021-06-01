@@ -11,6 +11,7 @@ import com.cobong.yuja.model.ChatRoomJoin;
 import com.cobong.yuja.repository.chat.ChatRoomJoinRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 
+import javassist.compiler.CompileError;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -25,9 +26,7 @@ public class ChatRoomJoinService {
 		.user(userRepository.findById(receiverId).orElseThrow(() -> new IllegalAccessError("채팅을 받을 유저가 존재하지 않습니다."))).build();
 		
 		ChatRoomJoin senderJoin = ChatRoomJoin.builder().chatRoom(chatRoom)
-				.user(userRepository.findById(senderId).orElseThrow(() -> new IllegalAccessError("채팅을 받을 유저가 존재하지 않습니다."))).build();
-
-		
+				.user(userRepository.findById(senderId).orElseThrow(() -> new IllegalAccessError("채팅을 보낼 유저가 존재하지 않습니다."))).build();
 		
 		chatRoomJoinRepository.save(receiverJoin);
 		chatRoomJoinRepository.save(senderJoin);
@@ -52,7 +51,7 @@ public class ChatRoomJoinService {
 	}
 	
 	@Transactional(readOnly = true)
-	public String findReceiver(Long chatRoomId, Long senderId) {
+	public String findReceiver(Long chatRoomId, Long senderId) throws CompileError {
 		List<ChatRoomJoin> joins = chatRoomJoinRepository.findByChatRoomRoomId(chatRoomId);
 		String receiver = "";
 		for(ChatRoomJoin join: joins) {
@@ -61,9 +60,8 @@ public class ChatRoomJoinService {
 			}
 		}
 		if(receiver.equals("")) {
-			throw new IllegalAccessError("방이 존재하지 않습니다.");
+			throw new CompileError("방이 존재하지 않습니다.");
 		}
 		return receiver;
 	}
-	
 }
