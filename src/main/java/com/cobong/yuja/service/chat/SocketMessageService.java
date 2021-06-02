@@ -87,6 +87,7 @@ public class SocketMessageService {
 		LocalDateTime now = LocalDateTime.now();
 		
 		List<SocketMessageSendDto> dtoList = new ArrayList<SocketMessageSendDto>();
+		String min = "";
 		for(SocketMessage msgs : entityList) {
 			SocketMessageSendDto dto = new SocketMessageSendDto().entityToDto(msgs);
 			dto.setContent(dto.getContent().replaceAll("&lt", "<"));
@@ -95,22 +96,26 @@ public class SocketMessageService {
 			dto.setContent(dto.getContent().replaceAll("&#39", "\'"));
 			dto.setContent(dto.getContent().replaceAll("&amp", "&"));
 			LocalDateTime msgTime = LocalDateTime.ofInstant(msgs.getCreatedDate(), ZoneId.systemDefault());
-			
+			if(msgTime.getMinute() < 10) {
+				min = "0"+ msgTime.getMinute();
+			} else {
+				min = ""+msgTime.getMinute();
+			}
 			if(msgTime.getDayOfYear() != now.getDayOfYear()) {
 				if(msgTime.getHour() > 12) {
-					dto.setCreatedDate(msgTime.getYear()+"-"+msgTime.getMonthValue()+"-"+msgTime.getDayOfMonth()+"\n오후 "+(msgTime.getHour()%12)+" : "+msgTime.getMinute());					
+					dto.setCreatedDate(msgTime.getMonthValue()+"월 " +msgTime.getDayOfMonth()+"일   오후 "+(msgTime.getHour()%12)+" : "+min);					
 				} else if(msgTime.getHour() == 12) {
-					dto.setCreatedDate(msgTime.getYear()+"-"+msgTime.getMonthValue()+"-"+msgTime.getDayOfMonth()+"\n오후 "+(msgTime.getHour())+" : "+msgTime.getMinute());
+					dto.setCreatedDate(msgTime.getMonthValue()+"월 "+msgTime.getDayOfMonth()+"일   오후 "+(msgTime.getHour())+" : "+min);
 				} else {
-					dto.setCreatedDate(msgTime.getYear()+"-"+msgTime.getMonthValue()+"-"+msgTime.getDayOfMonth()+"\n오전 "+msgTime.getHour()+" : "+msgTime.getMinute());
+					dto.setCreatedDate(msgTime.getMonthValue()+"월 "+msgTime.getDayOfMonth()+"일   오전 "+msgTime.getHour()+" : "+min);
 				}
 			} else {
 				if(msgTime.getHour() > 12) {
-					dto.setCreatedDate("오후 "+msgTime.getHour()%12+" : "+msgTime.getMinute());					
+					dto.setCreatedDate("오후 "+msgTime.getHour()%12+" : "+min);					
 				}else if(msgTime.getHour() == 12){
-					dto.setCreatedDate("오후 "+msgTime.getHour()+" : "+msgTime.getMinute());
+					dto.setCreatedDate("오후 "+msgTime.getHour()+" : "+min);
 				}else {
-					dto.setCreatedDate("오전 "+msgTime.getHour()+" : "+msgTime.getMinute());
+					dto.setCreatedDate("오전 "+msgTime.getHour()+" : "+min);
 				}
 			}
 			
