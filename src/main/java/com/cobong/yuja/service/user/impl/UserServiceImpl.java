@@ -32,6 +32,7 @@ import com.cobong.yuja.config.jwt.CookieProvider;
 import com.cobong.yuja.config.jwt.JwtTokenProvider;
 import com.cobong.yuja.config.oauth.GoogleUser;
 import com.cobong.yuja.model.Authorities;
+import com.cobong.yuja.model.ChatRoomJoin;
 import com.cobong.yuja.model.ProfilePicture;
 import com.cobong.yuja.model.RefreshToken;
 import com.cobong.yuja.model.User;
@@ -43,6 +44,8 @@ import com.cobong.yuja.payload.request.user.UserUpdateRequestDto;
 import com.cobong.yuja.payload.response.user.UserForClientResponseDto;
 import com.cobong.yuja.payload.response.user.UserResponseDto;
 import com.cobong.yuja.repository.attach.ProfilePictureRepository;
+import com.cobong.yuja.repository.chat.ChatRoomJoinRepository;
+import com.cobong.yuja.repository.chat.ChatRoomRepository;
 import com.cobong.yuja.repository.refreshToken.RefreshTokenRepository;
 import com.cobong.yuja.repository.user.AuthoritiesRepository;
 import com.cobong.yuja.repository.user.UserRepository;
@@ -65,8 +68,11 @@ public class UserServiceImpl implements UserService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final JavaMailSender javaMailSender;
     private final YoutubeConfirmRepository youtubeConfirmRepository;
+    private final ChatRoomJoinRepository chatRoomJoinRepository;
+    private final ChatRoomRepository chatRoomRepository;
     @Value("${app.oauthSecret}")
 	private String oauthSecret;
+    
 	@Override
 	@Transactional
 	public UserResponseDto save(UserSaveRequestDto dto) {		
@@ -296,6 +302,10 @@ public class UserServiceImpl implements UserService {
 				isAdminOrManager = true;
 			}
 		}
+		List<ChatRoomJoin> joins = chatRoomJoinRepository.findByUserUserId(bno);
+		for(ChatRoomJoin join: joins) {
+			chatRoomRepository.deleteById(join.getChatRoom().getRoomId());
+		}
 		if(bno == userId || isAdminOrManager) {
 			if(deletinguser.isDeleted()) {
 				deletinguser.setDeleted(false);
@@ -332,6 +342,11 @@ public class UserServiceImpl implements UserService {
 				toDel.delete();				
 			}
 		}
+		List<ChatRoomJoin> joins = chatRoomJoinRepository.findByUserUserId(uno);
+		for(ChatRoomJoin join: joins) {
+			chatRoomRepository.deleteById(join.getChatRoom().getRoomId());
+		}
+		
 		userRepository.deleteById(uno);
 		return "success";
 	}

@@ -75,9 +75,9 @@ function showMessageReceived(e) {
       "<span class='ChatContent'>" +
       e.message +
       '</span></div>' +
-      "<span class='ReceiverChatDate'>오후" +
+      "<span class='ReceiverChatDate'>오후 " +
       (now.getHours() % 12) +
-      ':' +
+      ' : ' +
       min +
       '</span>' +
       '</div>';
@@ -97,9 +97,9 @@ function showMessageReceived(e) {
       "<span class='ChatContent'>" +
       e.message +
       '</span></div>' +
-      "<span class='ReceiverChatDate'>오후" +
+      "<span class='ReceiverChatDate'>오후 " +
       now.getHours() +
-      ':' +
+      ' : ' +
       min +
       '</span>' + '</div>';
   } else {
@@ -118,9 +118,9 @@ function showMessageReceived(e) {
       "<span class='ChatContent'>" +
       e.message +
       '</span></div>' +
-      "<span class='ReceiverChatDate'>오전" +
+      "<span class='ReceiverChatDate'>오전 " +
       now.getHours() +
-      ':' +
+      ' : ' +
       min +
       '</span>' +
       '</div>';
@@ -144,9 +144,9 @@ function showMessageSend(e) {
       "<span class='ChatContent'>" +
       e.message +
       "</span></div>" +
-      "<span class='SenderChatDate'>오후" +
+      "<span class='SenderChatDate'>오후 " +
       (now.getHours() % 12) +
-      ':' +
+      ' : ' +
       min +
       '</span>' +
       '</div>';
@@ -157,9 +157,9 @@ function showMessageSend(e) {
       "<span class='ChatContent'>" +
       e.message +
       "</span></div>" +
-      "<span class='SenderChatDate'>오후" +
+      "<span class='SenderChatDate'>오후 " +
       now.getHours() +
-      ':' +
+      ' : ' +
       min +
       '</span>' +
       '</div>';
@@ -171,9 +171,9 @@ function showMessageSend(e) {
       "<span class='ChatContent'>" +
       e.message +
       "</span></div>" +
-      "<span class='SenderChatDate'>오전" +
+      "<span class='SenderChatDate'>오전 " +
       now.getHours() +
-      ':' +
+      ' : ' +
       min +
       '</span>' +
       '</div>';

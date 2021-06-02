@@ -18,6 +18,7 @@ import com.cobong.yuja.repository.chat.ChatRoomJoinRepository;
 import com.cobong.yuja.repository.chat.ChatRoomRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 
+import javassist.compiler.CompileError;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -38,12 +39,17 @@ public class ChatRoomService {
 		if(receiverEntity.get().getUserId() == sender) {
 			throw new IllegalAccessError("자기자신과는 채팅할수 없습니다.");
 		}
+		if(receiverEntity.get().isBanned() || receiverEntity.get().isDeleted()) {
+			throw new IllegalAccessError("정지되었거나 탈퇴한 회원입니다.");
+		}
 		if(sender == 0L) {
 			throw new IllegalAccessError("로그인해 주시기 바랍니다.");
 		}
 		
 		Long roomId = chatRoomJoinService.checkForRoom(receiverEntity.get().getUserId(), sender);
 		if(roomId != 0L) {
+			chatroomjoinrepository.findByRoomIdAndUserId(roomId, sender).get().setDeleted(false);
+			
 			return roomId;
 		}
 		ChatRoom save = new ChatRoom();
@@ -54,7 +60,7 @@ public class ChatRoomService {
 		return chatRoom.getRoomId();
 	}
 	@Transactional(readOnly = true)
-	public List<ChatRoomDto> findRooms(Long userId) {
+	public List<ChatRoomDto> findRooms(Long userId) throws CompileError {
 		List<ChatRoomDto> dtoList = new ArrayList<ChatRoomDto>();
 		List<ChatRoomJoin> joins = chatroomjoinrepository.findByUserUserId(userId);
 		

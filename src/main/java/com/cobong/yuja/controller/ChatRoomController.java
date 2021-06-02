@@ -88,7 +88,7 @@ public class ChatRoomController {
 	}
 	
 	@DeleteMapping("/socket/room/{roomId}") // done
-	public ResponseEntity<List<ChatRoomDto>> deleteRoom(@PathVariable Long roomId) {
+	public ResponseEntity<List<ChatRoomDto>> deleteRoom(@PathVariable Long roomId) throws CompileError {
 		PrincipalDetails principalDetails = null;
     	Long userId = 0L;
     	if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PrincipalDetails) {
@@ -100,7 +100,7 @@ public class ChatRoomController {
 	}
 	
 	@RequestMapping("/socket/chat/{chatRoomId}") // ?
-	public String enterRoom(@PathVariable("chatRoomId") Long chatRoomId, Model model, HttpServletRequest req) {
+	public String enterRoom(@PathVariable("chatRoomId") Long chatRoomId, Model model, HttpServletRequest req) throws CompileError {
 		PrincipalDetails principalDetails = null;
     	Long userId = 0L;
     	if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PrincipalDetails) {
