@@ -125,6 +125,8 @@ body {
 	display: flex;
     vertical-align: middle;
     border-bottom: 3px solid #c4302b;
+    position:fixed;
+    width: 95%;
 }
 .ChatWho {
   display:inline-block;
@@ -148,6 +150,10 @@ body {
     font-size:1.5rem; 
     font-family: 'scdream3';
 }
+.chatNotice {
+	margin-top: 20%;
+	text-align: center;
+}
 .ChatOut {
 	font-size: 1.5rem;
 }
@@ -155,6 +161,9 @@ body {
 #ChatLogsWrapper {
   padding: 3%;
   min-height: 20vh;
+}
+#chatLog {
+	
 }
 
 .ChatSenderBigWrapper {
