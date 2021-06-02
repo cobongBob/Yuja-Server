@@ -367,7 +367,6 @@ public class BoardServiceImpl implements BoardService {
 		Optional<Thumbnail> origThumb = thumbnailRepository.findByBoardBoardId(board.getBoardId());
 		if(origThumb.isPresent()) {
 			Thumbnail origThumbnail = origThumb.get();
-			System.out.println(origThumbnail);
 			if(boardUpdateRequestDto.getThumbnailId() != origThumbnail.getThumbnailId() && boardUpdateRequestDto.getThumbnailId() != 0L) {
 				try {
 					File thumbToDel = new File(origThumbnail.getUploadPath());
@@ -464,7 +463,6 @@ public class BoardServiceImpl implements BoardService {
 			if(boardType.getBoardCode() == 8L) {
 				Long reportedId = Long.valueOf(board.getTitle().substring(board.getTitle().indexOf("##")+2));
 				if(!boardRepository.findById(reportedId).isPresent()) {
-					System.out.println(board);
 					delete(board.getBoardId(), userId);
 				}else {
 					curBoardResponseDto.add(dto);

@@ -8,6 +8,7 @@ connect();
 function connect() {
   let socket = new SockJS('/yuja');
   stompClient = Stomp.over(socket);
+  stompClient.debug = null;
   stompClient.connect({}, function () {
     stompClient.subscribe('/topic/cobong/' + username+receiver, function (e) {
       showMessageReceived(JSON.parse(e.body));
@@ -80,6 +81,7 @@ function showMessageReceived(e) {
       ' : ' +
       min +
       '</span>' +
+      '</div>'+
       '</div>';
   } else if (now.getHours() === 12) {
     msgArea.innerHTML +=
@@ -101,7 +103,8 @@ function showMessageReceived(e) {
       now.getHours() +
       ' : ' +
       min +
-      '</span>' + '</div>';
+      '</span>' + '</div>'+
+      '</div>';
   } else {
     msgArea.innerHTML +=
       "<div class='ChatReceiverBigWrapper'>" +
@@ -123,6 +126,7 @@ function showMessageReceived(e) {
       ' : ' +
       min +
       '</span>' +
+      '</div>'+
       '</div>';
   }
   window.scrollTo(0, document.body.scrollHeight);
@@ -149,10 +153,12 @@ function showMessageSend(e) {
       ' : ' +
       min +
       '</span>' +
+      '</div>'+
       '</div>';
   } else if (now.getHours() === 12) {
     msgArea.innerHTML +=
       "<div class='ChatSenderBigWrapper'>" +
+      "<div class='ChatSenderWrapper'>" +
       "<div class='SenderChatMessageContent'>" +
       "<span class='ChatContent'>" +
       e.message +
@@ -162,6 +168,7 @@ function showMessageSend(e) {
       ' : ' +
       min +
       '</span>' +
+      '</div>'+
       '</div>';
   } else {
     msgArea.innerHTML +=
@@ -176,6 +183,7 @@ function showMessageSend(e) {
       ' : ' +
       min +
       '</span>' +
+      '</div>'+
       '</div>';
   }
   window.scrollTo(0, document.body.scrollHeight);
