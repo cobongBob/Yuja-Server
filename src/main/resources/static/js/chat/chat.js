@@ -8,6 +8,7 @@ connect();
 function connect() {
   let socket = new SockJS('/yuja');
   stompClient = Stomp.over(socket);
+  stompClient.debug = null;
   stompClient.connect({}, function () {
     stompClient.subscribe('/topic/cobong/' + username+receiver, function (e) {
       showMessageReceived(JSON.parse(e.body));

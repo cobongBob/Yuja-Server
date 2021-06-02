@@ -56,7 +56,7 @@ public class CommentServiceImpl implements CommentService {
 				boardRepository.findById(dto.getBoardId()).orElseThrow(()->new IllegalArgumentException("존재하지않는 글")),
 				userRepository.findById(dto.getUserId()).orElseThrow(()->new IllegalArgumentException("존재하지않는 유저")),
 				dto.getParentId() != null? 
-						commentRepository.findById(dto.getParentId()).orElseThrow(()->new IllegalArgumentException("존재하지않는 부모")):null);
+						commentRepository.findById(dto.getParentId()).orElseThrow(()->new IllegalArgumentException("존재하지 않는 댓글엔 대댓글을 달수 없습니다")):null);
 		CommentResponseDto responseDto = new CommentResponseDto().entityToDto(commentRepository.save(comment));
 		
 		Board board = boardRepository.findById(dto.getBoardId()).orElseThrow(() -> new IllegalAccessError("알림 받는 유저 없음 "+dto.getBoardId()));
