@@ -56,7 +56,7 @@ window.onkeydown = function(e) {
 };
 
 window.addEventListener("message", (event) => {
-    if (event.origin.startsWith("http://www.withyuja.com")) {
+    if (event.origin.startsWith("https://www.withyuja.com")) {
       if (event.data && event.data.enter === "enter") {
 		 document.getElementById("receiver").focus();
       }
