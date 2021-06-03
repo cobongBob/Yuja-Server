@@ -145,8 +145,7 @@ public class UserServiceImpl implements UserService {
 		User user = userRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
 		
 		User attempting = userRepository.findById(attemptingUser).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
-		
-		if(id != attemptingUser || !attempting.getAuthorities().contains(authoritiesRepository.findByAuthority(AuthorityNames.ADMIN).get()) || !attempting.getAuthorities().contains(authoritiesRepository.findByAuthority(AuthorityNames.MANAGER).get())) {
+		if(id != attemptingUser && (!attempting.getAuthorities().contains(authoritiesRepository.findByAuthority(AuthorityNames.ADMIN).get()) && !attempting.getAuthorities().contains(authoritiesRepository.findByAuthority(AuthorityNames.MANAGER).get()))) {
 			throw new IllegalAccessError("회원 정보는 본인 혹은 관리자만 가능합니다.");
 		}
 		if(user.isDeleted()) {
