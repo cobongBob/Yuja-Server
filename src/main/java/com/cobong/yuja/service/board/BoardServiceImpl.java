@@ -58,7 +58,7 @@ public class BoardServiceImpl implements BoardService {
 			throw new IllegalAccessError("이용이 정지된 계정입니다.");
 		}
 		//나중에 수정필 어드민 아이디 넣어줘야함
-		User admin = userRepository.findById(90L).orElse(null);
+		User admin = userRepository.findById(1L).orElse(null);
 		//나중에 수정필
 		
 		BoardType boardType = boardTypeRepository.findById(dto.getBoardCode()).orElseThrow(() -> new IllegalAccessError("해당글 타입 없음" + dto.getBoardCode()));

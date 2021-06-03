@@ -16,7 +16,7 @@ public interface UserService {
 
 	UserResponseDto save(UserSaveRequestDto dto);
 
-	UserResponseDto findById(Long id);
+	UserResponseDto findById(Long id, Long attemptingUser);
 
 	List<UserResponseDto> findAll();
 

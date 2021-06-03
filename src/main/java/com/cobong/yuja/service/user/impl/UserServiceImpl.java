@@ -141,9 +141,14 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public UserResponseDto findById(Long id) {
+	public UserResponseDto findById(Long id, Long attemptingUser) {
 		User user = userRepository.findById(id).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
 		
+		User attempting = userRepository.findById(attemptingUser).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
+		
+		if(id != attemptingUser || !attempting.getAuthorities().contains(authoritiesRepository.findByAuthority(AuthorityNames.ADMIN).get()) || !attempting.getAuthorities().contains(authoritiesRepository.findByAuthority(AuthorityNames.MANAGER).get())) {
+			throw new IllegalAccessError("회원 정보는 본인 혹은 관리자만 가능합니다.");
+		}
 		if(user.isDeleted()) {
 			new IllegalArgumentException("해당 유저는 탈퇴한 회원입니다.");
 		}
@@ -180,6 +185,12 @@ public class UserServiceImpl implements UserService {
 		for(User user: entityList) {
 			UserResponseDto dto = new UserResponseDto().entityToDto(user);
 			Optional<ProfilePicture> optProfilePicture = profilePictureRepository.findByUserUserId(user.getUserId());
+			if(user.getAddress() != null) {
+				dto.setAddress(user.getAddress().substring(0,user.getAddress().indexOf(" # ")));
+				if(user.getAddress().contains("#")) {
+					dto.setDetailAddress(user.getAddress().substring(user.getAddress().indexOf(" # ")+3));				
+				}
+			}
 			if(optProfilePicture.isPresent()) {
 				ProfilePicture profilePicture = optProfilePicture.get();
 				dto.setProfilePic(profilePicture.getFileName());			
