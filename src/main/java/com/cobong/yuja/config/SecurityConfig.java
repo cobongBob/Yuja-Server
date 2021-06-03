@@ -135,14 +135,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.antMatchers(HttpMethod.DELETE,"/api/3L/board/**")
 					.hasAnyAuthority("ROLE_THUMBNAILER","ROLE_MANAGER","ROLE_ADMIN") // 썸네일러 DELETE
 					
-				// 유튜버 편집자 썸네일러
+				// 유튜버 편집자 썸네일러 찜하기
+				/* 프론트에서 유튜브, 편집자, 썸네일러 게시판 글들에 한해 권한이 없을시 블락 중. 여기서 잡으면 자유게시판에도 좋아요를 할수 없어지니 없에는게 좋을 듯.
 				.antMatchers(HttpMethod.POST,"/api/board/liked/**")
 					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILER","ROLE_MANAGER","ROLE_ADMIN") // 유튜버 편집자 썸네일러 POST
 					
 				.antMatchers(HttpMethod.DELETE,"/api/board/liked/**")
 					.hasAnyAuthority("ROLE_YOUTUBER","ROLE_EDITOR","ROLE_THUMBNAILER","ROLE_MANAGER","ROLE_ADMIN") // 유튜버 편집자 썸네일러 DELETE
-					
-
+				 * */
+				
 				// 매니저
 				.antMatchers(HttpMethod.POST, "/api/9L/board","/api/8L/board/img/upload","/api/9L/board/img/upload", "/api/admin/promote/**") 
 					.hasAnyAuthority("ROLE_MANAGER","ROLE_ADMIN") // 매니저만 POST

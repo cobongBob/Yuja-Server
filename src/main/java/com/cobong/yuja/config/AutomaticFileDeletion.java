@@ -31,7 +31,7 @@ public class AutomaticFileDeletion {
 	private final NotificationService notificationService;
 	private final BoardService boardService;
 	
-	@Scheduled(cron = "0 42 18 * * *")
+	@Scheduled(cron = "0 0 4 * * *")
 	public void deleteAtFourAM() {
 		File tempToDel = Paths.get(System.getProperty("user.dir") + File.separator+"files" + File.separator +"temp").toFile();
 		File[] tempsToDel = tempToDel.listFiles();

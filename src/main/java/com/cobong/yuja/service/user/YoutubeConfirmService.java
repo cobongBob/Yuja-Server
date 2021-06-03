@@ -168,7 +168,7 @@ public class YoutubeConfirmService {
 	public YoutubeConfirmResponseDto confirm(YoutubeConfirmRequestDto dto) {
 		
 		//수정필 어드민 아이디값
-		User admin = userRepository.findById(90L).orElse(null);
+		User admin = userRepository.findById(1L).orElse(null);
 		//수정필 어드민 아이디값
 		
 		YoutubeConfirmResponseDto dtoToSend = new YoutubeConfirmResponseDto();
@@ -208,7 +208,7 @@ public class YoutubeConfirmService {
 	@Transactional
 	public String rejectUser(Long youtubeConfirmId) {
 		//수정필 어드민 아이디값
-		User admin = userRepository.findById(90L).orElse(null);
+		User admin = userRepository.findById(1L).orElse(null);
 		//수정필 어드민 아이디값
 		YoutubeConfirm youtubeConfirm = youtubeConfirmRepository.findById(youtubeConfirmId)
 				.orElseThrow(() -> new IllegalAccessError("해당 유저의 유튜버 승격 요청이 존재하지 않습니다."));
