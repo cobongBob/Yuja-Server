@@ -18,7 +18,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer{
 	
 	@Override
 	public void registerStompEndpoints(StompEndpointRegistry registry) {
-		registry.addEndpoint("/yuja").withSockJS();
+		registry.addEndpoint("/yuja").setAllowedOrigins("https://api.withyuja.com").withSockJS();
 	}
 	
 	@Override
