@@ -1,5 +1,8 @@
 package com.cobong.yuja.config.jwt;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 
@@ -45,5 +48,18 @@ public class CookieProvider {
         token.setMaxAge(66);
 //      token.setSecure(true);
         return token;
+    }
+    
+    public Cookie createVisitCookie(String cookieName, Long userId) {
+    	Cookie visitCookie = new Cookie(cookieName, String.valueOf(userId));
+    	visitCookie.setPath("/");
+    	
+    	LocalDateTime tomorrow = LocalDate.now().plusDays(1).atStartOfDay();
+    	LocalDateTime now = LocalDateTime.now();
+    	/***
+    	 * 쿠키 생성시간과 익일 오는 오전 00:00와의 시간차를 맥스 에이지로 만들기.
+    	 */
+        visitCookie.setMaxAge(66);
+    	return visitCookie;
     }
 }

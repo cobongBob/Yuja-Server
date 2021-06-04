@@ -290,6 +290,7 @@ public class BoardServiceImpl implements BoardService {
 		if(board.getBoardType().getBoardCode() == 2L) {
 			if(attemptingUser.getAuthorities().contains(editor)) {
 				attemptingUser.getAuthorities().remove(editor);
+				System.out.println(attemptingUser.getAuthorities());
 			}
 			
 			if(!attemptingUser.getAuthorities().contains(admin) && !attemptingUser.getAuthorities().contains(editor) && !attemptingUser.getAuthorities().contains(thumb) && !attemptingUser.getAuthorities().contains(youtuber)){

@@ -3,6 +3,9 @@ package com.cobong.yuja.service.user.impl;
 import java.io.File;
 import java.io.IOException;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -620,6 +623,7 @@ public class UserServiceImpl implements UserService {
 	public String banned(Long uno) {
 		User user = userRepository.findById(uno)
 				.orElseThrow(()-> new IllegalAccessError("해당유저 없음 " +uno));
+	
 		if(user.isBanned()) {
 			user.setBanned(false);
 			return "해당 유저가 밴 해제 되었습니다.";
@@ -627,5 +631,26 @@ public class UserServiceImpl implements UserService {
 			user.setBanned(true);
 			return "해당 유저가 밴 되었습니다.";
 		}
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public Long[] statsInSevenDays() {
+		Long[] signedUp = new Long[7];
+		
+		LocalDateTime weekAgo = LocalDate.now().minusDays(7).atStartOfDay();
+		List<User> usersRegistered = userRepository.usersCreatedAfter(weekAgo.atZone(ZoneOffset.systemDefault()).toInstant());
+		for(int i = 0; i < 7; i++) {
+			Long cnt = 0L;
+			for(User user: usersRegistered) {
+				if(user.getCreatedDate().isBefore(LocalDate.now().minusDays(6-(i+1)).atStartOfDay().atZone(ZoneOffset.systemDefault()).toInstant())) {
+					if(user.getCreatedDate().isAfter(LocalDate.now().minusDays(6-i).atStartOfDay().atZone(ZoneOffset.systemDefault()).toInstant())) {
+						cnt++;						
+					}
+				}
+			}
+			signedUp[i] = cnt;
+		}
+		return signedUp;
 	}
 }

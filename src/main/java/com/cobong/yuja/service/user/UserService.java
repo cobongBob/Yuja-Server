@@ -50,4 +50,5 @@ public interface UserService {
 
 	String remove(Long uno, Long userId);
 
+	Long[] statsInSevenDays();
 }
