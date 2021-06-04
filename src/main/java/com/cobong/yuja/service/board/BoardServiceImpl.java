@@ -31,6 +31,7 @@ import com.cobong.yuja.repository.attach.ProfilePictureRepository;
 import com.cobong.yuja.repository.attach.ThumbnailRepository;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.board.BoardTypeRepository;
+import com.cobong.yuja.repository.liked.BoardLikedRepository;
 import com.cobong.yuja.repository.notification.NotificationRepository;
 import com.cobong.yuja.repository.user.AuthoritiesRepository;
 import com.cobong.yuja.repository.user.UserRepository;
@@ -49,6 +50,7 @@ public class BoardServiceImpl implements BoardService {
 	private final AuthoritiesRepository authoritiesRepository;
 	private final NotificationRepository notificationRepository;
 	private final ProfilePictureRepository profilePictureRepository;
+	private final BoardLikedRepository boardLikedRepository;
 	
 	@Override
 	@Transactional
@@ -77,9 +79,7 @@ public class BoardServiceImpl implements BoardService {
 			if(boardRepository.findByTitleAndWriter(dto.getTitle(), user.getUserId()).isPresent()) {
 				throw new IllegalAccessError("해당글 신고 처리중 입니다.");
 			}
-			
-		}
-		
+		} 
 		
 		String receivelink = dto.getPreviewImage();
 		String target = "https://www.youtube.com/watch?v=";
@@ -282,6 +282,41 @@ public class BoardServiceImpl implements BoardService {
 			if(origToDel.exists()) {
 				origToDel.delete();
 			} 
+		}
+		Authorities editor = authoritiesRepository.findByAuthority(AuthorityNames.EDITOR).get();
+		Authorities thumb = authoritiesRepository.findByAuthority(AuthorityNames.THUMBNAILER).get();
+		Authorities youtuber = authoritiesRepository.findByAuthority(AuthorityNames.YOUTUBER).get();
+		Authorities admin = authoritiesRepository.findByAuthority(AuthorityNames.ADMIN).get();
+		if(board.getBoardType().getBoardCode() == 2L) {
+			if(attemptingUser.getAuthorities().contains(editor)) {
+				attemptingUser.getAuthorities().remove(editor);
+			}
+			
+			if(!attemptingUser.getAuthorities().contains(admin) && !attemptingUser.getAuthorities().contains(editor) && !attemptingUser.getAuthorities().contains(thumb) && !attemptingUser.getAuthorities().contains(youtuber)){
+				boardLikedRepository.deleteAllByUserId(userId);
+			}
+			
+			Notification notification = new Notification().createNotification(
+					null, 
+					userRepository.findById(1L).orElseThrow(() -> new IllegalAccessError("해당 유저가 존재하지 않습니다.")),
+					attemptingUser,
+					"editDelNoti",
+					null);
+			notificationRepository.save(notification);	
+		}else if(board.getBoardType().getBoardCode() == 3L) {
+			if(attemptingUser.getAuthorities().contains(thumb)) {
+				attemptingUser.getAuthorities().remove(thumb);
+			}
+			if(!attemptingUser.getAuthorities().contains(admin) && !attemptingUser.getAuthorities().contains(editor) && !attemptingUser.getAuthorities().contains(thumb) && !attemptingUser.getAuthorities().contains(youtuber)){
+				boardLikedRepository.deleteAllByUserId(userId);
+			}
+			Notification notification = new Notification().createNotification(
+					null, 
+					userRepository.findById(1L).orElseThrow(() -> new IllegalAccessError("해당 유저가 존재하지 않습니다.")),
+					attemptingUser,
+					"thumbDelNoti",
+					null);
+			notificationRepository.save(notification);
 		}
 		
 		boardRepository.deleteById(bno);
