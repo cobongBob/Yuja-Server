@@ -1,5 +1,6 @@
 package com.cobong.yuja.config.jwt;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 
@@ -50,16 +51,15 @@ public class CookieProvider {
         return token;
     }
     
-    public Cookie createVisitCookie(String cookieName, Long userId) {
-    	Cookie visitCookie = new Cookie(cookieName, String.valueOf(userId));
+    public Cookie createVisitCookie(String cookieName, String userIp) {
+    	Cookie visitCookie = new Cookie(cookieName, userIp);
     	visitCookie.setPath("/");
     	
     	LocalDateTime tomorrow = LocalDate.now().plusDays(1).atStartOfDay();
     	LocalDateTime now = LocalDateTime.now();
-    	/***
-    	 * 쿠키 생성시간과 익일 오는 오전 00:00와의 시간차를 맥스 에이지로 만들기.
-    	 */
-        visitCookie.setMaxAge(66);
+    	
+        visitCookie.setMaxAge(Long.valueOf(Duration.between(now,tomorrow).getSeconds()).intValue());
+        //token.setSecure(true);
     	return visitCookie;
     }
 }

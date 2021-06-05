@@ -35,10 +35,12 @@ import com.cobong.yuja.config.jwt.CookieProvider;
 import com.cobong.yuja.config.jwt.JwtTokenProvider;
 import com.cobong.yuja.config.oauth.GoogleUser;
 import com.cobong.yuja.model.Authorities;
+import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.ChatRoomJoin;
 import com.cobong.yuja.model.ProfilePicture;
 import com.cobong.yuja.model.RefreshToken;
 import com.cobong.yuja.model.User;
+import com.cobong.yuja.model.VisitorTracker;
 import com.cobong.yuja.model.YoutubeConfirm;
 import com.cobong.yuja.model.enums.AuthorityNames;
 import com.cobong.yuja.payload.request.user.LoginRequest;
@@ -47,12 +49,14 @@ import com.cobong.yuja.payload.request.user.UserUpdateRequestDto;
 import com.cobong.yuja.payload.response.user.UserForClientResponseDto;
 import com.cobong.yuja.payload.response.user.UserResponseDto;
 import com.cobong.yuja.repository.attach.ProfilePictureRepository;
+import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.chat.ChatRoomJoinRepository;
 import com.cobong.yuja.repository.chat.ChatRoomRepository;
 import com.cobong.yuja.repository.refreshToken.RefreshTokenRepository;
 import com.cobong.yuja.repository.user.AuthoritiesRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 import com.cobong.yuja.repository.user.YoutubeConfirmRepository;
+import com.cobong.yuja.repository.visitorTracker.VisitorTrackerRepository;
 import com.cobong.yuja.service.user.UserService;
 import com.google.common.io.Files;
 
@@ -73,6 +77,8 @@ public class UserServiceImpl implements UserService {
     private final YoutubeConfirmRepository youtubeConfirmRepository;
     private final ChatRoomJoinRepository chatRoomJoinRepository;
     private final ChatRoomRepository chatRoomRepository;
+    private final VisitorTrackerRepository visitorTrackerRepository;
+    private final BoardRepository boardRepository;
     @Value("${app.oauthSecret}")
 	private String oauthSecret;
     
@@ -623,7 +629,7 @@ public class UserServiceImpl implements UserService {
 	public String banned(Long uno) {
 		User user = userRepository.findById(uno)
 				.orElseThrow(()-> new IllegalAccessError("해당유저 없음 " +uno));
-	
+		Long[][] stats = statsInSevenDays();
 		if(user.isBanned()) {
 			user.setBanned(false);
 			return "해당 유저가 밴 해제 되었습니다.";
@@ -635,11 +641,15 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public Long[] statsInSevenDays() {
+	public Long[][] statsInSevenDays() {
+		Long[][] weekStat = new Long[2][7];
 		Long[] signedUp = new Long[7];
-		
+		Long[] visitors = new Long[7];
+		Long[] boardStat = {0L,0L,0L,0L,0L,0L,0L,0L,0L,0L};
 		LocalDateTime weekAgo = LocalDate.now().minusDays(7).atStartOfDay();
 		List<User> usersRegistered = userRepository.usersCreatedAfter(weekAgo.atZone(ZoneOffset.systemDefault()).toInstant());
+		List<VisitorTracker> visitorsIn7Days = visitorTrackerRepository.visitorsAfter();
+		Collections.reverse(visitorsIn7Days);
 		for(int i = 0; i < 7; i++) {
 			Long cnt = 0L;
 			for(User user: usersRegistered) {
@@ -648,9 +658,53 @@ public class UserServiceImpl implements UserService {
 						cnt++;						
 					}
 				}
+			visitors[i] = visitorsIn7Days.get(i).getVisitorsToday();
 			}
 			signedUp[i] = cnt;
 		}
-		return signedUp;
+		List<Board> allBoards = boardRepository.findAll();
+		for(Board board: allBoards) {
+			switch(Long.valueOf(board.getBoardType().getBoardCode()).intValue()) {
+			case 1:
+				boardStat[0]++;
+				break;
+			case 2:
+				boardStat[1]++;
+				break;
+			case 3:
+				boardStat[2]++;
+				break;
+			case 4:
+				boardStat[3]++;
+				break;
+			case 5:
+				boardStat[4]++;
+				break;
+			case 6:
+				boardStat[5]++;
+				break;
+			case 7:
+				boardStat[6]++;
+				break;
+			case 8:
+				boardStat[7]++;
+				break;
+			case 9:
+				boardStat[8]++;
+				break;
+			case 10:
+				boardStat[9]++;
+				break;
+			}
+		}
+		
+		List<User> allUsers = userRepository.findAll();
+		for(User user: allUsers){
+			/***
+			 * User 생성일 기준으로 총 유저수와 첫 가입자로 부터 유저 증가수를 볼수있는 데이터
+			 */
+		}
+			
+		return weekStat;
 	}
 }

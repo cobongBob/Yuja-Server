@@ -20,6 +20,7 @@ import com.cobong.yuja.model.Notification;
 import com.cobong.yuja.model.ProfilePicture;
 import com.cobong.yuja.model.Thumbnail;
 import com.cobong.yuja.model.User;
+import com.cobong.yuja.model.VisitorTracker;
 import com.cobong.yuja.model.enums.AuthorityNames;
 import com.cobong.yuja.payload.request.board.BoardSaveRequestDto;
 import com.cobong.yuja.payload.request.board.BoardUpdateRequestDto;
@@ -35,6 +36,7 @@ import com.cobong.yuja.repository.liked.BoardLikedRepository;
 import com.cobong.yuja.repository.notification.NotificationRepository;
 import com.cobong.yuja.repository.user.AuthoritiesRepository;
 import com.cobong.yuja.repository.user.UserRepository;
+import com.cobong.yuja.repository.visitorTracker.VisitorTrackerRepository;
 import com.google.common.io.Files;
 
 import lombok.RequiredArgsConstructor;
@@ -51,6 +53,7 @@ public class BoardServiceImpl implements BoardService {
 	private final NotificationRepository notificationRepository;
 	private final ProfilePictureRepository profilePictureRepository;
 	private final BoardLikedRepository boardLikedRepository;
+	private final VisitorTrackerRepository visitorTrackerRepository;
 	
 	@Override
 	@Transactional
@@ -594,8 +597,13 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
-	public MainboardsResponseDto getMainBoardData() {
+	@Transactional
+	public MainboardsResponseDto getMainBoardData(boolean isVisit) {
+		
+		if(!isVisit) {
+			VisitorTracker vs = visitorTrackerRepository.findLastTracker().get();
+			vs.addNum();
+		}
 		
 		// 유튜버(1) 최신순(updatedDate) 
 		List<Board> board =boardRepository.orderYouLatest();
