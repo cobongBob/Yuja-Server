@@ -128,7 +128,7 @@ public class BoardApiController {
 			userId = principalDetails.getUserId();
 		}
     	Cookie visitCookie = cookieProvider.getCookie(req, "visitCookieBno");
-    	if(visitCookie != null && visitCookie.getValue().equals(String.valueOf(userId))) {
+    	if(visitCookie != null) {
     		isVisit = true;
     	} else {
     		visitCookie = cookieProvider.createVisitCookie("visitCookieBno", String.valueOf(userId));

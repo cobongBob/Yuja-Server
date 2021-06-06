@@ -65,7 +65,6 @@ import com.cobong.yuja.repository.visitorTracker.VisitorTrackerRepository;
 import com.cobong.yuja.service.user.UserService;
 import com.google.common.io.Files;
 
-import javassist.expr.NewArray;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -635,7 +634,6 @@ public class UserServiceImpl implements UserService {
 	public String banned(Long uno) {
 		User user = userRepository.findById(uno)
 				.orElseThrow(()-> new IllegalAccessError("해당유저 없음 " +uno));
-		StatisticsDto as = statsInSevenDays();
 		if(user.isBanned()) {
 			user.setBanned(false);
 			return "해당 유저가 밴 해제 되었습니다.";
@@ -648,11 +646,11 @@ public class UserServiceImpl implements UserService {
 	@Override
 	@Transactional(readOnly = true)
 	public StatisticsDto statsInSevenDays() {
+		LocalDateTime weekAgo = LocalDate.now().minusDays(6).atStartOfDay();
+		List<User> usersRegistered = userRepository.usersCreatedAfter(weekAgo.atZone(ZoneOffset.systemDefault()).toInstant());
 		Long[] signedUp = new Long[7];
 		Long[] visitors = new Long[7];
 		Long[] boardStat = {0L,0L,0L,0L,0L,0L,0L,0L,0L,0L};
-		LocalDateTime weekAgo = LocalDate.now().minusDays(6).atStartOfDay();
-		List<User> usersRegistered = userRepository.usersCreatedAfter(weekAgo.atZone(ZoneOffset.systemDefault()).toInstant());
 		List<VisitorTracker> visitorsIn7Days = visitorTrackerRepository.visitorsAfter();
 		Collections.reverse(visitorsIn7Days);
 		LocalDate curInst = null;
@@ -665,8 +663,8 @@ public class UserServiceImpl implements UserService {
 				if(targetInst.isEqual(curInst)) {
 					cnt++;
 				}
-			visitors[i] = visitorsIn7Days.get(i).getVisitorsToday();
 			}
+			visitors[i] = visitorsIn7Days.get(i).getVisitorsToday();
 			signedUp[i] = cnt;
 		}
 		
