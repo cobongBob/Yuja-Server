@@ -26,7 +26,7 @@ function disconnect() {
 }
 
 function send() {
-  message = document.getElementById('message').value;
+  message = document.getElementById('message').value.trim();
   if(message === null || message === ""){
 	return false;
 	}

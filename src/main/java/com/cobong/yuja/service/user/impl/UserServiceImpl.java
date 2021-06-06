@@ -2,12 +2,16 @@ package com.cobong.yuja.service.user.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -46,6 +50,7 @@ import com.cobong.yuja.model.enums.AuthorityNames;
 import com.cobong.yuja.payload.request.user.LoginRequest;
 import com.cobong.yuja.payload.request.user.UserSaveRequestDto;
 import com.cobong.yuja.payload.request.user.UserUpdateRequestDto;
+import com.cobong.yuja.payload.response.statistics.StatisticsDto;
 import com.cobong.yuja.payload.response.user.UserForClientResponseDto;
 import com.cobong.yuja.payload.response.user.UserResponseDto;
 import com.cobong.yuja.repository.attach.ProfilePictureRepository;
@@ -60,6 +65,7 @@ import com.cobong.yuja.repository.visitorTracker.VisitorTrackerRepository;
 import com.cobong.yuja.service.user.UserService;
 import com.google.common.io.Files;
 
+import javassist.expr.NewArray;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -629,7 +635,7 @@ public class UserServiceImpl implements UserService {
 	public String banned(Long uno) {
 		User user = userRepository.findById(uno)
 				.orElseThrow(()-> new IllegalAccessError("해당유저 없음 " +uno));
-		Long[][] stats = statsInSevenDays();
+		StatisticsDto as = statsInSevenDays();
 		if(user.isBanned()) {
 			user.setBanned(false);
 			return "해당 유저가 밴 해제 되었습니다.";
@@ -641,27 +647,29 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public Long[][] statsInSevenDays() {
-		Long[][] weekStat = new Long[2][7];
+	public StatisticsDto statsInSevenDays() {
 		Long[] signedUp = new Long[7];
 		Long[] visitors = new Long[7];
 		Long[] boardStat = {0L,0L,0L,0L,0L,0L,0L,0L,0L,0L};
-		LocalDateTime weekAgo = LocalDate.now().minusDays(7).atStartOfDay();
+		LocalDateTime weekAgo = LocalDate.now().minusDays(6).atStartOfDay();
 		List<User> usersRegistered = userRepository.usersCreatedAfter(weekAgo.atZone(ZoneOffset.systemDefault()).toInstant());
 		List<VisitorTracker> visitorsIn7Days = visitorTrackerRepository.visitorsAfter();
 		Collections.reverse(visitorsIn7Days);
+		LocalDate curInst = null;
+		LocalDate targetInst = null;
 		for(int i = 0; i < 7; i++) {
 			Long cnt = 0L;
+			curInst = LocalDateTime.ofInstant(weekAgo.atZone(ZoneOffset.systemDefault()).toInstant().plusSeconds(86400L*i), ZoneId.systemDefault()).toLocalDate();
 			for(User user: usersRegistered) {
-				if(user.getCreatedDate().isBefore(LocalDate.now().minusDays(6-(i+1)).atStartOfDay().atZone(ZoneOffset.systemDefault()).toInstant())) {
-					if(user.getCreatedDate().isAfter(LocalDate.now().minusDays(6-i).atStartOfDay().atZone(ZoneOffset.systemDefault()).toInstant())) {
-						cnt++;						
-					}
+				targetInst = LocalDateTime.ofInstant(user.getCreatedDate(), ZoneId.systemDefault()).toLocalDate();
+				if(targetInst.isEqual(curInst)) {
+					cnt++;
 				}
 			visitors[i] = visitorsIn7Days.get(i).getVisitorsToday();
 			}
 			signedUp[i] = cnt;
 		}
+		
 		List<Board> allBoards = boardRepository.findAll();
 		for(Board board: allBoards) {
 			switch(Long.valueOf(board.getBoardType().getBoardCode()).intValue()) {
@@ -699,12 +707,29 @@ public class UserServiceImpl implements UserService {
 		}
 		
 		List<User> allUsers = userRepository.findAll();
-		for(User user: allUsers){
-			/***
-			 * User 생성일 기준으로 총 유저수와 첫 가입자로 부터 유저 증가수를 볼수있는 데이터
-			 */
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date startDate = null;
+		try {
+			startDate = format.parse("2021-05-29");
+		} catch (ParseException e) {
+			e.printStackTrace();
 		}
-			
+		
+		long diff = ((System.currentTimeMillis()-startDate.getTime())/1000)/60/60/24;
+		Long[] userInc = new Long[(int) (diff+1L)];
+		
+		for(int i = 0; i < diff+1L;i++) {
+			userInc[i] = 0L;
+			curInst = LocalDateTime.ofInstant(startDate.toInstant().plusSeconds(86400L*i), ZoneId.systemDefault()).toLocalDate();
+			for(User user: allUsers){
+				targetInst = LocalDateTime.ofInstant(user.getCreatedDate(), ZoneId.systemDefault()).toLocalDate();
+				if(targetInst.isEqual(curInst)) {
+					userInc[i]++;
+				}
+			}
+		}
+		
+		StatisticsDto weekStat = new StatisticsDto(signedUp, visitors, boardStat, userInc);
 		return weekStat;
 	}
 }
