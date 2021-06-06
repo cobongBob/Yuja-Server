@@ -81,7 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
 				.authenticationEntryPoint(jwtAuthenticationEntryPoint)
 				.and()
 			.headers().frameOptions().disable()
-				.addHeaderWriter(new StaticHeadersWriter("Content-Security-Policy", "frame-ancestors self http://localhost:3000"))
+				.addHeaderWriter(new StaticHeadersWriter("Content-Security-Policy", "frame-ancestors self https://www.withyuja.com"))
 				.and()
 			.authorizeRequests()
 				.antMatchers("/static/**","/imgs/**","/files/**")
