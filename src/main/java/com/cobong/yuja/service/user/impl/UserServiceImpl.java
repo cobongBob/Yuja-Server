@@ -645,7 +645,15 @@ public class UserServiceImpl implements UserService {
 	
 	@Override
 	@Transactional(readOnly = true)
-	public StatisticsDto statsInSevenDays() {
+	public StatisticsDto statsInSevenDays(Long userId) {
+		Optional<User> attemptingUser = userRepository.findById(userId);
+		if(!attemptingUser.isPresent()) {
+			throw new IllegalAccessError("관리자 계정으로 로그인 해 주십시오");
+		}
+		if(!attemptingUser.get().getAuthorities().contains(authoritiesRepository.findByAuthority(AuthorityNames.ADMIN).get()) && !attemptingUser.get().getAuthorities().contains(authoritiesRepository.findByAuthority(AuthorityNames.MANAGER).get())) {
+			throw new IllegalAccessError("권한이 없습니다.");
+		}
+		
 		LocalDateTime weekAgo = LocalDate.now().minusDays(6).atStartOfDay();
 		List<User> usersRegistered = userRepository.usersCreatedAfter(weekAgo.atZone(ZoneOffset.systemDefault()).toInstant());
 		Long[] signedUp = new Long[7];

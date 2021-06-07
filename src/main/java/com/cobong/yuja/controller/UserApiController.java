@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cobong.yuja.config.auth.PrincipalDetails;
 import com.cobong.yuja.payload.request.user.UserUpdateRequestDto;
+import com.cobong.yuja.payload.response.statistics.StatisticsDto;
 import com.cobong.yuja.service.user.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -101,4 +102,15 @@ public class UserApiController {
     		return new ResponseEntity<>("권한이 없습니다.",HttpStatus.OK);
     	}
 	}
+	
+	@GetMapping("/api/yujastats")
+	public ResponseEntity<StatisticsDto> yujaStats(){
+		PrincipalDetails principalDetails = null;
+		Long userId = 0L;
+		if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PrincipalDetails) {
+			principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			userId = principalDetails.getUserId();
+		}
+		return new ResponseEntity<StatisticsDto>(userService.statsInSevenDays(userId), HttpStatus.OK);
+	} 
 }
