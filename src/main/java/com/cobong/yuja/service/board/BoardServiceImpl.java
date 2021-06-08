@@ -92,7 +92,7 @@ public class BoardServiceImpl implements BoardService {
 			String previewImage = "https://img.youtube.com/vi/" + code + "/hqdefault.jpg";
 			dto.setPreviewImage(previewImage);
 		} else {
-			String previewImage = "http://localhost:8888/imgs/defaultImg.png";
+			String previewImage = "https://api.withyuja.com/imgs/defaultImg.png";
 			dto.setPreviewImage(previewImage);
 		}
 		
@@ -220,7 +220,7 @@ public class BoardServiceImpl implements BoardService {
 		BoardResponseDto dto = new BoardResponseDto().entityToDto(board);
 		Optional<ProfilePicture> optProfile = profilePictureRepository.findByUserUserId(board.getUser().getUserId());
 		if(optProfile.isPresent()) {
-			dto.setProfilePicture("http://localhost:8888/files/profiles/"+optProfile.get().getFileName());
+			dto.setProfilePicture("https://api.withyuja.com/files/profiles/"+optProfile.get().getFileName());
 		} else {
 			dto.setProfilePicture("");
 		}
@@ -356,7 +356,7 @@ public class BoardServiceImpl implements BoardService {
 			String previewImage = "https://img.youtube.com/vi/" + code + "/hqdefault.jpg";
 			boardUpdateRequestDto.setPreviewImage(previewImage);
 		} else {
-			String previewImage = "http://localhost:8888/imgs/defaultImg.png";
+			String previewImage = "https://api.withyuja.com/imgs/defaultImg.png";
 			boardUpdateRequestDto.setPreviewImage(previewImage);
 		}
 		
@@ -495,7 +495,7 @@ public class BoardServiceImpl implements BoardService {
 			if(boardType.getBoardCode() == 1L) {
 				Optional<ProfilePicture> psa = profilePictureRepository.findByUserUserId(board.getUser().getUserId());
 				if(psa.isPresent()) {
-					dto.setPreviewImage("http://localhost:8888/files/profiles/"+psa.get().getFileName());					
+					dto.setPreviewImage("https://api.withyuja.com/files/profiles/"+psa.get().getFileName());					
 				}
 			} 
 			
@@ -613,7 +613,7 @@ public class BoardServiceImpl implements BoardService {
 			BoardResponseDto resDto = new BoardResponseDto().entityToDto(board.get(i));
 			Optional<ProfilePicture> optprofile = profilePictureRepository.findByUserUserId(board.get(i).getUser().getUserId());
 			if(optprofile.isPresent()) {
-				resDto.setPreviewImage("http://localhost:8888/files/profiles/"+optprofile.get().getFileName());
+				resDto.setPreviewImage("https://api.withyuja.com/files/profiles/"+optprofile.get().getFileName());
 			}else {
 				resDto.setPreviewImage("");
 			}
@@ -628,7 +628,7 @@ public class BoardServiceImpl implements BoardService {
 			BoardResponseDto resDto = new BoardResponseDto().entityToDto(board.get(i));
 			Optional<ProfilePicture> optprofile = profilePictureRepository.findByUserUserId(board.get(i).getUser().getUserId());
 			if(optprofile.isPresent()) {
-				resDto.setPreviewImage("http://localhost:8888/files/profiles/"+optprofile.get().getFileName());
+				resDto.setPreviewImage("https://api.withyuja.com/files/profiles/"+optprofile.get().getFileName());
 			}else {
 				resDto.setPreviewImage("");
 			}
@@ -643,7 +643,7 @@ public class BoardServiceImpl implements BoardService {
 			BoardResponseDto resDto = new BoardResponseDto().entityToDto(board.get(i));
 			Optional<ProfilePicture> optprofile = profilePictureRepository.findByUserUserId(board.get(i).getUser().getUserId());
 			if(optprofile.isPresent()) {
-				resDto.setPreviewImage("http://localhost:8888/files/profiles/"+optprofile.get().getFileName());
+				resDto.setPreviewImage("https://api.withyuja.com/files/profiles/"+optprofile.get().getFileName());
 			}else {
 				resDto.setPreviewImage("");
 			}
@@ -694,7 +694,7 @@ public class BoardServiceImpl implements BoardService {
 			BoardResponseDto resDto = new BoardResponseDto();
 			resDto = resDto.entityToDto(board.get(i));
 			if(thumbnailRepository.findByBoardBoardId(board.get(i).getBoardId()).isPresent()) {
-				resDto.setPreviewImage("http://localhost:8888/files/thumbnail/"+thumbnailRepository.findByBoardBoardId(board.get(i).getBoardId()).get().getFileName());
+				resDto.setPreviewImage("https://api.withyuja.com/files/thumbnail/"+thumbnailRepository.findByBoardBoardId(board.get(i).getBoardId()).get().getFileName());
 			}
 			result.add(resDto);
 		}
