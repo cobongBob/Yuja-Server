@@ -678,7 +678,6 @@ public class UserServiceImpl implements UserService {
 			visitors[i] = visitorsIn7Days.get(i).getVisitorsToday();
 			signedUp[i] = cnt;
 		}
-		
 		List<Board> allBoards = boardRepository.findAll();
 		for(Board board: allBoards) {
 			switch(Long.valueOf(board.getBoardType().getBoardCode()).intValue()) {
@@ -705,7 +704,6 @@ public class UserServiceImpl implements UserService {
 				break;
 			}
 		}
-		
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Date startDate = null;
 		try {
@@ -718,7 +716,6 @@ public class UserServiceImpl implements UserService {
 		Long[] userInc = new Long[(int) (diff+1L)];
 		String[] allDates = new String[(int) (diff+1L)];
 		for(int i = 0; i < diff+1L;i++) {
-			
 			curInst = LocalDateTime.ofInstant(startDate.toInstant().plusSeconds(86400L*i), ZoneId.systemDefault()).toLocalDate();
 			
 			userInc[i] = allTracks.get(i).getUsersToday();
