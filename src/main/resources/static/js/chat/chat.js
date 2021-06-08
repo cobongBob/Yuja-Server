@@ -49,6 +49,7 @@ function send() {
   stompClient.send('/app/chat/send', {}, JSON.stringify(data));
   showMessageSend(data);
   $('#message').val('');
+  $('#message').focus();
   return false;
 }
 

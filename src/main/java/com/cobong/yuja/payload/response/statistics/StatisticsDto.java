@@ -10,4 +10,6 @@ public class StatisticsDto {
 	Long[] visitors;
 	Long[] totalBoards;
 	Long[] userInc;
+	String[] last7Days;
+	String[] allDates;
 }

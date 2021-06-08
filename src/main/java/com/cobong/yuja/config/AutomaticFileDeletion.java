@@ -6,8 +6,6 @@ import java.nio.file.Paths;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.cobong.yuja.model.VisitorTracker;
-import com.cobong.yuja.repository.visitorTracker.VisitorTrackerRepository;
 import com.cobong.yuja.service.attach.BoardAttachService;
 import com.cobong.yuja.service.attach.ProfilePictureService;
 import com.cobong.yuja.service.attach.ThumbnailService;
@@ -32,7 +30,6 @@ public class AutomaticFileDeletion {
 	private final ChatRoomService chatRoomService;
 	private final NotificationService notificationService;
 	private final BoardService boardService;
-	private final VisitorTrackerRepository visitorTrackerRepository;
 	
 	@Scheduled(cron = "0 0 4 * * *")
 	public void deleteAtFourAM() {
@@ -60,8 +57,8 @@ public class AutomaticFileDeletion {
 	
 	@Scheduled(cron = "0 0 0 * * *")
 	public void createAtMidnight() {
-		VisitorTracker visitorTrack = VisitorTracker.builder().visitorsToday(0L).build();
 		
-		visitorTrackerRepository.save(visitorTrack);
+		userService.createTracker();
+		
 	}
 }

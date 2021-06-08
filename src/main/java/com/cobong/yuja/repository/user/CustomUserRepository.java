@@ -8,4 +8,5 @@ import com.cobong.yuja.model.User;
 public interface CustomUserRepository {
 	List<User> findByEmail(String username);
 	List<User> usersCreatedAfter(Instant date);
+	Long countUsers();
 }

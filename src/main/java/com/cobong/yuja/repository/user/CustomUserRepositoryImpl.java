@@ -27,4 +27,9 @@ public class CustomUserRepositoryImpl implements CustomUserRepository {
 	public List<User> usersCreatedAfter(Instant date){
 		return queryFactory.selectFrom(user).where(user.createdDate.after(date)).fetch();
 	}
+	
+	@Override
+	public Long countUsers() {
+		return queryFactory.selectFrom(user).where(user.deleted.isFalse()).fetchCount();
+	}
 }

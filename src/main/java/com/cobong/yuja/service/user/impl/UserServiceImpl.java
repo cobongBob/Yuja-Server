@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
 import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
@@ -658,7 +659,8 @@ public class UserServiceImpl implements UserService {
 		List<User> usersRegistered = userRepository.usersCreatedAfter(weekAgo.atZone(ZoneOffset.systemDefault()).toInstant());
 		Long[] signedUp = new Long[7];
 		Long[] visitors = new Long[7];
-		Long[] boardStat = {0L,0L,0L,0L,0L,0L,0L,0L,0L,0L};
+		Long[] boardStat = {0L,0L,0L,0L,0L,0L,0L};
+		String[] last7Days = new String[7];
 		List<VisitorTracker> visitorsIn7Days = visitorTrackerRepository.visitorsAfter();
 		Collections.reverse(visitorsIn7Days);
 		LocalDate curInst = null;
@@ -672,6 +674,7 @@ public class UserServiceImpl implements UserService {
 					cnt++;
 				}
 			}
+			last7Days[i] = curInst.format(DateTimeFormatter.ofPattern("yyyy-MM-dd E요일"));
 			visitors[i] = visitorsIn7Days.get(i).getVisitorsToday();
 			signedUp[i] = cnt;
 		}
@@ -700,42 +703,42 @@ public class UserServiceImpl implements UserService {
 			case 7:
 				boardStat[6]++;
 				break;
-			case 8:
-				boardStat[7]++;
-				break;
-			case 9:
-				boardStat[8]++;
-				break;
-			case 10:
-				boardStat[9]++;
-				break;
 			}
 		}
 		
-		List<User> allUsers = userRepository.findAll();
 		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
 		Date startDate = null;
 		try {
-			startDate = format.parse("2021-05-29");
+			startDate = format.parse("2021-05-31");
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
 		
+		List<VisitorTracker> allTracks = visitorTrackerRepository.findAll();
 		long diff = ((System.currentTimeMillis()-startDate.getTime())/1000)/60/60/24;
 		Long[] userInc = new Long[(int) (diff+1L)];
-		
+		String[] allDates = new String[(int) (diff+1L)];
 		for(int i = 0; i < diff+1L;i++) {
-			userInc[i] = 0L;
+			
 			curInst = LocalDateTime.ofInstant(startDate.toInstant().plusSeconds(86400L*i), ZoneId.systemDefault()).toLocalDate();
-			for(User user: allUsers){
-				targetInst = LocalDateTime.ofInstant(user.getCreatedDate(), ZoneId.systemDefault()).toLocalDate();
-				if(targetInst.isEqual(curInst)) {
-					userInc[i]++;
-				}
-			}
+			
+			userInc[i] = allTracks.get(i).getUsersToday();
+			allDates[i] = curInst.format(DateTimeFormatter.ofPattern("yyyy-MM-dd E요일"));
 		}
 		
-		StatisticsDto weekStat = new StatisticsDto(signedUp, visitors, boardStat, userInc);
+		StatisticsDto weekStat = new StatisticsDto(signedUp, visitors, boardStat, userInc, last7Days, allDates);
 		return weekStat;
+	}
+
+	@Override
+	@Transactional
+	public void createTracker() {
+		VisitorTracker vs = visitorTrackerRepository.findLastTracker().get();
+		
+		vs.setUsersToday(userRepository.countUsers());
+		
+		VisitorTracker visitorTrack = VisitorTracker.builder().visitorsToday(0L).build();
+		
+		visitorTrackerRepository.save(visitorTrack);
 	}
 }

@@ -27,7 +27,13 @@ public class VisitorTracker extends DateAudit {
 	
 	Long visitorsToday;
 	
+	Long usersToday;
+	
 	public void addNum() {
 		this.visitorsToday++;
+	}
+	
+	public void setUsersToday(Long usersToday) {
+		this.usersToday = usersToday;
 	}
 }
