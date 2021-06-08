@@ -34,7 +34,6 @@ function send() {
 	message = message.replaceAll("&", "&amp");
 	}
   if(message.includes("<") || message.includes(">") || message.includes("'") || message.includes('"')){
-	console.log("visited");
 	message = message.replaceAll('<', '&lt');
 	message = message.replaceAll(">", "&gt");
 	message = message.replaceAll("'", "&#39");
