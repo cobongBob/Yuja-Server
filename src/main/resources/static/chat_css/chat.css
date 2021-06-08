@@ -44,7 +44,7 @@ body {
 .ChatSearch {
 	border: none;
   padding: 2%;
-  font-size: 1.2rem;
+  font-size: 110%;
   width: 75vw;
   font-family: 'scdream3';
   text-align: center;
@@ -166,9 +166,6 @@ body {
   min-height: 20vh;
   margin-bottom: 35px;
 }
-#chatLog {
-	
-}
 
 .ChatSenderBigWrapper {
   text-align: right;
@@ -201,7 +198,7 @@ body {
 .SenderChatDate {
   float: right;
   font-family:nanumGothic;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
   margin-top:5%;
 }
 
@@ -249,7 +246,7 @@ body {
 .ReceiverChatDate {
   float: left;
   font-family:nanumGothic;
-  font-size: 0.8rem;
+  font-size: 0.7rem;
 }
 
 .ChatContent {
@@ -281,7 +278,7 @@ body {
   border-radius: 30px;
   padding: 2%;
   font-size: 0.9rem;
-  width: 60vw;
+  width: 60%;
   height:1vh;
   text-align: center;
   font-family: nanumGothic;
