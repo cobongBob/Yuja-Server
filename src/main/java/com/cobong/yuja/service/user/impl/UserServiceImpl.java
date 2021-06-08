@@ -713,7 +713,6 @@ public class UserServiceImpl implements UserService {
 		} catch (ParseException e) {
 			e.printStackTrace();
 		}
-		
 		List<VisitorTracker> allTracks = visitorTrackerRepository.findAll();
 		long diff = ((System.currentTimeMillis()-startDate.getTime())/1000)/60/60/24;
 		Long[] userInc = new Long[(int) (diff+1L)];
