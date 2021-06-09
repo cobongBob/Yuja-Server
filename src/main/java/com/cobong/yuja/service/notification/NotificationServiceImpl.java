@@ -21,7 +21,7 @@ public class NotificationServiceImpl implements NotificationService {
 	private final NotificationRepository notificationRepository; 
 
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<NotificationResponseDto> unread(Long userId) {
 		List<NotificationResponseDto> notifications = new ArrayList<NotificationResponseDto>();
 		List<Notification> entityList = notificationRepository.unreadNoti(userId);
@@ -33,7 +33,7 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 	
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public NotificationResponseDto read(Long notiId) {
 		Notification notification =  notificationRepository.findById(notiId).orElseThrow(()-> new IllegalArgumentException("해당 메세지가 없습니다."));
 		NotificationResponseDto dto = new NotificationResponseDto().entityToDto(notification);

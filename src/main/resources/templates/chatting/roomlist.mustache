@@ -24,8 +24,11 @@
         <div class="ChatRoomsWrapper">
             {{#chatRooms}}
             <div class="RoomWrapper" id="roomNum{{chatRoomId}}">
-                   <div class="ChatImg"><a href="javascript:void(0);" id="enterRoom" onClick="enterRoom({{chatRoomId}})"><img src="{{profilePic}}" alt="ProfilePicture"/></a></div>
-                   <div class="ChatSender"><a href="javascript:void(0);" id="enterRoom" onClick="enterRoom({{chatRoomId}})">{{writer}}</a></div>
+                   <div class="ChatImg"><a href="javascript:void(0);" id="enterRoom" onClick="enterRoom({{chatRoomId}}, {{notiId}})"><img src="{{profilePic}}" alt="ProfilePicture"/></a></div>
+                   <div class="ChatSender"><a href="javascript:void(0);" id="enterRoom" onClick="enterRoom({{chatRoomId}}, {{notiId}})">{{writer}}</a></div>
+                   {{#hasNewChat}}
+	                   <div ><a href="javascript:void(0);" id="enterRoom" onClick="enterRoom({{chatRoomId}}, {{notiId}})">!</a></div>               
+                   {{/hasNewChat}}
                    <div class="ChatRoomIn"><a href="javascript:void(0);" id="delete" onClick="deleteById({{chatRoomId}})">❌</a></div>
             </div>
             {{/chatRooms}}

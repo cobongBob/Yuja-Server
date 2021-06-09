@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cobong.yuja.config.auth.PrincipalDetails;
-import com.cobong.yuja.payload.request.chat.ChatRoomDto;
+import com.cobong.yuja.payload.response.chat.ChatRoomDto;
 import com.cobong.yuja.payload.response.chat.SocketMessageSendDto;
 import com.cobong.yuja.service.attach.ProfilePictureService;
 import com.cobong.yuja.service.chat.ChatRoomJoinService;
@@ -113,6 +113,7 @@ public class ChatRoomController {
 		String userNickname = principalDetails.getNickname();
     	List<SocketMessageSendDto> messages = socketMessageService.getAllMsgs(chatRoomId, userId);
 		String receiver = chatRoomJoinService.findReceiver(chatRoomId, userId);
+		chatRoomJoinService.deleteChatNoti(receiver, userId);
 		String senderPic = profileService.getProfileByName(userNickname);
 		String receiverPic = profileService.getProfileByName(receiver);
 		
