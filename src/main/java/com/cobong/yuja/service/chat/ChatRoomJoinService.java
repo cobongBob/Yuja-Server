@@ -79,6 +79,7 @@ public class ChatRoomJoinService {
 		for(Notification noti: senderList) {
 			if(noti.getSender().getNickname().equals(receiver)) {
 				notificationRepository.deleteByRecipientId(receiverId, senderId);
+				return;
 			}
 		}
 	}
