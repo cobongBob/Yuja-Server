@@ -54,4 +54,11 @@ public class AutomaticFileDeletion {
 		//마감일 지난 공고들 자동삭제
 		boardService.deleteExpired();
 	}
+	
+	@Scheduled(cron = "0 0 0 * * *")
+	public void createAtMidnight() {
+		
+		userService.createTracker();
+		
+	}
 }

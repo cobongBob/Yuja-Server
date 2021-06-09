@@ -26,7 +26,7 @@ function disconnect() {
 }
 
 function send() {
-  message = document.getElementById('message').value;
+  message = document.getElementById('message').value.trim();
   if(message === null || message === ""){
 	return false;
 	}
@@ -34,7 +34,6 @@ function send() {
 	message = message.replaceAll("&", "&amp");
 	}
   if(message.includes("<") || message.includes(">") || message.includes("'") || message.includes('"')){
-	console.log("visited");
 	message = message.replaceAll('<', '&lt');
 	message = message.replaceAll(">", "&gt");
 	message = message.replaceAll("'", "&#39");
@@ -49,6 +48,7 @@ function send() {
   stompClient.send('/app/chat/send', {}, JSON.stringify(data));
   showMessageSend(data);
   $('#message').val('');
+  $('#message').focus();
   return false;
 }
 

@@ -2,9 +2,17 @@ package com.cobong.yuja.service.user.impl;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -32,24 +40,29 @@ import com.cobong.yuja.config.jwt.CookieProvider;
 import com.cobong.yuja.config.jwt.JwtTokenProvider;
 import com.cobong.yuja.config.oauth.GoogleUser;
 import com.cobong.yuja.model.Authorities;
+import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.ChatRoomJoin;
 import com.cobong.yuja.model.ProfilePicture;
 import com.cobong.yuja.model.RefreshToken;
 import com.cobong.yuja.model.User;
+import com.cobong.yuja.model.VisitorTracker;
 import com.cobong.yuja.model.YoutubeConfirm;
 import com.cobong.yuja.model.enums.AuthorityNames;
 import com.cobong.yuja.payload.request.user.LoginRequest;
 import com.cobong.yuja.payload.request.user.UserSaveRequestDto;
 import com.cobong.yuja.payload.request.user.UserUpdateRequestDto;
+import com.cobong.yuja.payload.response.statistics.StatisticsDto;
 import com.cobong.yuja.payload.response.user.UserForClientResponseDto;
 import com.cobong.yuja.payload.response.user.UserResponseDto;
 import com.cobong.yuja.repository.attach.ProfilePictureRepository;
+import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.chat.ChatRoomJoinRepository;
 import com.cobong.yuja.repository.chat.ChatRoomRepository;
 import com.cobong.yuja.repository.refreshToken.RefreshTokenRepository;
 import com.cobong.yuja.repository.user.AuthoritiesRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 import com.cobong.yuja.repository.user.YoutubeConfirmRepository;
+import com.cobong.yuja.repository.visitorTracker.VisitorTrackerRepository;
 import com.cobong.yuja.service.user.UserService;
 import com.google.common.io.Files;
 
@@ -70,6 +83,8 @@ public class UserServiceImpl implements UserService {
     private final YoutubeConfirmRepository youtubeConfirmRepository;
     private final ChatRoomJoinRepository chatRoomJoinRepository;
     private final ChatRoomRepository chatRoomRepository;
+    private final VisitorTrackerRepository visitorTrackerRepository;
+    private final BoardRepository boardRepository;
     @Value("${app.oauthSecret}")
 	private String oauthSecret;
     
@@ -627,5 +642,99 @@ public class UserServiceImpl implements UserService {
 			user.setBanned(true);
 			return "해당 유저가 밴 되었습니다.";
 		}
+	}
+	
+	@Override
+	@Transactional(readOnly = true)
+	public StatisticsDto statsInSevenDays(Long userId) {
+		Optional<User> attemptingUser = userRepository.findById(userId);
+		if(!attemptingUser.isPresent()) {
+			throw new IllegalAccessError("관리자 계정으로 로그인 해 주십시오");
+		}
+		if(!attemptingUser.get().getAuthorities().contains(authoritiesRepository.findByAuthority(AuthorityNames.ADMIN).get()) && !attemptingUser.get().getAuthorities().contains(authoritiesRepository.findByAuthority(AuthorityNames.MANAGER).get())) {
+			throw new IllegalAccessError("권한이 없습니다.");
+		}
+		
+		LocalDateTime weekAgo = LocalDate.now().minusDays(6).atStartOfDay();
+		List<User> usersRegistered = userRepository.usersCreatedAfter(weekAgo.atZone(ZoneOffset.systemDefault()).toInstant());
+		Long[] signedUp = new Long[7];
+		Long[] visitors = new Long[7];
+		Long[] boardStat = {0L,0L,0L,0L,0L,0L,0L};
+		String[] last7Days = new String[7];
+		List<VisitorTracker> visitorsIn7Days = visitorTrackerRepository.visitorsAfter();
+		Collections.reverse(visitorsIn7Days);
+		LocalDate curInst = null;
+		LocalDate targetInst = null;
+		for(int i = 0; i < 7; i++) {
+			Long cnt = 0L;
+			curInst = LocalDateTime.ofInstant(weekAgo.atZone(ZoneOffset.systemDefault()).toInstant().plusSeconds(86400L*i), ZoneId.systemDefault()).toLocalDate();
+			for(User user: usersRegistered) {
+				targetInst = LocalDateTime.ofInstant(user.getCreatedDate(), ZoneId.systemDefault()).toLocalDate();
+				if(targetInst.isEqual(curInst)) {
+					cnt++;
+				}
+			}
+			last7Days[i] = curInst.format(DateTimeFormatter.ofPattern("yyyy-MM-dd E요일"));
+			visitors[i] = visitorsIn7Days.get(i).getVisitorsToday();
+			signedUp[i] = cnt;
+		}
+		List<Board> allBoards = boardRepository.findAll();
+		for(Board board: allBoards) {
+			switch(Long.valueOf(board.getBoardType().getBoardCode()).intValue()) {
+			case 1:
+				boardStat[0]++;
+				break;
+			case 2:
+				boardStat[1]++;
+				break;
+			case 3:
+				boardStat[2]++;
+				break;
+			case 4:
+				boardStat[3]++;
+				break;
+			case 5:
+				boardStat[4]++;
+				break;
+			case 6:
+				boardStat[5]++;
+				break;
+			case 7:
+				boardStat[6]++;
+				break;
+			}
+		}
+		SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+		Date startDate = null;
+		try {
+			startDate = format.parse("2021-05-31");
+		} catch (ParseException e) {
+			e.printStackTrace();
+		}
+		List<VisitorTracker> allTracks = visitorTrackerRepository.findAll();
+		long diff = ((System.currentTimeMillis()-startDate.getTime())/1000)/60/60/24;
+		Long[] userInc = new Long[(int) (diff+1L)];
+		String[] allDates = new String[(int) (diff+1L)];
+		for(int i = 0; i < diff+1L;i++) {
+			curInst = LocalDateTime.ofInstant(startDate.toInstant().plusSeconds(86400L*i), ZoneId.systemDefault()).toLocalDate();
+			
+			userInc[i] = allTracks.get(i).getUsersToday();
+			allDates[i] = curInst.format(DateTimeFormatter.ofPattern("yyyy-MM-dd E요일"));
+		}
+		
+		StatisticsDto weekStat = new StatisticsDto(signedUp, visitors, boardStat, userInc, last7Days, allDates);
+		return weekStat;
+	}
+
+	@Override
+	@Transactional
+	public void createTracker() {
+		VisitorTracker vs = visitorTrackerRepository.findLastTracker().get();
+		
+		vs.setUsersToday(userRepository.countUsers());
+		
+		VisitorTracker visitorTrack = VisitorTracker.builder().visitorsToday(0L).build();
+		
+		visitorTrackerRepository.save(visitorTrack);
 	}
 }
