@@ -71,13 +71,10 @@ public class AuthApiController {
 		Cookie[] cookies = userService.signIn(loginRequest);
 		res.addCookie(cookies[0]);
 		res.addCookie(cookies[1]);
-		if(loginRequest.getRememberMe()) {
-			Cookie rememberMe = cookieProvider.createRemeberMeCookie("rememberMeCookie", loginRequest.getUsername());
-			res.addCookie(rememberMe);
-		} else {
-			Cookie rememberMe = cookieProvider.deleteRemeberMeCookie("rememberMeCookie", loginRequest.getUsername());
-			res.addCookie(rememberMe);
+		if(cookies[2] != null) {
+			res.addCookie(cookies[2]);
 		}
+		
 		return new ResponseEntity<>(userService.findByUsernameForClient(loginRequest.getUsername()), HttpStatus.OK);
 	}
 
