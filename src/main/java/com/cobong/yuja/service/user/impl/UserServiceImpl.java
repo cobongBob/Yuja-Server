@@ -432,15 +432,8 @@ public class UserServiceImpl implements UserService {
       Cookie refreshToken = cookieProvider.createCookie(JwtTokenProvider.REFRESH_TOKEN_NAME, refreshJwt);
       RefreshToken refreshTokenEntity = new RefreshToken(dto.getId(),refreshJwt);
       refreshTokenRepository.save(refreshTokenEntity);
-      Cookie rememberMe = null;
-      if(user.getProvider() != null && !user.getProvider().equals("google")) {
-         if(loginRequest.getRememberMe()) {
-            rememberMe = cookieProvider.createRemeberMeCookie("rememberMeCookie", loginRequest.getUsername());
-         } else {
-            rememberMe = cookieProvider.deleteRemeberMeCookie("rememberMeCookie", loginRequest.getUsername());
-         }
-      }
-      return new Cookie[] {accessToken,refreshToken,rememberMe};
+      
+      return new Cookie[] {accessToken,refreshToken};
    }
    
    @Override

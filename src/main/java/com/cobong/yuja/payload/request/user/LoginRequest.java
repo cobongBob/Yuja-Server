@@ -13,13 +13,7 @@ import lombok.ToString;
 @AllArgsConstructor
 public class LoginRequest {
 
-	private String username;
+   private String username;
 
-	private String password;
-	
-	private boolean rememberMe;
-	   
-	public boolean getRememberMe() {
-	   return this.rememberMe;
-	}
+   private String password;
 }
