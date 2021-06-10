@@ -74,4 +74,11 @@ public class CookieProvider {
 //      token.setSecure(true);
         return token;
     }
+    public Cookie deleteRemeberMeCookie(String cookieName, String username) {
+    	Cookie token = new Cookie(cookieName, username);
+    	token.setPath("/");
+    	token.setMaxAge(0);
+//      token.setSecure(true);
+    	return token;
+    }
 }
