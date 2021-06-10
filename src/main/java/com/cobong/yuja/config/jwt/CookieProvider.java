@@ -1,9 +1,5 @@
 package com.cobong.yuja.config.jwt;
 
-import java.time.Duration;
-import java.time.LocalDate;
-import java.time.LocalDateTime;
-import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
 import javax.servlet.http.Cookie;
@@ -57,10 +53,10 @@ public class CookieProvider {
     	Cookie visitCookie = new Cookie(cookieName, userIp);
     	visitCookie.setPath("/");
     	
-    	ZonedDateTime tomorrow = LocalDate.now().plusDays(1).atStartOfDay().atZone(ZoneId.of("Asia/Seoul"));
-        ZonedDateTime now = LocalDateTime.now().atZone(ZoneId.of("Asia/Seoul"));
-    	
-        visitCookie.setMaxAge(Long.valueOf(Duration.between(now,tomorrow).getSeconds()).intValue());
+    	ZonedDateTime now = ZonedDateTime.now();
+        int timeDiff =  ((23-now.getHour())*60*60)+ ((59-now.getMinute())*60)+(60-now.getSecond());
+        
+        visitCookie.setMaxAge(timeDiff);
         visitCookie.setSecure(true);
     	return visitCookie;
     }
