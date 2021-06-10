@@ -3,6 +3,8 @@ package com.cobong.yuja.config.jwt;
 import java.time.Duration;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -55,11 +57,21 @@ public class CookieProvider {
     	Cookie visitCookie = new Cookie(cookieName, userIp);
     	visitCookie.setPath("/");
     	
-    	LocalDateTime tomorrow = LocalDate.now().plusDays(1).atStartOfDay();
-    	LocalDateTime now = LocalDateTime.now();
+    	ZonedDateTime tomorrow = LocalDate.now().plusDays(1).atStartOfDay().atZone(ZoneId.of("Asia/Seoul"));
+    	ZonedDateTime now = LocalDateTime.now().atZone(ZoneId.of("Asia/Seoul"));
+    	//LocalDateTime tomorrow = LocalDate.now().plusDays(1).atStartOfDay();
+    	//LocalDateTime now = LocalDateTime.now();
     	
         visitCookie.setMaxAge(Long.valueOf(Duration.between(now,tomorrow).getSeconds()).intValue());
         //token.setSecure(true);
     	return visitCookie;
+    }
+    
+    public Cookie createRemeberMeCookie(String cookieName, String username) {
+    	Cookie token = new Cookie(cookieName, username);
+        token.setPath("/");
+        token.setMaxAge(365*24*60*60);
+//      token.setSecure(true);
+        return token;
     }
 }
