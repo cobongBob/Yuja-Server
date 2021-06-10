@@ -130,9 +130,8 @@ public class BoardApiController {
     	Cookie visitCookie = cookieProvider.getCookie(req, "visitCookieBno");
     	if(visitCookie != null) {
     		isVisit = true;
-    	} else {
-    		visitCookie = cookieProvider.createVisitCookie("visitCookieBno", String.valueOf(userId));
     	}
+    	visitCookie = cookieProvider.createVisitCookie("visitCookieBno", String.valueOf(userId));
     	res.addCookie(visitCookie);
 		return new ResponseEntity<>(boardService.getMainBoardData(isVisit), HttpStatus.OK);
 	}

@@ -16,10 +16,4 @@ public class LoginRequest {
 	private String username;
 
 	private String password;
-	
-	private boolean rememberMe;
-	
-	public boolean getRememberMe() {
-		return this.rememberMe;
-	}
 }

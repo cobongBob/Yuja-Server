@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.cobong.yuja.config.jwt.CookieProvider;
 import com.cobong.yuja.config.oauth.GoogleUser;
 import com.cobong.yuja.payload.request.user.LoginRequest;
 import com.cobong.yuja.payload.request.user.UserSaveRequestDto;
@@ -39,8 +38,6 @@ public class AuthApiController {
 	private final ProfilePictureService profilePictureService;
 	
 	private final YoutubeConfirmService youtubeConfirmService;
-	
-	private final CookieProvider cookieProvider;
 	
 	@PostMapping("/signup")
 	public ResponseEntity<?> insertUser(@Valid @RequestBody UserSaveRequestDto dto, HttpServletRequest req) {
@@ -71,10 +68,6 @@ public class AuthApiController {
 		Cookie[] cookies = userService.signIn(loginRequest);
 		res.addCookie(cookies[0]);
 		res.addCookie(cookies[1]);
-		if(cookies[2] != null) {
-			res.addCookie(cookies[2]);
-		}
-		
 		return new ResponseEntity<>(userService.findByUsernameForClient(loginRequest.getUsername()), HttpStatus.OK);
 	}
 
