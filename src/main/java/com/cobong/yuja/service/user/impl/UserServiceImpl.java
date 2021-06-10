@@ -733,7 +733,7 @@ public class UserServiceImpl implements UserService {
 		
 		vs.setUsersToday(userRepository.countUsers());
 		
-		VisitorTracker visitorTrack = VisitorTracker.builder().visitorsToday(0L).build();
+		VisitorTracker visitorTrack = VisitorTracker.builder().visitorsToday(0L).usersToday(userRepository.countUsers()).build();
 		
 		visitorTrackerRepository.save(visitorTrack);
 	}

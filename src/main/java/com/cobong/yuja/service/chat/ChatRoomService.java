@@ -11,11 +11,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.cobong.yuja.model.ChatRoom;
 import com.cobong.yuja.model.ChatRoomJoin;
+import com.cobong.yuja.model.Notification;
 import com.cobong.yuja.model.User;
-import com.cobong.yuja.payload.request.chat.ChatRoomDto;
+import com.cobong.yuja.payload.response.chat.ChatRoomDto;
 import com.cobong.yuja.repository.attach.ProfilePictureRepository;
 import com.cobong.yuja.repository.chat.ChatRoomJoinRepository;
 import com.cobong.yuja.repository.chat.ChatRoomRepository;
+import com.cobong.yuja.repository.notification.NotificationRepository;
 import com.cobong.yuja.repository.user.UserRepository;
 
 import javassist.compiler.CompileError;
@@ -29,6 +31,7 @@ public class ChatRoomService {
 	private final ChatRoomJoinRepository chatroomjoinrepository;
 	private final UserRepository userRepository;
 	private final ProfilePictureRepository profileRepository;
+	private final NotificationRepository notificationRepository;
 	
 	@Transactional
 	public Long newRoom(String receiver, Long sender) {
@@ -63,6 +66,7 @@ public class ChatRoomService {
 	public List<ChatRoomDto> findRooms(Long userId) throws CompileError {
 		List<ChatRoomDto> dtoList = new ArrayList<ChatRoomDto>();
 		List<ChatRoomJoin> joins = chatroomjoinrepository.findByUserUserId(userId);
+		List<Notification> senderList = notificationRepository.findChatNotiByRecipientId(userId);
 		
 		for(ChatRoomJoin join: joins) {
 			ChatRoom curRoom = join.getChatRoom();
@@ -75,6 +79,12 @@ public class ChatRoomService {
 				dto.setLastMsgReceivedDate(Instant.now());
 			}
 			
+			for(Notification noti: senderList) {
+				if(noti.getSender().getNickname().equals(receiver)) {
+					dto.setNotiId(noti.getNotiId());
+					dto.setHasNewChat(true);
+				}
+			}
 			if(profileRepository.findByUserNickname(receiver).isPresent()) {
 				dto.setProfilePic("/files/profiles/"+profileRepository.findByUserNickname(receiver).get().getFileName());
 			} else {

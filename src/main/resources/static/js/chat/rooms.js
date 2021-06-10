@@ -15,7 +15,7 @@ function deleteById(chatRoomId) {
 	})
 }
 
-function enterRoom(chatRoomId){
+function enterRoom(chatRoomId, notiId){
 	$.ajax({
 		url: "/socket/chat/"+chatRoomId,
 		success: function(data){
@@ -25,6 +25,7 @@ function enterRoom(chatRoomId){
 			$(".ChatListTitle").html("<h3 style='color: red'>"+e.responseJSON.message+"<h3>");
 		}
 	})
+	window.parent.postMessage({notiId: notiId},'*')
 }
 
 function findRoom(){
