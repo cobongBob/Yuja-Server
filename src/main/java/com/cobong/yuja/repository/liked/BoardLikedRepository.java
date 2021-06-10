@@ -16,4 +16,8 @@ public interface BoardLikedRepository extends JpaRepository<BoardLiked, Long>, C
 	
 	@Query(nativeQuery = true, value = "SELECT * FROM boardliked WHERE boardId = :boardId and userId = :userId")
 	List<BoardLiked> duplicateCheck(@Param("userId") Long userid, @Param("boardId") Long boardid);
+	
+	@Modifying
+	@Query("DELETE FROM BoardLiked where userId =:userId")
+	void deleteAllByUserId(@Param("userId") Long userId);
 }

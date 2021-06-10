@@ -1,4 +1,4 @@
-package com.cobong.yuja.payload.request.chat;
+package com.cobong.yuja.payload.response.chat;
 
 import java.time.Instant;
 
@@ -11,6 +11,8 @@ public class ChatRoomDto {
 	private String profilePic;
 	private Instant lastMsgReceivedDate;
 	private int numOfUnreadMsgs;
+	private boolean hasNewChat;
+	private Long notiId = 0L;
 	
 	public ChatRoomDto create(Long chatRoomId, String writer, String lastMsg) {
 		ChatRoomDto room = new ChatRoomDto();

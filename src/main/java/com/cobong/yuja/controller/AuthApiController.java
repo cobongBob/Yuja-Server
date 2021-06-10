@@ -68,6 +68,10 @@ public class AuthApiController {
 		Cookie[] cookies = userService.signIn(loginRequest);
 		res.addCookie(cookies[0]);
 		res.addCookie(cookies[1]);
+		if(cookies[2] != null) {
+	         res.addCookie(cookies[2]);
+	      }
+	      
 		return new ResponseEntity<>(userService.findByUsernameForClient(loginRequest.getUsername()), HttpStatus.OK);
 	}
 

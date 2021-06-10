@@ -21,7 +21,7 @@ public class NotificationServiceImpl implements NotificationService {
 	private final NotificationRepository notificationRepository; 
 
 	@Override
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<NotificationResponseDto> unread(Long userId) {
 		List<NotificationResponseDto> notifications = new ArrayList<NotificationResponseDto>();
 		List<Notification> entityList = notificationRepository.unreadNoti(userId);

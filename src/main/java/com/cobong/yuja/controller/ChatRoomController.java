@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.cobong.yuja.config.auth.PrincipalDetails;
-import com.cobong.yuja.payload.request.chat.ChatRoomDto;
+import com.cobong.yuja.payload.response.chat.ChatRoomDto;
 import com.cobong.yuja.payload.response.chat.SocketMessageSendDto;
 import com.cobong.yuja.service.attach.ProfilePictureService;
 import com.cobong.yuja.service.chat.ChatRoomJoinService;
@@ -110,11 +110,13 @@ public class ChatRoomController {
     	if(userId == 0L) {
     		throw new IllegalAccessError("채팅을 시도하려는 유저가 존재하지 않거나 유저의 로그인 세션이 끝났습니다.");
     	}
-		String userNickname = principalDetails.getNickname();
+    
+    	String userNickname = principalDetails.getNickname();
     	List<SocketMessageSendDto> messages = socketMessageService.getAllMsgs(chatRoomId, userId);
-		String receiver = chatRoomJoinService.findReceiver(chatRoomId, userId);
-		String senderPic = profileService.getProfileByName(userNickname);
-		String receiverPic = profileService.getProfileByName(receiver);
+    	String receiver = chatRoomJoinService.findReceiver(chatRoomId, userId);
+    	chatRoomJoinService.deleteChatNoti(receiver, userId);
+    	String senderPic = profileService.getProfileByName(userNickname);
+    	String receiverPic = profileService.getProfileByName(receiver);
 		
 		model.addAttribute("receiver", receiver);
 		model.addAttribute("username", userNickname);

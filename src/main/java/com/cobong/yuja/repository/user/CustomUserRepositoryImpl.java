@@ -2,6 +2,7 @@ package com.cobong.yuja.repository.user;
 
 import static com.cobong.yuja.model.QUser.user;
 
+import java.time.Instant;
 import java.util.List;
 
 import com.cobong.yuja.model.User;
@@ -20,5 +21,15 @@ public class CustomUserRepositoryImpl implements CustomUserRepository {
 				.where(user.username
 						.eq(username))
 				.fetch();
+	}
+	
+	@Override
+	public List<User> usersCreatedAfter(Instant date){
+		return queryFactory.selectFrom(user).where(user.createdDate.after(date)).fetch();
+	}
+	
+	@Override
+	public Long countUsers() {
+		return queryFactory.selectFrom(user).where(user.deleted.isFalse()).fetchCount();
 	}
 }

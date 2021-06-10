@@ -20,6 +20,7 @@ import com.cobong.yuja.model.Notification;
 import com.cobong.yuja.model.ProfilePicture;
 import com.cobong.yuja.model.Thumbnail;
 import com.cobong.yuja.model.User;
+import com.cobong.yuja.model.VisitorTracker;
 import com.cobong.yuja.model.enums.AuthorityNames;
 import com.cobong.yuja.payload.request.board.BoardSaveRequestDto;
 import com.cobong.yuja.payload.request.board.BoardUpdateRequestDto;
@@ -31,9 +32,11 @@ import com.cobong.yuja.repository.attach.ProfilePictureRepository;
 import com.cobong.yuja.repository.attach.ThumbnailRepository;
 import com.cobong.yuja.repository.board.BoardRepository;
 import com.cobong.yuja.repository.board.BoardTypeRepository;
+import com.cobong.yuja.repository.liked.BoardLikedRepository;
 import com.cobong.yuja.repository.notification.NotificationRepository;
 import com.cobong.yuja.repository.user.AuthoritiesRepository;
 import com.cobong.yuja.repository.user.UserRepository;
+import com.cobong.yuja.repository.visitorTracker.VisitorTrackerRepository;
 import com.google.common.io.Files;
 
 import lombok.RequiredArgsConstructor;
@@ -49,6 +52,8 @@ public class BoardServiceImpl implements BoardService {
 	private final AuthoritiesRepository authoritiesRepository;
 	private final NotificationRepository notificationRepository;
 	private final ProfilePictureRepository profilePictureRepository;
+	private final BoardLikedRepository boardLikedRepository;
+	private final VisitorTrackerRepository visitorTrackerRepository;
 	
 	@Override
 	@Transactional
@@ -77,9 +82,7 @@ public class BoardServiceImpl implements BoardService {
 			if(boardRepository.findByTitleAndWriter(dto.getTitle(), user.getUserId()).isPresent()) {
 				throw new IllegalAccessError("해당글 신고 처리중 입니다.");
 			}
-			
-		}
-		
+		} 
 		
 		String receivelink = dto.getPreviewImage();
 		String target = "https://www.youtube.com/watch?v=";
@@ -282,6 +285,42 @@ public class BoardServiceImpl implements BoardService {
 			if(origToDel.exists()) {
 				origToDel.delete();
 			} 
+		}
+		Authorities editor = authoritiesRepository.findByAuthority(AuthorityNames.EDITOR).get();
+		Authorities thumb = authoritiesRepository.findByAuthority(AuthorityNames.THUMBNAILER).get();
+		Authorities youtuber = authoritiesRepository.findByAuthority(AuthorityNames.YOUTUBER).get();
+		Authorities admin = authoritiesRepository.findByAuthority(AuthorityNames.ADMIN).get();
+		if(board.getBoardType().getBoardCode() == 2L) {
+			if(attemptingUser.getAuthorities().contains(editor)) {
+				attemptingUser.getAuthorities().remove(editor);
+				System.out.println(attemptingUser.getAuthorities());
+			}
+			
+			if(!attemptingUser.getAuthorities().contains(admin) && !attemptingUser.getAuthorities().contains(editor) && !attemptingUser.getAuthorities().contains(thumb) && !attemptingUser.getAuthorities().contains(youtuber)){
+				boardLikedRepository.deleteAllByUserId(userId);
+			}
+			
+			Notification notification = new Notification().createNotification(
+					null, 
+					userRepository.findById(1L).orElseThrow(() -> new IllegalAccessError("해당 유저가 존재하지 않습니다.")),
+					attemptingUser,
+					"editDelNoti",
+					null);
+			notificationRepository.save(notification);	
+		}else if(board.getBoardType().getBoardCode() == 3L) {
+			if(attemptingUser.getAuthorities().contains(thumb)) {
+				attemptingUser.getAuthorities().remove(thumb);
+			}
+			if(!attemptingUser.getAuthorities().contains(admin) && !attemptingUser.getAuthorities().contains(editor) && !attemptingUser.getAuthorities().contains(thumb) && !attemptingUser.getAuthorities().contains(youtuber)){
+				boardLikedRepository.deleteAllByUserId(userId);
+			}
+			Notification notification = new Notification().createNotification(
+					null, 
+					userRepository.findById(1L).orElseThrow(() -> new IllegalAccessError("해당 유저가 존재하지 않습니다.")),
+					attemptingUser,
+					"thumbDelNoti",
+					null);
+			notificationRepository.save(notification);
 		}
 		
 		boardRepository.deleteById(bno);
@@ -558,8 +597,13 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
-	@Transactional(readOnly = true)
-	public MainboardsResponseDto getMainBoardData() {
+	@Transactional
+	public MainboardsResponseDto getMainBoardData(boolean isVisit) {
+		
+		if(!isVisit) {
+			VisitorTracker vs = visitorTrackerRepository.findLastTracker().get();
+			vs.addNum();
+		}
 		
 		// 유튜버(1) 최신순(updatedDate) 
 		List<Board> board =boardRepository.orderYouLatest();

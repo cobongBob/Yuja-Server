@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.cobong.yuja.config.auth.PrincipalDetails;
 import com.cobong.yuja.payload.request.user.UserUpdateRequestDto;
+import com.cobong.yuja.payload.response.statistics.StatisticsDto;
 import com.cobong.yuja.service.user.UserService;
 
 import lombok.RequiredArgsConstructor;
@@ -27,12 +28,30 @@ public class UserApiController {
 	
 	@GetMapping("/api/user/{userId}") // done
 	public ResponseEntity<?> getOneUser(@PathVariable Long userId) {
-		return new ResponseEntity<>(userService.findById(userId),HttpStatus.OK);
+		PrincipalDetails principalDetails = null;
+    	Long aUserId = 0L;
+    	if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PrincipalDetails) {
+    		principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			aUserId = principalDetails.getUserId();
+		}
+		return new ResponseEntity<>(userService.findById(userId, aUserId),HttpStatus.OK);
 	}
 	
 	@GetMapping("/api/user") // test 해바야댐
 	public ResponseEntity<?> getAllUser(){
-		return new ResponseEntity<>(userService.findAll(),HttpStatus.OK);
+		PrincipalDetails principalDetails = null;
+    	String authorities = null;
+    	if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PrincipalDetails) {
+    		principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+    		authorities = principalDetails.getAuthorities().stream()
+	                .map(GrantedAuthority::getAuthority)
+	                .collect(Collectors.joining(","));
+		}
+    	if(authorities.contains("ADMIN") || authorities.contains("MANAGER")) {
+    		return new ResponseEntity<>(userService.findAll(),HttpStatus.OK);
+    	} else {
+    		return new ResponseEntity<>("권한이 없습니다.",HttpStatus.OK);
+    	}
 	}
 	
 	@PutMapping("/api/user/{bno}") // done
@@ -83,4 +102,15 @@ public class UserApiController {
     		return new ResponseEntity<>("권한이 없습니다.",HttpStatus.OK);
     	}
 	}
+	
+	@GetMapping("/api/yujastats")
+	public ResponseEntity<StatisticsDto> yujaStats(){
+		PrincipalDetails principalDetails = null;
+		Long userId = 0L;
+		if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PrincipalDetails) {
+			principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			userId = principalDetails.getUserId();
+		}
+		return new ResponseEntity<StatisticsDto>(userService.statsInSevenDays(userId), HttpStatus.OK);
+	} 
 }

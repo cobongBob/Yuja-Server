@@ -25,7 +25,7 @@ public interface BoardService {
 	
 	List<BoardResponseDto> boardsUserCommented(Long userId);
 	
-	MainboardsResponseDto getMainBoardData();
+	MainboardsResponseDto getMainBoardData(boolean isVisit);
 
 	String noticePrivateSwitch(Long bno);
 

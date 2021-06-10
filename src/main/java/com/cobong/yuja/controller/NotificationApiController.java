@@ -38,5 +38,5 @@ public class NotificationApiController {
 	public ResponseEntity<?> deleteNoti(@PathVariable Long notiId) {
 		return new ResponseEntity<>(notificationService.deletedNoti(notiId),HttpStatus.OK);
 	}
-
+	
 }

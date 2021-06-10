@@ -15,5 +15,5 @@ public interface NotificationService {
 	String deletedNoti(Long notiId);
 
 	void delete2weeksOld();
-	
+
 }

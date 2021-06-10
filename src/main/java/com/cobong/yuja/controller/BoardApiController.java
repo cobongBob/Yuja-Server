@@ -119,8 +119,22 @@ public class BoardApiController {
 	}
 	
 	@GetMapping("/api/main/board") // done
-	public ResponseEntity<?> getMainBoardData() {
-		return new ResponseEntity<>(boardService.getMainBoardData(), HttpStatus.OK);
+	public ResponseEntity<?> getMainBoardData(HttpServletResponse res, HttpServletRequest req) {
+		PrincipalDetails principalDetails = null;
+    	Long userId = 0L;
+    	boolean isVisit = false;
+    	if (SecurityContextHolder.getContext().getAuthentication().getPrincipal() instanceof PrincipalDetails) {
+    		principalDetails = (PrincipalDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			userId = principalDetails.getUserId();
+		}
+    	Cookie visitCookie = cookieProvider.getCookie(req, "visitCookieBno");
+    	if(visitCookie != null) {
+    		isVisit = true;
+    	} else {
+    		visitCookie = cookieProvider.createVisitCookie("visitCookieBno", String.valueOf(userId));
+    	}
+    	res.addCookie(visitCookie);
+		return new ResponseEntity<>(boardService.getMainBoardData(isVisit), HttpStatus.OK);
 	}
 	@GetMapping("/api/notice/private/{bno}") //done
 	public ResponseEntity<?> setNoticePrivate(@PathVariable Long bno) {

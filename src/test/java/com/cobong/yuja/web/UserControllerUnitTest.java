@@ -84,7 +84,7 @@ public class UserControllerUnitTest {
 		UserResponseDto reres = new UserResponseDto().entityToDto(resUser.dtoToEntity());
 		
 		userService.save(resUser);
-		when(userService.findById(1L)).thenReturn(reres);
+		when(userService.findById(1L,90L)).thenReturn(reres);
 		//when
 		Long id = 1L;
 		this.mockMvc.perform(get("/api/user/{userId}", id)

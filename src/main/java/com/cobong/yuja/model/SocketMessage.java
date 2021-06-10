@@ -27,7 +27,7 @@ import lombok.Setter;
 public class SocketMessage extends DateAudit{
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long socketMsgIdp;
+	private Long socketMsgId;
 	
 	@Column(length = 5000, nullable = false)
 	private String message;

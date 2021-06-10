@@ -13,7 +13,6 @@ public class CorsConfig {
 		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
 		CorsConfiguration config = new CorsConfiguration();
 		config.setAllowCredentials(true);
-		config.addAllowedOriginPattern("http://127.0.0.1:3000");
 		config.addAllowedOriginPattern("http://localhost:3000");
 		config.addAllowedOrigin("https://www.withyuja.com");
 		config.addAllowedOrigin("https://withyuja.com");
