@@ -48,6 +48,9 @@ public class BoardComment extends DateAudit{
     @JoinColumn(name = "parentId")
     private BoardComment parent;
 	
+	@OneToMany(mappedBy = "parent", cascade = CascadeType.REMOVE)
+	private List<BoardComment> children;
+	
 	@OneToMany(mappedBy = "comment",cascade = CascadeType.REMOVE)
 	@Builder.Default
 	private List<Notification> notifications = new ArrayList<Notification>();

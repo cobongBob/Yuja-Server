@@ -38,7 +38,7 @@ public class AuthApiController {
 	private final ProfilePictureService profilePictureService;
 	
 	private final YoutubeConfirmService youtubeConfirmService;
-
+	
 	@PostMapping("/signup")
 	public ResponseEntity<?> insertUser(@Valid @RequestBody UserSaveRequestDto dto, HttpServletRequest req) {
 		return new ResponseEntity<>(userService.save(dto), HttpStatus.CREATED);

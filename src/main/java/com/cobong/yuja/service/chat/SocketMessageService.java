@@ -2,6 +2,7 @@ package com.cobong.yuja.service.chat;
 
 import java.time.LocalDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -95,7 +96,8 @@ public class SocketMessageService {
 			dto.setContent(dto.getContent().replaceAll("&quot", "\""));
 			dto.setContent(dto.getContent().replaceAll("&#39", "\'"));
 			dto.setContent(dto.getContent().replaceAll("&amp", "&"));
-			LocalDateTime msgTime = LocalDateTime.ofInstant(msgs.getCreatedDate(), ZoneId.systemDefault());
+			ZonedDateTime msgTime = msgs.getCreatedDate().atZone(ZoneId.of("Asia/Seoul"));
+			
 			if(msgTime.getMinute() < 10) {
 				min = "0"+ msgTime.getMinute();
 			} else {

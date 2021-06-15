@@ -8,7 +8,7 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -207,7 +207,7 @@ public class UserServiceImpl implements UserService {
 			}
 			if(optProfilePicture.isPresent()) {
 				ProfilePicture profilePicture = optProfilePicture.get();
-				dto.setProfilePic(profilePicture.getFileName());			
+				dto.setProfilePic("http://localhost:8888/files/profiles/"+profilePicture.getFileName());			
 			} else {
 				dto.setProfilePic("");
 			}
@@ -432,6 +432,7 @@ public class UserServiceImpl implements UserService {
 		Cookie refreshToken = cookieProvider.createCookie(JwtTokenProvider.REFRESH_TOKEN_NAME, refreshJwt);
 		RefreshToken refreshTokenEntity = new RefreshToken(dto.getId(),refreshJwt);
 		refreshTokenRepository.save(refreshTokenEntity);
+		
 		return new Cookie[] {accessToken,refreshToken};
 	}
 	
@@ -655,8 +656,8 @@ public class UserServiceImpl implements UserService {
 			throw new IllegalAccessError("권한이 없습니다.");
 		}
 		
-		LocalDateTime weekAgo = LocalDate.now().minusDays(6).atStartOfDay();
-		List<User> usersRegistered = userRepository.usersCreatedAfter(weekAgo.atZone(ZoneOffset.systemDefault()).toInstant());
+		ZonedDateTime weekAgo = LocalDate.now().minusDays(6).atStartOfDay().atZone(ZoneId.of("Asia/Seoul"));
+		List<User> usersRegistered = userRepository.usersCreatedAfter(weekAgo.toInstant());
 		Long[] signedUp = new Long[7];
 		Long[] visitors = new Long[7];
 		Long[] boardStat = {0L,0L,0L,0L,0L,0L,0L};
@@ -667,14 +668,14 @@ public class UserServiceImpl implements UserService {
 		LocalDate targetInst = null;
 		for(int i = 0; i < 7; i++) {
 			Long cnt = 0L;
-			curInst = LocalDateTime.ofInstant(weekAgo.atZone(ZoneOffset.systemDefault()).toInstant().plusSeconds(86400L*i), ZoneId.systemDefault()).toLocalDate();
+			curInst = LocalDateTime.ofInstant(weekAgo.toInstant().plusSeconds(86400L*i), ZoneId.of("Asia/Seoul")).toLocalDate();
 			for(User user: usersRegistered) {
-				targetInst = LocalDateTime.ofInstant(user.getCreatedDate(), ZoneId.systemDefault()).toLocalDate();
+				targetInst = LocalDateTime.ofInstant(user.getCreatedDate(), ZoneId.of("Asia/Seoul")).toLocalDate();
 				if(targetInst.isEqual(curInst)) {
 					cnt++;
 				}
 			}
-			last7Days[i] = curInst.format(DateTimeFormatter.ofPattern("yyyy-MM-dd E요일"));
+			last7Days[i] = curInst.format(DateTimeFormatter.ofPattern("yyyy-MM-dd E"));
 			visitors[i] = visitorsIn7Days.get(i).getVisitorsToday();
 			signedUp[i] = cnt;
 		}
@@ -716,10 +717,10 @@ public class UserServiceImpl implements UserService {
 		Long[] userInc = new Long[(int) (diff+1L)];
 		String[] allDates = new String[(int) (diff+1L)];
 		for(int i = 0; i < diff+1L;i++) {
-			curInst = LocalDateTime.ofInstant(startDate.toInstant().plusSeconds(86400L*i), ZoneId.systemDefault()).toLocalDate();
+			curInst = LocalDateTime.ofInstant(startDate.toInstant().plusSeconds(86400L*i), ZoneId.of("Asia/Seoul")).toLocalDate();
 			
 			userInc[i] = allTracks.get(i).getUsersToday();
-			allDates[i] = curInst.format(DateTimeFormatter.ofPattern("yyyy-MM-dd E요일"));
+			allDates[i] = curInst.format(DateTimeFormatter.ofPattern("yyyy-MM-dd E"));
 		}
 		
 		StatisticsDto weekStat = new StatisticsDto(signedUp, visitors, boardStat, userInc, last7Days, allDates);
