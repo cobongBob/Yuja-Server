@@ -39,6 +39,7 @@ import com.cobong.yuja.config.auth.PrincipalDetails;
 import com.cobong.yuja.config.jwt.CookieProvider;
 import com.cobong.yuja.config.jwt.JwtTokenProvider;
 import com.cobong.yuja.config.oauth.GoogleUser;
+import com.cobong.yuja.config.oauth.KakaoUser;
 import com.cobong.yuja.model.Authorities;
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.ChatRoomJoin;
@@ -557,6 +558,27 @@ public class UserServiceImpl implements UserService {
 		}
 		googleUser.setAttribute(profile);
 		return googleUser;
+	}
+	
+	@Override
+	@Transactional
+	public KakaoUser kakaoOauthCheck(Map<String, Object> data) {
+		
+		@SuppressWarnings("unchecked") // 지정한 형식의 개체가 포함될 것을 확신한다 하면 어노테이션으로 ignore warning 시킴
+		Map<String, Object> profile = (Map<String, Object>) data.get("profile");
+		String username = (String) profile.get("id")+"@kakaowithyuja.com";
+		Boolean user = userRepository.existsByUsername(username);
+		KakaoUser kakaoUser = new KakaoUser();
+		kakaoUser.setPassword(oauthSecret);
+		kakaoUser.setKakaoName(username);
+
+		if (user.equals(false)) {
+			kakaoUser.setFlag(true);
+		} else {
+			kakaoUser.setFlag(false);
+		}
+		kakaoUser.setAttribute(profile);
+		return kakaoUser;
 	}
 
 	@Override

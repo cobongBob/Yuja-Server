@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.cobong.yuja.config.oauth.GoogleUser;
+import com.cobong.yuja.config.oauth.KakaoUser;
 import com.cobong.yuja.payload.request.user.LoginRequest;
 import com.cobong.yuja.payload.request.user.UserSaveRequestDto;
 import com.cobong.yuja.payload.request.user.YoutubeConfirmRequestDto;
@@ -103,6 +104,15 @@ public class AuthApiController {
 		}
 	}
 	
+	@PostMapping("/oauth/kakao")
+	public ResponseEntity<?> kakaoOauth(@RequestBody Map<String, Object> data) {
+		KakaoUser kakaoUser = userService.kakaoOauthCheck(data);
+		if(kakaoUser.getFlag()) {
+			return new ResponseEntity<>(kakaoUser, HttpStatus.CREATED);
+		}else {
+		return new ResponseEntity<>(kakaoUser, HttpStatus.OK);
+		}
+	}
 	
 	//비밀번호 찾기 인증메일전송
 	@PostMapping("/findPassword")
