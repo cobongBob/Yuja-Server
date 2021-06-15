@@ -54,4 +54,6 @@ public interface UserService {
 	StatisticsDto statsInSevenDays(Long userId);
 
 	void createTracker();
+	
+	void removeYearOldDeleted();
 }

@@ -738,4 +738,13 @@ public class UserServiceImpl implements UserService {
 		
 		visitorTrackerRepository.save(visitorTrack);
 	}
+	
+	@Override
+	@Transactional
+	public void removeYearOldDeleted() {
+		List<User> usersDeletedAYearAgo = userRepository.getYearOldDeletedUsers();
+		for(User userToRm: usersDeletedAYearAgo) {
+			userRepository.delete(userToRm);
+		}
+	}
 }
