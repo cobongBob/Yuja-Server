@@ -21,7 +21,7 @@ public class CookieProvider {
         	token.setMaxAge((int)JwtTokenProvider.REFRESH_TOKEN_VALIDATION_SECOND/1000); //쿠키 만료
         }
         token.setPath("/"); // 요청이 온 path내 모든 경로에서 쿠키 사용가능
-        token.setSecure(true); //https를 써야한다.
+        //token.setSecure(true); //https를 써야한다.
         return token;
     }
     
@@ -47,7 +47,7 @@ public class CookieProvider {
     	Cookie token = new Cookie(cookieName,String.valueOf(userId));
         token.setPath("/");
         token.setMaxAge(66);
-      token.setSecure(true);
+        //token.setSecure(true);
         return token;
     }
     
@@ -60,7 +60,7 @@ public class CookieProvider {
     	
         visitCookie.setMaxAge(timeDiff);
         
-        visitCookie.setSecure(true);
+        //visitCookie.setSecure(true);
     	return visitCookie;
     }
 }

@@ -207,7 +207,7 @@ public class UserServiceImpl implements UserService {
 			}
 			if(optProfilePicture.isPresent()) {
 				ProfilePicture profilePicture = optProfilePicture.get();
-				dto.setProfilePic(profilePicture.getFileName());			
+				dto.setProfilePic("http://localhost:8888/files/profiles/"+profilePicture.getFileName());			
 			} else {
 				dto.setProfilePic("");
 			}
