@@ -32,4 +32,9 @@ public class CustomUserRepositoryImpl implements CustomUserRepository {
 	public Long countUsers() {
 		return queryFactory.selectFrom(user).where(user.deleted.isFalse()).fetchCount();
 	}
+	@Override
+	   public List<User> getYearOldDeletedUsers(){
+	      Instant yearAgo = Instant.now().minusSeconds(365*24*60*60);
+	      return queryFactory.selectFrom(user).where(user.deleted.isTrue(), user.updatedDate.after(yearAgo)).fetch();
+	   }
 }

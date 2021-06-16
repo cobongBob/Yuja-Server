@@ -6,6 +6,7 @@ import java.util.Map;
 import javax.servlet.http.Cookie;
 
 import com.cobong.yuja.config.oauth.GoogleUser;
+import com.cobong.yuja.config.oauth.KakaoUser;
 import com.cobong.yuja.payload.request.user.LoginRequest;
 import com.cobong.yuja.payload.request.user.UserSaveRequestDto;
 import com.cobong.yuja.payload.request.user.UserUpdateRequestDto;
@@ -40,6 +41,8 @@ public interface UserService {
 	String checkNickname(String username);
 	
 	GoogleUser googleOauthCheck(Map<String, Object> data);
+	
+	KakaoUser kakaoOauthCheck(Map<String, Object> data);
 
 	String resetPassword(Map<String, String> userData);
 
@@ -54,4 +57,6 @@ public interface UserService {
 	StatisticsDto statsInSevenDays(Long userId);
 
 	void createTracker();
+	
+	void removedYearOldDeleted();
 }

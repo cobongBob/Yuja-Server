@@ -39,6 +39,7 @@ import com.cobong.yuja.config.auth.PrincipalDetails;
 import com.cobong.yuja.config.jwt.CookieProvider;
 import com.cobong.yuja.config.jwt.JwtTokenProvider;
 import com.cobong.yuja.config.oauth.GoogleUser;
+import com.cobong.yuja.config.oauth.KakaoUser;
 import com.cobong.yuja.model.Authorities;
 import com.cobong.yuja.model.Board;
 import com.cobong.yuja.model.ChatRoomJoin;
@@ -207,7 +208,7 @@ public class UserServiceImpl implements UserService {
          }
          if(optProfilePicture.isPresent()) {
             ProfilePicture profilePicture = optProfilePicture.get();
-            dto.setProfilePic(profilePicture.getFileName());         
+            dto.setProfilePic("https://api.withyuja.com/files/profiles/"+profilePicture.getFileName());         
          } else {
             dto.setProfilePic("");
          }
@@ -560,6 +561,29 @@ public class UserServiceImpl implements UserService {
    }
 
    @Override
+	@Transactional
+	public KakaoUser kakaoOauthCheck(Map<String, Object> data) {
+		
+		@SuppressWarnings("unchecked")
+		Map<String, Object> profile = (Map<String, Object>) data.get("profile");
+
+
+		String username = ""+profile.get("id")+"@kakaowithyuja.com";
+		Boolean user = userRepository.existsByUsername(username);
+		KakaoUser kakaoUser = new KakaoUser();
+		kakaoUser.setPassword(oauthSecret);
+		kakaoUser.setEmail(username);
+		kakaoUser.setProviderId(""+profile.get("id"));
+		if (user.equals(false)) {
+			kakaoUser.setFlag(true);
+		} else {
+			kakaoUser.setFlag(false);
+		}
+		kakaoUser.setAttribute(profile);
+		return kakaoUser;
+	}
+   
+   @Override
    @Transactional
    public String resetPassword(Map<String, String> userData) {
       User user = userRepository.findByUsername(userData.get("username")).orElse(null);
@@ -737,5 +761,14 @@ public class UserServiceImpl implements UserService {
       VisitorTracker visitorTrack = VisitorTracker.builder().visitorsToday(0L).usersToday(userRepository.countUsers()).build();
       
       visitorTrackerRepository.save(visitorTrack);
+   }
+   
+   @Override
+   @Transactional
+   public void removedYearOldDeleted() {
+      List<User> usersDeletedAYearAgo = userRepository.getYearOldDeletedUsers();
+      for(User userToRm: usersDeletedAYearAgo) {
+         userRepository.delete(userToRm);
+      }
    }
 }
