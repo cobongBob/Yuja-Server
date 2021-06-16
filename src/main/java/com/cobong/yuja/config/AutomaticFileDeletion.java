@@ -50,6 +50,7 @@ public class AutomaticFileDeletion {
 		socketMessageService.delete2weeksOld();
 		chatRoomService.deleteEmptyRooms();
 		notificationService.delete2weeksOld();
+		userService.removeYearOldDeleted();
 		
 		//마감일 지난 공고들 자동삭제
 		boardService.deleteExpired();
