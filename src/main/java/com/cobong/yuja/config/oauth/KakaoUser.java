@@ -11,35 +11,17 @@ import lombok.ToString;
 @Setter
 @Getter
 @ToString
-public class KakaoUser implements OAuthUserInfo {
+public class KakaoUser {
 	private Map<String, Object> attribute;
 	
 	public KakaoUser(Map<String, Object> attribute) {
 		this.attribute = attribute;
 	}
 	
-	@Override
-	public String getProviderId() {
-		return (String) attribute.get("id");
-	}
-	
-	@Override
-	public String getProvider() {
-		return "kakao";
-	}
-
-	@Override
-	public String getEmail() {
-		return (String) attribute.get("email");
-	}
-	
-	@Override
-	public String getName() {
-		return (String) attribute.get("name");
-	}
-	
+	private String provider = "kakao";
+	private String providerId;
 	private Boolean flag;
 	private String password;
-	private String kakaoName;
+	private String email;
 }
 

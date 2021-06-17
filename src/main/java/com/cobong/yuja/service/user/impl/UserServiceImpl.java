@@ -564,14 +564,16 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	public KakaoUser kakaoOauthCheck(Map<String, Object> data) {
 		
-		@SuppressWarnings("unchecked") // 지정한 형식의 개체가 포함될 것을 확신한다 하면 어노테이션으로 ignore warning 시킴
+		@SuppressWarnings("unchecked")
 		Map<String, Object> profile = (Map<String, Object>) data.get("profile");
-		String username = (String) profile.get("id")+"@kakaowithyuja.com";
+
+
+		String username = ""+profile.get("id")+"@kakaowithyuja.com";
 		Boolean user = userRepository.existsByUsername(username);
 		KakaoUser kakaoUser = new KakaoUser();
 		kakaoUser.setPassword(oauthSecret);
-		kakaoUser.setKakaoName(username);
-
+		kakaoUser.setEmail(username);
+		kakaoUser.setProviderId(""+profile.get("id"));
 		if (user.equals(false)) {
 			kakaoUser.setFlag(true);
 		} else {
