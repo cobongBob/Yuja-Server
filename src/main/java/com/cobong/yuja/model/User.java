@@ -100,12 +100,6 @@ public class User extends DateAudit {
 	private List<Notification> notiReceiver;
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-	private List<ChatRoomJoin> chatRoomJoins;
-	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
-	private List<SocketMessage> msgs;
-	
-	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)
 	private List<YoutubeConfirm> confirmImg;
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.REMOVE)

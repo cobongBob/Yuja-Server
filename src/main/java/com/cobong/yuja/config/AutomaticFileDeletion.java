@@ -10,8 +10,6 @@ import com.cobong.yuja.service.attach.BoardAttachService;
 import com.cobong.yuja.service.attach.ProfilePictureService;
 import com.cobong.yuja.service.attach.ThumbnailService;
 import com.cobong.yuja.service.board.BoardService;
-import com.cobong.yuja.service.chat.ChatRoomService;
-import com.cobong.yuja.service.chat.SocketMessageService;
 import com.cobong.yuja.service.notification.NotificationService;
 import com.cobong.yuja.service.user.UserService;
 import com.cobong.yuja.service.user.YoutubeConfirmService;
@@ -26,8 +24,6 @@ public class AutomaticFileDeletion {
 	private final ThumbnailService thumbnailService;
 	private final UserService userService;
 	private final YoutubeConfirmService youtuberConfirmService;
-	private final SocketMessageService socketMessageService;
-	private final ChatRoomService chatRoomService;
 	private final NotificationService notificationService;
 	private final BoardService boardService;
 	
@@ -47,8 +43,6 @@ public class AutomaticFileDeletion {
 		thumbnailService.deleteUnflagged();
 		userService.deleteUnflagged();
 		youtuberConfirmService.deleteUnflagged();
-		socketMessageService.delete2weeksOld();
-		chatRoomService.deleteEmptyRooms();
 		notificationService.delete2weeksOld();
 		userService.removeYearOldDeleted();
 		

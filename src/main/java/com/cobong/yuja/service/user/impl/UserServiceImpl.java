@@ -42,7 +42,6 @@ import com.cobong.yuja.config.oauth.GoogleUser;
 import com.cobong.yuja.config.oauth.KakaoUser;
 import com.cobong.yuja.model.Authorities;
 import com.cobong.yuja.model.Board;
-import com.cobong.yuja.model.ChatRoomJoin;
 import com.cobong.yuja.model.ProfilePicture;
 import com.cobong.yuja.model.RefreshToken;
 import com.cobong.yuja.model.User;
@@ -57,8 +56,6 @@ import com.cobong.yuja.payload.response.user.UserForClientResponseDto;
 import com.cobong.yuja.payload.response.user.UserResponseDto;
 import com.cobong.yuja.repository.attach.ProfilePictureRepository;
 import com.cobong.yuja.repository.board.BoardRepository;
-import com.cobong.yuja.repository.chat.ChatRoomJoinRepository;
-import com.cobong.yuja.repository.chat.ChatRoomRepository;
 import com.cobong.yuja.repository.refreshToken.RefreshTokenRepository;
 import com.cobong.yuja.repository.user.AuthoritiesRepository;
 import com.cobong.yuja.repository.user.UserRepository;
@@ -82,8 +79,6 @@ public class UserServiceImpl implements UserService {
     private final RefreshTokenRepository refreshTokenRepository;
     private final JavaMailSender javaMailSender;
     private final YoutubeConfirmRepository youtubeConfirmRepository;
-    private final ChatRoomJoinRepository chatRoomJoinRepository;
-    private final ChatRoomRepository chatRoomRepository;
     private final VisitorTrackerRepository visitorTrackerRepository;
     private final BoardRepository boardRepository;
     @Value("${app.oauthSecret}")
@@ -328,10 +323,6 @@ public class UserServiceImpl implements UserService {
 				isAdminOrManager = true;
 			}
 		}
-		List<ChatRoomJoin> joins = chatRoomJoinRepository.findByUserUserId(bno);
-		for(ChatRoomJoin join: joins) {
-			chatRoomRepository.deleteById(join.getChatRoom().getRoomId());
-		}
 		if(bno == userId || isAdminOrManager) {
 			if(deletinguser.isDeleted()) {
 				deletinguser.setDeleted(false);
@@ -367,10 +358,6 @@ public class UserServiceImpl implements UserService {
 			if(toDel.exists()) {
 				toDel.delete();				
 			}
-		}
-		List<ChatRoomJoin> joins = chatRoomJoinRepository.findByUserUserId(uno);
-		for(ChatRoomJoin join: joins) {
-			chatRoomRepository.deleteById(join.getChatRoom().getRoomId());
 		}
 		
 		userRepository.deleteById(uno);
@@ -408,6 +395,13 @@ public class UserServiceImpl implements UserService {
 	public UserForClientResponseDto findByUsernameForClient(String username) {
 		User user = userRepository.findByUsername(username).orElseThrow(()-> new IllegalArgumentException("해당 유저를 찾을수 없습니다."));
 		UserForClientResponseDto dto = new UserForClientResponseDto().entityToDto(user);
+		Optional<ProfilePicture> optOriginalProfilePicture = profilePictureRepository.findByUserUserId(user.getUserId());
+		if(optOriginalProfilePicture.isPresent()) {
+			ProfilePicture originalProfilePicture = optOriginalProfilePicture.get();
+			dto.setProfilePic(originalProfilePicture.getFileName());
+		}else {
+			dto.setProfilePic("");
+		}
 		return dto;
 	}
 	
