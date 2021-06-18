@@ -13,6 +13,7 @@ public class UserForClientResponseDto {
 	private String nickname;
 	private String realName;
 	private List<?> authorities;
+	private String profilePic;
 	
 	public UserForClientResponseDto entityToDto(User entity) {
 		this.id = entity.getUserId();
