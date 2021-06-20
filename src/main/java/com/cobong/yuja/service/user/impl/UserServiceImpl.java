@@ -213,104 +213,108 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	@Transactional
-	public UserResponseDto modify(Long bno, UserUpdateRequestDto userUpdateRequestDto, Long userId) {
-		User attemptingUser = userRepository.findById(userId).orElseThrow(() -> new IllegalAccessError("해당 유저가 없습니다."));
-		List<Authorities> roles = attemptingUser.getAuthorities(); 
-		boolean isAdminOrManager = false;
-		for(Authorities auth: roles) {
-			if(auth.getAuthority() == AuthorityNames.ADMIN || auth.getAuthority() == AuthorityNames.MANAGER) {
-				isAdminOrManager = true;
-			}
-		}
-		if(bno != userId && !isAdminOrManager) {
-			throw new IllegalAccessError("관리자가 아니므로 해당 유저의 정보를 삭제할 수 없습니다");
-		}
-		String wholeAddr = userUpdateRequestDto.getAddress() +" # "+ userUpdateRequestDto.getDetailAddress();
-		
-		User user = userRepository.findById(bno)
-				.orElseThrow(() -> new IllegalAccessError("해당유저 없음" + bno));
-		
-		user.modify(userUpdateRequestDto.getUsername(),  
-				userUpdateRequestDto.getNickname(),userUpdateRequestDto.getRealName(),
-				userUpdateRequestDto.getBday(),userUpdateRequestDto.getProvidedId(), 
-				userUpdateRequestDto.getProvider(), wholeAddr, 
-				userUpdateRequestDto.getPhone(), userUpdateRequestDto.getBsn(), 
-				userUpdateRequestDto.getYoutubeUrl(), false);
-		UserResponseDto dto = new UserResponseDto().entityToDto(user);
+	   @Transactional
+	   public UserResponseDto modify(Long bno, UserUpdateRequestDto userUpdateRequestDto, Long userId) {
+	      User attemptingUser = userRepository.findById(userId).orElseThrow(() -> new IllegalAccessError("해당 유저가 없습니다."));
+	      List<Authorities> roles = attemptingUser.getAuthorities();
+	      
+	      boolean isAdminOrManager = false;
+	      for(Authorities auth: roles) {
+	         if(auth.getAuthority() == AuthorityNames.ADMIN || auth.getAuthority() == AuthorityNames.MANAGER) {
+	            isAdminOrManager = true;
+	         }
+	      }
+	      if(bno != userId && !isAdminOrManager) {
+	         throw new IllegalAccessError("관리자가 아니므로 해당 유저의 정보를 삭제할 수 없습니다");
+	      }
+	      String wholeAddr = userUpdateRequestDto.getAddress() +" # "+ userUpdateRequestDto.getDetailAddress();
+	      
+	      User user = userRepository.findById(bno)
+	            .orElseThrow(() -> new IllegalAccessError("해당유저 없음" + bno));
+	      
+	      user.modify(userUpdateRequestDto.getUsername(),  
+	            userUpdateRequestDto.getNickname(),userUpdateRequestDto.getRealName(),
+	            userUpdateRequestDto.getBday(),userUpdateRequestDto.getProvidedId(), 
+	            userUpdateRequestDto.getProvider(), wholeAddr, 
+	            userUpdateRequestDto.getPhone(), userUpdateRequestDto.getBsn(), 
+	            userUpdateRequestDto.getYoutubeUrl(), false);
+	      UserResponseDto dto = new UserResponseDto().entityToDto(user);
+	      Optional<ProfilePicture> optOriginalProfilePicture = profilePictureRepository.findByUserUserId(user.getUserId());
+	      if(optOriginalProfilePicture.isPresent()) {
+	    	  dto.setProfilePic(optOriginalProfilePicture.get().getFileName());
+	      }
+	      if(userUpdateRequestDto.getProfilePicId() != 0L) {
+	         //updateRequest에서 프로필 사진이 변경되는떄(넘어오는 ProfilePictureId가 존재할 때)
 
-		if(userUpdateRequestDto.getProfilePicId() != 0L) {
-			//updateRequest에서 프로필 사진이 변경되는떄(넘어오는 ProfilePictureId가 존재할 때)
-
-			ProfilePicture profilePicture = profilePictureRepository.findById(userUpdateRequestDto.getProfilePicId()).orElseThrow(()-> new IllegalArgumentException("해당 프로필 사진을 찾을수 없습니다."));
-			//새로 등록될 프로필사진
-			
-			if(profilePictureRepository.findByUserUserId(user.getUserId()) != null) {
-				//만약 유저가 이전에 프로필사진을 등록시켜 놓은 경우
-				
-				Optional<ProfilePicture> optOriginalProfilePicture = profilePictureRepository.findByUserUserId(user.getUserId());
-				//원래 존재하던 프로필사진
-				if(optOriginalProfilePicture.isPresent()) {
-					//원래 있던 프로필사진 삭제
-					ProfilePicture originalProfilePicture = optOriginalProfilePicture.get();
-					File toDel = new File(originalProfilePicture.getUploadPath());
-					if(toDel.exists()) {
-						toDel.delete();				
-					} else {
-						throw new IllegalAccessError("서버에 해당 이미지가 존재하지 않습니다");
-					}
-					profilePictureRepository.delete(originalProfilePicture);
-				}
-			}
-			// 새로추가된 프로필사진 이동후 저장.
-			if(!profilePicture.isFlag()) {
-				try {
-					File temp = new File(profilePicture.getTempPath());
-					File dest = new File(profilePicture.getUploadPath());
-					Files.move(temp, dest);
-				} catch (IOException e) {
-					e.printStackTrace();
-					throw new IllegalAccessError("서버에 해당 이미지가 존재하지 않습니다");
-				}
-				profilePicture.completelySave();
-				profilePicture.addUser(user);
-				dto.setProfilePic(profilePicture.getFileName());
-			}
-		}
-		
-		if(userUpdateRequestDto.getYoutubeConfirmId() != 0L) {
-			YoutubeConfirm confirm = youtubeConfirmRepository.findById(userUpdateRequestDto.getYoutubeConfirmId())
-					.orElseThrow(() -> new IllegalAccessError("유튜버 인증 이미지가 존재하지 않습니다."));
-			if(youtubeConfirmRepository.findByUserUserId(user.getUserId()) != null) {
-				
-				Optional<YoutubeConfirm> optOriginalYoutubeConfirm = youtubeConfirmRepository.findByUserUserId(user.getUserId());
-				if(optOriginalYoutubeConfirm.isPresent()) {
-					YoutubeConfirm originalYoutubeConfirm = optOriginalYoutubeConfirm.get();
-					File toDel = new File(originalYoutubeConfirm.getUploadPath());
-					if(toDel.exists()) {
-						toDel.delete();				
-					} else {
-						throw new IllegalAccessError("서버에 해당 이미지가 존재하지 않습니다");
-					}
-					youtubeConfirmRepository.delete(originalYoutubeConfirm);
-				}
-			}
-			if(!confirm.isFlag()) {
-				try {
-					File temp = new File(confirm.getTempPath());
-					File dest = new File(confirm.getUploadPath());
-					Files.move(temp, dest);
-				} catch (IOException e) {
-					e.printStackTrace();
-					throw new IllegalAccessError("서버에 해당 이미지가 존재하지 않습니다");
-				}
-				confirm.completelySave();
-				confirm.authorizeAsYoutuber();
-				confirm.addUser(user);
-			}
-		}
-		return dto;
-	}
+	         ProfilePicture profilePicture = profilePictureRepository.findById(userUpdateRequestDto.getProfilePicId()).orElseThrow(()-> new IllegalArgumentException("해당 프로필 사진을 찾을수 없습니다."));
+	         //새로 등록될 프로필사진
+	         
+	         if(profilePictureRepository.findByUserUserId(user.getUserId()) != null) {
+	            //만약 유저가 이전에 프로필사진을 등록시켜 놓은 경우
+	            
+	            
+	            //원래 존재하던 프로필사진
+	            if(optOriginalProfilePicture.isPresent()) {
+	               //원래 있던 프로필사진 삭제
+	               ProfilePicture originalProfilePicture = optOriginalProfilePicture.get();
+	               File toDel = new File(originalProfilePicture.getUploadPath());
+	               if(toDel.exists()) {
+	                  toDel.delete();            
+	               } else {
+	                  throw new IllegalAccessError("서버에 해당 이미지가 존재하지 않습니다");
+	               }
+	               profilePictureRepository.delete(originalProfilePicture);
+	            }
+	         }
+	         // 새로추가된 프로필사진 이동후 저장.
+	         if(!profilePicture.isFlag()) {
+	            try {
+	               File temp = new File(profilePicture.getTempPath());
+	               File dest = new File(profilePicture.getUploadPath());
+	               Files.move(temp, dest);
+	            } catch (IOException e) {
+	               e.printStackTrace();
+	               throw new IllegalAccessError("서버에 해당 이미지가 존재하지 않습니다");
+	            }
+	            profilePicture.completelySave();
+	            profilePicture.addUser(user);
+	            dto.setProfilePic(profilePicture.getFileName());
+	         }
+	      }
+	      
+	      if(userUpdateRequestDto.getYoutubeConfirmId() != 0L) {
+	         YoutubeConfirm confirm = youtubeConfirmRepository.findById(userUpdateRequestDto.getYoutubeConfirmId())
+	               .orElseThrow(() -> new IllegalAccessError("유튜버 인증 이미지가 존재하지 않습니다."));
+	         if(youtubeConfirmRepository.findByUserUserId(user.getUserId()) != null) {
+	            
+	            Optional<YoutubeConfirm> optOriginalYoutubeConfirm = youtubeConfirmRepository.findByUserUserId(user.getUserId());
+	            if(optOriginalYoutubeConfirm.isPresent()) {
+	               YoutubeConfirm originalYoutubeConfirm = optOriginalYoutubeConfirm.get();
+	               File toDel = new File(originalYoutubeConfirm.getUploadPath());
+	               if(toDel.exists()) {
+	                  toDel.delete();            
+	               } else {
+	                  throw new IllegalAccessError("서버에 해당 이미지가 존재하지 않습니다");
+	               }
+	               youtubeConfirmRepository.delete(originalYoutubeConfirm);
+	            }
+	         }
+	         if(!confirm.isFlag()) {
+	            try {
+	               File temp = new File(confirm.getTempPath());
+	               File dest = new File(confirm.getUploadPath());
+	               Files.move(temp, dest);
+	            } catch (IOException e) {
+	               e.printStackTrace();
+	               throw new IllegalAccessError("서버에 해당 이미지가 존재하지 않습니다");
+	            }
+	            confirm.completelySave();
+	            confirm.authorizeAsYoutuber();
+	            confirm.addUser(user);
+	         }
+	      }
+	      return dto;
+	   }
 
 	@Override
 	@Transactional
