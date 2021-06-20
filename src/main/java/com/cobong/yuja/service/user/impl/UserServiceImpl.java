@@ -274,6 +274,7 @@ public class UserServiceImpl implements UserService {
 				}
 				profilePicture.completelySave();
 				profilePicture.addUser(user);
+				dto.setProfilePic(profilePicture.getFileName());
 			}
 		}
 		
