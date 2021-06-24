@@ -78,9 +78,9 @@ public class CommentServiceImpl implements CommentService {
 		
 		Optional<Long> lastNoti = null;
 		
-		if(parentComment !=null && commentReceiver.getUserId() == sender.getUserId()) {
-		}else if (parentComment == null && board.getUser().getUserId() == sender.getUserId()){
-		}else if(parentComment != null && commentReceiver.getUserId() != sender.getUserId()) {
+		if(parentComment !=null && commentReceiver.getUserId().equals(sender.getUserId())) {
+		}else if (parentComment == null && board.getUser().getUserId().equals(sender.getUserId())){
+		}else if(parentComment != null && !commentReceiver.getUserId().equals(sender.getUserId())) {
 			lastNoti = notificationRepository.findByLastNoti(sender.getUserId(), commentReceiver.getUserId(),"nestedComment");
 			if(lastNoti.isPresent()) {
 				notificationRepository.deleteById(lastNoti.get());

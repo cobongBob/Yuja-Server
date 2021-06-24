@@ -36,9 +36,6 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 //	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	
-	//mustache
-	implementation 'org.springframework.boot:spring-boot-starter-mustache'
-	
 	// Lombok
 	implementation "org.projectlombok:lombok"
 	annotationProcessor ("org.projectlombok:lombok")
@@ -67,7 +64,7 @@ dependencies {
 	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-mail', version: '2.4.5'
 	
 	//Websocket for chatting
-	implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '2.4.5'
+	//implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '2.4.5'
 	
 }
 

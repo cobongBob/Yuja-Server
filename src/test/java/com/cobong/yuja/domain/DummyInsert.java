@@ -146,15 +146,14 @@ public class DummyInsert {
 					.build();
 			userRepository.save(user);
 		});
-		Authorities auth3 = authRepo.findById(6L).orElseThrow(()->new IllegalArgumentException("없는 권한"));
 		IntStream.rangeClosed(76, 102).forEach(i -> {
 			User user = User.builder()
-					.username("admin "+i)
+					.username("user "+i)
 					.password(passwordEncoder.encode("1111"))
-					.nickname("Admin"+i)
-					.realName("어드민"+i)
+					.nickname("nickname"+i)
+					.realName("tester"+i)
 					.bday("2000-01-"+i)
-					.authorities(Collections.singletonList(auth3))
+					.authorities(Collections.singletonList(auth1))
 					.build();
 			userRepository.save(user);
 		});
@@ -162,7 +161,7 @@ public class DummyInsert {
 
 	@Test // 유튜버 게시글 더미
 	public void insertYBoard() {
-		IntStream.rangeClosed(26, 50).forEach(i -> {
+		IntStream.rangeClosed(151, 175).forEach(i -> {
 			User user = User.builder().userId(Long.valueOf(i)).build();
 			BoardType boardType = boardTypeRepository.findById(1L).orElseThrow(()-> new IllegalArgumentException("존재하지 x"));
 			Board board = Board.builder()
@@ -177,7 +176,7 @@ public class DummyInsert {
 					.receptionMethod("비대면")
 					.recruitingNum(i)
 					.tools("프리미어 프로,파이널,베가스")
-					.title("테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어 "+i)
+					.title("테스트 데어 "+i)
 					.content("테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어테스트 데어 "+i)
 					.worker("편집자")
 					.yWhen("상시모집")
@@ -186,7 +185,7 @@ public class DummyInsert {
 					.build();
 			boardRepository.save(board);
 		});
-		IntStream.rangeClosed(51, 75).forEach(i -> {
+		IntStream.rangeClosed(176, 200).forEach(i -> {
 			User user = User.builder().userId(Long.valueOf(i)).build();
 			BoardType boardType = boardTypeRepository.findById(1L).orElseThrow(()-> new IllegalArgumentException("존재하지 x"));
 			Board board = Board.builder()
@@ -201,7 +200,7 @@ public class DummyInsert {
 					.receptionMethod("비대면")
 					.recruitingNum(i)
 					.tools("프리미어 프로,파이널,베가스")
-					.title("테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 테스트 쯔양 "+i)
+					.title("테스트 쯔양 "+i)
 					.content("테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양테스트 쯔양 "+i)
 					.worker("편집자")
 					.yWhen("상시모집")
@@ -213,13 +212,13 @@ public class DummyInsert {
 	}
 	@Test // winwin게시판 더미
 	public void insertWBoard() {
-		IntStream.rangeClosed(1, 102).forEach(i -> {
+		IntStream.rangeClosed(126, 227).forEach(i -> {
 			User user = User.builder().userId(Long.valueOf(i)).build();
 			BoardType boardType = boardTypeRepository.findById(4L).orElseThrow(()-> new IllegalArgumentException("존재하지 x"));
 			Board board = Board.builder()
 					.boardType(boardType)
 					.user(user)
-					.title("테스트 윈 제목테스트 윈 제목테스트 윈 제목테스트 윈 제목테스트 윈 제목테스트 윈 제목테스트 윈 제목 "+i)
+					.title("테스트 윈 "+i)
 					.content("테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용테스트 윈 내용 "+i)
 					.hit(i)
 					.boardUpdatedDate(Instant.now())
@@ -229,13 +228,13 @@ public class DummyInsert {
 	}
 	@Test //콜라보게시판 더미
 	public void insertCBoard() {
-		IntStream.rangeClosed(1, 102).forEach(i -> {
+		IntStream.rangeClosed(126, 227).forEach(i -> {
 			User user = User.builder().userId(Long.valueOf(i)).build();
 			BoardType boardType = boardTypeRepository.findById(5L).orElseThrow(()-> new IllegalArgumentException("존재하지 x"));
 			Board board = Board.builder()
 					.boardType(boardType)
 					.user(user)
-					.title("테스트 콜라보 제목테스트 콜라보 제목테스트 콜라보 제목테스트 콜라보 제목테스트 콜라보 제목테스트 콜라보 제목 "+i)
+					.title("테스트 콜라보 제목테스트 "+i)
 					.content("테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용테스트 콜라보 내용 "+i)
 					.hit(i)
 					.boardUpdatedDate(Instant.now())
@@ -245,13 +244,13 @@ public class DummyInsert {
 	}
 	@Test //편집자 게시글 번호
 	public void insertEBoard() {
-		IntStream.rangeClosed(1, 102).forEach(i -> {
+		IntStream.rangeClosed(126, 227).forEach(i -> {
 			User user = User.builder().userId(Long.valueOf(i)).build();
 			BoardType boardType = boardTypeRepository.findById(2L).orElseThrow(()-> new IllegalArgumentException("존재하지 x"));
 			Board board = Board.builder()
 					.boardType(boardType)
 					.user(user)
-					.title("테스트 에디터 제목테스트 에디터 제목테스트 에디터 제목테스트 에디터 제목테스트 에디터 제목테스트 에디터 제목 "+i)
+					.title("테스트 에디터 제목테스트 "+i)
 					.content("테스트 에디터 내용테스트 에디터 내용테스트 에디터 내용테스트 에디터 내용테스트 에디터 내용테스트 에디터 내용테스트 에디터 내용테스트 에디터 내용테스트 에디터 내용테스트 에디터 내용테스트 에디터 내용테스트 에디터 내용테스트 에디터 내용 "+i)
 					.tools("프리미어 프로,파이널,베가스")
 					.previewImage("https://img.youtube.com/vi/JSyw7OEbMqM/hqdefault.jpg")
@@ -265,13 +264,13 @@ public class DummyInsert {
 	}
 	@Test //썸네일러 게시글 번호
 	public void insertTBoard() {
-		IntStream.rangeClosed(1, 102).forEach(i -> {
+		IntStream.rangeClosed(126, 227).forEach(i -> {
 			User user = User.builder().userId(Long.valueOf(i)).build();
 			BoardType boardType = boardTypeRepository.findById(3L).orElseThrow(()-> new IllegalArgumentException("존재하지 x"));
 			Board board = Board.builder()
 					.boardType(boardType)
 					.user(user)
-					.title("테스트 썸네일 제목테스트 썸네일 제목테스트 썸네일 제목테스트 썸네일 제목테스트 썸네일 제목테스트 썸네일 제목 "+i)
+					.title("테스트 썸네일 제목테스트 "+i)
 					.content("테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용테스트 썸네일 내용 "+i)
 					.tools("포토샵")
 					.payAmount("50,000")
@@ -284,13 +283,13 @@ public class DummyInsert {
 	}
 	@Test //건의 게시글 번호
 	public void insertCusBoard() {
-		IntStream.rangeClosed(1, 102).forEach(i -> {
+		IntStream.rangeClosed(126, 227).forEach(i -> {
 			User user = User.builder().userId(Long.valueOf(i)).build();
 			BoardType boardType = boardTypeRepository.findById(6L).orElseThrow(()-> new IllegalArgumentException("존재하지 x"));
 			Board board = Board.builder()
 					.boardType(boardType)
 					.user(user)
-					.title("테스트 제목 "+i)
+					.title("테스트 건의 "+i)
 					.content("테스트 내용 "+i)
 					.hit(i)
 					.boardUpdatedDate(Instant.now())
@@ -300,7 +299,7 @@ public class DummyInsert {
 	}
 	@Test //자유 게시글 번호
 	public void insertFreeBoard() {
-		IntStream.rangeClosed(1, 102).forEach(i -> {
+		IntStream.rangeClosed(126, 227).forEach(i -> {
 			User user = User.builder().userId(Long.valueOf(i)).build();
 			BoardType boardType = boardTypeRepository.findById(7L).orElseThrow(()-> new IllegalArgumentException("존재하지 x"));
 			Board board = Board.builder()
@@ -349,7 +348,7 @@ public class DummyInsert {
 	
 	@Test // files/thumbnail폴더에 yuzu05.png파일 넣어주셔야합니다.
 	public void insertThumb() {
-		IntStream.range(357, 458).forEach(i -> {
+		IntStream.range(1096, 1197).forEach(i -> {
 			Board board = Board.builder().boardId(Long.valueOf(i)).build();
 			Thumbnail thumb = Thumbnail.builder()
 					.fileName("yuzu05.png")
